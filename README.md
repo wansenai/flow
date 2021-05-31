@@ -2,11 +2,12 @@
 - [企业数智化](http://8.129.209.112:8100/idm/#/login)
 - [企业数智化门户](http://8.129.209.112:8200/idm/#/login)
 
-![avatar](docs/imgs/page-login.jpg)
-![avatar](docs/imgs/page-main.jpg)
-![avatar](docs/imgs/page-bpmn.jpg)
-![avatar](docs/imgs/page-bpmn-preview.jpg)
-![avatar](docs/imgs/page-bpmn-designer.jpg)
+![avatar](https://img-blog.csdnimg.cn/20210531103412212.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXdlbmp1bjA1MTAx,size_16,color_FFFFFF,t_70#pic_center)
+![avatar](https://img-blog.csdnimg.cn/20210531103412208.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXdlbmp1bjA1MTAx,size_16,color_FFFFFF,t_70#pic_center)
+![avatar](https://img-blog.csdnimg.cn/20210531103412202.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXdlbmp1bjA1MTAx,size_16,color_FFFFFF,t_70#pic_center)
+![avatar](https://img-blog.csdnimg.cn/20210531103412165.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXdlbmp1bjA1MTAx,size_16,color_FFFFFF,t_70#pic_center)
+![avatar](https://img-blog.csdnimg.cn/20210531103412166.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXdlbmp1bjA1MTAx,size_16,color_FFFFFF,t_70#pic_center)
+![avatar](https://img-blog.csdnimg.cn/20210531103412165.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXdlbmp1bjA1MTAx,size_16,color_FFFFFF,t_70#pic_center)
 
 ## 后台安装
 1、安装数据库
@@ -57,5 +58,5 @@ http://localhost:8990
 
 
 ## 捐赠
-如果您认为该项目对您有所帮助，则可以帮助作者购买一杯咖啡，以表示支持！
+如果您认为该项目对您有所帮助，则可以帮助作者购买一杯咖啡，以表示支持！  
 ![avatar](https://img-blog.csdnimg.cn/20210531115858101.jpg#pic_center)
