@@ -1,5 +1,5 @@
 ## 预览
-- [企业数智化 - 流程中心](http://8.129.209.112:8100/idm/#/login)
+- [企业数智化 - 流程中心](http://8.129.209.112:8100/idm/#/login?_blank)
 - [企业数智化 - 门户](http://8.129.209.112:8200/idm/#/login)
 
 
@@ -44,7 +44,7 @@ flow-admin模块下的com.dragon.flow.main.FlowAdminApplication
 直接运行即可
 
 4、访问路径
-http://localhost:8988/login/index.html
+http://localhost:8988/index.html
 账号密码：
 
 普通管理员：10101/888888
