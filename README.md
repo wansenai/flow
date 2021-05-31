@@ -58,4 +58,4 @@ http://localhost:8990
 
 ## 捐赠
 如果您认为该项目对您有所帮助，则可以帮助作者购买一杯咖啡，以表示支持！
-![avatar](docs/imgs/donate-weixin.jpg)
+![avatar](https://img-blog.csdnimg.cn/20210531115858101.jpg#pic_center)
