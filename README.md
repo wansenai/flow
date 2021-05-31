@@ -1,6 +1,13 @@
 ## 预览
-- [企业数智化](http://8.129.209.112:8100/idm/#/login)
-- [企业数智化门户](http://8.129.209.112:8200/idm/#/login)
+- [企业数智化 - 流程中心](http://8.129.209.112:8100/idm/#/login?_blank)
+- [企业数智化 - 门户](http://8.129.209.112:8200/idm/#/login)
+
+
+- [操作演示 - 流程中心](https://www.bilibili.com/video/BV1qU4y1L7pB/)
+- [操作演示 - 门户](https://www.bilibili.com/video/BV1mh411Y7UT/)
+
+
+- [码云](https://gitee.com/lwj/flow)
 
 ### 流程后台
 ![avatar](https://img-blog.csdnimg.cn/20210531103412212.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXdlbmp1bjA1MTAx,size_16,color_FFFFFF,t_70#pic_center)
@@ -37,7 +44,7 @@ flow-admin模块下的com.dragon.flow.main.FlowAdminApplication
 直接运行即可
 
 4、访问路径
-http://localhost:8988/login/index.html
+http://localhost:8988/index.html
 账号密码：
 
 普通管理员：10101/888888
