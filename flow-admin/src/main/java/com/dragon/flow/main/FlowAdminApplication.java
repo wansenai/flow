@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAspectJAutoProxy
 @EnableScheduling
 @EnableTransactionManagement
-@SpringBootApplication(scanBasePackages = {"com.dragon.flow"})
+@SpringBootApplication(scanBasePackages = "com.dragon.flow")
 public class FlowAdminApplication {
     private static final Logger logger = LoggerFactory.getLogger(FlowAdminApplication.class);
 
