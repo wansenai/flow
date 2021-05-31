@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dragon.flow.mapper.privilege.IAclMapper">
+    <resultMap id="AclMap" type="com.dragon.flow.model.privilege.ACL">
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="release_id" property="releaseId" jdbcType="VARCHAR"/>
+        <result column="module_sn" property="moduleSn" jdbcType="VARCHAR"/>
+        <result column="module_id" property="moduleId" jdbcType="VARCHAR"/>
+        <result column="acl_state" property="aclState" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="updator" property="updator" jdbcType="VARCHAR"/>
+        <result column="del_flag" property="delFlag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="getAclsByGroupIds" parameterType="java.lang.String"
+            resultMap="AclMap">
+        SELECT DISTINCT
+        t1.id,
+        t1.release_id,
+        t1.release_sn,
+        t1.module_sn,
+        t1.module_id,
+        t1.acl_state
+        FROM tbl_privilege_acl t1
+        INNER JOIN tbl_privilege_group t2 ON t1.release_id=t2.id
+        INNER JOIN tbl_privilege_module t3 ON t1.module_id=t3.id
+        WHERE t1.release_id IN
+        <foreach collection="groupIds" item="item" index="index" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dragon.flow.mapper.flowable.IFlowableTaskMapper">
+    <resultMap id="TaskVoMap" type="com.dragon.flow.vo.flowable.task.TaskVo">
+        <id column="ID_" property="taskId" jdbcType="VARCHAR"/>
+        <result column="NAME_" property="name" jdbcType="VARCHAR"/>
+        <result column="ASSIGNEE_" property="assignee" jdbcType="VARCHAR"/>
+        <result column="PROC_INST_ID_" property="processInstanceId" jdbcType="VARCHAR"/>
+        <result column="PARENT_ID_" property="parentId" jdbcType="VARCHAR"/>
+        <result column="model_key" property="processDefinitionKey" jdbcType="VARCHAR"/>
+        <result column="BUSINESS_KEY_" property="businessKey" jdbcType="VARCHAR"/>
+        <result column="proc_inst_name" property="formName" jdbcType="VARCHAR"/>
+        <result column="CATEGORY_" property="taskType" jdbcType="VARCHAR"/>
+        <result column="END_TIME_" property="finishedTime" jdbcType="TIMESTAMP"/>
+        <result column="START_TIME_" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME_" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="TASK_END_TIME_" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="start_person" property="startPersonName" jdbcType="VARCHAR"/>
+        <result column="app_name" property="appName" jdbcType="VARCHAR"/>
+        <result column="process_type" property="modelType" jdbcType="VARCHAR"/>
+        <result column="PROC_DEF_ID_" property="processDefinitionId" jdbcType="VARCHAR"/>
+        <result column="start_person_code" property="startPersonCode" jdbcType="VARCHAR"/>
+        <result column="applied_range" property="processDefinitionType" jdbcType="INTEGER"/>
+        <result column="process_status" property="processStatus" jdbcType="VARCHAR"/>
+        <result column="form_name" property="formName" jdbcType="VARCHAR"/>
+        <result column="TASK_DEF_KEY_" property="taskDefKey" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getAppingTaskCont" parameterType="com.dragon.flow.vo.flowable.task.TaskQueryParamsVo" resultType="java.lang.Long">
+        SELECT DISTINCT
+        count(t1.ID_)
+        FROM
+        act_ru_task t1
+        INNER JOIN act_ru_execution t2 ON t1.PROC_INST_ID_ = t2.PROC_INST_ID_
+        INNER JOIN tbl_flow_extend_procinst t3 ON t2.PROC_INST_ID_ = t3.process_instance_id
+        INNER JOIN tbl_base_app t4 ON t2.TENANT_ID_ = t4.sn
+        LEFT JOIN act_ru_identitylink t5 ON t5.TASK_ID_ = t1.ID_
+        LEFT JOIN tbl_org_personal t6 ON t6.`code` = t2.START_USER_ID_
+        LEFT JOIN tbl_flow_model_info t7 ON t3.model_key = t7.model_key
+        WHERE t2.BUSINESS_KEY_ is not null
+        <choose>
+            <when test="params.appSns!=null and params.appSns.size() &gt; 0">
+                and t1.TENANT_ID_ in
+                <foreach item="appSn" collection="params.appSns" separator="," open="(" close=")" index="">
+                    #{appSn}
+                </foreach>
+            </when>
+            <otherwise>
+                <if test="params.appSn!='' and params.appSn!=null">
+                    and t1.TENANT_ID_ = #{params.appSn,jdbcType=VARCHAR}
+                </if>
+            </otherwise>
+        </choose>
+        <if test="params.keyword!=null and params.keyword!=''">
+            and t2.NAME_ LIKE CONCAT('%',#{params.keyword},'%')
+        </if>
+        <if test="params.userCode != null and params.userCode!=''">
+            AND (
+            t1.ASSIGNEE_ = #{params.userCode}
+            OR (
+            t5.USER_ID_ = #{params.userCode}
+            OR t5.GROUP_ID_ = (
+            SELECT
+            r.sn
+            FROM
+            tbl_org_personal_role pr
+            INNER JOIN tbl_org_role r ON pr.role_id = r.id
+            WHERE pr.personal_code = #{params.userCode}
+            )
+            )
+            )
+        </if>
+    </select>
+    <select id="getAppingTasksPagerModel" parameterType="com.dragon.flow.vo.flowable.task.TaskQueryParamsVo" resultMap="TaskVoMap">
+        SELECT DISTINCT
+            t1.ID_,
+            t1.NAME_,
+            t1.CREATE_TIME_,
+            t1.ASSIGNEE_,
+            t1.DESCRIPTION_,
+            t1.TASK_DEF_KEY_,
+            t1.CATEGORY_,
+            t2.BUSINESS_KEY_,
+            t2.PROC_INST_ID_,
+            t2.PARENT_ID_,
+            t2.PROC_DEF_ID_,
+            t2.NAME_ AS form_name,
+            t2.START_TIME_,
+            t2.START_USER_ID_ AS start_person_code,
+            t3.process_status,
+            t4.name AS app_name,
+            t6.`name` AS start_person,
+            t7.applied_range,
+            t3.model_key,
+            t7.model_type
+        FROM
+            act_ru_task t1
+        INNER JOIN act_ru_execution t2 ON t1.PROC_INST_ID_ = t2.PROC_INST_ID_
+        INNER JOIN tbl_flow_extend_procinst t3 ON t2.PROC_INST_ID_ = t3.process_instance_id
+        INNER JOIN tbl_base_app t4 ON t2.TENANT_ID_ = t4.sn
+        LEFT JOIN act_ru_identitylink t5 ON t5.TASK_ID_ = t1.ID_
+        LEFT JOIN tbl_org_personal t6 ON t6.`code` = t2.START_USER_ID_
+        LEFT JOIN tbl_flow_model_info t7 ON t3.model_key = t7.model_key
+        WHERE t2.BUSINESS_KEY_ is not null
+        <choose>
+            <when test="params.appSns!=null and params.appSns.size() &gt; 0">
+                and t1.TENANT_ID_ in
+                <foreach item="appSn" collection="params.appSns" separator="," open="(" close=")" index="">
+                    #{appSn}
+                </foreach>
+            </when>
+            <otherwise>
+                <if test="params.appSn!='' and params.appSn!=null">
+                    and t1.TENANT_ID_ = #{params.appSn,jdbcType=VARCHAR}
+                </if>
+            </otherwise>
+        </choose>
+        <if test="params.keyword!=null and params.keyword!=''">
+            and t2.NAME_ LIKE CONCAT('%',#{params.keyword},'%')
+        </if>
+        <if test="params.userCode != null and params.userCode!=''">
+            AND (
+            t1.ASSIGNEE_ = #{params.userCode}
+                OR (
+                t5.USER_ID_ = #{params.userCode}
+                OR t5.GROUP_ID_ = (
+                    SELECT
+                        r.sn
+                        FROM
+                        tbl_org_personal_role pr
+                        INNER JOIN tbl_org_role r ON pr.role_id = r.id
+                        WHERE pr.personal_code = #{params.userCode}
+                    )
+                )
+            )
+        </if>
+        ORDER BY t1.CREATE_TIME_ ASC
+    </select>
+    <select id="getApplyedTasksPagerModel" resultMap="TaskVoMap">
+        SELECT DISTINCT
+        t1.ID_,
+        t1.NAME_,
+        t1.START_TIME_ as CREATE_TIME_,
+        t1.ASSIGNEE_,
+        t1.DESCRIPTION_,
+        t1.TASK_DEF_KEY_,
+        t1.DURATION_,
+        t2.BUSINESS_KEY_,
+        t2.PROC_INST_ID_,
+        t2.PROC_DEF_ID_,
+        t2.NAME_ AS proc_inst_name,
+        t2.START_TIME_,
+        t2.END_TIME_,
+        t3.current_user_code AS start_person_code,
+        t3.process_status AS process_status,
+        t4.NAME AS app_name,
+        t7.name AS start_person,
+        t9.business_url,
+        t3.model_key
+        FROM act_hi_taskinst t1
+        INNER JOIN act_hi_procinst t2
+        ON t1.PROC_INST_ID_ = t2.PROC_INST_ID_
+        INNER JOIN act_re_procdef t8 ON t2.PROC_DEF_ID_=t8.ID_
+        INNER JOIN tbl_flow_extend_hisprocinst t3
+        ON t1.PROC_INST_ID_ = t3.process_instance_id
+        INNER JOIN tbl_base_app t4
+        ON t1.TENANT_ID_ = t4.sn
+        LEFT JOIN act_hi_identitylink t6
+        ON t6.TASK_ID_ = t1.ID_
+        INNER JOIN tbl_org_personal t7
+        ON t7.code = t3.current_user_code
+        LEFT JOIN tbl_flow_model_info t9 ON t8.KEY_=t9.model_key
+        <where>
+            <if test="params.appSn!=null and params.appSn!=''">
+                and t4.sn = #{params.appSn,jdbcType=VARCHAR}
+            </if>
+            <if test="params.userCode!=null and params.userCode!=''">
+                AND (
+                t1.ASSIGNEE_ = #{params.userCode,jdbcType=VARCHAR}
+                OR (
+                (
+                t1.ASSIGNEE_ IS NULL
+                OR t1.ASSIGNEE_ = ''
+                )
+                AND (
+                t6.USER_ID_ = #{params.userCode,jdbcType=VARCHAR}
+                OR t6.GROUP_ID_ IN (
+                SELECT
+                g.group_id_
+                FROM
+                act_id_membership g
+                WHERE
+                g.user_id_ = #{params.userCode,jdbcType=VARCHAR})
+                )
+                )
+                )
+            </if>
+            <if test="params.keyword!=null and params.keyword!=''">
+                AND t2.NAME_ LIKE CONCAT('%',#{params.keyword},'%')
+            </if>
+            <if test="params.startTime!=null and params.startTime!=''">
+                AND t2.START_TIME_ <![CDATA[ >= ]]> #{params.startTime}
+            </if>
+            <if test="params.endTime!=null and params.endTime!=''">
+                AND t2.START_TIME_ <![CDATA[ <= ]]> #{params.endTime}
+            </if>
+            <if test="params.businessKey!=null and params.businessKey!=''">
+                AND t2.BUSINESS_KEY_ LIKE CONCAT('%',#{params.businessKey},'%')
+            </if>
+        </where>
+        ORDER BY t1.START_TIME_ DESC
+    </select>
+
+    <update id="updateHisAssignee" >
+        update act_hi_taskinst set assignee_ = #{assignee,jdbcType=VARCHAR} where ID_ = #{taskId,jdbcType=VARCHAR}
+    </update>
+</mapper>

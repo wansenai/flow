@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dragon.flow.mapper.org.IPersonalRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dragon.flow.model.org.PersonalRole">
+        <id column="id" property="id" />
+        <result column="personal_id" property="personalId" />
+        <result column="personal_code" property="personalCode" />
+        <result column="role_id" property="roleId" />
+        <result column="end_date" property="endDate" />
+        <result column="valid_month" property="validMonth" />
+        <result column="create_time" property="createTime" />
+        <result column="creator" property="creator" />
+        <result column="update_time" property="updateTime" />
+        <result column="updator" property="updator" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <select id="getAllByQuery" resultType="com.dragon.flow.model.org.PersonalRole" parameterType="com.dragon.flow.model.org.PersonalRole">
+        select * from tbl_org_personal_role as pr
+        left join tbl_org_personal as p
+        on pr.personal_id = p.id
+        where pr.role_id = #{roleId}
+        <if test="keyword != null and keyword != ''">
+            <if test="keyword!=null and keyword!=''">
+                and (
+                    p.name like concat('%', #{keyword}, '%')
+                    or p.code like concat('%', #{keyword}, '%')
+                    or p.mobile like concat('%', #{keyword}, '%')
+                )
+            </if>
+        </if>
+        order by pr.update_time desc
+    </select>
+</mapper>

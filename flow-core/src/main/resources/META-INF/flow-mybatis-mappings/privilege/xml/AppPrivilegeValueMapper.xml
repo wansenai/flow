@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dragon.flow.mapper.privilege.IAppPrivilegeValueMapper">
+    <resultMap id="AppPrivilegeValueMap" type="com.dragon.flow.model.privilege.AppPrivilegeValue">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="position" property="position" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="order_no" property="orderNo" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="updator" property="updator" jdbcType="VARCHAR"/>
+    </resultMap>
+
+</mapper>

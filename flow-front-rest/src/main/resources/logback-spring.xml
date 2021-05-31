@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+	<contextName>logback</contextName>
+	<include resource="org/springframework/boot/logging/logback/base.xml"/>
+	<springProperty scope="context" name="logLevel" source="log.level"/>
+	<springProperty scope="context" name="logPath" source="log.path"/>
+	<!-- 注意这里一定要放到springProfile里, 否则在你本机执行的时候还是会去找相应的文件 -->
+	<appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logPath}/flow.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!--日志文件输出的文件名-->
+			<fileNamePattern>${logPath}/back/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<!--日志文件保留天数-->
+			<maxHistory>30</maxHistory>
+			<totalSizeCap>10GB</totalSizeCap>
+			<!--日志文件最大的大小-->
+			<MaxFileSize>30MB</MaxFileSize>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<springProfile name="dev">
+		<logger name="com.dragon" level="${logLevel}"/>
+		<logger name="org.springframework.data.mybatis" level="${logLevel}"/>
+		<root level="${logLevel}">
+			<appender-ref ref="consoleAppender"/>
+			<appender-ref ref="fileAppender"/>
+		</root>
+	</springProfile>
+	<springProfile name="test">
+		<logger name="com.dragon" level="${logLevel}"/>
+		<root level="${logLevel}">
+			<appender-ref ref="fileAppender"/>
+		</root>
+	</springProfile>
+	<springProfile name="prod">
+		<logger name="com.dragon" level="${logLevel}"/>
+		<root level="${logLevel}">
+			<appender-ref ref="fileAppender"/>
+		</root>
+	</springProfile>
+</configuration>

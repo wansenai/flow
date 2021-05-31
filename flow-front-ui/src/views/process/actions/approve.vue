@@ -1,0 +1,95 @@
+<template>
+  <PageWrapper contentBackground class="!mt-4">
+    <template #title>
+      <ProcessBackButton/>
+      审批流程
+      <BaseActionButtons />
+    </template>
+    <template #extra>
+      <!--<action-buttons @doLaunch="doLaunch"/>-->
+    </template>
+
+    <template #footer>
+
+    </template>
+
+    <div class="m-1 desc-wrap">
+      <component :is="currentView" ref="processFormRef" ></component>
+    </div>
+    <div class="m-4 desc-wrap">
+      <ApprovalHistory ref="approvalHistoryRef" ></ApprovalHistory>
+    </div>
+    <ApproveActionButtons />
+  </PageWrapper>
+</template>
+<script lang="ts">
+  import { defineComponent, ref, unref, onMounted, nextTick } from 'vue';
+  import { PageWrapper } from '/@/components/Page';
+  import { Divider, Card, Empty, Descriptions} from 'ant-design-vue';
+  import { useRouter } from 'vue-router';
+
+  import ProcessForm from '../../process-form';
+
+  import ActionButtons from '/@/views/process/components/ActionButtons.vue';
+  import BaseActionButtons from '/@/views/process/components/BaseActionButtons.vue';
+  import ApproveActionButtons from '/@/views/process/components/ApproveActionButtons.vue';
+  import ProcessBackButton from '/@/views/process/components/ProcessBackButton.vue';
+  import ApprovalHistory from '/@/views/process/components/ApprovalHistory.vue';
+
+
+  import ProcessHeader from '/@/views/process/components/ProcessHeader.vue';
+  import { useGo } from '/@/hooks/web/usePage';
+  import { useMessage } from '/@/hooks/web/useMessage';
+
+  export default defineComponent({
+    components: {
+      ProcessHeader,
+      PageWrapper,
+      [Divider.name]: Divider,
+      [Card.name]: Card,
+      AEmpty: Empty,
+      [Descriptions.name]: Descriptions,
+      [Descriptions.Item.name]: Descriptions.Item,
+      ActionButtons,
+      BaseActionButtons,
+      ApproveActionButtons,
+      ApprovalHistory,
+      ProcessBackButton,
+      ...ProcessForm
+    },
+    setup() {
+      const currentView = ref<string>("");
+      const processFormRef = ref<HTMLElement | null>(null);
+      const { createMessage } = useMessage();
+      const go = useGo();
+
+      const { currentRoute } = useRouter();
+      const { params: { modelKey }, query: { businessKey } } = unref(currentRoute);
+
+      currentView.value = modelKey;
+
+
+
+      onMounted(()=>{
+        nextTick(()=>{
+          if(businessKey){
+            unref(processFormRef).initProcessForm(businessKey);
+          }
+        })
+      })
+
+      async function doLaunch() {
+        debugger
+        await unref(processFormRef).doSubmit();
+        createMessage.success("提交成功！");
+        go("/process/launched");
+      }
+
+      return {
+        currentView,
+        processFormRef,
+        doLaunch
+      };
+    },
+  });
+</script>

@@ -1,0 +1,38 @@
+package com.dragon.flow.model.log;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Builder;
+import lombok.Data;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+/**
+ * @program: prodflow
+ * @description: 系统操作日志
+ * @author: Bruce.Liu
+ * @create: 2021-04-30 09:36
+ **/
+@Data
+@Builder
+@TableName("tbl_sys_oper_record")
+public class SysOperRecord implements Serializable {
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
+    private String userCode;
+    private String userName;
+    private String operContent;
+    private String operType;
+    /**
+     * @see com.dragon.flow.enm.SourceEnum
+     */
+    private String source;
+    private LocalDateTime dateTime;
+    private String ip;
+    private String date;
+    private Integer year;
+    private Integer month;
+    private Integer day;
+}

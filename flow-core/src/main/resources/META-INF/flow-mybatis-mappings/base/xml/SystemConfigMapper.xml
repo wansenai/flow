@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dragon.flow.mapper.base.ISystemConfigMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dragon.flow.model.base.SystemConfig">
+        <id column="id" property="id" />
+        <result column="config_name" property="configName" />
+        <result column="config_sn" property="configSn" />
+        <result column="config_key" property="configKey" />
+        <result column="config_value" property="configValue" />
+        <result column="remark" property="remark" />
+        <result column="create_time" property="createTime" />
+        <result column="creator" property="creator" />
+        <result column="update_time" property="updateTime" />
+        <result column="updator" property="updator" />
+        <result column="del_flag" property="delFlag" />
+        <result column="config_order" property="configOrder" />
+        <result column="image" property="image" />
+    </resultMap>
+
+</mapper>

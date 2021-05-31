@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="false">
+    <diskStore path="java.io.tmpdir"/>
+    <defaultCache
+            eternal="false"
+            maxElementsInMemory="900"
+            overflowToDisk="false"
+            diskPersistent="false"
+            timeToIdleSeconds="0"
+            timeToLiveSeconds="30"
+            memoryStoreEvictionPolicy="LRU"/>
+    <!-- 这里的 cache-process-activitys 缓存流程的节点信息 -->
+    <cache
+            name="cache-process-activitys"
+            eternal="false"
+            maxElementsInMemory="2000"
+            maxElementsOnDisk="3000"
+            overflowToDisk="true"
+            diskPersistent="true"
+            timeToIdleSeconds="0"
+            timeToLiveSeconds="3000"
+            memoryStoreEvictionPolicy="LRU"/>
+    <!-- 这里的 cache-process-highlightednodes 缓存流程的高亮信息 -->
+    <cache
+            name="cache-process-highlightednodes"
+            eternal="false"
+            maxElementsInMemory="2000"
+            maxElementsOnDisk="3000"
+            overflowToDisk="true"
+            diskPersistent="true"
+            timeToIdleSeconds="0"
+            timeToLiveSeconds="3000"
+            memoryStoreEvictionPolicy="LRU"/>
+    <!-- 这里的 流程实例对象  -->
+    <cache
+            name="cache-process-instance"
+            eternal="false"
+            maxElementsInMemory="2000"
+            maxElementsOnDisk="3000"
+            overflowToDisk="true"
+            diskPersistent="true"
+            timeToIdleSeconds="0"
+            timeToLiveSeconds="100"
+            memoryStoreEvictionPolicy="LRU"/>
+    <!-- 这里的 cache-process-image 缓存流程的图片信息 -->
+    <cache
+            name="cache-process-definition"
+            eternal="false"
+            maxElementsInMemory="2000"
+            maxElementsOnDisk="3000"
+            overflowToDisk="true"
+            diskPersistent="true"
+            timeToIdleSeconds="0"
+            timeToLiveSeconds="1296000"
+            memoryStoreEvictionPolicy="LRU"/>
+    <!-- 数据字典缓存 -->
+    <cache
+            name="cache-common-dictionary"
+            eternal="false"
+            maxElementsInMemory="2000"
+            maxElementsOnDisk="3000"
+            overflowToDisk="true"
+            diskPersistent="true"
+            timeToIdleSeconds="0"
+            timeToLiveSeconds="7200"
+            memoryStoreEvictionPolicy="LRU"/>
+    <!-- 这里的 cache-start-processinstance 缓存流程启动信息 -->
+    <cache
+            name="cache-start-processinstance"
+            eternal="false"
+            maxElementsInMemory="2000"
+            maxElementsOnDisk="3000"
+            overflowToDisk="true"
+            diskPersistent="true"
+            timeToIdleSeconds="0"
+            timeToLiveSeconds="60"
+            memoryStoreEvictionPolicy="LRU"/>
+    <!-- 这里的 cache-acl-permissions 缓存权限值 -->
+    <cache
+            name="cache-acl-permissionvals"
+            eternal="false"
+            maxElementsInMemory="2000"
+            maxElementsOnDisk="3000"
+            overflowToDisk="true"
+            diskPersistent="true"
+            timeToIdleSeconds="0"
+            timeToLiveSeconds="120"
+            memoryStoreEvictionPolicy="LRU"/>
+    <!-- 配置session缓存 -->
+    <cache name="shiro-activeSessionCache"
+           maxElementsInMemory="10000"
+           overflowToDisk="true"
+           eternal="true"
+           timeToLiveSeconds="0"
+           timeToIdleSeconds="0"
+           diskPersistent="true"
+           diskExpiryThreadIntervalSeconds="600"/>
+    <!-- 登录记录缓存锁定10分钟 -->
+    <cache name="authenticationCacheName"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    <!-- 登录记录缓存锁定10分钟 -->
+    <cache name="authorizationCacheName"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+</ehcache>
+
+        <!--<diskStore>==========当内存缓存中对象数量超过maxElementsInMemory时,将缓存对象写到磁盘缓存中(需对象实现序列化接口)  -->
+        <!--<diskStore path="">==用来配置磁盘缓存使用的物理路径,Ehcache磁盘缓存使用的文件后缀名是*.data和*.index  -->
+        <!--name=================缓存名称,cache的唯一标识(ehcache会把这个cache放到HashMap里)  -->
+        <!--maxElementsOnDisk====磁盘缓存中最多可以存放的元素数量,0表示无穷大  -->
+        <!--maxElementsInMemory==内存缓存中最多可以存放的元素数量,若放入Cache中的元素超过这个数值,则有以下两种情况  -->
+        <!--1)若overflowToDisk=true,则会将Cache中多出的元素放入磁盘文件中  -->
+        <!--2)若overflowToDisk=false,则根据memoryStoreEvictionPolicy策略替换Cache中原有的元素  -->
+        <!--eternal==============缓存中对象是否永久有效,即是否永驻内存,true时将忽略timeToIdleSeconds和timeToLiveSeconds  -->
+        <!--timeToIdleSeconds====缓存数据在失效前的允许闲置时间(单位:秒),仅当eternal=false时使用,默认值是0表示可闲置时间无穷大,此为可选属性  -->
+        <!--即访问这个cache中元素的最大间隔时间,若超过这个时间没有访问此Cache中的某个元素,那么此元素将被从Cache中清除  -->
+        <!--timeToLiveSeconds====缓存数据在失效前的允许存活时间(单位:秒),仅当eternal=false时使用,默认值是0表示可存活时间无穷大  -->
+        <!--即Cache中的某元素从创建到清楚的生存时间,也就是说从创建开始计时,当超过这个时间时,此元素将从Cache中清除  -->
+        <!--overflowToDisk=======内存不足时,是否启用磁盘缓存(即内存中对象数量达到maxElementsInMemory时,Ehcache会将对象写到磁盘中)  -->
+        <!--会根据标签中path值查找对应的属性值,写入磁盘的文件会放在path文件夹下,文件的名称是cache的名称,后缀名是data  -->
+        <!--diskPersistent=======是否持久化磁盘缓存,当这个属性的值为true时,系统在初始化时会在磁盘中查找文件名为cache名称,后缀名为index的文件  -->
+        <!--这个文件中存放了已经持久化在磁盘中的cache的index,找到后会把cache加载到内存  -->
+        <!--要想把cache真正持久化到磁盘,写程序时注意执行net.sf.ehcache.Cache.put(Element element)后要调用flush()方法  -->
+        <!--diskExpiryThreadIntervalSeconds==磁盘缓存的清理线程运行间隔,默认是120秒  -->
+        <!--diskSpoolBufferSizeMB============设置DiskStore（磁盘缓存）的缓存区大小,默认是30MB  -->
+        <!--memoryStoreEvictionPolicy========内存存储与释放策略,即达到maxElementsInMemory限制时,Ehcache会根据指定策略清理内存  -->
+        <!--共有三种策略,分别为LRU(最近最少使用)、LFU(最常用的)、FIFO(先进先出)  -->
+
+
+        <!--Ehcache 相关资料：-->
+
+        <!--diskStore：为缓存路径，ehcache分为内存和磁盘两级，此属性定义磁盘的缓存位置。-->
+        <!--defaultCache：默认缓存策略，当ehcache找不到定义的缓存时，则使用这个缓存策略。只能定义一个。-->
+        <!--name:缓存名称。-->
+        <!--maxElementsInMemory:缓存最大数目-->
+        <!--maxElementsOnDisk：硬盘最大缓存个数。-->
+        <!--eternal:对象是否永久有效，一但设置了，timeout将不起作用。-->
+        <!--overflowToDisk:是否保存到磁盘，当系统当机时-->
+        <!--timeToIdleSeconds:设置对象在失效前的允许闲置时间（单位：秒）。仅当eternal=false对象不是永久有效时使用，可选属性，默认值是0，也就是可闲置时间无穷大。-->
+        <!--timeToLiveSeconds:设置对象在失效前允许存活时间（单位：秒）。最大时间介于创建时间和失效时间之间。仅当eternal=false对象不是永久有效时使用，默认是0.，也就是对象存活时间无穷大。-->
+        <!--diskPersistent：是否缓存虚拟机重启期数据 Whether the disk store persists between restarts of the Virtual Machine. The default value is false.diskSpoolBufferSizeMB：这个参数设置DiskStore（磁盘缓存）的缓存区大小。默认是30MB。每个Cache都应该有自己的一个缓冲区。-->
+        <!--diskExpiryThreadIntervalSeconds：磁盘失效线程运行时间间隔，默认是120秒。-->
+        <!--memoryStoreEvictionPolicy：当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存。默认策略是LRU（最近最少使用）。你可以设置为FIFO（先进先出）或是LFU（较少使用）。-->
+        <!--clearOnFlush：内存数量最大时是否清除。-->
+        <!--memoryStoreEvictionPolicy:可选策略有：LRU（最近最少使用，默认策略）、FIFO（先进先出）、LFU（最少访问次数）。-->
+
+
+        <!--FIFO，first in first out，先进先出。-->
+        <!--LFU， Less Frequently Used，一直以来最少被使用的。如上面所讲，缓存的元素有一个hit属性，hit值最小的将会被清出缓存。-->
+        <!--LRU，Least Recently Used，最近最少使用的，缓存的元素有一个时间戳，当缓存容量满了，而又需要腾出地方来缓存新的元素的时候，那么现有缓存元素中时间戳离当前时间最远的元素将被清出缓存。-->
+
+
+        <!--一般情况下，我们在Sercive层进行对缓存的操作。先介绍 Ehcache 在 Spring 中的注解：在支持 Spring Cache 的环境下，-->
+        <!--* @Cacheable : Spring在每次执行前都会检查Cache中是否存在相同key的缓存元素，如果存在就不再执行该方法，而是直接从缓存中获取结果进行返回，否则才会执行并将返回结果存入指定的缓存中。-->
+        <!--* @CacheEvict : 清除缓存。-->
+        <!--* @CachePut : @CachePut也可以声明一个方法支持缓存功能。使用@CachePut标注的方法在执行前不会去检查缓存中是否存在之前执行过的结果，而是每次都会执行该方法，并将执行结果以键值对的形式存入指定的缓存中。-->

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dragon.flow.mapper.log.ISysOperRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dragon.flow.model.log.SysOperRecord">
+        <id column="id" property="id" />
+        <result column="user_code" property="userCode" />
+        <result column="user_name" property="userName" />
+        <result column="oper_content" property="operContent" />
+        <result column="oper_type" property="operType" />
+        <result column="date" property="date" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_code, user_name, oper_content, oper_type, date
+    </sql>
+
+</mapper>

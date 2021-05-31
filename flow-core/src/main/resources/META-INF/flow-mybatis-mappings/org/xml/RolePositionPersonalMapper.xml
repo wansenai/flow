@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dragon.flow.mapper.org.IRolePositionPersonalMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dragon.flow.model.org.RolePositionPersonal">
+        <id column="id" property="id" />
+        <result column="company_id" property="companyId" />
+        <result column="role_id" property="roleId" />
+        <result column="position_code" property="positionCode" />
+        <result column="personal_id" property="personalId" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="creator" property="creator" />
+        <result column="update_time" property="updateTime" />
+        <result column="updator" property="updator" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, company_id, role_id, position_code, personal_id, del_flag, create_time, creator, update_time, updator
+    </sql>
+    <select id="getPersonalByRoleIdAndPositionId" resultMap="com.dragon.flow.mapper.org.IPersonalMapper.BaseResultMap">
+        SELECT
+            t2.*
+        FROM
+            tbl_org_role_position_personal t1
+        INNER JOIN tbl_org_personal t2 ON t1.personal_id = t2.id and t1.company_id=t2.company_id
+        WHERE t2.del_flag = 1
+        <if test="roleId!=null and roleId!=''">
+            and t1.role_id=#{roleId}
+        </if>
+        <if test="positionCode!=null and positionCode!=''">
+            and t1.position_code=#{positionCode}
+        </if>
+    </select>
+
+</mapper>

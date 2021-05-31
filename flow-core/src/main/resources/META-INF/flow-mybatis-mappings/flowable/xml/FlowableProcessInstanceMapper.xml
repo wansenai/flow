@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dragon.flow.mapper.flowable.IFlowableProcessInstanceMapper">
+
+    <resultMap id="ProcessinstanceVoMap" type="com.dragon.flow.vo.flowable.processinstance.ProcessInstanceVo" >
+        <id column="PROC_INST_ID_" property="processInstanceId" jdbcType="VARCHAR"/>
+        <result column="NAME_" property="formName" jdbcType="VARCHAR"/>
+        <result column="START_TIME_" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="END_TIME_" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="startedUserId" jdbcType="VARCHAR"/>
+        <result column="BUSINESS_KEY_" property="businessKey" jdbcType="VARCHAR"/>
+        <result column="business_url" property="businessUrl" jdbcType="VARCHAR"/>
+        <result column="PROC_DEF_ID_" property="processDefinitionId" jdbcType="VARCHAR"/>
+        <result column="TENANT_ID_" property="appSn" jdbcType="VARCHAR"/>
+        <result column="app_name" property="appName" jdbcType="VARCHAR"/>
+        <result column="name" property="startPersonName" jdbcType="VARCHAR"/>
+        <result column="process_definition_name" property="processDefinitionName" jdbcType="VARCHAR"/>
+        <result column="process_definition_key" property="processDefinitionKey" jdbcType="VARCHAR"/>
+        <result column="process_status" property="processStatus" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="findMyProcessinstancesPagerModel" parameterType="com.dragon.flow.vo.flowable.processinstance.InstanceQueryParamsVo"
+            resultMap="ProcessinstanceVoMap">
+        SELECT DISTINCT
+        t1.PROC_INST_ID_,
+        t1.NAME_,
+        t1.START_TIME_,
+        t1.END_TIME_,
+        t4.creator,
+        t1.BUSINESS_KEY_,
+        t1.PROC_DEF_ID_,
+        t1.TENANT_ID_,
+        t2.`name` AS app_name,
+        t5.name,
+        t3.NAME_ AS process_definition_name,
+        t3.KEY_ AS process_definition_key,
+        t6.business_url,
+        t4.process_status
+        FROM
+        act_hi_procinst t1
+        INNER JOIN tbl_base_app t2 ON t1.TENANT_ID_ = t2.sn
+        INNER JOIN act_re_procdef t3 ON t3.ID_ = t1.PROC_DEF_ID_
+        LEFT JOIN tbl_flow_model_info t6 ON t6.model_key=t3.KEY_
+        INNER JOIN tbl_flow_extend_hisprocinst t4 ON t1.PROC_INST_ID_ = t4.process_instance_id
+        INNER JOIN tbl_org_personal t5 ON t4.creator = t5.code
+        WHERE 1=1
+        <if test="params.userCode!=null and params.userCode!=''">
+            and t4.creator=#{params.userCode}
+        </if>
+        <if test="params.appSn!=null and params.appSn!=''">
+            AND t1.TENANT_ID_=#{params.systemSn}
+        </if>
+        <if test="params.keyword!=null and params.keyword!=''">
+            AND t1.NAME_ LIKE CONCAT('%',#{params.keyword},'%')
+        </if>
+        <if test="params.startTime!=null and params.startTime!=''">
+            AND t1.START_TIME_ <![CDATA[ >= ]]> #{params.startTime}
+        </if>
+        <if test="params.endTime!=null and params.endTime!=''">
+            AND t1.START_TIME_<![CDATA[ <= ]]> #{params.endTime}
+        </if>
+        <if test="params.orderFlag !=null and params.orderFlag == 1">
+            ORDER BY t1.START_TIME_ ASC
+        </if>
+        <if test="params.orderFlag ==null or params.orderFlag == 0">
+            ORDER BY t1.START_TIME_ DESC
+        </if>
+    </select>
+
+</mapper>

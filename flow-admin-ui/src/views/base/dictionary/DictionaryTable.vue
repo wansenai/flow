@@ -1,0 +1,162 @@
+<template>
+  <div class="bg-white m-4 mr-0 overflow-hidden dictionary">
+    <BasicTable @register="registerTable" @row-click="clickDictionary" @selection-change="changeDictionary" class="w-4/4 xl:w-5/5">
+      <template #toolbar>
+        <a-button v-if="dictTypeId!==''" type="primary" @click="handleCreate">新增</a-button>
+      </template>
+      <template #action="{ record }">
+        <TableAction
+          :actions="[
+            {
+              icon: 'clarity:note-edit-line',
+              onClick: handleEdit.bind(null, record),
+            },
+            {
+              icon: 'ant-design:delete-outlined',
+              color: 'error',
+              onClick: handleDeleteStop.bind(null, record),
+              popConfirm: {
+                title: '是否确认删除',
+                confirm: handleDelete.bind(null, record),
+              },
+            },
+          ]"
+        />
+      </template>
+    </BasicTable>
+    <DictionaryModal @register="registerModal" @success="handleSuccess" />
+  </div>
+</template>
+<script lang="ts">
+  import { defineComponent, ref } from 'vue';
+
+  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { dictionaryPageList, deleteByIds } from '/@/api/base/dictionary';
+  import { PageWrapper } from '/@/components/Page';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useModal } from '/@/components/Modal';
+
+  import { columns, searchFormSchema } from './dictionary.data';
+  const { createMessage } = useMessage();
+  import DictionaryModal from './DictionaryModal.vue';
+
+  export default defineComponent({
+    name: 'DictionaryTable',
+    components: { BasicTable, DictionaryModal, PageWrapper, TableAction },
+    setup(_, {emit}) {
+      const [registerModal, { openModal }] = useModal();
+      const dictTypeId = ref<string>('');
+      const [registerTable, { reload, setProps, setTableData, setSelectedRowKeys }] = useTable({
+        title: '列表',
+        api: dictionaryPageList,
+        columns,
+        formConfig: {
+          labelWidth: 120,
+          schemas: searchFormSchema,
+          showAdvancedButton: false,
+          showResetButton: false,
+          autoSubmitOnEnter: true,
+          /*
+          FIXME 查询时如果没选择左侧树则提示！
+          submitFunc: ()=>{
+            debugger;
+            return new Promise<void>(()=>{
+
+            });
+          }*/
+        },
+        immediate: false,
+        clickToRowSelect: true,
+        rowSelection: { type: 'radio', columnWidth: 40 },
+        useSearchForm: true,
+        showIndexColumn: false,
+        showTableSetting: false,
+        bordered: true,
+        pagination: true,
+        rowKey: 'id',
+        actionColumn: {
+          width: 80,
+          title: '操作',
+          dataIndex: 'action',
+          slots: { customRender: 'action' },
+        },
+      });
+      function handleCreate() {
+        if(dictTypeId.value === ''){
+          createMessage.warning("请选择数据类型！", 2)
+          return;
+        }
+        openModal(true, {
+          record: {dicTypeId: dictTypeId.value},
+          isUpdate: false,
+        });
+      }
+
+      function filterByDictType(typeId) {
+        dictTypeId.value = typeId;
+        setProps({searchInfo:{dicTypeId: typeId}})
+        reload({page:1});
+      }
+
+      function cleanTableData() {
+        setTableData([]);
+        dictTypeId.value = '';
+      }
+
+      function handleEdit(record: Recordable, e) {
+        e.stopPropagation();
+        openModal(true, {
+          record,
+          isUpdate: true,
+        });
+      }
+      function handleDeleteStop(record: Recordable, e) {
+        e.stopPropagation();
+      }
+
+      function handleDelete(record: Recordable) {
+        deleteByIds(record.id).then(() => {
+          reload();
+        });
+      }
+
+      function handleSuccess() {
+        reload();
+      }
+      function clickDictionary(e) {
+        setSelectedRowKeys(e.id);
+        emit('handleSelect', e.id);
+      }
+
+      function changeDictionary({keys, rows}) {
+        emit('handleSelect', rows[0].id);
+      }
+
+      return {
+        registerTable,
+        registerModal,
+        dictTypeId,
+        handleDeleteStop,
+        clickDictionary,
+        changeDictionary,
+        filterByDictType,
+        cleanTableData,
+        handleCreate,
+        handleEdit,
+        handleDelete,
+        handleSuccess,
+      };
+    },
+  });
+</script>
+
+<style lang="less">
+  .dictionary{
+    .vben-basic-table-form-container{
+      padding: 0;
+      .vben-basic-form{
+        margin-bottom: 0;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dragon.flow.mapper.flowable.IFlowableActRuActinstMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dragon.flow.model.flowable.FlowableActRuActinst">
+        <id column="ID_" property="id" />
+        <result column="REV_" property="rev" />
+        <result column="PROC_DEF_ID_" property="procDefId" />
+        <result column="PROC_INST_ID_" property="procInstId" />
+        <result column="EXECUTION_ID_" property="executionId" />
+        <result column="ACT_ID_" property="actId" />
+        <result column="TASK_ID_" property="taskId" />
+        <result column="CALL_PROC_INST_ID_" property="callProcInstId" />
+        <result column="ACT_NAME_" property="actName" />
+        <result column="ACT_TYPE_" property="actType" />
+        <result column="ASSIGNEE_" property="assignee" />
+        <result column="START_TIME_" property="startTime" />
+        <result column="END_TIME_" property="endTime" />
+        <result column="DURATION_" property="duration" />
+        <result column="TRANSACTION_ORDER_" property="transactionOrder" />
+        <result column="DELETE_REASON_" property="deleteReason" />
+        <result column="TENANT_ID_" property="tenantId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID_, REV_, PROC_DEF_ID_, PROC_INST_ID_, EXECUTION_ID_, ACT_ID_, TASK_ID_, CALL_PROC_INST_ID_, ACT_NAME_, ACT_TYPE_, ASSIGNEE_, START_TIME_, END_TIME_, DURATION_, TRANSACTION_ORDER_, DELETE_REASON_, TENANT_ID_
+    </sql>
+    <select id="getActRuActinstsByProcessInstanceIdAndActId" resultMap="BaseResultMap">
+        SELECT
+            t.*
+        FROM
+            act_ru_actinst t
+        WHERE
+            t.PROC_INST_ID_ = #{processInstanceId} and t.ACT_ID_ = #{disActivityId}
+        ORDER BY
+            t.END_TIME_ ASC
+    </select>
+    <select id="getActRuActinstsByProcessInstanceIdAndEndTime" resultMap="BaseResultMap">
+        SELECT
+            t.*
+        FROM
+            act_ru_actinst t
+        WHERE
+            t.PROC_INST_ID_ = #{processInstanceId} and (t.END_TIME_ >= #{endTime} or t.END_TIME_ is null)
+    </select>
+    <select id="getFlowableActRuActinstByFlowableActRuActinst"
+            resultType="com.dragon.flow.model.flowable.FlowableActRuActinst">
+        SELECT
+            t.*
+        FROM
+            act_ru_actinst t
+        <where>
+            <if test="actRuActinst.procInstId!=null and actRuActinst.procInstId!=''">
+                and t.PROC_INST_ID_ = #{procInstId}
+            </if>
+            <if test="actRuActinst.actType!=null and actRuActinst.actType!=''">
+                and t.ACT_TYPE_ = #{actType}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dragon.flow.mapper.org.IDepartmentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dragon.flow.model.org.Department">
+        <id column="id" property="id"/>
+        <result column="company_id" property="companyId"/>
+        <result column="company_name" property="companyName"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="note" property="note"/>
+        <result column="pid" property="pid"/>
+        <result column="leader_code" property="leaderCode"/>
+        <result column="leader_name" property="leaderName"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator" property="creator"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="updator" property="updator"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+    <select id="getDepartments" resultMap="BaseResultMap" parameterType="com.dragon.flow.model.org.Department">
+        SELECT
+            t1.*, t2.cname AS company_name,
+            t3.`name` as leader_name
+        FROM
+            tbl_org_department t1
+        INNER JOIN tbl_org_company t2 ON t1.company_id = t2.id
+        LEFT JOIN tbl_org_personal t3 ON t1.leader_code = t3.`code`
+        where t1.del_flag = 1
+        <if test="depart.keyword!=null and depart.keyword!=''">
+            and  (t1.name like concat('%', #{depart.keyword}, '%') or t1.code like concat('%', #{depart.keyword}, '%'))
+        </if>
+        <if test="depart.companyId!=null and depart.companyId!=''">
+            and t1.company_id=#{depart.companyId}
+        </if>
+        order by t1.order_no asc
+    </select>
+    <select id="getPagerModel" resultMap="BaseResultMap" parameterType="com.dragon.flow.model.org.Department">
+        SELECT
+            t1.*, t2.cname AS company_name,
+            t3.`name` as leader_name
+        FROM
+            tbl_org_department t1
+        INNER JOIN tbl_org_company t2 ON t1.company_id = t2.id
+        LEFT JOIN tbl_org_personal t3 ON t1.leader_code = t3.`code`
+        where t1.del_flag = 1
+        <if test="depart.keyword!=null and depart.keyword!=''">
+          and  t1.name like concat('%', #{depart.keyword}, '%') or t1.code like concat('%', #{depart.keyword}, '%')
+        </if>
+        <if test="depart.companyId!=null and depart.companyId!=''">
+            and t1.company_id=#{depart.companyId}
+        </if>
+        order by t1.order_no asc
+    </select>
+</mapper>

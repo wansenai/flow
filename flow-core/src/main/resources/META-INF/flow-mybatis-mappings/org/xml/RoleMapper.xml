@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dragon.flow.mapper.org.IRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dragon.flow.model.org.Role">
+        <id column="id" property="id" />
+        <result column="company_id" property="companyId" />
+        <result column="company_name" property="companyName" />
+        <result column="name" property="name" />
+        <result column="sn" property="sn" />
+        <result column="note" property="note" />
+        <result column="create_time" property="createTime" />
+        <result column="creator" property="creator" />
+        <result column="update_time" property="updateTime" />
+        <result column="updator" property="updator" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+    <select id="getPagerModel" parameterType="com.dragon.flow.model.org.Role" resultMap="BaseResultMap">
+        SELECT
+            t1.*, t2.cname AS company_name
+        FROM
+            tbl_org_role t1
+        INNER JOIN tbl_org_company t2 ON t1.company_id = t2.id
+        where t1.del_flag = 1
+        <if test="role.keyword!=null and role.keyword!=''">
+            and  t1.name like concat('%', #{role.keyword}, '%') or t1.sn like concat('%', #{role.keyword}, '%')
+        </if>
+        <if test="role.companyId!=null and role.companyId!=''">
+            and t1.company_id=#{role.companyId}
+        </if>
+        <if test="role.personalId!=null and role.personalId!=''">
+            and NOT EXISTS (
+                SELECT
+                id
+                FROM
+                tbl_org_personal_role
+                WHERE
+                role_id = t1.id
+                AND personal_id = #{role.personalId}
+            )
+        </if>
+        order by t1.order_no asc
+    </select>
+    <select id="getRolesByPersonalId" resultType="com.dragon.flow.model.org.Role">
+        SELECT
+            t1.*
+        FROM
+            tbl_org_role t1
+        INNER JOIN tbl_org_personal_role t2 ON t1.id = t2.role_id
+        WHERE
+            t2.personal_id = #{personalId}
+    </select>
+</mapper>

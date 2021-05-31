@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dragon.flow.mapper.org.IPersonalMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dragon.flow.model.org.Personal">
+        <id column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="leader_code" property="leaderCode"/>
+        <result column="leader_name" property="leaderName"/>
+        <result column="head_img" property="headImg"/>
+        <result column="mobile" property="mobile"/>
+        <result column="email" property="email"/>
+        <result column="company_id" property="companyId"/>
+        <result column="company_name" property="companyName"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="dept_name" property="deptName"/>
+        <result column="status" property="status"/>
+        <result column="sex" property="sex"/>
+        <result column="leave_date" property="leaveDate"/>
+        <result column="address" property="address"/>
+        <result column="fax" property="fax"/>
+        <result column="dd_userid" property="ddUserid"/>
+        <result column="job_grade_code" property="jobGradeCode"/>
+        <result column="position_code" property="positionCode"/>
+        <result column="job_grade_name" property="jobGradeName"/>
+        <result column="position_name" property="positionName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator" property="creator"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="updator" property="updator"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+    <select id="getPersonalsByRoleId" resultType="com.dragon.flow.model.org.Personal">
+        SELECT
+            t1.*
+        FROM
+            tbl_org_personal t1
+        INNER JOIN tbl_org_personal_role t2 ON t1.id = t2.personal_id
+        WHERE t1.del_flag=1
+        <if test="roleId!=null and roleId!=''" >
+            and t2.role_id = #{roleId}
+        </if>
+    </select>
+    <select id="getPersonalsByRoleSns" resultType="com.dragon.flow.model.org.Personal">
+        SELECT
+        t1.*
+        FROM
+        tbl_org_personal t1
+        INNER JOIN tbl_org_personal_role t2 ON t1.id = t2.personal_id
+        INNER JOIN tbl_org_role t3 ON t2.role_id=t3.id
+        WHERE t1.del_flag=1
+        <if test="roleSns!=null and roleSns.size>0" >
+            and t3.sn in
+            <foreach collection="roleSns" item="item" index="index" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <select id="getPersonalsByRoleIds" resultType="com.dragon.flow.model.org.Personal">
+        SELECT
+        t1.*
+        FROM
+        tbl_org_personal t1
+        INNER JOIN tbl_org_personal_role t2 ON t1.id = t2.personal_id
+        WHERE t1.del_flag=1
+        <if test="roleIds!=null and roleIds.size>0" >
+            and t2.role_id in
+            <foreach collection="roleIds" item="item" index="index" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <select id="getPagerModel" resultType="com.dragon.flow.model.org.Personal">
+        SELECT
+        t1.*, t2. NAME AS leader_name,t3.`name` as job_grade_name, t4.code as position_name
+        FROM
+        tbl_org_personal t1
+        LEFT JOIN tbl_org_personal t2 ON t1.leader_code = t2.`code`
+        LEFT JOIN tbl_org_job_grade t3 on t1.job_grade_code=t3.`code`
+        LEFT JOIN tbl_org_position_info t4 on t1.position_code=t4.`code`
+        where t1.del_flag=1
+        <if test="personal.keyword!=null and personal.keyword!=''">
+            and (t1.name like concat('%', #{personal.keyword}, '%') or t1.code like concat('%', #{personal.keyword},
+            '%'))
+        </if>
+        <if test="personal.companyIds!=null and personal.companyIds.size>0">
+            and t1.company_id in
+            <foreach collection="personal.companyIds" item="item" index="index" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="personal.companyId!=null and personal.companyId != ''">
+            and t1.company_id = #{personal.companyId}
+        </if>
+        <if test="personal.deptId!=null and personal.deptId != ''">
+            and t1.dept_id = #{personal.deptId}
+        </if>
+        <if test="personal.deptIds!=null and personal.deptIds.size>0">
+            and t1.dept_id in
+            <foreach collection="personal.deptIds" item="item" index="index" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by t1.code asc
+    </select>
+
+</mapper>
