@@ -1,3 +1,13 @@
+## 预览
+- [企业数智化](http://8.129.209.112:8100/idm/#/login)
+- [企业数智化门户](http://8.129.209.112:8200/idm/#/login)
+
+![avatar](docs/imgs/page-login.jpg)
+![avatar](docs/imgs/page-main.jpg)
+![avatar](docs/imgs/page-bpmn.jpg)
+![avatar](docs/imgs/page-bpmn-preview.jpg)
+![avatar](docs/imgs/page-bpmn-designer.jpg)
+
 ## 后台安装
 1、安装数据库
 新建一个数据库flow
@@ -46,3 +56,6 @@ http://localhost:8990
 
 
 
+## 捐赠
+如果您认为该项目对您有所帮助，则可以帮助作者购买一杯咖啡，以表示支持！
+![avatar](docs/imgs/donate-weixin.jpg)
