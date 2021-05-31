@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="flow-admin-rest" />
+        <module name="flow-core" />
+        <module name="flow-api-rest" />
+        <module name="flow-front-rest" />
+        <module name="flow-admin" />
+        <module name="flow-tools" />
+        <module name="flow-extension" />
+        <module name="flow-api" />
+        <module name="flow-log" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="flow" target="1.5" />
+      <module name="flow-admin" target="1.8" />
+      <module name="flow-admin-rest" target="1.8" />
+      <module name="flow-api" target="1.8" />
+      <module name="flow-api-rest" target="1.8" />
+      <module name="flow-core" target="1.8" />
+      <module name="flow-extension" target="1.8" />
+      <module name="flow-front-rest" target="1.8" />
+      <module name="flow-log" target="1.8" />
+      <module name="flow-parent" target="1.8" />
+      <module name="flow-tools" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="flow-admin" options="-parameters" />
+      <module name="flow-admin-rest" options="-parameters" />
+      <module name="flow-api" options="-parameters" />
+      <module name="flow-api-rest" options="-parameters" />
+      <module name="flow-core" options="-parameters" />
+      <module name="flow-extension" options="-parameters" />
+      <module name="flow-front-rest" options="-parameters" />
+      <module name="flow-log" options="-parameters" />
+      <module name="flow-tools" options="-parameters" />
+    </option>
+  </component>
+</project>

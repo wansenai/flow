@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.json:json:20190722">
+    <CLASSES>
+      <root url="jar://D:/maven/repository/org/json/json/20190722/json-20190722.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/maven/repository/org/json/json/20190722/json-20190722-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/maven/repository/org/json/json/20190722/json-20190722-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

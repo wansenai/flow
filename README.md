@@ -21,9 +21,8 @@ http://localhost:8988/login/index.html
 
 普通管理员：10101/888888
 超级管理员：10100/888888
-5、预览
-![image-20210122110726482](https://images.weserv.nl/?url=https://i0.hdslb.com/bfs/article/0787b3c6115954a071165be18dbf0a4729e1fd9b.png)
-
+5、预览地址
+http://8.129.209.112:8100/
 
 ## 前台安装
 1、配置数据源
@@ -43,5 +42,12 @@ http://localhost:8990
 4、登录账号密码
 
 账号：10000到10100 密码统一：888888
+
+5、预览地址
+http://8.129.209.112:8200/
+
+## 
+![欢迎打赏](https://img-blog.csdnimg.cn/20210531115858101.jpg#pic_center)
+
 
 
