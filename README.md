@@ -73,9 +73,9 @@ http://localhost:8990
 账号：10000到10100 密码统一：888888
 
 ## 联系作者
-欢迎bug反馈，需求建议，技术交流等    
-![avatar](docs/imgs/contact-qq.png)  
-QQ群: 633168411
+欢迎bug反馈，需求建议，技术交流等   
+QQ扫码入群（群号：633168411）：   
+![avatar](https://img-blog.csdnimg.cn/20210601112843454.png#pic_center)  
 
 ## 捐赠
 如果您认为该项目对您有所帮助，则可以帮助作者购买一杯咖啡，以表示支持！  
