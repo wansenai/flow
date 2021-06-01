@@ -49,7 +49,11 @@ http://localhost:8988/index.html
 
 普通管理员：10101/888888
 超级管理员：10100/888888
-5、预览
+
+5、项目结构
+
+![avatar](https://img-blog.csdnimg.cn/20210601174137283.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXdlbmp1bjA1MTAx,size_16,color_FFFFFF,t_70)
+
 
 
 
