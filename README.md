@@ -1,3 +1,12 @@
+## 项目结构
+mermaid
+graph TB
+    flow-parent[flow-parent] --> flow-admin[flow-admin]
+    flow-admin[flow-admin] --> flow-admin-rest[flow-admin-rest] 
+    flow-admin[flow-admin] --> flow-api-rest[flow-api-rest] 
+    
+
+
 ## 预览
 - [企业数智化 - 流程中心](http://8.129.209.112:8100/idm/#/login?_blank)
 - [企业数智化 - 门户](http://8.129.209.112:8200/idm/#/login)
