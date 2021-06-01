@@ -77,8 +77,6 @@ public class LeaveTest {
                 endVo.setTaskId(task.getId());
                 endVo.setProcessInstanceId(task.getProcessInstanceId());
                 endVo.setMessage("审批通过");
-                endVo.setCommentTypeEnum(CommentTypeEnum.LCZZ);
-                endVo.setProcessStatusEnum(ProcessStatusEnum.ZZ);
                 flowableProcessInstanceService.stopProcess(endVo);
             });
         }

@@ -33,7 +33,7 @@ public class SystemInitializer {
             AppPrivilegeValue print = new AppPrivilegeValue(4, "打印", 5);
             AppPrivilegeValue export = new AppPrivilegeValue(5, "导出", 6);
             AppPrivilegeValue authorization = new AppPrivilegeValue(6, "授权", 7);
-            AppPrivilegeValue publish = new AppPrivilegeValue(7, "授权", 8);
+            AppPrivilegeValue publish = new AppPrivilegeValue(7, "发布", 8);
             list.add(add);
             list.add(query);
             list.add(update);
