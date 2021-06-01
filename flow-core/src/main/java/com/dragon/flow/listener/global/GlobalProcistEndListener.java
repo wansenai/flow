@@ -69,7 +69,7 @@ public class GlobalProcistEndListener extends AbstractFlowableEngineEventListene
         CommentInfo commentInfo = new CommentInfo();
         commentInfo.setProcessInstanceId(processInstanceId);
         commentInfo.setType(CommentTypeEnum.SPJS.name());
-        commentInfo.setMessage("审批结束");
+        commentInfo.setMessage(CommentTypeEnum.getEnumMsgByType(CommentTypeEnum.SPJS.toString()));
         commentInfo.setPersonalCode("system");
         commentInfoService.saveComment(commentInfo);
         //删除运行时的流程实例扩展信息
