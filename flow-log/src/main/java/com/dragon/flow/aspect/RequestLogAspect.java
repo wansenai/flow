@@ -1,7 +1,7 @@
 package com.dragon.flow.aspect;
 
+import com.dragon.flow.schedule.LogQueue;
 import com.dragon.flow.model.log.SysOperRecord;
-import com.dragon.flow.service.ISysOperRecordService;
 import com.dragon.flow.vo.log.LogVo;
 import com.dragon.tools.common.IpUtils;
 import com.dragon.tools.utils.FastJsonUtils;
@@ -34,7 +34,7 @@ import java.util.Map;
 public abstract class RequestLogAspect {
 
     @Autowired
-    private ISysOperRecordService sysOperRecordService;
+    private LogQueue logQueue;
 
     @Pointcut(" execution(* com.dragon.flow.web.resource..*.*(..)) ")
     public void requestServer() {
@@ -75,11 +75,10 @@ public abstract class RequestLogAspect {
                     .month(localDateTime.getMonthValue())
                     .day(localDateTime.getDayOfMonth())
                     .build();
-            sysOperRecordService.saveSysOperRecord(sysOperRecord);
+            logQueue.put(FastJsonUtils.objectToJson(sysOperRecord));
         }
         return proceedingJoinPoint.proceed();
     }
-
     abstract LogVo getSubject(HttpServletRequest request);
 
     /**
