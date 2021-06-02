@@ -7045,7 +7045,7 @@ DROP TABLE IF EXISTS `tbl_org_role`;
 CREATE TABLE `tbl_org_role` (
   `id` varchar(32) COLLATE utf8_bin NOT NULL,
   `company_id` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '公司id',
-  `position_code` varchar(80) COLLATE utf8_bin DEFAULT NULL,
+  `position_id` varchar(32) COLLATE utf8_bin DEFAULT NULL,
   `name` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '名称',
   `sn` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '标识',
   `note` varchar(1024) COLLATE utf8_bin DEFAULT NULL COMMENT '备注',

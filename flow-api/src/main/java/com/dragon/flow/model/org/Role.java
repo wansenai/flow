@@ -26,9 +26,8 @@ public class Role extends BaseModel implements Serializable {
     private String id;
     // 公司id
     private String companyId;
-    //岗位code
-    @Deprecated
-    private String positionCode;
+    //岗位id
+    private String positionId;
     // 名称 20
     private String name;
     // 标示 30

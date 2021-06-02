@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.dragon.flow.model.org.Role">
         <id column="id" property="id" />
         <result column="company_id" property="companyId" />
+        <result column="position_id" property="positionId" />
         <result column="company_name" property="companyName" />
         <result column="name" property="name" />
         <result column="sn" property="sn" />

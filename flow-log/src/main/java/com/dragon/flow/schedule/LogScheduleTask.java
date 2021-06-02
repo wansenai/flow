@@ -25,7 +25,7 @@ public class LogScheduleTask implements Serializable {
     public void consume() {
         String sysOperRecordStr = logQueue.take();
         if (sysOperRecordStr != null) {
-            log.info("线程名称"+Thread.currentThread().getName());
+//            log.info("线程名称"+Thread.currentThread().getName());
             SysOperRecord sysOperRecord = FastJsonUtils.jsonToObject(sysOperRecordStr, SysOperRecord.class);
             sysOperRecordService.saveSysOperRecord(sysOperRecord);
         }
