@@ -49,7 +49,7 @@
     name: 'Category',
     components: { BasicTable, TableAction, CategoryModal },
     setup() {
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps }] = useModal();
       const [registerTable, { reload }] = useTable({
         title: '列表',
         api: getCategories,
@@ -77,6 +77,7 @@
       });
 
       function handleCreate(e) {
+        setModalProps({title: '新增流程分类'});
         openModal(true, {
           isUpdate: false,
         });
@@ -84,6 +85,7 @@
 
       function handleEdit(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '修改流程分类'});
         openModal(true, {
           record,
           isUpdate: true,
@@ -92,6 +94,7 @@
 
       function handleCreateChild(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '新增【'+record.name+'】的子分类'});
         record = {pid: record.id};
         openModal(true, {
           record,

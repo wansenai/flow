@@ -8,6 +8,7 @@
         <TableAction
           :actions="[
             {
+              title: '修改',
               icon: 'clarity:note-edit-line',
               onClick: handleEdit.bind(null, record),
             },
@@ -44,7 +45,7 @@
     name: 'DictionaryTable',
     components: { BasicTable, DictionaryModal, PageWrapper, TableAction },
     setup(_, {emit}) {
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps }] = useModal();
       const dictTypeId = ref<string>('');
       const [registerTable, { reload, setProps, setTableData, setSelectedRowKeys }] = useTable({
         title: '列表',
@@ -56,14 +57,6 @@
           showAdvancedButton: false,
           showResetButton: false,
           autoSubmitOnEnter: true,
-          /*
-          FIXME 查询时如果没选择左侧树则提示！
-          submitFunc: ()=>{
-            debugger;
-            return new Promise<void>(()=>{
-
-            });
-          }*/
         },
         immediate: false,
         clickToRowSelect: true,
@@ -86,6 +79,7 @@
           createMessage.warning("请选择数据类型！", 2)
           return;
         }
+        setModalProps({title: '新增字典'});
         openModal(true, {
           record: {dicTypeId: dictTypeId.value},
           isUpdate: false,
@@ -105,6 +99,7 @@
 
       function handleEdit(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '修改字典'});
         openModal(true, {
           record,
           isUpdate: true,

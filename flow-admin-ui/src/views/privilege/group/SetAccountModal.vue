@@ -32,7 +32,6 @@
     setup(_, { emit }) {
       const isUpdate = ref(true);
       const accountOptions = ref<any[]>([]);
-      const title = ref("设置用户");
 
       const [registerForm, { setFieldsValue, updateSchema, resetFields, validate }] = useForm({
         labelWidth: 100,
@@ -45,10 +44,9 @@
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
         resetFields();
 
-        setModalProps({ confirmLoading: false });
+        setModalProps({ confirmLoading: false, title: '给组【'+data.record.name+'('+data.record.sn+')】分配用户' });
         isUpdate.value = !!data?.isUpdate;
 
-        title.value =  '给组【'+data.record.name+'('+data.record.sn+')】分配用户';
         const accountList = ((await getAllList()) as any);
         accountList.forEach(item=>{
           item.label = item.realName+'('+item.username+')';
@@ -67,7 +65,7 @@
         }
       });
 
-      let getTitle = computed(() => (!unref(isUpdate) ? '新增' : title.value));
+      let getTitle = computed(() => (!unref(isUpdate) ? '新增' : '修改'));
 
       async function handleSubmit() {
         try {

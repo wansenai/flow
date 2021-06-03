@@ -26,7 +26,7 @@
 
       const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
         resetFields();
-        setModalProps({confirmLoading: false});
+        setModalProps({confirmLoading: false, title: '设置菜单【'+data.record.name+'】的权限值'});
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {

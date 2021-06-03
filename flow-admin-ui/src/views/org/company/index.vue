@@ -50,7 +50,7 @@
     name: 'Company',
     components: { BasicTable, TableAction, CompanyModal },
     setup() {
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps }] = useModal();
       const [registerTable, { reload }] = useTable({
         title: '列表',
         api: getCompanies,
@@ -78,6 +78,7 @@
       });
 
       function handleCreate() {
+        setModalProps({title: '新增公司'});
         openModal(true, {
           isUpdate: false,
         });
@@ -85,6 +86,7 @@
 
       function handleEdit(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '修改公司'});
         openModal(true, {
           record,
           isUpdate: true,
@@ -93,6 +95,7 @@
 
       function handleCreateChild(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '新增【'+record.cname+'】的子公司'});
         record = {pid: record.id};
         openModal(true, {
           record,

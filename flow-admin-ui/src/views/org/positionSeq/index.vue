@@ -48,7 +48,7 @@
     name: 'PositionSeq',
     components: { BasicTable, TableAction, PositionSeqModal },
     setup() {
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps }] = useModal();
       const [registerTable, { reload }] = useTable({
         title: '列表',
         api: getPositionSeqs,
@@ -79,6 +79,9 @@
         openModal(true, {
           isUpdate: false,
         });
+        setModalProps({
+          title: '新增岗位序列'
+        });
       }
 
       function handleEdit(record: Recordable, e) {
@@ -87,10 +90,16 @@
           record,
           isUpdate: true,
         });
+        setModalProps({
+          title: '修改岗位序列'
+        });
       }
 
       function handleCreateChild(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({
+          title: '新增【'+record.name+'】的子序列'
+        });
         record = {pid: record.id};
         openModal(true, {
           record,

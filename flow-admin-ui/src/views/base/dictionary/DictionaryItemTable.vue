@@ -8,10 +8,12 @@
         <TableAction
           :actions="[
             {
+              title: '修改字典项',
               icon: 'clarity:note-edit-line',
               onClick: handleEdit.bind(null, record),
             },
             {
+              title: '删除',
               icon: 'ant-design:delete-outlined',
               color: 'error',
               popConfirm: {
@@ -43,7 +45,7 @@
     name: 'DictionaryItemTable',
     components: { BasicTable, DictionaryItemModal, PageWrapper, TableAction },
     setup() {
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps }] = useModal();
       const dictId = ref<string>('');
       const [registerTable, { reload, setProps, setTableData }] = useTable({
         title: '列表',
@@ -74,6 +76,7 @@
           createMessage.warning("请选择数据字典！", 2)
           return;
         }
+        setModalProps({title: '新增字典项'});
         openModal(true, {
           record: {mainId: dictId.value},
           isUpdate: false,
@@ -92,6 +95,7 @@
       }
 
       function handleEdit(record: Recordable) {
+        setModalProps({title: '修改字典项'});
         openModal(true, {
           record,
           isUpdate: true,

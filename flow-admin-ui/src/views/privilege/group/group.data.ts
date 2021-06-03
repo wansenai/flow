@@ -134,6 +134,7 @@ export const setAccountFormSchema: FormSchema[] = [
     field: 'users',
     slot: 'users',
     component: 'Input',
+    labelWidth: 65,
   },
 ]
 

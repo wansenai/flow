@@ -1,5 +1,5 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit">
+  <BasicModal v-bind="$attrs" @register="registerModal" @ok="handleSubmit">
     <BasicForm @register="registerForm" >
       <template #acls="{ model, field }">
         <BasicTable v-model:value="model[field]" @register="registerTable">
@@ -43,7 +43,6 @@
     emits: ['success', 'register'],
     setup(_, { emit }) {
       const isUpdate = ref(true);
-      const title = ref("设置组");
       const groupId = ref<string>("");
       const dataSource = ref<any[]>([]);
       const aclsTableLoading = ref<boolean>(true);
@@ -81,7 +80,7 @@
       });
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
         resetFields();
-        setModalProps({ confirmLoading: false });
+        setModalProps({ confirmLoading: false, title: '给组【'+data.record.name+'('+data.record.sn+')】设置权限' });
         isUpdate.value = !!data?.isUpdate;
         if (unref(isUpdate)) {
           let groups = data.record.groups||[];
@@ -103,11 +102,7 @@
             expandAll();
           });
         })
-
-        title.value =  '给组【'+data.record.name+'('+data.record.sn+')】设置权限';
       });
-
-      let getTitle = computed(() => (!unref(isUpdate) ? '新增' : title.value));
 
       function ctrlCheckAllBox(treeData){
         let allSize = 0;
@@ -186,7 +181,6 @@
         indeterminate,
         registerForm,
         checkAllBox,
-        getTitle,
         handelChangeCheckAllStatus,
         checkAll,
         handleSubmit,

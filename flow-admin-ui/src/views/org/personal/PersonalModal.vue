@@ -1,6 +1,6 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit">
-    <BasicForm @register="registerForm" >
+    <BasicForm @register="registerForm" class="personalForm" >
       <template #headImg="{ model, field }">
         <Upload style="margin: auto;"
           name="avatar"
@@ -233,3 +233,9 @@
     },
   });
 </script>
+
+<style lang="less" scoped>
+  .personalForm{
+    position: relative;
+  }
+</style>

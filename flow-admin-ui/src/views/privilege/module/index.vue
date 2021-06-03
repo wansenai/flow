@@ -64,7 +64,7 @@
     name: 'Module',
     components: { BasicTable, TableAction, ModuleModal, PValueSettingModal },
     setup() {
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps }] = useModal();
       const [registerPValueModal, { openModal:openPvalueModal }] = useModal();
       const [registerTable, { reload, expandAll }] = useTable({
         title: '列表',
@@ -85,11 +85,10 @@
         bordered: true,
         showIndexColumn: false,
         actionColumn: {
-          width: 150,
+          width: 170,
           title: '操作',
           dataIndex: 'action',
           slots: { customRender: 'action' },
-          fixed: false,
         },
       });
       nextTick(()=>{
@@ -99,6 +98,7 @@
       });
 
       function handleCreate(record: Recordable) {
+        setModalProps({title: '新增菜单'});
         openModal(true, {
           record,
           isUpdate: false,
@@ -106,6 +106,7 @@
       }
       function handleCreateChild(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '新增【'+record.name+'】的子菜单'});
         record = {pid: record.id};
         openModal(true, {
           record,
@@ -123,6 +124,7 @@
 
       function handleEdit(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '修改菜单'});
         openModal(true, {
           record,
           isUpdate: true,

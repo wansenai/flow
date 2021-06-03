@@ -28,7 +28,7 @@
 
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
         resetFields();
-        setModalProps({ confirmLoading: false });
+        setModalProps({ confirmLoading: false, title: `给账号【${data.record.realName}(${data.record.username})】设置密码`});
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {

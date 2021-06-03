@@ -47,7 +47,7 @@
     components: { BasicTable, PageWrapper, JobGradeTypeList, JobGradeModal, TableAction, Popconfirm,
     },
     setup() {
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps }] = useModal();
       const currentTreeNode = ref<Recordable>({});
 
       const [registerTable, { reload }] = useTable({
@@ -81,6 +81,7 @@
           createMessage.warning("请选择分类！", 2)
           return;
         }
+        setModalProps({title: '新增职级'});
         openModal(true, {
           record:{typeId: unref(currentTreeNode).id, typeCode: unref(currentTreeNode).code},
           isUpdate: true,
@@ -88,6 +89,7 @@
       }
 
       function handleEdit(record: Recordable) {
+        setModalProps({title: '修改职级'});
         openModal(true, {
           record,
           isUpdate: true,

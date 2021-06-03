@@ -53,7 +53,7 @@
     name: 'DeptManagement',
     components: { BasicTable, PageWrapper, CompanyTree, DeptModal, TableAction },
     setup() {
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps }] = useModal();
       const currentNode = ref<Recordable>({});
 
       const [registerTable, { reload }] = useTable({
@@ -81,6 +81,7 @@
       });
 
       function handleCreate() {
+        setModalProps({title: '新增部门'});
         openModal(true, {
           record:{companyId: unref(currentNode)?.id},
           isUpdate: false,
@@ -89,6 +90,7 @@
 
       function handleEdit(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '修改部门'});
         openModal(true, {
           record,
           isUpdate: true,
@@ -97,6 +99,7 @@
 
       function handleCreateChild(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '新增【'+record.name+'】的子部门'});
         record = {pid: record.id};
         openModal(true, {
           record,

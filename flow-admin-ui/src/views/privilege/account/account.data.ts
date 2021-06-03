@@ -241,5 +241,6 @@ export const setGroupFormSchema: FormSchema[] = [
     field: 'groups',
     slot: 'groups',
     component: 'Input',
+    labelWidth: 50,
   },
 ]

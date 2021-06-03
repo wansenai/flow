@@ -8,7 +8,7 @@
         <TableAction
           :actions="[
             {
-              title: '添加子公司',
+              title: '添加子分类',
               icon: 'ant-design:plus-outlined',
               onClick: handleCreateChild.bind(null, record),
             },
@@ -49,7 +49,7 @@
     name: 'GetDic',
     components: { BasicTable, TableAction, GetDicModal },
     setup() {
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps }] = useModal();
       const [registerTable, { reload }] = useTable({
         title: '列表',
         api: getDicTypes,
@@ -77,6 +77,7 @@
       });
 
       function handleCreate() {
+        setModalProps({title: '新增字典分类'});
         openModal(true, {
           isUpdate: false,
         });
@@ -84,6 +85,7 @@
 
       function handleEdit(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '修改字典分类'});
         openModal(true, {
           record,
           isUpdate: true,
@@ -92,6 +94,7 @@
 
       function handleCreateChild(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '新增【'+record.name+'】的子分类'});
         record = {pid: record.id};
         openModal(true, {
           record,

@@ -45,10 +45,9 @@
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
         resetFields();
 
-        setModalProps({ confirmLoading: false });
+        setModalProps({ confirmLoading: false, title: '给账号【'+data.record.realName+'('+data.record.username+')】设置组'});
         isUpdate.value = !!data?.isUpdate;
 
-        title.value =  '给用户【'+data.record.realName+'('+data.record.username+')】设置组';
         const groupList = ((await getAllList()) as any);
         groupList.forEach(item=>{
           item.label = item.name;

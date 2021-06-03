@@ -213,6 +213,7 @@ export const pValueFormSchema: FormSchema[] = [
     label: ' ',
     required: false,
     component: 'CheckboxGroup',
+    labelWidth: 10,
     componentProps:{
     }
   },

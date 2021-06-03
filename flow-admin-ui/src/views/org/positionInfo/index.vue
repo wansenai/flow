@@ -47,7 +47,7 @@
     components: { BasicTable, PageWrapper, PositionSeqTree, PositionInfoModal, TableAction, Popconfirm,
     },
     setup() {
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps }] = useModal();
       const currentTreeNode = ref<Recordable>({});
 
       const [registerTable, { reload }] = useTable({
@@ -79,6 +79,7 @@
           createMessage.warning("请选择岗位序列！", 2)
           return;
         }
+        setModalProps({title: '新增岗位'});
         openModal(true, {
           record:{positionSeqId: unref(currentTreeNode).id, positionSeqCode: unref(currentTreeNode).code},
           isUpdate: true,
@@ -86,6 +87,7 @@
       }
 
       function handleEdit(record: Recordable) {
+        setModalProps({title: '修改岗位'});
         openModal(true, {
           record,
           isUpdate: true,

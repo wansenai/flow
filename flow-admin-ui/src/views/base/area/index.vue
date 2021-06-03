@@ -49,7 +49,7 @@
     name: 'Area',
     components: { BasicTable, TableAction, AreaModal },
     setup() {
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps }] = useModal();
       const [registerTable, { reload, }] = useTable({
         title: '列表',
         api: getAreas,
@@ -79,6 +79,7 @@
       });
 
       function handleCreate() {
+        setModalProps({title: '新增区域'});
         openModal(true, {
           isUpdate: false,
         });
@@ -86,6 +87,7 @@
 
       function handleEdit(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '修改区域'});
         openModal(true, {
           record,
           isUpdate: true,
@@ -94,6 +96,7 @@
 
       function handleCreateChild(record: Recordable, e) {
         e.stopPropagation();
+        setModalProps({title: '新增【'+record.name+'】的子区域'});
         record = {pcode: record.code};
         openModal(true, {
           record,
