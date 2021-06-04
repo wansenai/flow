@@ -2247,7 +2247,7 @@ DROP TABLE IF EXISTS `tbl_base_area`;
 CREATE TABLE `tbl_base_area` (
   `code` varchar(10) NOT NULL COMMENT '编码',
   `pcode` varchar(10) DEFAULT NULL COMMENT '父编码',
-  `name` varchar(20) DEFAULT NULL COMMENT '名称',
+  `name` varchar(64) DEFAULT NULL COMMENT '名称',
   `del_flag` int(1) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `creator` varchar(96) DEFAULT NULL,
