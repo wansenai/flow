@@ -21,8 +21,10 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @TableName("tbl_flow_model_info")
 public class ModelInfo extends BaseModel implements Serializable {
-
     private static final long serialVersionUID = -974572277155384236L;
+    public static final int CUSTOM_MODEL_TYPE = 0;
+    public static final int BIZ_MODEL_TYPE = 1;
+    public static final int TASK_MODEL_TYPE = 2;
     /**
      * 主键
      */
