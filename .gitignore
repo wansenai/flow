@@ -31,3 +31,5 @@ target/
 
 ### VS Code ###
 .vscode/
+
+application-local.properties

@@ -1,5 +1,5 @@
 export default {
-  footer: { onlinePreview: '在线预览', onlineDocument: '在线文档' },
+  footer: { onlinePreview: '进入后台', onlineDocument: '在线文档' },
   header: {
     // user dropdown
     dropdownItemDoc: '文档',
