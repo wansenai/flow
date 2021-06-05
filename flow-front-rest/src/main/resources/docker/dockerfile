@@ -1,0 +1,15 @@
+# Docker image for springboot file run
+# VERSION 1.0.0
+# Author: bruce.liu
+# 基础镜像使用java
+FROM java:8
+# 作者
+MAINTAINER bruce.liu <463805737@qq.com>
+# VOLUME 指定了临时文件目录为/tmp。
+# 其效果是在主机 /var/lib/docker 目录下创建了一个临时文件，并链接到容器的/tmp
+VOLUME /tmp
+# 将jar包添加到容器中并更名为flow-front-rest.jar
+ADD flow-front-rest.jar flow-front-rest.jar
+# 运行jar包
+RUN bash -c 'touch /flow-front-rest.jar'
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/flow-front-rest.jar"]
