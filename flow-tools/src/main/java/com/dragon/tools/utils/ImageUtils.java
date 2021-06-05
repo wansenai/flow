@@ -1,9 +1,6 @@
 package com.dragon.tools.utils;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
-import java.io.IOException;
+import java.util.Base64;
 
 /**
  * 字符串与流的转化
@@ -22,19 +19,13 @@ public class ImageUtils {
         if (imgStr == null) {
             return data;
         }
-        BASE64Decoder decoder = new BASE64Decoder();
-        try {
-            // 解密
-            data = decoder.decodeBuffer(imgStr);
-            // 处理数据
-            for (int i = 0; i < data.length; ++i) {
-                if (data[i] < 0) {
-                    data[i] += 256;
-                }
+        // 解密
+        data = Base64.getDecoder().decode(imgStr);
+        // 处理数据
+        for (int i = 0; i < data.length; ++i) {
+            if (data[i] < 0) {
+                data[i] += 256;
             }
-            return data;
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return data;
     }
@@ -47,7 +38,6 @@ public class ImageUtils {
      */
     public static String getImageStr(byte[] data) {
         // 加密
-        BASE64Encoder encoder = new BASE64Encoder();
-        return encoder.encode(data);
+        return Base64.getEncoder().encodeToString(data);
     }
 }
