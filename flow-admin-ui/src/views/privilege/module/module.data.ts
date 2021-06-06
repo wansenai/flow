@@ -34,7 +34,6 @@ export const columns: BasicColumn[] = [
     title: '组件',
     dataIndex: 'component',
     align: 'left',
-    width: 200,
   },
   {
     title: '状态',
@@ -52,7 +51,6 @@ export const columns: BasicColumn[] = [
     title: '权限值',
     dataIndex: 'pvs',
     align: 'left',
-    width: 200,
     customRender: ({ record }) => {
       const pvs = record.pvs;
       const color = 'green';
