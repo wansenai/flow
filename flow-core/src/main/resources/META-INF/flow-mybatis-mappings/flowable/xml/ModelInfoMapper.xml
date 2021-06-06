@@ -54,6 +54,9 @@
             <if test="modelInfo.appSn!='' and modelInfo.appSn!=null">
                 and t1.`app_sn` = #{modelInfo.appSn}
             </if>
+            <if test="modelInfo.modelType!=null and modelInfo.modelType!=''">
+                and t1.model_type=#{modelInfo.modelType}
+            </if>
             <if test="modelInfo.flowableModelType!='' and modelInfo.flowableModelType!=null">
                 and t2.model_type=#{modelInfo.flowableModelType}
             </if>
