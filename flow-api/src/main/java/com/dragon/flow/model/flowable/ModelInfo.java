@@ -112,6 +112,10 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     private Integer appliedRange;
     /**
+     * 授权功能点
+     */
+    private String authPointList;
+    /**
      * 业务表单的URL
      */
     private String businessUrl;

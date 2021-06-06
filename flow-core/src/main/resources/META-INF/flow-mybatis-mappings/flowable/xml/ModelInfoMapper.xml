@@ -23,6 +23,7 @@
         <result column="apply_company_id" property="applyCompanyId"/>
         <result column="show_status" property="showStatus"/>
         <result column="applied_range" property="appliedRange"/>
+        <result column="auth_point_list" property="authPointList"/>
         <result column="business_url" property="businessUrl"/>
         <result column="function_range" property="functionRange"/>
         <result column="extend_status" property="extendStatus"/>
@@ -36,7 +37,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, model_id, name, model_key, model_type, app_sn, category_code, status, own_dept_id, own_dept_name, flow_owner_no, flow_owner_name, process_docking_no, process_docking_name, apply_company_id, show_status, applied_range, business_url, function_range, extend_status, order_no, create_time, creator, update_time, updator, del_flag
+        id, model_id, name, model_key, model_type, app_sn, category_code, status, own_dept_id, own_dept_name, flow_owner_no, flow_owner_name, process_docking_no, process_docking_name, apply_company_id, show_status, applied_range,auth_point_list, business_url, function_range, extend_status, order_no, create_time, creator, update_time, updator, del_flag
     </sql>
 
     <select id="getPagerModel" parameterType="com.dragon.flow.model.flowable.ModelInfo" resultMap="BaseResultMap">

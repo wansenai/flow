@@ -6127,6 +6127,7 @@ CREATE TABLE `tbl_flow_model_info` (
   `apply_company_id` varchar(10240) DEFAULT NULL COMMENT '适用公司(多个公司，以逗号隔开)',
   `show_status` int(11) DEFAULT NULL COMMENT '流程中心是否显示 1 是 0 否',
   `applied_range` int(11) DEFAULT NULL COMMENT ' 适用范围 @see ModelAppliedRangeEnum',
+  `auth_point_list` json DEFAULT NULL COMMENT ' 功能点范围',
   `business_url` varchar(255) DEFAULT NULL COMMENT '业务表单的URL',
   `function_range` varchar(400) DEFAULT NULL COMMENT '功能范围(1 允许转办 2允许加签 3允许转阅 4允许打印 5相近节点同一人员自动跳过 可以多选 )',
   `extend_status` int(4) DEFAULT NULL COMMENT '拓展信息 状态',
@@ -6144,7 +6145,7 @@ CREATE TABLE `tbl_flow_model_info` (
 -- ----------------------------
 -- Records of tbl_flow_model_info
 -- ----------------------------
-INSERT INTO `tbl_flow_model_info` VALUES ('c5ee7edcab8712924e347788f95a8eaf', '86146a42bd6a11eb9d06185e0f154c43', '请假流程', 'leave', '0', 'flow', '88', '3', null, null, null, null, null, null, null, null, null, null, null, '3', null, '2021-05-25 23:04:38', '10100', '2021-05-26 13:49:28', '10101', '1');
+INSERT INTO `tbl_flow_model_info` VALUES ('c5ee7edcab8712924e347788f95a8eaf', '86146a42bd6a11eb9d06185e0f154c43', '请假流程', 'leave', '0', 'flow', '88', '3', null, null, null, null, null, null, null, null, null, null, null, null, '3', null, '2021-05-25 23:04:38', '10100', '2021-05-26 13:49:28', '10101', '1');
 
 -- ----------------------------
 -- Table structure for tbl_front_account
