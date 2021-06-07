@@ -77,6 +77,10 @@ http://localhost:8990
 
 账号：10000到10100 密码统一：888888
 
+## Docker 启动
+https://gblfy.blog.csdn.net/article/details/117636550
+镜像的密码是flow
+
 ## 联系作者
 欢迎bug反馈，需求建议，技术交流等   
 QQ扫码入群（群号：633168411）：   
