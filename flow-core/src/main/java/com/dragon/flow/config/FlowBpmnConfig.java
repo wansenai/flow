@@ -8,13 +8,19 @@ import org.flowable.common.engine.impl.de.odysseus.el.misc.TypeConverter;
 import org.flowable.common.engine.impl.de.odysseus.el.misc.TypeConverterImpl;
 import org.flowable.spring.SpringProcessEngineConfiguration;
 import org.flowable.spring.boot.EngineConfigurationConfigurer;
+import org.flowable.ui.common.properties.FlowableCommonAppProperties;
+import org.flowable.ui.common.security.CustomPersistentRememberMeServices;
+import org.flowable.ui.common.security.PersistentTokenService;
 import org.flowable.validation.ProcessValidator;
 import org.flowable.validation.ProcessValidatorFactory;
 import org.flowable.validation.ProcessValidatorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.RememberMeServices;
 
 /**
  * @Description: flowable配置
@@ -28,7 +34,6 @@ public class FlowBpmnConfig implements EngineConfigurationConfigurer<SpringProce
     private CustomDeploymentCache customDeploymentCache;
     @Autowired
     private CustomProcessDefinitionInfoCache customProcessDefinitionInfoCache;
-
     @Override
     public void configure(SpringProcessEngineConfiguration configuration) {
         configuration.setEnableProcessDefinitionInfoCache(true);
@@ -36,6 +41,15 @@ public class FlowBpmnConfig implements EngineConfigurationConfigurer<SpringProce
         configuration.setProcessDefinitionInfoCache(customProcessDefinitionInfoCache);
         //设置自定义的uuid生成策略
         configuration.setIdGenerator(uuidGenerator());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public RememberMeServices flowableUiRememberMeService(FlowableCommonAppProperties properties, UserDetailsService userDetailsService,
+                                                          PersistentTokenService persistentTokenService) {
+        CustomPersistentRememberMeServices customPersistentRememberMeServices = new CustomPersistentRememberMeServices(properties, userDetailsService, persistentTokenService);
+        customPersistentRememberMeServices.setCookieName("DRAGON_REMEMBER_ME");
+        return customPersistentRememberMeServices;
     }
 
     @Bean

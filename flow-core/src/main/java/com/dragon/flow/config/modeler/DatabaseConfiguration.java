@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 
 import javax.sql.DataSource;
 
@@ -38,7 +39,8 @@ import javax.sql.DataSource;
         "org.flowable.ui.modeler.service",
         "org.flowable.ui.common.tenant",
         "org.flowable.ui.common.repository"}, excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = ModelRepositoryImpl.class)})
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {ModelRepositoryImpl.class})
+})
 public class DatabaseConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConfiguration.class);
@@ -67,9 +69,9 @@ public class DatabaseConfiguration {
     }
 
     private void closeDatabase(Liquibase liquibase) {
-        if (liquibase != null){
+        if (liquibase != null) {
             Database database = liquibase.getDatabase();
-            if (database != null){
+            if (database != null) {
                 try {
                     database.close();
                 } catch (DatabaseException e) {

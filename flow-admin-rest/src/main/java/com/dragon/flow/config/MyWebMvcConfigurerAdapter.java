@@ -3,6 +3,8 @@ package com.dragon.flow.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import org.flowable.ui.common.security.CustomPersistentRememberMeServices;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,7 +52,6 @@ public class MyWebMvcConfigurerAdapter implements WebMvcConfigurer {
 
         // 本地上传的文件访问
         registry.addResourceHandler(staticAccessPath).addResourceLocations("file:" + storagePath+"/");
-
     }
 
     /**
