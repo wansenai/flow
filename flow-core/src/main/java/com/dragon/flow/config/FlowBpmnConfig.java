@@ -44,15 +44,6 @@ public class FlowBpmnConfig implements EngineConfigurationConfigurer<SpringProce
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public RememberMeServices flowableUiRememberMeService(FlowableCommonAppProperties properties, UserDetailsService userDetailsService,
-                                                          PersistentTokenService persistentTokenService) {
-        CustomPersistentRememberMeServices customPersistentRememberMeServices = new CustomPersistentRememberMeServices(properties, userDetailsService, persistentTokenService);
-        customPersistentRememberMeServices.setCookieName("DRAGON_REMEMBER_ME");
-        return customPersistentRememberMeServices;
-    }
-
-    @Bean
     public ProcessValidatorFactory processValidator(){
         return new ProcessValidatorFactory();
     }
