@@ -1,0 +1,1 @@
+import{aP as t}from"./vendor.56d2c57f.js";function s(s,e="lang"){const n={};return Object.keys(s).forEach((o=>{const c=s[o].default;let r=o.replace(`./${e}/`,"").replace(/^\.\//,"");const a=r.lastIndexOf(".");r=r.substring(0,a);const f=r.split("/"),l=f.shift(),i=f.join(".");l&&(i?(t(n,l,n[l]||{}),t(n[l],i,c)):t(n,l,c||{}))})),n}export{s as g};
