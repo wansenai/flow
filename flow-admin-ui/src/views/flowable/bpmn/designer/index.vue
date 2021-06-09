@@ -41,15 +41,8 @@
           console.error('通过ModelId查询modelInfo失败！');
         })
       });
-      const isDev = import.meta.env.DEV;
-      // history路由
-      // url.value = isDev ? ('http://localhost:8100/flow-bpmn/bpmn/designer?modelId=' + modelId)
-      // : ('/flow-bpmn/bpmn/designer?modelId=' + modelId);
-
-      // hash路由
-      // url.value = '/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId;
-      url.value = isDev ? ('http://localhost:8100/flow-bpmn/index.html#/bpmn/designer?modelId=' + modelId)
-        : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
+      debugger;
+      url.value = ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
 
       const { getFramePages, hasRenderFrame, showIframe } = useFrameKeepAlive();
       const showFrame = computed(() => unref(getFramePages).length > 0);
