@@ -6108,6 +6108,7 @@ INSERT INTO `tbl_flow_extend_procinst` VALUES ('c13b85db9ee7e9e80be7cfaf42be3fb0
 -- ----------------------------
 -- Table structure for tbl_flow_model_info
 -- ----------------------------
+
 DROP TABLE IF EXISTS `tbl_flow_model_info`;
 CREATE TABLE `tbl_flow_model_info` (
   `id` varchar(32) NOT NULL COMMENT '主键',
@@ -6126,8 +6127,8 @@ CREATE TABLE `tbl_flow_model_info` (
   `process_docking_name` varchar(64) DEFAULT NULL COMMENT '流程对接人名称',
   `apply_company_id` varchar(10240) DEFAULT NULL COMMENT '适用公司(多个公司，以逗号隔开)',
   `show_status` int(11) DEFAULT NULL COMMENT '流程中心是否显示 1 是 0 否',
+  `auth_point_list` json DEFAULT NULL,
   `applied_range` int(11) DEFAULT NULL COMMENT ' 适用范围 @see ModelAppliedRangeEnum',
-  `auth_point_list` json DEFAULT NULL COMMENT ' 功能点范围',
   `business_url` varchar(255) DEFAULT NULL COMMENT '业务表单的URL',
   `function_range` varchar(400) DEFAULT NULL COMMENT '功能范围(1 允许转办 2允许加签 3允许转阅 4允许打印 5相近节点同一人员自动跳过 可以多选 )',
   `extend_status` int(4) DEFAULT NULL COMMENT '拓展信息 状态',
