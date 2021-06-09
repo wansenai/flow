@@ -1,0 +1,1 @@
+import{k as o}from"./index.f36f9bca.js";import{c as s}from"./createAsyncComponent.f4288151.js";const t=s((()=>o((()=>import("./CountTo.90eff86b.js")),["/assets/CountTo.90eff86b.js","/assets/index.f36f9bca.js","/assets/index.69000eb3.css","/assets/vendor.9d9efc92.js","/assets/vendor.70495537.css"])));export{t as C};
