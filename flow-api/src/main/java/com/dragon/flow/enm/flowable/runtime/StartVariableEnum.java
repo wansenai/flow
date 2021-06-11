@@ -11,13 +11,14 @@ import java.io.Serializable;
  */
 public enum StartVariableEnum implements Serializable {
 
+    USER("user", "人员信息"),
+    UDEPT("udept", "人员部门变量"),
+    UCOMPANY("ucompany", "人员公司变量"),
+    COMPANY_ROLE("companyrole", "公司角色层级审批领导"),
+    PCOMPANY_ROLE("pcompanyrole", "父公司角色层级审批领导"),
+    TCOMPANY_ROLE("tcompanyrole", "顶级公司角色层级审批领导"),
+    FORM("form", "表单"),
     LCDB("lcdb", "流程底表"),
-    DEPT("dept", "部门层级审批领导"),
-    COMPANY("company", "公司层级审批领导"),
-    PCOMPANY("pCompany", "父公司层级审批领导"),
-    TCOMPANY("tCompany", "顶级公司层级审批领导"),
-    USERDEPT("userDept", "人员部门"),
-    FORM("form", "表单（自定义，业务）"),
     LINE("line", "汇报线");
     private String code;
     private String msg;
