@@ -8,19 +8,14 @@ import org.flowable.common.engine.impl.de.odysseus.el.misc.TypeConverter;
 import org.flowable.common.engine.impl.de.odysseus.el.misc.TypeConverterImpl;
 import org.flowable.spring.SpringProcessEngineConfiguration;
 import org.flowable.spring.boot.EngineConfigurationConfigurer;
-import org.flowable.ui.common.properties.FlowableCommonAppProperties;
-import org.flowable.ui.common.security.CustomPersistentRememberMeServices;
-import org.flowable.ui.common.security.PersistentTokenService;
-import org.flowable.validation.ProcessValidator;
+import org.flowable.spring.boot.process.Process;
 import org.flowable.validation.ProcessValidatorFactory;
-import org.flowable.validation.ProcessValidatorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 
 /**
  * @Description: flowable配置
@@ -41,6 +36,12 @@ public class FlowBpmnConfig implements EngineConfigurationConfigurer<SpringProce
         configuration.setProcessDefinitionInfoCache(customProcessDefinitionInfoCache);
         //设置自定义的uuid生成策略
         configuration.setIdGenerator(uuidGenerator());
+    }
+
+    @Process
+    @Bean
+    public TaskExecutor processTaskExecutor() {
+        return new SimpleAsyncTaskExecutor();
     }
 
     @Bean
