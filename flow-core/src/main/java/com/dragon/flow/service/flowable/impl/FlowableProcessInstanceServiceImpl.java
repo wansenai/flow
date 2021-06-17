@@ -333,7 +333,17 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
             userTasks = datas.stream().filter(userTask -> StringUtils.indexOf(userTask.getAssignee(), "${") != -1).collect(Collectors.toList());
         }
         List<String> elexps = new ArrayList<>();
-        userTasks.forEach(userTask -> elexps.add(userTask.getAssignee()));
+        userTasks.forEach(userTask -> {
+            if (userTask.getLoopCharacteristics()!=null){
+                String inputDataItem = userTask.getLoopCharacteristics().getInputDataItem();
+                if (StringUtils.isNotBlank(inputDataItem)){
+                    elexps.add(inputDataItem);
+                }
+            }else {
+                elexps.add(userTask.getAssignee());
+            }
+            
+        });
         Map<String, Object> variables = params.getVariables();
         Map<String, String> keys = new HashMap<>();
         variables.forEach((k, v) -> {
@@ -348,6 +358,8 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
                     String tempNodeKey = k + "." + nodeKey;
                     keys.put(tempNodeKey, enumMsg);
                 }
+            }else if (v instanceof Collection){
+                keys.put(k, k);
             }
         });
         for (String assigneeEl : elexps) {
