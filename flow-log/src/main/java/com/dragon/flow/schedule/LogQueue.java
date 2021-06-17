@@ -30,7 +30,7 @@ public class LogQueue implements Serializable {
         }
     }
 
-    private int size() {
+    public int size() {
         return list.size();
     }
 

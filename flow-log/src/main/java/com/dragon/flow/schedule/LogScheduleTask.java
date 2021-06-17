@@ -20,14 +20,21 @@ public class LogScheduleTask implements Serializable {
     @Autowired
     private LogQueue logQueue;
 
-    @Async
     @Scheduled(fixedRate = 500)
     public void consume() {
-        String sysOperRecordStr = logQueue.take();
-        if (sysOperRecordStr != null) {
+        if (logQueue.size() > 0) {
+            String sysOperRecordStr = logQueue.take();
+            if (sysOperRecordStr != null) {
 //            log.info("线程名称"+Thread.currentThread().getName());
-            SysOperRecord sysOperRecord = FastJsonUtils.jsonToObject(sysOperRecordStr, SysOperRecord.class);
-            sysOperRecordService.saveSysOperRecord(sysOperRecord);
+                SysOperRecord sysOperRecord = FastJsonUtils.jsonToObject(sysOperRecordStr, SysOperRecord.class);
+                sysOperRecordService.saveSysOperRecord(sysOperRecord);
+            }
+        } else {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ite) {
+                log.error("线程休眠失败", ite);
+            }
         }
     }
 
