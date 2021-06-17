@@ -70,7 +70,7 @@
           showResetButton: false,
           autoSubmitOnEnter: true,
         },
-        searchInfo: {flowableModelType: 0},
+        searchInfo: {modelType: 0},
         useSearchForm: true,
         showIndexColumn: false,
         bordered: true,

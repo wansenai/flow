@@ -6115,7 +6115,7 @@ CREATE TABLE `tbl_flow_model_info` (
   `model_id` varchar(64) DEFAULT NULL COMMENT '模型id',
   `name` varchar(200) DEFAULT NULL,
   `model_key` varchar(150) DEFAULT NULL COMMENT '模型key',
-  `model_type` int(11) DEFAULT NULL COMMENT '模型类型: 0 自定义流程 1是业务流程',
+  `form_type` int(11) DEFAULT NULL COMMENT '模型类型: 0 自定义流程 1是业务流程',
   `app_sn` varchar(200) DEFAULT NULL COMMENT '系统标识',
   `category_code` varchar(32) DEFAULT NULL COMMENT '分类id',
   `status` int(11) DEFAULT NULL COMMENT '流程图Model状态',

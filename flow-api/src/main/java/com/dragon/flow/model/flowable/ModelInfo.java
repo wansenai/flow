@@ -43,10 +43,9 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     private String modelKey;
     /**
-     * 模型类型: 0 自定义流程 1是业务流程 2是任务流程
+     * 模型类型: 0 自定义流程表单 1是业务流程表单 2是任务流程表单
      */
-    private Integer modelType;
-
+    private Integer formType;
     /**
      * 系统标识
      */
@@ -156,7 +155,7 @@ public class ModelInfo extends BaseModel implements Serializable {
      * MODEL_TYPE_DECISION_SERVICE = 6;
      */
     @TableField(exist = false)
-    private Integer flowableModelType;
+    private Integer modelType;
     /**
      * 功能点列表
      */

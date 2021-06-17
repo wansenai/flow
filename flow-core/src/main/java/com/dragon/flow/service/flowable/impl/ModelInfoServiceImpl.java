@@ -125,7 +125,7 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
                 modelInfo.setModelId(model.getId());
                 Date date = new Date();
                 modelInfo.setCreateTime(date);
-                modelInfo.setModelType(AbstractModel.MODEL_TYPE_BPMN);
+                modelInfo.setFormType(ModelInfo.CUSTOM_MODEL_TYPE);
                 modelInfo.setCreator(user.getUserNo());
                 modelInfo.setUpdateTime(date);
                 modelInfo.setStatus(ModelFormStatusEnum.CG.getStatus());
