@@ -17,6 +17,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class OrgTreeVo implements Serializable {
 
+    public static  final  String COMPANY_TYPE = "1";
+    public static  final  String DEPT_TYPE = "2";
+
+
     private String id;
     private String pid;
     private String code;
@@ -24,7 +28,7 @@ public class OrgTreeVo implements Serializable {
     private String shortName;
     private String companyId;
     private String companyName;
-    //1 公司 2 部门
+    //1 公司 2 部门 看类上面的变量
     private String sourceType;
 
     public OrgTreeVo(String id, String pid, String name, String shortName, String sourceType) {

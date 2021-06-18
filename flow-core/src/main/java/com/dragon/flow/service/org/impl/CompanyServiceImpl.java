@@ -171,11 +171,11 @@ public class CompanyServiceImpl extends ServiceImpl<ICompanyMapper, Company> imp
     public List<OrgTreeVo> getCompanyTree() {
         List<OrgTreeVo> orgTreeVos = new ArrayList<>();
         LambdaQueryWrapper<Company> companyLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        companyLambdaQueryWrapper.eq(Company::getStatus, 1).eq(Company::getDelFlag, 1);
+        companyLambdaQueryWrapper.eq(Company::getStatus, 1).eq(Company::getDelFlag, FlowConstant.DEL_FLAG_1);
         List<Company> companies = this.list(companyLambdaQueryWrapper);
         if (CollectionUtils.isNotEmpty(companies)){
             companies.forEach(company -> {
-                OrgTreeVo orgTreeVo = new OrgTreeVo(company.getId(), company.getPid(), company.getCname(), company.getShortName(), "1");
+                OrgTreeVo orgTreeVo = new OrgTreeVo(company.getId(), company.getPid(), company.getCname(), company.getShortName(), OrgTreeVo.COMPANY_TYPE);
                 orgTreeVos.add(orgTreeVo);
             });
         }
