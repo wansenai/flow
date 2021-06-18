@@ -213,15 +213,15 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
     public List<OrgTreeVo> getOrgTree() {
         List<OrgTreeVo> orgTreeVos = companyService.getCompanyTree();
         Map<String, OrgTreeVo> companyMap = orgTreeVos.stream().collect(Collectors.toMap(OrgTreeVo::getId, orgTreeVo -> orgTreeVo));
-        LambdaQueryWrapper<Department> departmentLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        departmentLambdaQueryWrapper.eq(Department::getDelFlag, FlowConstant.DEL_FLAG_1);
-        List<Department> departments = this.list(departmentLambdaQueryWrapper);
+        List<Department> departments = departmentMapper.getDepartments(null);
         if (CollectionUtils.isNotEmpty(departments)){
             departments.forEach(department -> {
                 OrgTreeVo orgTreeVo = new OrgTreeVo(department.getId(), department.getPid(), department.getName(), department.getName(), OrgTreeVo.DEPT_TYPE);
                 if (StringUtils.isBlank(department.getPid())){
                     orgTreeVo.setPid(department.getCompanyId());
                 }
+                orgTreeVo.setLeaderCode(department.getLeaderCode());
+                orgTreeVo.setLeaderName(department.getLeaderName());
                 String companyId = department.getCompanyId();
                 OrgTreeVo company = companyMap.get(companyId);
                 orgTreeVo.setCompanyId(companyId);

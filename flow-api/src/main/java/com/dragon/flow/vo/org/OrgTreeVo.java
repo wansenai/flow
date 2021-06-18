@@ -30,6 +30,8 @@ public class OrgTreeVo implements Serializable {
     private String companyName;
     //1 公司 2 部门 看类上面的变量
     private String sourceType;
+    private String leaderCode;
+    private String leaderName;
 
     public OrgTreeVo(String id, String pid, String name, String shortName, String sourceType) {
         this.id = id;
