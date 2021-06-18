@@ -6116,6 +6116,7 @@ CREATE TABLE `tbl_flow_model_info` (
   `applied_range` int(11) DEFAULT NULL COMMENT ' 适用范围 @see ModelAppliedRangeEnum',
   `business_url` varchar(255) DEFAULT NULL COMMENT '业务表单的URL',
   `function_range` varchar(400) DEFAULT NULL COMMENT '功能范围(1 允许转办 2允许加签 3允许转阅 4允许打印 5相近节点同一人员自动跳过 可以多选 )',
+  `skip_set` int(4) DEFAULT NULL COMMENT '跳过设置',
   `extend_status` int(4) DEFAULT NULL COMMENT '拓展信息 状态',
   `order_no` int(4) DEFAULT NULL COMMENT '排序',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',

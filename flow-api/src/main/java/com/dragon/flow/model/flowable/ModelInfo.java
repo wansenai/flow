@@ -124,6 +124,11 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     private String functionRange;
     /**
+     * 跳过设置
+     * @see com.dragon.flow.enm.form.TaskSkipSetEnum
+     */
+    private Integer skipSet;
+    /**
      * 排序
      */
     private Integer orderNo;
