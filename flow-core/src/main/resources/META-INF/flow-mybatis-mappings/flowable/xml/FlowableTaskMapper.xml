@@ -17,7 +17,7 @@
         <result column="TASK_END_TIME_" property="endTime" jdbcType="TIMESTAMP"/>
         <result column="start_person" property="startPersonName" jdbcType="VARCHAR"/>
         <result column="app_name" property="appName" jdbcType="VARCHAR"/>
-        <result column="process_type" property="modelType" jdbcType="VARCHAR"/>
+        <result column="form_type" property="formType" jdbcType="INTEGER"/>
         <result column="PROC_DEF_ID_" property="processDefinitionId" jdbcType="VARCHAR"/>
         <result column="start_person_code" property="startPersonCode" jdbcType="VARCHAR"/>
         <result column="applied_range" property="processDefinitionType" jdbcType="INTEGER"/>
@@ -91,7 +91,7 @@
             t6.`name` AS start_person,
             t7.applied_range,
             t3.model_key,
-            t7.model_type
+            t7.form_type
         FROM
             act_ru_task t1
         INNER JOIN act_ru_execution t2 ON t1.PROC_INST_ID_ = t2.PROC_INST_ID_

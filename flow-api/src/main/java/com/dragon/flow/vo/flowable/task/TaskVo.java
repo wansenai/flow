@@ -68,7 +68,7 @@ public class TaskVo implements Serializable {
      * 流程定义类型
      */
     private Integer processDefinitionType;
-    private Integer modelType;
+    private Integer formType;
     /**
      *
      * 流程实例状态 @see {@link com.dragon.flow.enm.flowable.runtime.ProcessStatusEnum}
