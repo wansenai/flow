@@ -6115,6 +6115,7 @@ CREATE TABLE `tbl_flow_model_info` (
   `model_id` varchar(64) DEFAULT NULL COMMENT '模型id',
   `name` varchar(200) DEFAULT NULL,
   `model_key` varchar(150) DEFAULT NULL COMMENT '模型key',
+  `model_icon` longblob,
   `form_type` int(11) DEFAULT NULL COMMENT '模型类型: 0 自定义流程 1是业务流程',
   `app_sn` varchar(200) DEFAULT NULL COMMENT '系统标识',
   `category_code` varchar(32) DEFAULT NULL COMMENT '分类id',
@@ -6147,7 +6148,7 @@ CREATE TABLE `tbl_flow_model_info` (
 -- ----------------------------
 -- Records of tbl_flow_model_info
 -- ----------------------------
-INSERT INTO `tbl_flow_model_info` VALUES ('c5ee7edcab8712924e347788f95a8eaf', '86146a42bd6a11eb9d06185e0f154c43', '请假流程', 'leave', '0', 'flow', '88', '3', null, null, null, null, null, null, null, null, null, null, null, null, '3', null, '2021-05-25 23:04:38', '10100', '2021-05-26 13:49:28', '10101', '1');
+INSERT INTO `tbl_flow_model_info` VALUES ('c5ee7edcab8712924e347788f95a8eaf', '86146a42bd6a11eb9d06185e0f154c43', '请假流程', 'leave', null, '0', 'flow', '88', '3', null, null, null, null, null, null, null, null, null, null, null, null, '3', null, '2021-05-25 23:04:38', '10100', '2021-05-26 13:49:28', '10101', '1');
 
 -- ----------------------------
 -- Table structure for tbl_front_account

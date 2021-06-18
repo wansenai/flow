@@ -129,6 +129,10 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     private Integer skipSet;
     /**
+     * 图标
+     */
+    private String modelIcon;
+    /**
      * 排序
      */
     private Integer orderNo;
