@@ -11,9 +11,9 @@ import java.util.Map;
  * @date 2021/6/18 22:22
  */
 public enum TaskSkipSetEnum {
-    YXZB(1, "不跳过"),
-    YXJQ(2, "相邻任务节点跳过"),
-    YXZY(3, "重复任务跳过");
+    NO_SKIP(1, "不跳过"),
+    ADJOIN_SKIP(2, "相邻任务节点跳过"),
+    REPEAT_SKIP(3, "重复任务跳过");
 
     private Integer code;
     private String message;
