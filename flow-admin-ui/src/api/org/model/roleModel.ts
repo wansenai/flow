@@ -1,5 +1,5 @@
 import { BasicPageParams, BasicFetchResult } from '/@/api/model/baseModel';
-import {PersonalInfo} from "/@/api/org/model/personalModel";
+import {PersonalParams} from "/@/api/org/model/personalModel";
 
 export type RoleParams = {
   keyword?: string;
@@ -20,7 +20,7 @@ export type RoleInfo = {
 
 export type PersonalByRoleParams = {
   roleId: string;
-  personal: PersonalInfo
+  personal: PersonalParams
 };
 
 export interface RoleListItem extends RoleInfo {
