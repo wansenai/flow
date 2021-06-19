@@ -213,7 +213,7 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
     public List<OrgTreeVo> getOrgTree() {
         List<OrgTreeVo> orgTreeVos = companyService.getCompanyTree();
         Map<String, OrgTreeVo> companyMap = orgTreeVos.stream().collect(Collectors.toMap(OrgTreeVo::getId, orgTreeVo -> orgTreeVo));
-        List<Department> departments = departmentMapper.getDepartments(null);
+        List<Department> departments = departmentMapper.getDepartments(new Department());
         if (CollectionUtils.isNotEmpty(departments)){
             departments.forEach(department -> {
                 OrgTreeVo orgTreeVo = new OrgTreeVo(department.getId(), department.getPid(), department.getName(), department.getName(), OrgTreeVo.DEPT_TYPE);
