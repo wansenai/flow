@@ -36,17 +36,34 @@
         />
       </template>
       <template #expandedRowRender="{ record, index, indent, expanded }">
-        <BasicTable @register="registerPersonalTable" :searchInfo="{roleId: record.id}" class="w-4/4 xl:w-5/5">
-          <template #customName="{ record }">
+        <BasicTable
+          title=""
+          size="small"
+          :columns="personalColumns"
+          :useSearchForm="false"
+          :immediate="false"
+          :showIndexColumn="true"
+          :showTableSetting="false"
+          :bordered="true"
+          :pagination="false"
+          actionColumn="{
+            align: 'center'
+          }"
+          rowKey="id"
+          :canResize="false"
+                    :searchInfo="{roleId: record.id}"
+                    :dataSource="rolePersonalData[record.id]"
+                    class="w-4/4 xl:w-5/5">
+          <template #customName="{ rec }">
             <span>
               姓名
               <Search
-                v-model:value="searchPersonTxt"
+                v-model:value="searchPersonTxt[record.id]"
                 placeholder="姓名/工号/手机"
                 style="width: 150px"
                 size="small"
                 allowClear
-                @search="(v)=>{onSearchPerson(v)}"
+                @search="(v)=>{onSearchPerson(record.id, v)}"
               />
             </span>
           </template>
@@ -130,8 +147,9 @@
 
       const currentRole = ref<Recordable>({});
       const expandedRowKeys = ref([]);
-      const selectedPersonList = ref<[]>([]);
-      const searchPersonTxt = ref("");
+      const searchPersonTxt = ref<object>({});
+
+      const rolePersonalData = ref<object>({});
 
       // 给表单元素添加回车事件
       searchFormSchema.forEach((item: object)=>{
@@ -161,42 +179,14 @@
         showTableSetting: false,
         bordered: false,
         pagination: true,
-        //expandedRowKeys,
-        // onExpandedRowsChange: (expandRowKeys)=>{
-        //
-        //   debugger;
-        // },
         onExpand: (expanded, record)=>{
           if(expanded){
             currentRole.value = record;
-            searchPersonTxt.value = "";
-            //expandedRowKeys.value = [record.id];
-            setTimeout(()=>{
-              // 加载人员数据
-              reloadPersonal({roleId: record.id});
-            }, 0);
+            searchPersonTxt.value[record.id] = "";
+            reloadRolePersonal(record.id, searchPersonTxt.value[record.id]);
           }else{
             expandedRowKeys.value = [];
           }
-        },
-        rowKey: 'id',
-        canResize: false,
-      });
-
-      // 角色下的人员列表。
-      const [registerPersonalTable, { reload: reloadPersonal }] = useTable({
-        title: '',
-        size: "small",
-        api: getPersonalsByRole,
-        columns: personalColumns,
-        useSearchForm: false,
-        immediate: false,
-        showIndexColumn: true,
-        showTableSetting: false,
-        bordered: true,
-        pagination: false,
-        actionColumn:{
-          align: 'center'
         },
         rowKey: 'id',
         canResize: false,
@@ -213,6 +203,12 @@
         openModal(true, {
           record,
           isUpdate: true,
+        });
+      }
+
+      function reloadRolePersonal(roleId, keyword){
+        getPersonalsByRole({roleId: roleId, personal:{keyword: keyword||''}}).then(res=>{
+          rolePersonalData.value[roleId] = res;
         });
       }
 
@@ -253,7 +249,7 @@
 
       function handleDeletePersonal(record: Recordable) {
         deletePersonalRole({roleId: record.roleId, personalId: record.personalId}).then(()=>{
-          reloadPersonal({roleId: record.roleId});
+          reloadRolePersonal(record.roleId, '');
         });
       }
 
@@ -261,8 +257,8 @@
         reload();
       }
 
-      function onSearchPerson(val) {
-        reloadPersonal({roleId: currentRole.value.id, searchInfo:{personal: {keyword: val}}});
+      function onSearchPerson(roleId, val) {
+        reloadRolePersonal(roleId, val);
       }
 
       // 人员选择后回调
@@ -273,7 +269,8 @@
         });
         allocationPersonals({roleId: unref(currentRole).id, personalList: personals}).then(()=>{
           expandedRowKeys.value = [unref(currentRole).id];
-          reloadPersonal({roleId: unref(currentRole).id});
+          // reloadPersonal({roleId: unref(currentRole).id});
+          reloadRolePersonal(unref(currentRole).id, searchPersonTxt.value[unref(currentRole).id]);
         });
       }
 
@@ -282,11 +279,12 @@
       }
 
       return {
+        personalColumns,
         currentRole,
+        rolePersonalData,
         onSearchPerson,
         searchPersonTxt,
         registerTable,
-        registerPersonalTable,
         registerModal,
         registerPersonalModal,
         handleCreate,
