@@ -229,10 +229,10 @@
               if(nodeDetail[e.element.id]){
                 genNodeDetailBox(nodeDetail[e.element.id], e, overlays);
               }else{
-                getOneActivityVoByProcessInstanceIdAndActivityId({procInstId:processInstanceId, elementId: e.element.id}).then(res=>{
+                /*getOneActivityVoByProcessInstanceIdAndActivityId({procInstId:processInstanceId, elementId: e.element.id}).then(res=>{
                   nodeDetail[e.element.id] = res;
                   genNodeDetailBox(res, e, overlays);
-                });
+                });*/
               }
             }
           }
