@@ -1,6 +1,8 @@
 package com.dragon.flow.enm.form;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -8,7 +10,7 @@ import java.util.Map;
  * @description 节点跳过枚举
  * @date 2021/6/18 22:22
  */
-public enum  TaskSkipSetEnum {
+public enum TaskSkipSetEnum {
     YXZB(1, "不跳过"),
     YXJQ(2, "相邻任务节点跳过"),
     YXZY(3, "重复任务跳过");
@@ -27,6 +29,17 @@ public enum  TaskSkipSetEnum {
             map.put(i.getCode() + "", i.getMessage());
         }
         return map;
+    }
+
+    public static List<Map<String, String>> getAllinfo() {
+        List<Map<String, String>> list = new ArrayList<>();
+        for (TaskSkipSetEnum item : TaskSkipSetEnum.values()) {
+            Map<String, String> map = new HashMap<>();
+            map.put("code", item.getCode() + "");
+            map.put("message", item.getMessage());
+            list.add(map);
+        }
+        return list;
     }
 
     public Integer getCode() {
