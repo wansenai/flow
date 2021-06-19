@@ -99,9 +99,9 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     private String processDockingName;
     /**
-     * 适用公司(多个公司，以逗号隔开)
+     * 适用公司 json id:name
      */
-    private String applyCompanyId;
+    private String applyCompanies;
     /**
      * 流程中心是否显示 1 是 0 否
      */
@@ -111,11 +111,11 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     private Integer appliedRange;
     /**
-     * 授权功能
+     * 授权功能 code:name
      */
     private String authPointList;
     /**
-     * 授权管理人员
+     * 授权管理人员 {code:name}
      */
     private String superuser;
     /**

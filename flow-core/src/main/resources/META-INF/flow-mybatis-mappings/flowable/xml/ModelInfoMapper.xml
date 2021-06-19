@@ -21,13 +21,14 @@
         <result column="flow_owner_name" property="flowOwnerName"/>
         <result column="process_docking_no" property="processDockingNo"/>
         <result column="process_docking_name" property="processDockingName"/>
-        <result column="apply_company_id" property="applyCompanyId"/>
+        <result column="apply_companyies" property="applyCompanies"/>
         <result column="show_status" property="showStatus"/>
         <result column="skip_set" property="skipSet"/>
         <result column="applied_range" property="appliedRange"/>
         <result column="auth_point_list" property="authPointList"/>
         <result column="business_url" property="businessUrl"/>
-        <result column="function_range" property="functionRange"/>
+        <result column="superuser" property="superuser"/>
+        <result column="auth_point_list" property="authPointList"/>
         <result column="extend_status" property="extendStatus"/>
         <result column="order_no" property="orderNo"/>
         <result column="create_time" property="createTime"/>
