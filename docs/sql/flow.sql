@@ -6109,6 +6109,9 @@ INSERT INTO `tbl_flow_extend_procinst` VALUES ('c13b85db9ee7e9e80be7cfaf42be3fb0
 -- Table structure for tbl_flow_model_info
 -- ----------------------------
 
+-- ----------------------------
+-- Table structure for tbl_flow_model_info
+-- ----------------------------
 DROP TABLE IF EXISTS `tbl_flow_model_info`;
 CREATE TABLE `tbl_flow_model_info` (
   `id` varchar(32) NOT NULL COMMENT '主键',
@@ -6126,9 +6129,10 @@ CREATE TABLE `tbl_flow_model_info` (
   `flow_owner_name` varchar(64) DEFAULT NULL COMMENT '流程拥有者名称',
   `process_docking_no` varchar(64) DEFAULT NULL COMMENT '流程对接人工号',
   `process_docking_name` varchar(64) DEFAULT NULL COMMENT '流程对接人名称',
-  `apply_company_id` varchar(10240) DEFAULT NULL COMMENT '适用公司(多个公司，以逗号隔开)',
+  `apply_companies` json DEFAULT NULL COMMENT '适用公司(多个公司，以逗号隔开)',
+  `superuser` json DEFAULT NULL COMMENT '授权管理人员',
   `show_status` int(11) DEFAULT NULL COMMENT '流程中心是否显示 1 是 0 否',
-  `auth_point_list` json DEFAULT NULL,
+  `auth_point_list` json DEFAULT NULL COMMENT '授权功能',
   `applied_range` int(11) DEFAULT NULL COMMENT ' 适用范围 @see ModelAppliedRangeEnum',
   `business_url` varchar(255) DEFAULT NULL COMMENT '业务表单的URL',
   `function_range` varchar(400) DEFAULT NULL COMMENT '功能范围(1 允许转办 2允许加签 3允许转阅 4允许打印 5相近节点同一人员自动跳过 可以多选 )',
@@ -6148,7 +6152,7 @@ CREATE TABLE `tbl_flow_model_info` (
 -- ----------------------------
 -- Records of tbl_flow_model_info
 -- ----------------------------
-INSERT INTO `tbl_flow_model_info` VALUES ('c5ee7edcab8712924e347788f95a8eaf', '86146a42bd6a11eb9d06185e0f154c43', '请假流程', 'leave', null, '0', 'flow', '88', '3', null, null, null, null, null, null, null, null, null, null, null, null, '3', null, '2021-05-25 23:04:38', '10100', '2021-05-26 13:49:28', '10101', '1');
+INSERT INTO `tbl_flow_model_info` VALUES ('c5ee7edcab8712924e347788f95a8eaf', '86146a42bd6a11eb9d06185e0f154c43', '请假流程', 'leave', null, '0', 'flow', '88', '3', null, null, null, null, null, null, null, null, null, null, null, null, null, '1', '2', null, '2021-05-25 23:04:38', '10100', '2021-06-18 07:28:46', '10100', '1');
 
 -- ----------------------------
 -- Table structure for tbl_front_account
