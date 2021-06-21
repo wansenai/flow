@@ -99,9 +99,9 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     private String processDockingName;
     /**
-     * 适用公司(多个公司，以逗号隔开)
+     * 适用公司 json id:name
      */
-    private String applyCompanyId;
+    private String applyCompanies;
     /**
      * 流程中心是否显示 1 是 0 否
      */
@@ -111,18 +111,17 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     private Integer appliedRange;
     /**
-     * 授权功能点
+     * 授权功能 code:name
      */
     private String authPointList;
+    /**
+     * 授权管理人员 {code:name}
+     */
+    private String superuser;
     /**
      * 业务表单的URL
      */
     private String businessUrl;
-    /**
-     * 功能范围
-     * {@link com.dragon.flow.enm.form.FlowAuthorizeRange}
-     */
-    private String functionRange;
     /**
      * 跳过设置
      * @see com.dragon.flow.enm.form.TaskSkipSetEnum
@@ -137,18 +136,8 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     private Integer orderNo;
 
-    /**
-     * 授权用户ids
-     */
-    @TableField(exist = false)
-    private String userIds;
     @TableField(exist = false)
     private List<String> categoryCodes;
-    /**
-     * 授权用户名称
-     */
-    @TableField(exist = false)
-    private String userNames;
     /**
      * 流程定义ID
      */
@@ -165,9 +154,4 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     @TableField(exist = false)
     private Integer modelType;
-    /**
-     * 功能点列表
-     */
-//    private List<AuthModelpoint> authModelpoints;
-
 }
