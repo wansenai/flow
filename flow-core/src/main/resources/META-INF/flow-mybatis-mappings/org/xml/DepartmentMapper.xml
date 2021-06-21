@@ -47,7 +47,7 @@
         LEFT JOIN tbl_org_personal t3 ON t1.leader_code = t3.`code`
         where t1.del_flag = 1
         <if test="depart.keyword!=null and depart.keyword!=''">
-          and  t1.name like concat('%', #{depart.keyword}, '%') or t1.code like concat('%', #{depart.keyword}, '%')
+          and  (t1.name like concat('%', #{depart.keyword}, '%') or t1.code like concat('%', #{depart.keyword}, '%'))
         </if>
         <if test="depart.companyId!=null and depart.companyId!=''">
             and t1.company_id=#{depart.companyId}
