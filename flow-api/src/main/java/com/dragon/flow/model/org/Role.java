@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @program: flow
@@ -40,4 +41,6 @@ public class Role extends BaseModel implements Serializable {
     private String companyName;
     @TableField(exist = false)
     private String personalId;
+    @TableField(exist = false)
+    private List<Company> companies;
 }
