@@ -43,4 +43,6 @@ public class Role extends BaseModel implements Serializable {
     private String personalId;
     @TableField(exist = false)
     private List<Company> companies;
+    @TableField(exist = false)
+    private List<Personal> personals;
 }
