@@ -57,18 +57,20 @@
       <template #rolesRender="{ record }">
         <div class="personal-roles">
           <Spin :spinning="deleteRoleLoading&&deleteRoleLoading[record.id]?deleteRoleLoading[record.id]:false">
-          <Tag v-for="role in record.roles">
-            {{role.name}}
-            <Popconfirm
-              title="确定要删除吗?"
-              ok-text="确定"
-              cancel-text="取消"
-              @confirm="confirmDeleteRole(record.id, role.id)"
-              @cancel="cancelDeleteRole"
-            >
-              <DeleteOutlined color="error" style="color:#d9595b"/>
-            </Popconfirm>
-          </Tag>
+            <Space>
+              <Tag class="role-item" v-for="role in record.roles">
+                {{role.name}}
+                <Popconfirm
+                  title="确定要删除吗?"
+                  ok-text="确定"
+                  cancel-text="取消"
+                  @confirm="confirmDeleteRole(record.id, role.id)"
+                  @cancel="cancelDeleteRole"
+                >
+                  <DeleteOutlined color="error" style="color:#d9595b"/>
+                </Popconfirm>
+              </Tag>
+            </Space>
           </Spin>
         </div>
       </template>
@@ -102,13 +104,13 @@
   import PersonalModal from './PersonalModal.vue';
   import RoleSelector from '/@/views/components/selector/roleSelector/index.vue';
   import PersonalSelector from '/@/views/components/selector/personalSelector/index.vue';
-  import {Tag, Popconfirm, Avatar, Badge, Spin, Image} from "ant-design-vue";
+  import {Tag, Popconfirm, Avatar, Badge, Spin, Space, Image} from "ant-design-vue";
 
   import { columns, searchFormSchema } from './personal.data';
 
   export default defineComponent({
     name: 'PersonalManagement',
-    components: { BasicTable, Spin, PageWrapper, OrgTree, PersonalModal,
+    components: { BasicTable, Spin, Space, PageWrapper, OrgTree, PersonalModal,
       RoleSelector, PersonalSelector, TableAction, Avatar, Badge, Popconfirm, Tag, Image,
       DeleteOutlined, ManOutlined, WomanOutlined, UserOutlined
     },
@@ -301,10 +303,13 @@
   });
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .personal-roles{
-    >span{
-      margin-right: 4px;
+    .ant-space-align-center{
+      flex-flow: wrap;
+      .role-item{
+        margin: 2px 0;
+      }
     }
   }
 </style>

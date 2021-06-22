@@ -9,8 +9,8 @@ enum Api {
  * @description: Get user menu based on id
  */
 
-export const getMenuListById = (params: getMenuListByIdParams) => {
-  return defHttp.get<getMenuListByIdParamsResultModel>({ url: Api.GetLoginModules, params });
+export const getMenuList = () => {
+  return defHttp.get<getMenuListByIdParamsResultModel>({ url: Api.GetLoginModules });
 };
 
 /**

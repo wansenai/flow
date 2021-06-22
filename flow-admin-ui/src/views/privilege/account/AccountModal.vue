@@ -3,12 +3,12 @@
     <BasicForm @register="registerForm" class="accountForm">
       <template #headImg="{ model, field }">
         <Upload style="margin: auto;"
-                name="avatar"
-                list-type="picture-card"
-                class="avatar-uploader"
-                :show-upload-list="false"
-                :before-upload="beforeUpload"
-                :multiple="false"
+          name="avatar"
+          list-type="picture-card"
+          class="avatar-uploader"
+          :show-upload-list="false"
+          :before-upload="beforeUpload"
+          :multiple="false"
         >
           <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
           <div v-else>

@@ -1,8 +1,8 @@
 <template>
   <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
-    <DictTypeTree class="w-2/8 xl:w-2/8" @select="handleDictTypeSelect" />
-    <DictionaryTable ref="dictionaryRef" @handleSelect="handleDictSelect" class="w-3/8 xl:w-3/8" />
-    <DictionaryItemTable ref="dictionaryItemRef" class="w-3/8 xl:w-3/8" />
+    <DictTypeTree class="w-1/5 xl:w-1/5" @select="handleDictTypeSelect" />
+    <DictionaryTable ref="dictionaryRef" @handleSelect="handleDictSelect" class="w-2/5 xl:w-2/5" />
+    <DictionaryItemTable ref="dictionaryItemRef" class="w-2/5 xl:w-2/5" />
 
   </PageWrapper>
 </template>

@@ -16,6 +16,7 @@
     emits: ['success', 'register'],
     setup(_, { emit }) {
       const isUpdate = ref(true);
+      const rowId = ref('');
 
       const [registerForm, { setFieldsValue, updateSchema, resetFields, validate }] = useForm({
         labelWidth: 100,
@@ -32,6 +33,7 @@
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {
+          rowId.value = data.record.id;
           setFieldsValue({
             ...data.record,
           });
@@ -54,12 +56,12 @@
 
       async function handleSubmit() {
         try {
-          setModalProps({ confirmLoading: true });
           const values = await validate();
+          setModalProps({ confirmLoading: true });
           // TODO custom api
           console.log(values);
           closeModal();
-          emit('success');
+          emit('success', { isUpdate: unref(isUpdate), values: { ...values, id: rowId.value } });
         } finally {
           setModalProps({ confirmLoading: false });
         }

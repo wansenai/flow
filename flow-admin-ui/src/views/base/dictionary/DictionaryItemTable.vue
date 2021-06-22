@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white m-4 mr-0 overflow-hidden dictionary">
-    <BasicTable @register="registerTable" class="w-12/12 xl:w-12/12">
+    <BasicTable @register="registerTable" >
       <template #toolbar>
         <a-button v-if="dictId!==''" type="primary" @click="handleCreate">新增</a-button>
       </template>

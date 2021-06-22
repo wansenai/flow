@@ -6,18 +6,20 @@
   <div :class="`${prefixCls}__toolbar`">
     <slot name="toolbar"></slot>
     <Divider type="vertical" v-if="$slots.toolbar && showTableSetting" />
-    <TableSetting :setting="tableSetting" v-if="showTableSetting" />
+    <TableSetting
+      :setting="tableSetting"
+      v-if="showTableSetting"
+      @columns-change="handleColumnChange"
+    />
   </div>
 </template>
 <script lang="ts">
-  import type { TableSetting } from '../types/table';
+  import type { TableSetting, ColumnChangeParam } from '../types/table';
   import type { PropType } from 'vue';
-
   import { defineComponent } from 'vue';
   import { Divider } from 'ant-design-vue';
   import TableSettingComponent from './settings/index.vue';
   import TableTitle from './TableTitle.vue';
-
   import { useDesign } from '/@/hooks/web/useDesign';
 
   export default defineComponent({
@@ -42,9 +44,13 @@
         default: '',
       },
     },
-    setup() {
+    emits: ['columns-change'],
+    setup(_, { emit }) {
       const { prefixCls } = useDesign('basic-table-header');
-      return { prefixCls };
+      function handleColumnChange(data: ColumnChangeParam[]) {
+        emit('columns-change', data);
+      }
+      return { prefixCls, handleColumnChange };
     },
   });
 </script>
