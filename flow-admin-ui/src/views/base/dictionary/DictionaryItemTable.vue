@@ -63,7 +63,6 @@
         showIndexColumn: false,
         showTableSetting: false,
         bordered: true,
-        pagination: true,
         actionColumn: {
           width: 80,
           title: '操作',

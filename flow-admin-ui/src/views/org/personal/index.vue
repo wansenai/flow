@@ -143,11 +143,19 @@
         showIndexColumn: false,
         bordered: true,
         actionColumn: {
-          // fixed: true,
           width: 120,
           title: '操作',
           dataIndex: 'action',
           slots: { customRender: 'action' },
+        },
+        beforeFetch:(params)=>{
+          let searchInfo = {};
+          if(currentNode.value?.sourceType === '1'){
+            searchInfo = {companyId: unref(currentNode).id};
+          }else if(currentNode.value?.sourceType === '2'){
+            searchInfo = {deptId: unref(currentNode).id};
+          }
+          return {...params, ...searchInfo}
         },
       });
 
