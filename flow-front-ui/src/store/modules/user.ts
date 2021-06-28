@@ -1,25 +1,16 @@
 import type { UserInfo } from '/#/store';
-import type { ErrorMessageMode } from '/@/utils/http/axios/types';
-
+import type { ErrorMessageMode } from '/#/axios';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
-
 import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
 import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
-
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import {
-  GetUserInfoByUserIdModel,
-  GetUserInfoByUserIdParams,
-  LoginParams,
-} from '/@/api/sys/model/userModel';
-
-import { getUserInfoById, loginApi } from '/@/api/sys/user';
-
+import { GetUserInfoModel, LoginParams } from '/@/api/sys/model/userModel';
+import { getUserInfo, loginApi } from '/@/api/sys/user';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
-import router from '/@/router';
+import { router } from '/@/router';
 
 interface UserState {
   userInfo: Nullable<UserInfo>;
@@ -84,7 +75,7 @@ export const useUserStore = defineStore({
         goHome?: boolean;
         mode?: ErrorMessageMode;
       }
-    ): Promise<GetUserInfoByUserIdModel | null> {
+    ): Promise<GetUserInfoModel | null> {
       try {
         const { goHome = true, mode, ...loginParams } = params;
         const data = await loginApi(loginParams, mode);
@@ -93,7 +84,7 @@ export const useUserStore = defineStore({
         // save token
         this.setToken(sessionId);
         // get user info
-        const userInfo = await this.getUserInfoAction({ userId:id });
+        const userInfo = await this.getUserInfoAction();
 
         const sessionTimeout = this.sessionTimeout;
         sessionTimeout && this.setSessionTimeout(false);
@@ -103,8 +94,8 @@ export const useUserStore = defineStore({
         return Promise.reject(error);
       }
     },
-    async getUserInfoAction({ userId }: GetUserInfoByUserIdParams) {
-      const userInfo = await getUserInfoById({ userId });
+    async getUserInfoAction() {
+      const userInfo = await getUserInfo();
       const { roles } = userInfo;
       // const roleList = roles.map((item) => item.value) as RoleEnum[];
       const roleList = ['super'];

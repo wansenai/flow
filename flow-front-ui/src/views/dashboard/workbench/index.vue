@@ -1,13 +1,14 @@
 <template>
   <PageWrapper class="!mt-4">
     <template #headerContent> <WorkbenchHeader /> </template>
-    <div class="lg:flex">
-      <div class="lg:w-7/10 w-full enter-y">
+
+    <div class="md:flex w-full enter-y">
+      <div class="w-2/3">
         <NoticeInfo :dataSource="noticeInfoItems" :loading="loading" class="!my-4 enter-y" />
         <SystemListCard :loading="loading" class="enter-y" />
       </div>
-      <div class="lg:w-3/10 !pl-4">
-        <BannerInfo :dataSource="bannerInfoItems" class="!my-4 enter-y" :loading="loading"></BannerInfo>
+      <div class="md:w-1/3 pl-4">
+        <BannerInfo :dataSource="bannerInfoItems" class="!my-4" :loading="loading"></BannerInfo>
         <DynamicInfo :dataSource="dynamicInfoItems" :loading="loading" class="!my-4 enter-y" />
       </div>
     </div>
