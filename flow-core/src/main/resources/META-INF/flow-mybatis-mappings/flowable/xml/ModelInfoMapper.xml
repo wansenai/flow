@@ -58,10 +58,10 @@
             <if test="modelInfo.appSn!='' and modelInfo.appSn!=null">
                 and t1.`app_sn` = #{modelInfo.appSn}
             </if>
-            <if test="modelInfo.formType!=null and modelInfo.formType!=''">
+            <if test="modelInfo.formType!=null">
                 and t1.form_type=#{modelInfo.formType}
             </if>
-            <if test="modelInfo.modelType!='' and modelInfo.modelType!=null">
+            <if test="modelInfo.modelType!=null">
                 and t2.model_type=#{modelInfo.modelType}
             </if>
             <choose>
