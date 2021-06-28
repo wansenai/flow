@@ -1,11 +1,13 @@
 package com.dragon.flow.model.flowable;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author bruce.liu
@@ -23,14 +25,17 @@ public class FlowListener implements Serializable {
 
     //主键
     private String id;
+    //类型 java 表达式  代理表达式
+    private String type;
     //名称
     private String name;
     //监听器类型  任务监听还是执行监听
     private String listenerType;
-    //类型 java 表达式  代理表达式
-    private String type;
     //值
     private String value;
     //备注
     private String remark;
+
+    @TableField(exist = false)
+    private List<FlowListenerParam> flowListenerParamList;
 }

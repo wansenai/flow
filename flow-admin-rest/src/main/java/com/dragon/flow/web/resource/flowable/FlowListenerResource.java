@@ -72,9 +72,23 @@ public class FlowListenerResource extends BaseResource {
      * @return
      */
     @PostMapping(value = "/deleteById/{id}", produces = "application/json")
-    public ReturnVo<ModelInfo> deleteById(@PathVariable String id) {
-        ReturnVo<ModelInfo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+    public ReturnVo<FlowListener> deleteById(@PathVariable String id) {
+        ReturnVo<FlowListener> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         flowListenerService.deleteById(id);
+        return returnVo;
+    }
+
+    /**
+     * 通过id获取监听器 包含参数
+     *
+     * @param id 参数
+     * @return
+     */
+    @GetMapping(value = "/getById/{id}", produces = "application/json")
+    public ReturnVo<FlowListener> getById(@PathVariable String id) {
+        ReturnVo<FlowListener> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        FlowListener listener = flowListenerService.getFlowListenerById(id);
+        returnVo.setData(listener);
         return returnVo;
     }
 

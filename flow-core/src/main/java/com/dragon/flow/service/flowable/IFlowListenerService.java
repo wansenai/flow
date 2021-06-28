@@ -2,6 +2,7 @@ package com.dragon.flow.service.flowable;
 
 import com.dragon.flow.model.flowable.FlowListener;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.FlowList;
 
 import java.util.List;
 
@@ -22,4 +23,13 @@ public interface IFlowListenerService extends IService<FlowListener> {
     List<FlowListener> getList(FlowListener flowListener) ;
 
     void deleteById(String id) ;
+
+    /**
+     * 通过类型和名称查询对象
+     * @param type 类型
+     * @param name 名称
+     * @return
+     */
+    FlowListener getFlowListenerByNameAndType(String type,String name) ;
+    FlowListener getFlowListenerById(String id);
 }

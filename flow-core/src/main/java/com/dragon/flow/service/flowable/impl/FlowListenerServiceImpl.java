@@ -7,6 +7,7 @@ import com.dragon.flow.model.flowable.FlowListenerParam;
 import com.dragon.flow.service.flowable.IFlowListenerParamService;
 import com.dragon.flow.service.flowable.IFlowListenerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.FlowList;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,4 +47,22 @@ public class FlowListenerServiceImpl extends ServiceImpl<IFlowListenerMapper, Fl
         flowListenerParamService.remove(flowListenerParamLambdaQueryWrapper);
         this.removeById(id);
     }
+
+    @Override
+    public FlowListener getFlowListenerByNameAndType(String type, String name) {
+        LambdaQueryWrapper<FlowListener> flowListenerLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        flowListenerLambdaQueryWrapper.eq(FlowListener::getType, type)
+                .eq(FlowListener::getName, name);
+        return getOne(flowListenerLambdaQueryWrapper);
+    }
+
+    @Override
+    public FlowListener getFlowListenerById(String id) {
+        FlowListener flowListener = this.getById(id);
+        List<FlowListenerParam> list = flowListenerParamService.getListByListenerId(id);
+        flowListener.setFlowListenerParamList(list);
+        return flowListener;
+    }
+
+
 }
