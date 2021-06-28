@@ -47,7 +47,6 @@ public class Company extends BaseModel implements Serializable{
      * 公司code
      */
     private String code;
-    
     /**
      * 描述
      */
