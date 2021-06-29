@@ -1,30 +1,26 @@
 <template>
   <PageWrapper >
-<!--    <template #headerContent> <WorkbenchHeader /> </template>-->
-    <div class="lg:flex">
-      <div class="lg:w-2/10 w-full !mr-4 mt-4 enter-y">
-        <ITWikiCard :loading="loading" class="enter-y" />
+    <div class="flex mt-4">
+      <div class="w-2/3 flex">
+        <div class="w-1/3">
+          <ITWikiCard :loading="loading" class="enter-y" />
+        </div>
+        <div class="w-2/3 pl-4">
+          <BannerInfo :dataSource="bannerInfoItems" height="264" class="enter-y" :loading="loading"></BannerInfo>
+        </div>
       </div>
-      <div class="lg:w-4/10 w-full !mr-4 enter-y">
-        <BannerInfo :dataSource="bannerInfoItems" height="270" class="!my-4 enter-y" :loading="loading"></BannerInfo>
-      </div>
-      <div class="lg:w-4/10 w-full enter-y">
-        <NoticeInfo :dataSource="noticeInfoItems" :loading="loading" class="!my-4 enter-y" />
+      <div class="w-1/3 pl-4">
+        <NoticeInfo :dataSource="noticeInfoItems" :loading="loading" class="enter-y" />
       </div>
     </div>
 
-    <div class="lg:flex">
-      <div class="lg:w-2/10 w-full !mr-4 enter-y">
+    <div class="flex mt-4">
+      <div class="w-2/5">
         <ITContactCard :loading="loading" class="enter-y" />
       </div>
-      <div class="lg:w-8/10 w-full enter-y">
+      <div class="w-3/5 pl-4">
         <DynamicInfo :dataSource="dynamicInfoItems" :loading="loading" class="enter-y" />
         <CommonDownCard :loading="loading" class="enter-y !mt-4" />
-      </div>
-    </div>
-    <div class="lg:flex mt-4">
-      <div class="lg:w-10/10 w-full enter-y">
-
       </div>
     </div>
   </PageWrapper>
