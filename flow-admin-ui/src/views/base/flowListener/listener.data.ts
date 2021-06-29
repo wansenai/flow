@@ -45,6 +45,41 @@ export const columns: BasicColumn[] = [
   },
 ];
 
+/*
+* id
+listenerId
+name
+type
+value
+* */
+export const propertiesColumns: BasicColumn[] = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+    ifShow: false,
+  },
+  {
+    title: 'listenerId',
+    dataIndex: 'listenerId',
+    ifShow: false,
+  },
+  {
+    title: '名称',
+    dataIndex: 'name',
+    align: 'left',
+  },
+  {
+    title: '值',
+    dataIndex: 'value',
+    align: 'left',
+  },
+  {
+    title: '类型',
+    dataIndex: 'type',
+    align: 'left',
+  },
+];
+
 export const searchFormSchema: FormSchema[] = [
   {
     field: 'listenerType',

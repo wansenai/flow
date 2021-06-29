@@ -9,10 +9,21 @@ enum Api {
   SaveOrUpdate = '/flow/flowable/flowListener/saveOrUpdate',
   Delete = '/flow/flowable/flowListener/deleteById',
   CheckEntityExist = '/flow/flowable/flowListener/checkEntityExist',
+  GetListenerParamList = '/flow/flowable/flowListenerParam/getList',  // /flow/flowable/flowListenerParam/getList/{listenerId}
 }
 
 export const getAll = (params?: AppPageParams) => {
   return defHttp.post<AppInfo>({ url: Api.GetAll, params }).then((res: any)=>{
+    // res.forEach(item=>{
+    //   item.label = item.name;
+    //   item.value = item.value;
+    // });
+    return Promise.resolve(res);
+  })
+};
+
+export const getListenerParamList = (params: any) => {
+  return defHttp.get({ url: Api.GetListenerParamList + '/' + params.listenerId}).then((res: any)=>{
     // res.forEach(item=>{
     //   item.label = item.name;
     //   item.value = item.value;
