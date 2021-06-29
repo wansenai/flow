@@ -110,6 +110,8 @@ public class ModelInfo extends BaseModel implements Serializable {
      * 适用范围 @see ModelAppliedRangeEnum
      */
     private Integer appliedRange;
+    @TableField(exist = false)
+    private String appliedRangeName;
     /**
      * 授权功能 code:name
      */
