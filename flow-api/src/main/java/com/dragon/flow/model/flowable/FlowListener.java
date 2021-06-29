@@ -22,6 +22,8 @@ public class FlowListener implements Serializable {
     public static final String TYPE_CLASS = "class";
     public static final String TYPE_EXPRESSION = "expression";
     public static final String TYPE_DELEGATEEXPRESSION = "delegateExpression";
+    public static final String LISTENER_TYPE_TASK = "taskListener";
+    public static final String LISTENER_TYPE_EXECUTION = "executionListener";
 
     //主键
     private String id;
