@@ -10,6 +10,7 @@
         <result column="company_name" property="companyName" />
         <result column="name" property="name" />
         <result column="sn" property="sn" />
+        <result column="type" property="type" />
         <result column="note" property="note" />
         <result column="create_time" property="createTime" />
         <result column="creator" property="creator" />
