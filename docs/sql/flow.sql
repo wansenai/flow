@@ -7057,6 +7057,7 @@ CREATE TABLE `tbl_org_role` (
   `name` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '名称',
   `sn` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '标识',
   `note` varchar(1024) COLLATE utf8_bin DEFAULT NULL COMMENT '备注',
+  `type` int(11) DEFAULT 0,
   `order_no` int(11) DEFAULT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   `creator` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',

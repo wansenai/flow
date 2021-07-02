@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.dragon.flow.enm.org.RoleTypeEnum;
 import com.dragon.tools.common.BaseModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,6 +32,12 @@ public class Role extends BaseModel implements Serializable {
     private String positionId;
     // 名称 20
     private String name;
+    /**
+     * 普通角色0 公司矩阵角色为1 部门矩阵角色为2
+     *
+     * @see RoleTypeEnum
+     */
+    private Integer type = 0;
     // 标示 30
     private String sn;
     // 备注 80
