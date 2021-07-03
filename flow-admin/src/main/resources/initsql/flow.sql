@@ -7053,27 +7053,26 @@ CREATE TABLE `tbl_org_role` (
 -- ----------------------------
 -- Records of tbl_org_role
 -- ----------------------------
-INSERT INTO `tbl_org_role` VALUES ('1', '1', null, '董事长', 'dsz', null, '1', '2021-05-24 22:58:34', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('10', '2', null, '人资部长', 'bj_rzbz', null, '5', '2021-05-25 20:13:22', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('11', '3', null, '董事长', 'tj_dsz', null, '1', '2021-05-25 20:14:03', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('12', '3', null, '总裁', 'tj_zc', null, '2', '2021-05-25 20:14:19', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('13', '3', null, '总经理', 'tj_zjl', null, '3', '2021-05-25 20:14:34', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('14', '3', null, '技术部长', 'tj_jsbz', null, '4', '2021-05-25 20:14:51', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('15', '3', null, '人资部长', 'tj_rzbz', null, '5', '2021-05-25 20:15:09', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('16', '4', null, '董事长', 'hb_dsz', null, '1', '2021-05-25 20:15:32', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('17', '4', null, '总裁', 'hb_zc', null, '2', '2021-05-25 20:15:53', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('18', '4', null, '总经理', 'hb_zjl', null, '3', '2021-05-25 20:16:11', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('19', '4', null, '技术部长', 'hb_jsbz', null, '4', '2021-05-25 20:16:51', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('2', '1', null, '总裁', 'zc', null, '2', '2021-05-24 22:58:53', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('20', '4', null, '人资部长', 'hb_rzbz', null, '5', '2021-05-25 20:16:54', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('3', '1', null, '总经理', 'zjl', null, '3', '2021-05-24 22:59:15', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('4', '1', null, '技术部长', 'jsbz', null, '4', '2021-05-24 23:00:41', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('5', '1', null, '人资部长', 'rzbz', null, '5', '2021-05-24 23:01:10', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('6', '2', null, '董事长', 'bj_dsz', null, '1', '2021-05-24 22:58:34', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('7', '2', null, '总裁', 'bj_zc', null, '2', '2021-05-25 20:12:20', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('8', '2', null, '总经理', 'bj_zjl', null, '3', '2021-05-25 20:12:39', null, null, null, '1');
-INSERT INTO `tbl_org_role` VALUES ('9', '2', null, '技术部长', 'bj_jsbz', null, '4', '2021-05-25 20:13:02', null, null, null, '1');
-
+INSERT INTO `tbl_org_role` VALUES ('1', '1', null, '董事长', 'dsz', null, 0, '1', '2021-05-24 22:58:34', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('10', '2', null, '人资部长', 'bj_rzbz', null, 0, '5', '2021-05-25 20:13:22', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('11', '3', null, '董事长', 'tj_dsz', null, 0, '1', '2021-05-25 20:14:03', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('12', '3', null, '总裁', 'tj_zc', null, 0, '2', '2021-05-25 20:14:19', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('13', '3', null, '总经理', 'tj_zjl', null, 0, '3', '2021-05-25 20:14:34', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('14', '3', null, '技术部长', 'tj_jsbz', null, 0, '4', '2021-05-25 20:14:51', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('15', '3', null, '人资部长', 'tj_rzbz', null, 0, '5', '2021-05-25 20:15:09', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('16', '4', null, '董事长', 'hb_dsz', null, 0, '1', '2021-05-25 20:15:32', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('17', '4', null, '总裁', 'hb_zc', null, 0, '2', '2021-05-25 20:15:53', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('18', '4', null, '总经理', 'hb_zjl', null, 0, '3', '2021-05-25 20:16:11', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('19', '4', null, '技术部长', 'hb_jsbz', null, 0, '4', '2021-05-25 20:16:51', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('2', '1', null, '总裁', 'zc', null, 0, '2', '2021-05-24 22:58:53', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('20', '4', null, '人资部长', 'hb_rzbz', null, 0, '5', '2021-05-25 20:16:54', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('3', '1', null, '总经理', 'zjl', null, 0, '3', '2021-05-24 22:59:15', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('4', '1', null, '技术部长', 'jsbz', null, 0, '4', '2021-05-24 23:00:41', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('5', '1', null, '人资部长', 'rzbz', null, 0, '5', '2021-05-24 23:01:10', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('6', '2', null, '董事长', 'bj_dsz', null, 0, '1', '2021-05-24 22:58:34', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('7', '2', null, '总裁', 'bj_zc', null, 0, '2', '2021-05-25 20:12:20', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('8', '2', null, '总经理', 'bj_zjl', null, 0, '3', '2021-05-25 20:12:39', null, null, null, '1');
+INSERT INTO `tbl_org_role` VALUES ('9', '2', null, '技术部长', 'bj_jsbz', null, 0, '4', '2021-05-25 20:13:02', null, null, null, '1');
 -- ----------------------------
 -- Table structure for tbl_org_role_position_personal
 -- ----------------------------
