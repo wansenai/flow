@@ -50,7 +50,7 @@
         tbl_flow_model_info t1
         INNER JOIN act_de_model t2 ON t1.model_id = t2.id
         INNER JOIN tbl_base_category t3 ON t1.category_code = t3.`code`
-        INNER JOIN tbl_base_app t4 on t1.app_sn=t4.sn
+        LEFT JOIN tbl_base_app t4 on t1.app_sn=t4.sn
         <where>
             <if test="modelInfo.keyword!='' and modelInfo.keyword!=null">
                 and t1.`name` LIKE concat('%', #{modelInfo.keyword}, '%')
