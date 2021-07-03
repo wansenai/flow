@@ -11,6 +11,7 @@ import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
   Login = '/login',
+  Logout = '/logout',
   GetUserInfoById = '/getUserInfoById',
   GetUserInfoByToken = '/flow/main/getLoginUser',
   GetPermissions = '/flow/main/getPermissions',
@@ -29,6 +30,13 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
       errorMessageMode: mode,
     }
   );
+}
+
+/**
+ * @description: user login api
+ */
+export function logout() {
+  return defHttp.post<any>({url: Api.Logout,});
 }
 
 /**

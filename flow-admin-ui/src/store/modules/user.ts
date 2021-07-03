@@ -12,7 +12,7 @@ import {
   LoginParams,
 } from '/@/api/sys/model/userModel';
 
-import { getUserInfo, loginApi, getLoginInfo } from '/@/api/sys/user';
+import { getUserInfo, loginApi, logout, getLoginInfo } from '/@/api/sys/user';
 
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
@@ -112,6 +112,7 @@ export const useUserStore = defineStore({
      * @description: logout
      */
     logout(goLogin = false) {
+      logout();
       goLogin && router.push(PageEnum.BASE_LOGIN);
     },
 
