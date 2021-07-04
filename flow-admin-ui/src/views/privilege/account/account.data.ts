@@ -127,8 +127,8 @@ export const accountFormSchema: FormSchema[] = [
     component: 'Input',
     slot: 'headImg',
     colProps: {
-      style: 'margin: auto;position: absolute;right: 20px;',
-      span: 5,
+      style: 'margin: auto;position: absolute;right: -100px;',
+      span: 10,
     },
   },
   {

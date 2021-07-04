@@ -1,5 +1,5 @@
 <script lang="tsx">
-  import type { ReplaceFields, Keys, CheckKeys, TreeActionType, TreeItem } from './types';
+  import type { ReplaceFields, Keys, CheckKeys, TreeActionType, TreeItem } from './typing';
 
   import {
     defineComponent,
@@ -11,6 +11,7 @@
     toRaw,
     watch,
     CSSProperties,
+    onMounted,
   } from 'vue';
   import { Tree, Empty } from 'ant-design-vue';
   import { TreeIcon } from './TreeIcon';
@@ -24,13 +25,12 @@
 
   import { useTree } from './useTree';
   import { useContextMenu } from '/@/hooks/web/useContextMenu';
-  import { useExpose } from '/@/hooks/core/useExpose';
   import { useDesign } from '/@/hooks/web/useDesign';
 
   import { basicProps } from './props';
   import { CreateContextOptions } from '/@/components/ContextMenu';
 
-  import { CheckEvent } from './types';
+  import { CheckEvent } from './typing';
 
   interface State {
     expandedKeys: Keys;
@@ -43,7 +43,7 @@
     inheritAttrs: false,
     props: basicProps,
     emits: ['update:expandedKeys', 'update:selectedKeys', 'update:value', 'change', 'check'],
-    setup(props, { attrs, slots, emit }) {
+    setup(props, { attrs, slots, emit, expose }) {
       const state = reactive<State>({
         checkStrictly: props.checkStrictly,
         expandedKeys: props.expandedKeys || [],
@@ -209,6 +209,15 @@
         treeDataRef.value = props.treeData as TreeItem[];
       });
 
+      onMounted(() => {
+        const level = parseInt(props.defaultExpandLevel);
+        if (level > 0) {
+          state.expandedKeys = filterByLevel(level);
+        } else if (props.defaultExpandAll) {
+          expandAll(true);
+        }
+      });
+
       watchEffect(() => {
         state.expandedKeys = props.expandedKeys;
       });
@@ -267,7 +276,7 @@
         },
       };
 
-      useExpose<TreeActionType>(instance);
+      expose(instance);
 
       function renderAction(node: TreeItem) {
         const { actionList } = props;

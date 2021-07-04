@@ -9,13 +9,12 @@ export const columns: BasicColumn[] = [
   {
     title: '编码',
     dataIndex: 'code',
-    width: 100,
     align: 'left',
   },
   {
     title: '排序',
     dataIndex: 'orderNo',
-    width: 80,
+    width: 100,
   },
   {
     title: '创建时间',

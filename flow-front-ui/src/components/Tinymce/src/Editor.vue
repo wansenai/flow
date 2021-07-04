@@ -6,15 +6,16 @@
       @done="handleDone"
       v-if="showImageUpload"
       v-show="editorRef"
+      :disabled="disabled"
     />
     <textarea :id="tinymceId" ref="elRef" :style="{ visibility: 'hidden' }"></textarea>
   </div>
 </template>
 
 <script lang="ts">
+  import type { RawEditorSettings } from 'tinymce';
   import tinymce from 'tinymce/tinymce';
   import 'tinymce/themes/silver';
-
   import 'tinymce/icons/default/icons';
   import 'tinymce/plugins/advlist';
   import 'tinymce/plugins/anchor';
@@ -56,11 +57,8 @@
     onUnmounted,
     onDeactivated,
   } from 'vue';
-
   import ImgUpload from './ImgUpload.vue';
-
   import { toolbar, plugins } from './tinymce';
-
   import { buildShortUUID } from '/@/utils/uuid';
   import { bindHandlers } from './helper';
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
@@ -71,7 +69,7 @@
 
   const tinymceProps = {
     options: {
-      type: Object as PropType<any>,
+      type: Object as PropType<Partial<RawEditorSettings>>,
       default: {},
     },
     value: {
@@ -94,7 +92,6 @@
       required: false,
       default: 400,
     },
-
     width: {
       type: [Number, String] as PropType<string | number>,
       required: false,
@@ -141,7 +138,7 @@
         return ['zh_CN', 'en'].includes(lang) ? lang : 'zh_CN';
       });
 
-      const initOptions = computed(() => {
+      const initOptions = computed((): RawEditorSettings => {
         const { height, options, toolbar, plugins } = props;
         const publicPath = import.meta.env.VITE_PUBLIC_PATH || '/';
         return {
@@ -156,16 +153,27 @@
           default_link_target: '_blank',
           link_title: false,
           object_resizing: false,
+          auto_focus: true,
           skin: skinName.value,
           skin_url: publicPath + 'resource/tinymce/skins/ui/' + skinName.value,
           content_css:
             publicPath + 'resource/tinymce/skins/ui/' + skinName.value + '/content.min.css',
           ...options,
-          setup: (editor: any) => {
+          setup: (editor) => {
             editorRef.value = editor;
-            editor.on('init', (e: Event) => initSetup(e));
+            editor.on('init', (e) => initSetup(e));
           },
         };
+      });
+
+      const disabled = computed(() => {
+        const { options } = props;
+        const getdDisabled = options && Reflect.get(options, 'readonly');
+        const editor = unref(editorRef);
+        if (editor) {
+          editor.setMode(getdDisabled ? 'readonly' : 'design');
+        }
+        return getdDisabled ?? false;
       });
 
       watch(
@@ -210,7 +218,7 @@
         tinymce.init(unref(initOptions));
       }
 
-      function initSetup(e: Event) {
+      function initSetup(e) {
         const editor = unref(editorRef);
         if (!editor) {
           return;
@@ -299,6 +307,7 @@
         handleDone,
         editorRef,
         fullscreen,
+        disabled,
       };
     },
   });

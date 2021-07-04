@@ -48,7 +48,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, nextTick } from 'vue';
+  import { defineComponent, ref, unref, nextTick } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { getModules, deleteByIds } from '/@/api/privilege/module';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -136,15 +136,16 @@
           createMessage.warning("有子节点，不能删除！")
           return;
         }
-        deleteByIds([record.id]).then((res) => {
-          console.log(res);
+        deleteByIds([record.id]).then(() => {
           reload();
         });
-        console.log(record);
       }
 
-      function handleSuccess() {
-        reload();
+      async function handleSuccess() {
+        await reload();
+        setTimeout(()=>{
+          expandAll();
+        }, 100)
       }
 
       return {

@@ -203,7 +203,7 @@
           return false;
         }
         getBase64(file, imgUrl => {
-          imageUrl.value = imgUrl;
+            imageUrl.value = imgUrl;
           }
         );
         return false;

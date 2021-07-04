@@ -1,13 +1,16 @@
 import '/@/design/index.less';
-import 'virtual:windi.css';
+import '/@/design/tailwind.css';
 
-import { createApp } from 'vue';
+// Register icon sprite
+import 'virtual:svg-icons-register';
+
 import App from './App.vue';
+import { createApp } from 'vue';
 import { initAppConfigStore } from '/@/logics/initAppConfig';
-import router, { setupRouter } from '/@/router';
+import { setupErrorHandle } from '/@/logics/error-handle';
+import { router, setupRouter } from '/@/router';
 import { setupRouterGuard } from '/@/router/guard';
 import { setupStore } from '/@/store';
-import { setupErrorHandle } from '/@/logics/error-handle';
 import { setupGlobDirectives } from '/@/directives';
 import { setupI18n } from '/@/locales/setupI18n';
 import { registerGlobComp } from '/@/components/registerGlobComp';
@@ -30,7 +33,7 @@ function useTable (app: App) {
   app.use(VXETable)
 }
 
-(async () => {
+async function bootstrap() {
   const app = createApp(App);
 
   app.use(useTable);
@@ -64,4 +67,6 @@ function useTable (app: App) {
   await router.isReady();
 
   app.mount('#app', true);
-})();
+}
+
+void bootstrap();

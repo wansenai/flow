@@ -15,7 +15,7 @@
             <RightOutlined />
           </div>
         </template>
-        <div class="!w-full">
+        <div >
           <Row :gutter="16" style="padding:0 20px;" >
             <Col :span="4" v-for="item in items" :key="item" class="align-center">
               <router-link to="">
@@ -28,7 +28,7 @@
             </Col>
           </Row>
         </div>
-        <div class="!w-full">
+        <div >
           <Row :gutter="16" style="padding:0 20px;" >
             <Col :span="4" v-for="item in items" :key="item" class="align-center">
               <router-link to="" :title="item.desc">
