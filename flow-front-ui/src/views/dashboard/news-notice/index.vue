@@ -5,20 +5,20 @@
         <BannerInfo :dataSource="bannerInfoItems" height="400" class="!my-4 enter-y" :loading="loading"></BannerInfo>
       </div>
     </div>
-    <div class="lg:flex">
-      <div class="lg:w-4/10 w-full !mr-4 enter-y">
+    <div class="flex">
+      <div class="w-1/3 mr-4 enter-y">
         <BannerInfo :dataSource="bannerInfoItems" height="270" class="enter-y" :loading="loading"></BannerInfo>
       </div>
-      <div class="lg:w-6/10 w-full enter-y">
+      <div class="w-2/3 enter-y">
         <NoticeInfo :dataSource="noticeInfoItems" :loading="loading" class="enter-y" />
       </div>
     </div>
 
     <div class="lg:flex mt-4">
-      <div class="lg:w-2/10 w-full !mr-4 enter-y">
+      <div class="w-1/4 w-full !mr-4 enter-y">
         <ITContactCard :loading="loading" class="enter-y" />
       </div>
-      <div class="lg:w-8/10 w-full enter-y">
+      <div class="w-3/4 w-full enter-y">
         <DynamicInfo :dataSource="dynamicInfoItems" :loading="loading" class="enter-y" />
       </div>
     </div>

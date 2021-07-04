@@ -15,14 +15,15 @@
     </div>
 
     <div class="flex mt-4">
-      <div class="w-2/5">
+      <div class="w-1/4 mr-4">
         <ITContactCard :loading="loading" class="enter-y" />
       </div>
-      <div class="w-3/5 pl-4">
+      <div class="w-3/4">
         <DynamicInfo :dataSource="dynamicInfoItems" :loading="loading" class="enter-y" />
         <CommonDownCard :loading="loading" class="enter-y !mt-4" />
       </div>
     </div>
+
   </PageWrapper>
 </template>
 <script lang="ts">
