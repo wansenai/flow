@@ -50,7 +50,7 @@
       const [registerModal, { openModal, setModalProps }] = useModal();
       const currentTreeNode = ref<Recordable>({});
 
-      const [registerTable, { reload }] = useTable({
+      const [registerTable, { reload, setProps }] = useTable({
         title: '列表',
         api: getPagerModel,
         columns,
@@ -107,6 +107,7 @@
       function handleSelect(node:any) {
         currentTreeNode.value = node;
         let searchInfo = {positionSeqId: node?node.id:''};
+        setProps({searchInfo: searchInfo});
         reload({ searchInfo });
       }
 

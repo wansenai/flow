@@ -49,7 +49,6 @@
         formConfig: {
           labelWidth: 120,
           schemas: searchFormSchema,
-          autoSubmitOnEnter: true,
         },
         useSearchForm: true,
         showTableSetting: true,

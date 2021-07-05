@@ -49,7 +49,6 @@
         formConfig: {
           labelWidth: 120,
           schemas: searchFormSchema,
-          autoSubmitOnEnter: true,
         },
         pagination: false,
         striped: false,

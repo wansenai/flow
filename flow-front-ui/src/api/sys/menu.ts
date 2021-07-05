@@ -1,8 +1,8 @@
 import { defHttp } from '/@/utils/http/axios';
-import { getMenuListByIdParams, getMenuListByIdParamsResultModel } from './model/menuModel';
+import { getMenuListResultModel } from './model/menuModel';
 
 enum Api {
-  GetMenuListById = '/getMenuListById',
+  GetMenuList = '/getMenuList',
 }
 
 /**
@@ -242,7 +242,7 @@ const secondRoute = [
   }
 ];
 
-export const getMenuListById = (params: getMenuListByIdParams) => {
+export const getMenuList = () => {
   const routers = [dashboardRoute, hrServiceRoute, itServiceRoute, fncServiceRoute, newsNoticeRoute, ...secondRoute];
   return Promise.resolve(JSON.parse(JSON.stringify(routers)));
 };

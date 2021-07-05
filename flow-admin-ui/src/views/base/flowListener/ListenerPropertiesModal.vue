@@ -9,6 +9,7 @@
   import { BasicForm, Rule, useForm } from '/@/components/Form';
   import { propertiesFormSchema } from './listener.data';
   import { saveOrUpdate, checkEntityExist } from '/@/api/base/app';
+  import { saveOrUpdateProperties } from '/@/api/base/flowListener';
   import {CheckExistParams} from "/@/api/model/baseModel";
 
   export default defineComponent({
@@ -55,7 +56,16 @@
 
         await updateSchema([
           {
-            field: 'sn',
+            field: 'type',
+            componentProps: {
+              options: [
+                {label: '字符串', value: 'string'},
+                {label: '表达式', value: 'expression'},
+              ]
+            }
+          },
+          {
+            field: 'name',
             dynamicRules: () => {
               return [
                 {
@@ -72,7 +82,7 @@
                   max: 40,
                   message: '字符长度不能大于40！',
                 },
-                ...getBaseDynamicRules({id: unref(isUpdate)&&formData&&formData.id||"", field: 'sn', fieldValue: "", fieldName:'标识'}),
+                ...getBaseDynamicRules({id: unref(isUpdate)&&formData&&formData.id||"", field: 'name', fieldValue: "", fieldName:'名称'}),
               ];
             },
           }
@@ -90,8 +100,7 @@
         try {
           setModalProps({ confirmLoading: true });
           const values = await validate();
-          values.status = values.status?1:0;
-          await saveOrUpdate(values);
+          await saveOrUpdateProperties(values);
           closeModal();
           emit('success');
         } finally {

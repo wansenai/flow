@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BasicTable @register="registerTable">
+    <BasicTable @register="registerTable" dense contentFullHeight fixedHeight >
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增 </a-button>
       </template>
@@ -8,14 +8,14 @@
         <TableAction
           :actions="[
             {
+              icon: 'ant-design:plus-outlined',
+              title: '添加参数',
+              onClick: handleAddProperties.bind(null, record)
+            },
+            {
               title: '修改',
               icon: 'clarity:note-edit-line',
               onClick: handleEdit.bind(null, record),
-            },
-            {
-              title: '添加参数',
-              icon: 'ant-design:setting-outlined',
-              onClick: handleEditProperties.bind(null, record),
             },
             {
               title: '删除',
@@ -60,6 +60,11 @@
             <TableAction
               :actions="[
                 {
+                  icon: 'ant-design:plus-outlined',
+                  title: '添加',
+                  click: handleDeleteProperty.bind(null, record)
+                },
+                {
                   icon: 'ant-design:delete-outlined',
                   color: 'error',
                   title: '删除',
@@ -72,7 +77,7 @@
             />
           </template>
         </BasicTable>
-
+        <a-button type="primary">保存</a-button>
       </template>
 
     </BasicTable>
@@ -111,7 +116,6 @@
       const expandedRowKeys = ref([]);
       const currentListener = ref<Recordable>({});
 
-
       const [registerPropertiesModal, { openModal: openPropertiesModal, setModalProps }] = useModal();
 
       const [registerTable, { reload, getForm, setProps }] = useTable({
@@ -127,19 +131,13 @@
         },
         expandedRowKeys: expandedRowKeys,
         expandRowByClick: true,
-        canColDrag: true,
         useSearchForm: true,
         bordered: true,
         showIndexColumn: true,
+        showTableSetting: false,
         pagination: false,
         rowKey: 'id',
         canResize: true,
-        actionColumn: {
-          width: 140,
-          title: '操作',
-          dataIndex: 'action',
-          slots: { customRender: 'action' },
-        },
         onExpand: (expanded, record)=>{
           if(expanded){
             expandedRowKeys.value = [record.id];
@@ -149,6 +147,7 @@
             expandedRowKeys.value = [];
           }
         },
+        resizeHeightOffset:-50,
       });
 
 
@@ -156,7 +155,16 @@
         propertiesTableLoading.value = true;
 
         getListenerParamList({listenerId}).then(res=>{
-          listenerPropertiesData.value[listenerId] = res;
+          if(res && res.length > 0){
+            listenerPropertiesData.value[listenerId] = res;
+          }else{
+            /*listenerPropertiesData.value[listenerId] = [{
+              type: '',
+              value: '',
+              name: '',
+              listenerId: '',
+            }];*/
+          }
         }).finally(()=>{
           propertiesTableLoading.value = false;
         });
@@ -201,24 +209,36 @@
         })
       });
 
-      function handleEditProperties(record: Recordable) {
+      function handleAddProperties(record: Recordable, e) {
+        e.stopPropagation();
         openPropertiesModal(true, {
-          record,
-          isUpdate: true,
+          isUpdate: false,
         });
         setModalProps({
-          title: `修改【${record.name}】的属性`,
+          title: `添加【${record.name}】的属性`,
         });
       }
 
-      function handleEdit(record: Recordable) {
+      function handleEditProperties(record: Recordable, e) {
+        e.stopPropagation();
+        openPropertiesModal(true, {
+          isUpdate: false,
+        });
+        setModalProps({
+          title: `添加【${record.name}】的属性`,
+        });
+      }
+
+      function handleEdit(record: Recordable, e) {
+        e.stopPropagation();
         openModal(true, {
           record,
           isUpdate: true,
         });
       }
 
-      function handleDelete(record: Recordable) {
+      function handleDelete(record: Recordable, e) {
+        e.stopPropagation();
         deleteById(record.id).then(() => {
           reload();
         });
@@ -256,6 +276,7 @@
         handleCloseFunc,
         handleCreate,
         handleEditProperties,
+        handleAddProperties,
         handleEdit,
         handleDelete,
         handleSuccess,

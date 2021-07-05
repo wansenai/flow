@@ -43,15 +43,14 @@ export const columns: BasicColumn[] = [
     dataIndex: 'remark',
     align: 'left',
   },
+  {
+    title: '操作',
+    dataIndex: 'option',
+    align: 'left',
+    slots: { customRender: 'action' },
+  },
 ];
 
-/*
-* id
-listenerId
-name
-type
-value
-* */
 export const propertiesColumns: BasicColumn[] = [
   {
     title: 'ID',
@@ -64,20 +63,46 @@ export const propertiesColumns: BasicColumn[] = [
     ifShow: false,
   },
   {
+    title: '操作',
+    dataIndex: 'option',
+    align: 'center',
+    width: 100,
+    slots: { customRender: 'action' },
+  },
+  {
     title: '名称',
     dataIndex: 'name',
     align: 'left',
+    //edit: true,
+    //editable: true,
+    editComponent: 'Input',
+    editComponentProps:{
+      size: 'small'
+    },
   },
   {
     title: '值',
     dataIndex: 'value',
     align: 'left',
+    //edit: true,
+    //editable: true,
+    editComponent: 'Input',
+    editComponentProps:{
+
+    }
   },
   {
     title: '类型',
     dataIndex: 'type',
     align: 'left',
+    //edit: true,
+    //editable: true,
+    editComponent: 'Input',
+    editComponentProps:{
+
+    }
   },
+
 ];
 
 export const searchFormSchema: FormSchema[] = [
@@ -173,7 +198,7 @@ export const propertiesFormSchema: FormSchema[] = [
     label: '类型',
     required: true,
     component: 'RadioGroup',
-    defaultValue: 'class',
+    defaultValue: 'string',
   },
   {
     field: 'name',

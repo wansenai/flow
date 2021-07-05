@@ -1,17 +1,12 @@
 import { defHttp } from '/@/utils/http/axios';
-import {
-  LoginParams,
-  LoginResultModel,
-  GetUserInfoByUserIdParams,
-  GetUserInfoByUserIdModel,
-} from './model/userModel';
+import { LoginParams, LoginResultModel, GetUserInfoModel } from './model/userModel';
 
-import { ErrorMessageMode } from '/@/utils/http/axios/types';
+import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
   Login = '/login',
-  GetUserInfoById = '/front/user/getLoginUser',
-  GetPermCodeByUserId = '/front/getPermCodeByUserId',
+  GetUserInfo = '/front/user/getLoginUser',
+  GetPermCode = '/front/getPermCodeByUserId',
 }
 
 /**
@@ -30,19 +25,16 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
 }
 
 /**
- * @description: getUserInfoById
+ * @description: getUserInfo
  */
-export function getUserInfoById(params: GetUserInfoByUserIdParams) {
-  return defHttp.get<GetUserInfoByUserIdModel>({
-    url: Api.GetUserInfoById,
-    params,
-  });
+export function getUserInfo() {
+  return defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo });
 }
 
-export function getPermCodeByUserId(params: GetUserInfoByUserIdParams) {
+export function getPermCode() {
   return Promise.resolve({});
   /*return defHttp.get<string[]>({
-    url: Api.GetPermCodeByUserId,
+    url: Api.GetPermCode,
     params,
   });*/
 }

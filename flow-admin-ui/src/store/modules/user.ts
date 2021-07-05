@@ -1,25 +1,22 @@
 import type { UserInfo } from '/#/store';
-import type { ErrorMessageMode } from '/@/utils/http/axios/types';
-
+import type { ErrorMessageMode } from '/#/axios';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
-
 import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
 import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
-
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import {
-  GetUserInfoByUserIdModel,
+  GetUserInfoModel,
   GetUserInfoByUserIdParams,
   LoginParams,
 } from '/@/api/sys/model/userModel';
 
-import { getUserInfoById, loginApi, getLoginInfo } from '/@/api/sys/user';
+import { getUserInfo, loginApi, logout, getLoginInfo } from '/@/api/sys/user';
 
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
-import router from '/@/router';
+import { router } from '/@/router';
 
 interface UserState {
   userInfo: Nullable<UserInfo>;
@@ -84,7 +81,7 @@ export const useUserStore = defineStore({
         goHome?: boolean;
         mode?: ErrorMessageMode;
       }
-    ): Promise<GetUserInfoByUserIdModel | null> {
+    ): Promise<GetUserInfoModel | null> {
       try {
         const { goHome = true, mode, ...loginParams } = params;
         const data = await loginApi(loginParams, mode);
@@ -93,8 +90,7 @@ export const useUserStore = defineStore({
         // save token
         this.setToken(token);
         // get user info
-        const userId = '';
-        const userInfo = await this.getUserInfoAction({ userId });
+        const userInfo = await this.getUserInfoAction();
 
         const sessionTimeout = this.sessionTimeout;
         sessionTimeout && this.setSessionTimeout(false);
@@ -104,7 +100,7 @@ export const useUserStore = defineStore({
         return Promise.reject(error);
       }
     },
-    async getUserInfoAction({ userId }: GetUserInfoByUserIdParams) {
+    async getUserInfoAction() {
       const userInfo = await getLoginInfo();
       const roles = [{value: 'super'}];
       const roleList = roles.map((item) => item.value) as RoleEnum[];
@@ -116,6 +112,7 @@ export const useUserStore = defineStore({
      * @description: logout
      */
     logout(goLogin = false) {
+      logout();
       goLogin && router.push(PageEnum.BASE_LOGIN);
     },
 

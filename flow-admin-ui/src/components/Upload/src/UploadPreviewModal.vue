@@ -11,19 +11,16 @@
   </BasicModal>
 </template>
 <script lang="ts">
-  import { defineComponent, watch, ref, unref } from 'vue';
-
+  import { defineComponent, watch, ref } from 'vue';
   //   import { BasicTable, useTable } from '/@/components/Table';
-  import FileList from './FileList';
-
+  import FileList from './FileList.vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { previewProps } from './props';
-  import { PreviewFileItem } from './types';
+  import { PreviewFileItem } from './typing';
   import { downloadByUrl } from '/@/utils/file/download';
-
   import { createPreviewColumns, createPreviewActionColumn } from './data';
-
   import { useI18n } from '/@/hooks/web/useI18n';
+
   export default defineComponent({
     components: { BasicModal, FileList },
     props: previewProps,
@@ -36,17 +33,15 @@
       watch(
         () => props.value,
         (value) => {
-          fileListRef.value = [];
-          value.forEach((item) => {
-            fileListRef.value = [
-              ...unref(fileListRef),
-              {
+          fileListRef.value = value
+            .filter((item) => !!item)
+            .map((item) => {
+              return {
                 url: item,
                 type: item.split('.').pop() || '',
                 name: item.split('/').pop() || '',
-              },
-            ];
-          });
+              };
+            });
         },
         { immediate: true }
       );

@@ -7,10 +7,11 @@ import {
   GetUserInfoModel, UserInfo,
 } from './model/userModel';
 
-import { ErrorMessageMode } from '/@/utils/http/axios/types';
+import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
   Login = '/login',
+  Logout = '/logout',
   GetUserInfoById = '/getUserInfoById',
   GetUserInfoByToken = '/flow/main/getLoginUser',
   GetPermissions = '/flow/main/getPermissions',
@@ -32,6 +33,13 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
 }
 
 /**
+ * @description: user login api
+ */
+export function logout() {
+  return defHttp.post<any>({url: Api.Logout,});
+}
+
+/**
  * @description: getUserInfoById
  */
 export function getUserInfoById(params: GetUserInfoByUserIdParams) {
@@ -50,9 +58,6 @@ export function getLoginInfo() {
   });
 }
 
-export function getPermCodeByUserId(params: GetUserInfoByUserIdParams) {
-  return defHttp.get<string[]>({
-    url: Api.GetPermissions,
-    params,
-  });
+export function getPermCode() {
+  return defHttp.get<string[]>({ url: Api.GetPermissions });
 }

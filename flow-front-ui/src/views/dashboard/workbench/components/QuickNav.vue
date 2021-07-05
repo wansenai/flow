@@ -26,7 +26,7 @@
   import { Card, Badge, Row, Col } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon';
   import { navItems } from './data';
-  import router from '/@/router';
+  import { router } from '/@/router';
   import {getAppingTaskCont} from "/@/api/process/process";
 
   export default defineComponent({

@@ -7,6 +7,8 @@ enum Api {
   GetAll = '/flow/flowable/flowListener/getList',
   PageList = '/flow/flowable/flowListener/getPagerModel',
   SaveOrUpdate = '/flow/flowable/flowListener/saveOrUpdate',
+
+  SaveOrUpdateProperties = '/flow/flowable/flowListenerParam/saveOrUpdate',
   Delete = '/flow/flowable/flowListener/deleteById',
   CheckEntityExist = '/flow/flowable/flowListener/checkEntityExist',
   GetListenerParamList = '/flow/flowable/flowListenerParam/getList',  // /flow/flowable/flowListenerParam/getList/{listenerId}
@@ -60,8 +62,11 @@ export const getAppListByPage = (params?: AppPageParams) => {
   return defHttp.post<AppPageListGetResultModel>({ url: Api.PageList, params: queryParam });
 };
 
-export const saveOrUpdate = (params?: AppInfo) =>
-  defHttp.post<AppInfo>({ url: Api.SaveOrUpdate, params });
+export const saveOrUpdate = (params?: any) =>
+  defHttp.post<any>({ url: Api.SaveOrUpdate, params });
+
+export const saveOrUpdateProperties = (params?: any) =>
+  defHttp.post<any>({ url: Api.SaveOrUpdateProperties, params });
 
 export const checkEntityExist = (params?: CheckExistParams) =>
   defHttp.post<boolean>({ url: Api.CheckEntityExist, params });

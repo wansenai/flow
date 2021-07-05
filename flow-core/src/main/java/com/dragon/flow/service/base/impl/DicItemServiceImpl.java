@@ -47,6 +47,7 @@ public class DicItemServiceImpl extends ServiceImpl<IDicItemMapper, DicItem> imp
         if(StringUtils.isNotBlank(dicItem.getKeyword())){
             params.like("code", dicItem.getKeyword()).or().like("cname", dicItem.getKeyword()).or().like("ename", dicItem.getKeyword());
         }
+        params.orderByAsc("order_no");
         IPage<DicItem> queryPage = new Page<>(query.getPageNum(), query.getPageSize());
         IPage<DicItem> page = this.page(queryPage, params);
         return new PagerModel<>(page.getTotal(), page.getRecords());

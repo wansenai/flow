@@ -70,7 +70,7 @@ export const HOME_ROUTE: AppRouteRecordRaw = {
 
 export const ERROR_LOG_ROUTE: AppRouteRecordRaw = {
   path: '/error-log',
-  name: 'errorLog',
+  name: 'ErrorLog',
   component: LAYOUT,
   meta: {
     title: 'ErrorLog',
@@ -79,7 +79,7 @@ export const ERROR_LOG_ROUTE: AppRouteRecordRaw = {
   children: [
     {
       path: 'list',
-      name: 'errorLogList',
+      name: 'ErrorLogList',
       component: () => import('/@/views/sys/error-log/index.vue'),
       meta: {
         title: t('routes.basic.errorLogList'),

@@ -1,14 +1,13 @@
 <template>
   <PageWrapper >
-<!--    <template #headerContent> <WorkbenchHeader /> </template>-->
-    <div class="lg:flex">
-      <div class="lg:w-3/10 w-full !mr-4 enter-y">
+    <div class="flex w-full enter-y">
+      <div class="w-1/4 mr-4">
         <UserInfo class="!my-4 enter-y" />
       </div>
-      <div class="lg:w-4/10 w-full !mr-4 enter-y">
+      <div class="w-1/2">
         <BannerInfo :dataSource="bannerInfoItems" height="264" class="!my-4 enter-y" :loading="loading"></BannerInfo>
       </div>
-      <div class="lg:w-3/10 w-full enter-y">
+      <div class="w-1/4 pl-4">
         <NoticeInfo :dataSource="noticeInfoItems" :loading="loading" class="!my-4 enter-y" />
       </div>
     </div>
@@ -18,8 +17,8 @@
     </div>
 
     <div class="md:flex enter-y mt-4">
-      <AttendanceRecord class="md:w-1/2 !md:my-0 !my-4 w-full" :loading="loading" />
-      <PerformanceRecord class="md:w-1/2 !md:ml-4 !md:my-0 !my-4 w-full" :loading="loading" />
+      <AttendanceRecord class="lg:w-5/10 w-full !mr-4 enter-y" :loading="loading" />
+      <PerformanceRecord class="lg:w-5/10 w-full enter-y" :loading="loading" />
     </div>
 
     <div class="lg:flex !mt-4">
