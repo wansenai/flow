@@ -8,8 +8,7 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, Rule, useForm } from '/@/components/Form';
   import { propertiesFormSchema } from './listener.data';
-  import { saveOrUpdate, checkEntityExist } from '/@/api/base/app';
-  import { saveOrUpdateProperties } from '/@/api/base/flowListener';
+  import {checkParamEntityExist, saveOrUpdateProperties} from '/@/api/base/flowListener';
   import {CheckExistParams} from "/@/api/model/baseModel";
 
   export default defineComponent({
@@ -31,7 +30,7 @@
             trigger: 'blur',
             validator: (_, value)=>{
               if(value){
-                return checkEntityExist({id: params.id, field: params.field, fieldValue: value, fieldName:params.fieldName}).then(res=>{
+                return checkParamEntityExist({id: params.id, field: params.field, fieldValue: value, fieldName:params.fieldName}).then(res=>{
                   if(res){
                     return Promise.resolve();
                   }else{
@@ -87,11 +86,9 @@
             },
           }
         ]);
-        if (unref(isUpdate)) {
-          setFieldsValue({
-            ...data.record,
-          });
-        }
+        setFieldsValue({
+          ...data.record,
+        });
       });
 
       const getTitle = computed(() => (!unref(isUpdate) ? '新增' : '修改'));
