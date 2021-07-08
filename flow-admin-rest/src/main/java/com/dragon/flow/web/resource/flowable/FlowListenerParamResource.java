@@ -4,6 +4,7 @@ package com.dragon.flow.web.resource.flowable;
 import com.dragon.flow.model.flowable.FlowListenerParam;
 import com.dragon.flow.model.flowable.ModelInfo;
 import com.dragon.flow.service.flowable.IFlowListenerParamService;
+import com.dragon.flow.vo.CheckExistVo;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
@@ -27,6 +28,16 @@ public class FlowListenerParamResource extends BaseResource {
     @Autowired
     private IFlowListenerParamService flowListenerParamService;
 
+    /**
+     * 判断字段是否存在
+     *
+     * @param checkExistVo 参数
+     * @return
+     */
+    @PostMapping(value = "/checkEntityExist", produces = "application/json")
+    protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
+        return this.checkExist(flowListenerParamService, checkExistVo);
+    }
     /**
      * 获取列表
      *

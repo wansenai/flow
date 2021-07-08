@@ -60,9 +60,9 @@
             <TableAction
               :actions="[
                 {
-                  icon: 'ant-design:plus-outlined',
-                  title: '添加',
-                  click: handleDeleteProperty.bind(null, record)
+                  icon: 'clarity:note-edit-line',
+                  title: '编辑',
+                  onClick: handleEditProperties.bind(null, record)
                 },
                 {
                   icon: 'ant-design:delete-outlined',
@@ -77,7 +77,6 @@
             />
           </template>
         </BasicTable>
-        <a-button type="primary">保存</a-button>
       </template>
 
     </BasicTable>
@@ -158,6 +157,7 @@
           if(res && res.length > 0){
             listenerPropertiesData.value[listenerId] = res;
           }else{
+            listenerPropertiesData.value[listenerId] = [];
             /*listenerPropertiesData.value[listenerId] = [{
               type: '',
               value: '',
@@ -213,19 +213,21 @@
         e.stopPropagation();
         openPropertiesModal(true, {
           isUpdate: false,
+          record: {listenerId: record.id}
         });
         setModalProps({
           title: `添加【${record.name}】的属性`,
         });
       }
 
-      function handleEditProperties(record: Recordable, e) {
-        e.stopPropagation();
+      function handleEditProperties(record: Recordable) {
+        debugger;
         openPropertiesModal(true, {
-          isUpdate: false,
+          isUpdate: true,
+          record: record
         });
         setModalProps({
-          title: `添加【${record.name}】的属性`,
+          title: `修改【${record.name}】的属性`,
         });
       }
 

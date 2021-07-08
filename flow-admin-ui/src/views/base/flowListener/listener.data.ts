@@ -194,6 +194,12 @@ export const propertiesFormSchema: FormSchema[] = [
     show: false,
   },
   {
+    field: 'listenerId',
+    label: 'listenerId',
+    component: 'Input',
+    show: false,
+  },
+  {
     field: 'type',
     label: '类型',
     required: true,

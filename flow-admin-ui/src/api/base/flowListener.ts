@@ -11,6 +11,7 @@ enum Api {
   SaveOrUpdateProperties = '/flow/flowable/flowListenerParam/saveOrUpdate',
   Delete = '/flow/flowable/flowListener/deleteById',
   CheckEntityExist = '/flow/flowable/flowListener/checkEntityExist',
+  CheckParamEntityExist = '/flow/flowable/flowListenerParam/checkEntityExist',
   GetListenerParamList = '/flow/flowable/flowListenerParam/getList',  // /flow/flowable/flowListenerParam/getList/{listenerId}
 }
 
@@ -25,13 +26,7 @@ export const getAll = (params?: AppPageParams) => {
 };
 
 export const getListenerParamList = (params: any) => {
-  return defHttp.get({ url: Api.GetListenerParamList + '/' + params.listenerId}).then((res: any)=>{
-    // res.forEach(item=>{
-    //   item.label = item.name;
-    //   item.value = item.value;
-    // });
-    return Promise.resolve(res);
-  })
+  return defHttp.get({ url: Api.GetListenerParamList + '/' + params.listenerId});
 };
 
 export const getExpressionTypes = () => {
@@ -70,6 +65,9 @@ export const saveOrUpdateProperties = (params?: any) =>
 
 export const checkEntityExist = (params?: CheckExistParams) =>
   defHttp.post<boolean>({ url: Api.CheckEntityExist, params });
+
+export const checkParamEntityExist = (params?: CheckExistParams) =>
+  defHttp.post<boolean>({ url: Api.CheckParamEntityExist, params });
 
 export const deleteById = (id: string) =>
   defHttp.post<AppInfo>({ url: Api.Delete + '/' + id });
