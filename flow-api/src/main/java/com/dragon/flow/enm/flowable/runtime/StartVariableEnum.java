@@ -15,6 +15,8 @@ public enum StartVariableEnum implements Serializable {
     UDEPT("udept", "人员部门变量"),
     UCOMPANY("ucompany", "人员公司变量"),
     COMPANY_ROLE("company", "公司角色层级审批领导"),
+    MATRIX_COMPANY_ROLE("mcompany", "矩阵公司角色"),
+    MATRIX_DEPT_ROLE("mdept", "矩阵部门角色"),
     FORM("form", "表单"),
     LCDB("lcdb", "流程底表"),
     LINE("line", "汇报线");
