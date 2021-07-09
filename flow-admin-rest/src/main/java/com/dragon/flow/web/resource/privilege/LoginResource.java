@@ -2,9 +2,7 @@ package com.dragon.flow.web.resource.privilege;
 
 import com.dragon.flow.constant.FlowConstant;
 import com.dragon.flow.exception.FlowException;
-import com.dragon.flow.model.org.Personal;
 import com.dragon.flow.model.privilege.User;
-import com.dragon.flow.service.org.IPersonalService;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
@@ -15,7 +13,6 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,9 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/")
 @CrossOrigin
 public class LoginResource extends BaseResource {
-
-    @Autowired
-    private IPersonalService personalService;
 
     /**
      * 用户登出
@@ -76,15 +70,6 @@ public class LoginResource extends BaseResource {
             }
             if (returnVo.isSuccess()){
                 User user = (User) subject.getPrincipal();
-                // 登录成功，设置当前登录人对应的人员数据（所属公司，部门等数据）
-                Personal personal = personalService.getPersonalByCode(user.getUserNo());
-                if(personal != null){
-                    user.setCompanyId(personal.getCompanyId());
-                    user.setCompanyName(personal.getCompanyName());
-                    user.setDepartmentId(personal.getDeptId());
-                    user.setDeptName(personal.getDeptName());
-                }
-
                 returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "登录成功");
                 String sessionId = (String) subject.getSession().getId();
                 response.setHeader(FlowConstant.DRAGON_SESSION_ID, sessionId);
