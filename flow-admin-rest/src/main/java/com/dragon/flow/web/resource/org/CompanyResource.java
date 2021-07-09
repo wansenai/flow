@@ -59,7 +59,7 @@ public class CompanyResource extends BaseResource<Company> {
      */
     @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getCompanies", produces = "application/json")
-    public ReturnVo<List> getPagerModel(@RequestBody Company company) {
+    public ReturnVo<List> getCompanies(@RequestBody Company company) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         List<Company> datas = companyService.getCompanies(company);
         returnVo.setData(datas);

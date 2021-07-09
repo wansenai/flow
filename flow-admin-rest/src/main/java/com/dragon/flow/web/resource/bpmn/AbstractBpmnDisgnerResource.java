@@ -1,0 +1,160 @@
+package com.dragon.flow.web.resource.bpmn;
+
+import com.dragon.flow.model.base.Category;
+import com.dragon.flow.model.flowable.ModelInfo;
+import com.dragon.flow.model.org.Company;
+import com.dragon.flow.model.org.Personal;
+import com.dragon.flow.model.org.PersonalRole;
+import com.dragon.flow.model.org.Role;
+import com.dragon.flow.service.base.ICategoryService;
+import com.dragon.flow.service.flowable.IFlowProcessDiagramService;
+import com.dragon.flow.service.flowable.IFlowableBpmnService;
+import com.dragon.flow.service.flowable.IModelInfoService;
+import com.dragon.flow.service.org.*;
+import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
+import com.dragon.flow.vo.flowable.model.ModelInfoVo;
+import com.dragon.flow.vo.flowable.task.ActivityVo;
+import com.dragon.flow.vo.org.OrgTreeVo;
+import com.dragon.flow.vo.org.RolePersonalVo;
+import com.dragon.flow.vo.pager.ParamVo;
+import com.dragon.flow.web.resource.BaseResource;
+import com.dragon.tools.common.ReturnCode;
+import com.dragon.tools.pager.PagerModel;
+import com.dragon.tools.vo.ReturnVo;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author bruce.liu
+ * @description 抽象的bpmn设计器resource
+ * @date 2021/7/9 10:02
+ */
+public class AbstractBpmnDisgnerResource extends BaseResource {
+    @Autowired
+    private IFlowableBpmnService flowableBpmnService;
+    @Autowired
+    private IFlowProcessDiagramService flowProcessDiagramService;
+    @Autowired
+    private IDepartmentService departmentService;
+    @Autowired
+    private IPersonalService personalService;
+    @Autowired
+    private IPersonalRoleService personalRoleService;
+    @Autowired
+    private ICategoryService categoryService;
+    @Autowired
+    private IModelInfoService modelInfoService;
+    @Autowired
+    private ICompanyService companyService;
+    @Autowired
+    private IRoleService roleService;
+
+    @PostMapping(value = "/saveBpmnModel", produces = "application/json")
+    public ReturnVo<String> saveBpmnModel(@RequestBody ModelInfoVo modelInfoVo) {
+        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(modelInfoVo.getModelXml().getBytes());
+        ReturnVo<String> representationReturnVo = flowableBpmnService.importBpmnModel(modelInfoVo.getModelId(),
+                modelInfoVo.getFileName(), byteArrayInputStream, this.getLoginUser());
+        if (!representationReturnVo.isSuccess()) {
+            returnVo = new ReturnVo<>(ReturnCode.FAIL, representationReturnVo.getMsg());
+            return returnVo;
+        } else {
+            returnVo.setData(representationReturnVo.getData());
+        }
+        return returnVo;
+    }
+
+    @GetMapping(value = "/getOneActivityVoByProcessInstanceIdAndActivityId/{processInstanceId}/{activityId}", produces = "application/json")
+    public ReturnVo<ActivityVo> getOneActivityVoByProcessInstanceIdAndActivityId(@PathVariable String processInstanceId, @PathVariable String activityId) {
+        ReturnVo<ActivityVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        ActivityVo processActivityVo = flowProcessDiagramService.getOneActivityVoByProcessInstanceIdAndActivityId(processInstanceId, activityId);
+        returnVo.setData(processActivityVo);
+        return returnVo;
+    }
+
+    @GetMapping(value = "/getOrgTree", produces = "application/json")
+    public ReturnVo<List> getOrgTree() {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        List<OrgTreeVo> orgTreeVos = departmentService.getOrgTree();
+        returnVo.setData(orgTreeVos);
+        return returnVo;
+    }
+
+    @PostMapping(value = "/getPersonalPagerModel", produces = "application/json")
+    public ReturnVo<PagerModel> getPersonalPagerModel(@RequestBody ParamVo<Personal> params) {
+        ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        PagerModel<Personal> pm = personalService.getPagerModelByWrapper(params.getEntity(), params.getQuery());
+        returnVo.setData(pm);
+        return returnVo;
+    }
+
+    @PostMapping(value = "/getPersonalsByRole/{roleId}", produces = "application/json")
+    public ReturnVo<List> getPersonalsByRole(@PathVariable String roleId, @RequestBody PersonalRole personalRole) {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        personalRole.setRoleId(roleId);
+        List<RolePersonalVo> rolePersonalVos = new ArrayList<>();
+        if (StringUtils.isNotEmpty(roleId)) {
+            rolePersonalVos = this.personalRoleService.getRolePersonals(personalRole);
+        }
+        returnVo.setData(rolePersonalVos);
+        return returnVo;
+    }
+
+    @PostMapping(value = "/getCategories", produces = "application/json")
+    public ReturnVo<List> getCategories(@RequestBody Category category) {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        List<Category> categories = categoryService.getCategories(category);
+        returnVo.setData(categories);
+        return returnVo;
+    }
+
+    @PostMapping(value = "/getModelInfoPagerModel", produces = "application/json")
+    public ReturnVo<PagerModel> getModelInfoPagerModel(@RequestBody ParamVo<ModelInfo> params) {
+        ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        PagerModel<ModelInfo> pm = modelInfoService.getPagerModel(params.getEntity(), params.getQuery());
+        returnVo.setData(pm);
+        return returnVo;
+    }
+
+    @PostMapping(value = "/getCompanies", produces = "application/json")
+    public ReturnVo<List> getCompanies(@RequestBody Company company) {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        List<Company> datas = companyService.getCompanies(company);
+        returnVo.setData(datas);
+        return returnVo;
+    }
+    @PostMapping(value = "/getRolePagerModel", produces = "application/json")
+    public ReturnVo<PagerModel> getRolePagerModel(@RequestBody ParamVo<Role> params) {
+        ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        PagerModel<Role> pm = roleService.getPagerModelByWrapper(params.getEntity(), null, params.getQuery());
+        returnVo.setData(pm);
+        return returnVo;
+    }
+    @GetMapping(value = "/getBpmnByModelId/{modelId}", produces = "application/json")
+    public ReturnVo<ModelInfoVo> getBpmnByModelId(@PathVariable String modelId) {
+        ReturnVo<ModelInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "获取数据成功！");
+        ModelInfoVo modelInfoVo = flowableBpmnService.loadBpmnXmlByModelId(modelId);
+        returnVo.setData(modelInfoVo);
+        return returnVo;
+    }
+    @GetMapping(value = "/getHighLightedNodeVoByProcessInstanceId/{processInstanceId}", produces = "application/json")
+    public ReturnVo<HighLightedNodeVo> getHighLightedNodeVoByProcessInstanceId(@PathVariable String processInstanceId) {
+        ReturnVo<HighLightedNodeVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        HighLightedNodeVo highLightedNodeVo = flowProcessDiagramService.getHighLightedNodeVoByProcessInstanceId(processInstanceId);
+        returnVo.setData(highLightedNodeVo);
+        return returnVo;
+    }
+    @GetMapping(value = "/getBpmnByModelKey/{modelKey}", produces = "application/json")
+    public ReturnVo<ModelInfoVo> getBpmnByModelKey(@PathVariable String modelKey) {
+        ReturnVo<ModelInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "获取数据成功！");
+        ModelInfoVo modelInfoVo = flowableBpmnService.loadBpmnXmlByModelKey(modelKey);
+        returnVo.setData(modelInfoVo);
+        return returnVo;
+    }
+
+}
