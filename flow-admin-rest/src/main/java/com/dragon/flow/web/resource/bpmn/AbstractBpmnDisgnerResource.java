@@ -11,6 +11,7 @@ import com.dragon.flow.service.flowable.IFlowProcessDiagramService;
 import com.dragon.flow.service.flowable.IFlowableBpmnService;
 import com.dragon.flow.service.flowable.IModelInfoService;
 import com.dragon.flow.service.org.*;
+import com.dragon.flow.vo.bpmndisgner.variable.VariableVo;
 import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.flow.vo.flowable.task.ActivityVo;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author bruce.liu
@@ -54,6 +56,7 @@ public class AbstractBpmnDisgnerResource extends BaseResource {
     @Autowired
     private IRoleService roleService;
 
+    /*****************************************************bpmn相关的*************************************************************/
     @PostMapping(value = "/saveBpmnModel", produces = "application/json")
     public ReturnVo<String> saveBpmnModel(@RequestBody ModelInfoVo modelInfoVo) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -77,6 +80,31 @@ public class AbstractBpmnDisgnerResource extends BaseResource {
         return returnVo;
     }
 
+    @GetMapping(value = "/getBpmnByModelId/{modelId}", produces = "application/json")
+    public ReturnVo<ModelInfoVo> getBpmnByModelId(@PathVariable String modelId) {
+        ReturnVo<ModelInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "获取数据成功！");
+        ModelInfoVo modelInfoVo = flowableBpmnService.loadBpmnXmlByModelId(modelId);
+        returnVo.setData(modelInfoVo);
+        return returnVo;
+    }
+
+    @GetMapping(value = "/getHighLightedNodeVoByProcessInstanceId/{processInstanceId}", produces = "application/json")
+    public ReturnVo<HighLightedNodeVo> getHighLightedNodeVoByProcessInstanceId(@PathVariable String processInstanceId) {
+        ReturnVo<HighLightedNodeVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        HighLightedNodeVo highLightedNodeVo = flowProcessDiagramService.getHighLightedNodeVoByProcessInstanceId(processInstanceId);
+        returnVo.setData(highLightedNodeVo);
+        return returnVo;
+    }
+
+    @GetMapping(value = "/getBpmnByModelKey/{modelKey}", produces = "application/json")
+    public ReturnVo<ModelInfoVo> getBpmnByModelKey(@PathVariable String modelKey) {
+        ReturnVo<ModelInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "获取数据成功！");
+        ModelInfoVo modelInfoVo = flowableBpmnService.loadBpmnXmlByModelKey(modelKey);
+        returnVo.setData(modelInfoVo);
+        return returnVo;
+    }
+
+    /*********************************************************组织的************************************************************/
     @GetMapping(value = "/getOrgTree", produces = "application/json")
     public ReturnVo<List> getOrgTree() {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -105,6 +133,23 @@ public class AbstractBpmnDisgnerResource extends BaseResource {
         return returnVo;
     }
 
+    @PostMapping(value = "/getCompanies", produces = "application/json")
+    public ReturnVo<List> getCompanies(@RequestBody Company company) {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        List<Company> datas = companyService.getCompanies(company);
+        returnVo.setData(datas);
+        return returnVo;
+    }
+
+    @PostMapping(value = "/getRolePagerModel", produces = "application/json")
+    public ReturnVo<PagerModel> getRolePagerModel(@RequestBody ParamVo<Role> params) {
+        ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        PagerModel<Role> pm = roleService.getPagerModelByWrapper(params.getEntity(), null, params.getQuery());
+        returnVo.setData(pm);
+        return returnVo;
+    }
+
+    /******************************************************基础数据接口************************************************************/
     @PostMapping(value = "/getCategories", produces = "application/json")
     public ReturnVo<List> getCategories(@RequestBody Category category) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -121,40 +166,40 @@ public class AbstractBpmnDisgnerResource extends BaseResource {
         return returnVo;
     }
 
-    @PostMapping(value = "/getCompanies", produces = "application/json")
-    public ReturnVo<List> getCompanies(@RequestBody Company company) {
-        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        List<Company> datas = companyService.getCompanies(company);
-        returnVo.setData(datas);
-        return returnVo;
-    }
-    @PostMapping(value = "/getRolePagerModel", produces = "application/json")
-    public ReturnVo<PagerModel> getRolePagerModel(@RequestBody ParamVo<Role> params) {
-        ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        PagerModel<Role> pm = roleService.getPagerModelByWrapper(params.getEntity(), null, params.getQuery());
-        returnVo.setData(pm);
-        return returnVo;
-    }
-    @GetMapping(value = "/getBpmnByModelId/{modelId}", produces = "application/json")
-    public ReturnVo<ModelInfoVo> getBpmnByModelId(@PathVariable String modelId) {
-        ReturnVo<ModelInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "获取数据成功！");
-        ModelInfoVo modelInfoVo = flowableBpmnService.loadBpmnXmlByModelId(modelId);
-        returnVo.setData(modelInfoVo);
-        return returnVo;
-    }
-    @GetMapping(value = "/getHighLightedNodeVoByProcessInstanceId/{processInstanceId}", produces = "application/json")
-    public ReturnVo<HighLightedNodeVo> getHighLightedNodeVoByProcessInstanceId(@PathVariable String processInstanceId) {
-        ReturnVo<HighLightedNodeVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        HighLightedNodeVo highLightedNodeVo = flowProcessDiagramService.getHighLightedNodeVoByProcessInstanceId(processInstanceId);
-        returnVo.setData(highLightedNodeVo);
-        return returnVo;
-    }
-    @GetMapping(value = "/getBpmnByModelKey/{modelKey}", produces = "application/json")
-    public ReturnVo<ModelInfoVo> getBpmnByModelKey(@PathVariable String modelKey) {
-        ReturnVo<ModelInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "获取数据成功！");
-        ModelInfoVo modelInfoVo = flowableBpmnService.loadBpmnXmlByModelKey(modelKey);
-        returnVo.setData(modelInfoVo);
+    /******************************************************变量设置接口************************************************************/
+    @GetMapping(value = "/getFormVariablesByCode/{formCode}", produces = "application/json")
+    public ReturnVo<VariableVo> getFormVariablesByCode(@PathVariable String formCode) {
+        ReturnVo<VariableVo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "暂未开放!");
         return returnVo;
     }
 
+    @GetMapping(value = "/getRoleVariablesByOrgId/{orgId}", produces = "application/json")
+    public ReturnVo<Map<String, List<VariableVo>>> getRoleVariablesByOrgId(@PathVariable String orgId) {
+        ReturnVo<Map<String, List<VariableVo>>> returnVo = new ReturnVo<>(ReturnCode.FAIL, "暂未开放!");
+        return returnVo;
+    }
+
+    @GetMapping(value = "/getDeptVariables", produces = "application/json")
+    public ReturnVo<VariableVo> getDeptVariables() {
+        ReturnVo<VariableVo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "暂未开放!");
+        return returnVo;
+    }
+
+    @GetMapping(value = "/getCompanyVariables", produces = "application/json")
+    public ReturnVo<VariableVo> getCompanyVariables() {
+        ReturnVo<VariableVo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "暂未开放!");
+        return returnVo;
+    }
+
+    @GetMapping(value = "/getMatrixDeptVariables", produces = "application/json")
+    public ReturnVo<VariableVo> getMatrixDeptVariables() {
+        ReturnVo<VariableVo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "暂未开放!");
+        return returnVo;
+    }
+
+    @GetMapping(value = "/getMatrixCompanyVariables", produces = "application/json")
+    public ReturnVo<VariableVo> getMatrixCompanyVariables() {
+        ReturnVo<VariableVo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "暂未开放!");
+        return returnVo;
+    }
 }
