@@ -149,6 +149,12 @@ public class AbstractBpmnDisgnerResource extends BaseResource {
         return returnVo;
     }
 
+    @PostMapping(value = "/getMatrixRoles/{roleType}", produces = "application/json")
+    public ReturnVo<List> getMatrixRoles(@PathVariable Integer roleType) {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
+        return returnVo;
+    }
+
     /******************************************************基础数据接口************************************************************/
     @PostMapping(value = "/getCategories", produces = "application/json")
     public ReturnVo<List> getCategories(@RequestBody Category category) {
@@ -168,38 +174,38 @@ public class AbstractBpmnDisgnerResource extends BaseResource {
 
     /******************************************************变量设置接口************************************************************/
     @GetMapping(value = "/getFormVariablesByCode/{formCode}", produces = "application/json")
-    public ReturnVo<VariableVo> getFormVariablesByCode(@PathVariable String formCode) {
-        ReturnVo<VariableVo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "暂未开放!");
+    public ReturnVo<List> getFormVariablesByCode(@PathVariable String formCode) {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
         return returnVo;
     }
 
     @GetMapping(value = "/getRoleVariablesByOrgId/{orgId}", produces = "application/json")
     public ReturnVo<Map<String, List<VariableVo>>> getRoleVariablesByOrgId(@PathVariable String orgId) {
-        ReturnVo<Map<String, List<VariableVo>>> returnVo = new ReturnVo<>(ReturnCode.FAIL, "暂未开放!");
+        ReturnVo<Map<String, List<VariableVo>>> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
         return returnVo;
     }
 
     @GetMapping(value = "/getDeptVariables", produces = "application/json")
-    public ReturnVo<VariableVo> getDeptVariables() {
-        ReturnVo<VariableVo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "暂未开放!");
+    public ReturnVo<List> getDeptVariables() {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
         return returnVo;
     }
 
     @GetMapping(value = "/getCompanyVariables", produces = "application/json")
-    public ReturnVo<VariableVo> getCompanyVariables() {
-        ReturnVo<VariableVo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "暂未开放!");
+    public ReturnVo<List> getCompanyVariables() {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
         return returnVo;
     }
 
     @GetMapping(value = "/getMatrixDeptVariables", produces = "application/json")
-    public ReturnVo<VariableVo> getMatrixDeptVariables() {
-        ReturnVo<VariableVo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "暂未开放!");
+    public ReturnVo<List> getMatrixDeptVariables() {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
         return returnVo;
     }
 
     @GetMapping(value = "/getMatrixCompanyVariables", produces = "application/json")
-    public ReturnVo<VariableVo> getMatrixCompanyVariables() {
-        ReturnVo<VariableVo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "暂未开放!");
+    public ReturnVo<List> getMatrixCompanyVariables() {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
         return returnVo;
     }
 }
