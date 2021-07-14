@@ -11,7 +11,6 @@ import java.io.Serializable;
  * @date 2021/7/12 9:39
  */
 @Data
-@Builder
 public class VariableVo implements Serializable {
     //名称
     private String name;
@@ -19,6 +18,8 @@ public class VariableVo implements Serializable {
     private String code;
     //表达式前缀
     private String prefix;
+    //表达式函数
+    private String function;
     //备注
     private String remark;
 

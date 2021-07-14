@@ -11,7 +11,6 @@ import com.dragon.flow.service.flowable.IFlowProcessDiagramService;
 import com.dragon.flow.service.flowable.IFlowableBpmnService;
 import com.dragon.flow.service.flowable.IModelInfoService;
 import com.dragon.flow.service.org.*;
-import com.dragon.flow.vo.bpmndisgner.variable.VariableVo;
 import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.flow.vo.flowable.task.ActivityVo;
@@ -24,12 +23,14 @@ import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.vo.ReturnVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author bruce.liu
@@ -179,9 +180,15 @@ public class AbstractBpmnDisgnerResource extends BaseResource {
         return returnVo;
     }
 
-    @GetMapping(value = "/getRoleVariablesByOrgId/{orgId}", produces = "application/json")
-    public ReturnVo<Map<String, List<VariableVo>>> getRoleVariablesByOrgId(@PathVariable String orgId) {
-        ReturnVo<Map<String, List<VariableVo>>> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
+    /**
+     * 查询角色人员
+     * @param orgId 组织id
+     * @param flag 标记 one单个 multi多个
+     * @return
+     */
+    @GetMapping(value = "/getRoleVariablesByOrgId/{orgId}/{flag}", produces = "application/json")
+    public ReturnVo<List> getRoleVariablesByOrgId(@PathVariable String orgId,@PathVariable String flag) {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
         return returnVo;
     }
 
