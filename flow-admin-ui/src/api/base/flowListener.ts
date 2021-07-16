@@ -10,6 +10,7 @@ enum Api {
 
   SaveOrUpdateProperties = '/flow/flowable/flowListenerParam/saveOrUpdate',
   Delete = '/flow/flowable/flowListener/deleteById',
+  DeleteListenerParam = '/flow/flowable/flowListenerParam/deleteById',
   CheckEntityExist = '/flow/flowable/flowListener/checkEntityExist',
   CheckParamEntityExist = '/flow/flowable/flowListenerParam/checkEntityExist',
   GetListenerParamList = '/flow/flowable/flowListenerParam/getList',  // /flow/flowable/flowListenerParam/getList/{listenerId}
@@ -70,4 +71,7 @@ export const checkParamEntityExist = (params?: CheckExistParams) =>
   defHttp.post<boolean>({ url: Api.CheckParamEntityExist, params });
 
 export const deleteById = (id: string) =>
-  defHttp.post<AppInfo>({ url: Api.Delete + '/' + id });
+  defHttp.post<any>({ url: Api.Delete + '/' + id });
+
+export const deleteParamById = (id: string) =>
+  defHttp.post<any>({ url: Api.DeleteListenerParam + '/' + id });

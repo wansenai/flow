@@ -3,12 +3,7 @@ import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 import {Icon} from "/@/components/Icon";
-/*id
-type
-name
-listenerType
-value
-remark*/
+
 export const columns: BasicColumn[] = [
   {
     title: '监听类型',
@@ -84,23 +79,12 @@ export const propertiesColumns: BasicColumn[] = [
     title: '值',
     dataIndex: 'value',
     align: 'left',
-    //edit: true,
-    //editable: true,
-    editComponent: 'Input',
-    editComponentProps:{
-
-    }
   },
   {
     title: '类型',
     dataIndex: 'type',
     align: 'left',
-    //edit: true,
-    //editable: true,
-    editComponent: 'Input',
-    editComponentProps:{
 
-    }
   },
 
 ];
@@ -229,26 +213,4 @@ export const propertiesFormSchema: FormSchema[] = [
     required: true,
     component: 'Input',
   },
-];
-
-export const secretKeyFormSchema: FormSchema[] = [
-  {
-    field: 'id',
-    label: 'ID',
-    component: 'Input',
-    show: false,
-  },
-  {
-    field: 'sn',
-    label: '标识',
-    component: 'Input',
-    slot: 'snSlot',
-  },
-  {
-    label: '密钥',
-    field: 'secretKey',
-    component: 'InputTextArea',
-    slot: 'secretKeySlot',
-  },
-
 ];

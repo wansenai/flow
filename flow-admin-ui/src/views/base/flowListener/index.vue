@@ -92,7 +92,7 @@
     deleteById,
     getExpressionTypes,
     getListenerTypes,
-    getListenerParamList
+    getListenerParamList, deleteParamById
   } from '/@/api/base/flowListener';
 
   import { columns, searchFormSchema, propertiesColumns } from './listener.data';
@@ -152,7 +152,6 @@
 
       function reloadListenerProperties(listenerId){
         propertiesTableLoading.value = true;
-
         getListenerParamList({listenerId}).then(res=>{
           if(res && res.length > 0){
             listenerPropertiesData.value[listenerId] = res;
@@ -211,6 +210,7 @@
 
       function handleAddProperties(record: Recordable, e) {
         e.stopPropagation();
+        currentListener.value = record;
         openPropertiesModal(true, {
           isUpdate: false,
           record: {listenerId: record.id}
@@ -221,7 +221,6 @@
       }
 
       function handleEditProperties(record: Recordable) {
-        debugger;
         openPropertiesModal(true, {
           isUpdate: true,
           record: record
@@ -255,14 +254,15 @@
       }
 
       function handleDeleteProperty(record: Recordable) {
-        /*deleteById(record.id).then(()=>{
-          reloadRolePersonal(unref(currentRole).id, '');
+        deleteParamById(record.id).then(()=>{
+          reloadListenerProperties(currentListener.value.id);
         }).finally(()=>{
 
-        });*/
+        });
       }
       function handleUpdateSecretKeySuccess() {
-        reload();
+        reloadListenerProperties(currentListener.value.id);
+        expandedRowKeys.value = [currentListener.value.id];
       }
 
       return {
