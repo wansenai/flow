@@ -22,4 +22,5 @@ public class ModelInfoVo implements Serializable {
     private String fileName;
     private String modelXml;
     private String appSn;
+    private String categoryCode;
 }

@@ -33,6 +33,7 @@ public class ModelInfoResource extends BaseResource<ModelInfo> {
 
     @Autowired
     private IModelInfoService modelInfoService;
+
     /**
      * 判断字段是否存在
      *
@@ -43,6 +44,7 @@ public class ModelInfoResource extends BaseResource<ModelInfo> {
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(modelInfoService, checkExistVo);
     }
+
     /**
      * 分页获取列表
      *
@@ -66,9 +68,9 @@ public class ModelInfoResource extends BaseResource<ModelInfo> {
     @PostMapping(value = "/saveOrUpdateModelInfo", produces = "application/json")
     public ReturnVo<ModelInfo> saveOrUpdateModelInfo(@RequestBody ModelInfo modelInfo) {
         ReturnVo<ModelInfo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        if (StringUtils.isBlank(modelInfo.getId())){
+        if (StringUtils.isBlank(modelInfo.getId())) {
             ModelInfo mi = modelInfoService.getModelInfoByModelKey(modelInfo.getModelKey());
-            if (mi!=null){
+            if (mi != null) {
                 returnVo = new ReturnVo<>(ReturnCode.FAIL, "model key 不能重复！");
                 return returnVo;
             }

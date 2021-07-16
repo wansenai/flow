@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author bruce.liu
@@ -22,25 +22,31 @@ public interface IModelInfoService extends IService<ModelInfo> {
 
     /**
      * 分页查询模型分页列表
+     *
      * @param modelInfo 参数
-     * @param query 分页参数
+     * @param query     分页参数
      * @return
      */
     PagerModel<ModelInfo> getPagerModel(ModelInfo modelInfo, Query query);
 
     /**
      * 添加模型
+     *
      * @param modelInfo 参数
-     * @param user 登录用户
+     * @param user      登录用户
      */
-    ModelInfo saveOrUpdateModelInfo(ModelInfo modelInfo, User user) ;
+    ModelInfo saveOrUpdateModelInfo(ModelInfo modelInfo, User user);
+
     /**
      * 查询模型
+     *
      * @param modelKey modelKey
      */
-    ModelInfo getModelInfoByModelKey(String modelKey) ;
+    ModelInfo getModelInfoByModelKey(String modelKey);
+
     /**
      * 删除模型
+     *
      * @param ids ids
      */
     ReturnVo<String> deleteById(List<String> ids);
