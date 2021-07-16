@@ -54,11 +54,11 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
     @Override
     public ReturnVo<String> deleteById(List<String> ids) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        if (CollectionUtils.isNotEmpty(ids)){
+        if (CollectionUtils.isNotEmpty(ids)) {
             String id = ids.get(0);
             ModelInfo modelInfo = this.getById(id);
             if (modelInfo.getStatus().equals(ModelFormStatusEnum.CG.getStatus())
-                    && modelInfo.getExtendStatus().equals(ModelFormStatusEnum.CG.getStatus())){
+                    && modelInfo.getExtendStatus().equals(ModelFormStatusEnum.CG.getStatus())) {
                 this.removeById(id);
                 String modelId = modelInfo.getModelId();
                 modelService.deleteModel(modelId);
@@ -80,23 +80,23 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
             Category category = categoryService.getOne(categoryLambdaQueryWrapper);
             String categoryId = category.getId();
             List<String> categoryIds = new ArrayList<>();
-            categoryService.getAllCategoryIds(categoryId,categoryIds);
+            categoryService.getAllCategoryIds(categoryId, categoryIds);
 
             LambdaQueryWrapper<Category> allCategoryLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            allCategoryLambdaQueryWrapper.in(Category::getId, categoryIds).eq(Category::getDelFlag,FlowConstant.DEL_FLAG_1);
+            allCategoryLambdaQueryWrapper.in(Category::getId, categoryIds).eq(Category::getDelFlag, FlowConstant.DEL_FLAG_1);
             List<Category> categoryList = categoryService.list(allCategoryLambdaQueryWrapper);
             List<String> categoryCodes = new ArrayList<>();
             if (CollectionUtils.isNotEmpty(categoryList)) {
                 categoryList.forEach(c -> categoryCodes.add(c.getCode()));
             }
-            if (CollectionUtils.isNotEmpty(categoryCodes)){
+            if (CollectionUtils.isNotEmpty(categoryCodes)) {
                 modelInfo.setCategoryCodes(categoryCodes);
             }
         }
 
         IPage<ModelInfo> page = modelInfoMapper.getPagerModel(queryPage, modelInfo);
         List<ModelInfo> records = page.getRecords();
-        if (CollectionUtils.isNotEmpty(records)){
+        if (CollectionUtils.isNotEmpty(records)) {
             records.forEach(mi -> {
                 ModelFormStatusEnum minStatus = ModelFormStatusEnum.getMinStatus(mi.getStatus(), mi.getExtendStatus());
                 mi.setStatusName(minStatus.getMsg());
@@ -117,15 +117,14 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
     }
 
     @Override
-    public ModelInfo saveOrUpdateModelInfo(ModelInfo modelInfo, User user) {
-        if (StringUtils.isBlank(modelInfo.getId())){
+    public ModelInfo saveOrUpdateModelInfo(ModelInfo modelInfo,  User user) {
+        if (StringUtils.isBlank(modelInfo.getId())) {
             ReturnVo<Model> returnVo = flowableBpmnService.createInitBpmn(modelInfo, user);
-            if (returnVo.isSuccess()){
+            if (returnVo.isSuccess()) {
                 Model model = returnVo.getData();
                 modelInfo.setModelId(model.getId());
                 Date date = new Date();
                 modelInfo.setCreateTime(date);
-                modelInfo.setFormType(ModelInfo.CUSTOM_MODEL_TYPE);
                 modelInfo.setCreator(user.getUserNo());
                 modelInfo.setUpdateTime(date);
                 modelInfo.setStatus(ModelFormStatusEnum.CG.getStatus());
