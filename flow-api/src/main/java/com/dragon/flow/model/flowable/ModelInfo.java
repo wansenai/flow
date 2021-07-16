@@ -24,7 +24,8 @@ public class ModelInfo extends BaseModel implements Serializable {
     private static final long serialVersionUID = -974572277155384236L;
     public static final int CUSTOM_MODEL_TYPE = 0;
     public static final int BIZ_MODEL_TYPE = 1;
-    public static final int TASK_MODEL_TYPE = 2;
+    public static final int CUSTOM_TASK_MODEL_TYPE = 2;
+    public static final int BIZ_TASK_MODEL_TYPE = 3;
     /**
      * 主键
      */
