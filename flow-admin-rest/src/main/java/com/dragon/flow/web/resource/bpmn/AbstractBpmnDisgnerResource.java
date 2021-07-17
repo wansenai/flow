@@ -105,6 +105,12 @@ public class AbstractBpmnDisgnerResource extends BaseResource {
         return returnVo;
     }
 
+    @GetMapping(value = "/getTaskFormInfoByModelKey/{modelKey}", produces = "application/json")
+    public ReturnVo<List> getTaskFormInfoByModelKey(@PathVariable String modelKey) {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
+        return returnVo;
+    }
+
     /*********************************************************组织的************************************************************/
     @GetMapping(value = "/getOrgTree", produces = "application/json")
     public ReturnVo<List> getOrgTree() {
