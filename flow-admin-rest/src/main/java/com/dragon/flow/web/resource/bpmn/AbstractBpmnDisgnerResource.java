@@ -37,7 +37,7 @@ import java.util.List;
  * @description 抽象的bpmn设计器resource
  * @date 2021/7/9 10:02
  */
-public class AbstractBpmnDisgnerResource extends BaseResource {
+public abstract class AbstractBpmnDisgnerResource extends BaseResource {
     @Autowired
     private IFlowableBpmnService flowableBpmnService;
     @Autowired
