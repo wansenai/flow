@@ -227,8 +227,8 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
     }
 
     /****************************************监听器*******************************************/
-    @PostMapping(value = "/getListAndParams", produces = "application/json")
-    public ReturnVo<List> getListAndParams(@RequestBody FlowListener flowListener){
+    @PostMapping(value = "/getListenersAndParams", produces = "application/json")
+    public ReturnVo<List> getListenersAndParams(@RequestBody FlowListener flowListener){
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         List<FlowListener> datas = flowListenerService.getListAndParams(flowListener);
         returnVo.setData(datas);
