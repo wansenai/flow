@@ -75,7 +75,7 @@ public class ModelInfoResource extends BaseResource<ModelInfo> {
                 return returnVo;
             }
         }
-        modelInfo = modelInfoService.saveOrUpdateModelInfo(modelInfo, this.getLoginUser());
+        modelInfo = modelInfoService.saveOrUpdateModelInfo(modelInfo, this.getLoginUser(), true);
         returnVo.setData(modelInfo);
         return returnVo;
     }

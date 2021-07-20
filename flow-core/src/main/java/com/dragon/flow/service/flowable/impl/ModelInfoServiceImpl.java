@@ -117,8 +117,15 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
     }
 
     @Override
-    public ModelInfo saveOrUpdateModelInfo(ModelInfo modelInfo, User user) {
+    public ModelInfo saveOrUpdateModelInfo(ModelInfo modelInfo, User user, boolean flag) {
         if (StringUtils.isBlank(modelInfo.getId())) {
+            if (flag) {
+                ReturnVo<Model> returnVo = flowableBpmnService.createInitBpmn(modelInfo, user);
+                if (returnVo.isSuccess()) {
+                    Model model = returnVo.getData();
+                    modelInfo.setModelId(model.getId());
+                }
+            }
             Date date = new Date();
             modelInfo.setCreateTime(date);
             modelInfo.setCreator(user.getUserNo());
@@ -135,5 +142,10 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
         }
         this.saveOrUpdate(modelInfo);
         return modelInfo;
+    }
+
+    @Override
+    public ModelInfo saveOrUpdateModelInfo(ModelInfo modelInfo, User user) {
+        return this.saveOrUpdateModelInfo(modelInfo, user, false);
     }
 }

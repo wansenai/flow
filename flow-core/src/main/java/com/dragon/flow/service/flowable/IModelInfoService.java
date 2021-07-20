@@ -38,6 +38,15 @@ public interface IModelInfoService extends IService<ModelInfo> {
     ModelInfo saveOrUpdateModelInfo(ModelInfo modelInfo, User user);
 
     /**
+     * 添加模型，
+     * @param modelInfo
+     * @param user
+     * @param flag 新增的时候是否创建流程模型
+     * @return
+     */
+    ModelInfo saveOrUpdateModelInfo(ModelInfo modelInfo, User user, boolean flag);
+
+    /**
      * 查询模型
      *
      * @param modelKey modelKey
