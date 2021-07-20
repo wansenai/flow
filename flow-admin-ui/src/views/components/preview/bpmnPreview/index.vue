@@ -22,8 +22,8 @@
     </div>
 
     <div class="containers" ref="container">
-      <div id="bpmnCanvas"
-           class="canvas"
+      <div :id="bpmnCanvasId"
+           class="bpmnCanvas canvas"
            ref="bpmnCanvas"
            v-bind:style="{width: 100 * scale + '%',height: 100 * scale + '%'}"
       ></div>
@@ -55,7 +55,6 @@
   import {Spin , Tag, Popover, Button, Space, Affix} from "ant-design-vue";
   import FramePage from '/@/views/components/iframe/index.vue';
   import { PlusCircleOutlined, MinusCircleOutlined, OneToOneOutlined } from '@ant-design/icons-vue';
-
 
   import BpmnViewer from 'bpmn-js/lib/Viewer'
   import MoveCanvasModule from 'diagram-js/lib/navigation/movecanvas'
@@ -92,6 +91,7 @@
       const treeEl = null;
       const modelName = ref('');
       const defaultZoom = ref<number>(1);
+      const bpmnCanvasId = ref<string>('bpmnCanvas'+new Date().getTime());
 
       let highlightNode = [];
       let highlightLine = [];
@@ -112,7 +112,7 @@
       function init(modelKey, procInstId){
         bpmnViewer && bpmnViewer.destroy();
         bpmnViewer = new BpmnViewer({
-          container: document.getElementById("bpmnCanvas"),
+          container: document.getElementById(unref(bpmnCanvasId)),
           width: '100%',
           additionalModules: [
             MoveCanvasModule // 移动整个画布
@@ -133,7 +133,7 @@
           });*/
         }else{
           getBpmnByModelKey({modelKey}).then(res=>{
-            modelName.value = res.mldelName||'';
+            modelName.value = res.modelName||'';
             if(bpmnViewer){
               importXml(res.modelXml);
             } else {
@@ -273,6 +273,7 @@
         flowMsgPopover,
         popoverVisible,
         triggerEl,
+        bpmnCanvasId,
         getTitle,
         detailInfo,
         previewUrl,
@@ -299,7 +300,7 @@
         }
       }
     }
-    #bpmnCanvas{
+    .bpmnCanvas{
       .bjs-container{
         overflow: visible;
         .djs-container{
@@ -349,7 +350,7 @@
   .containers{
     background-color: #ffffff;
     width: 100%;
-    height: 100%;
+    height: 50vh;
     .canvas{
       width: 100%;
       height: 100%;
