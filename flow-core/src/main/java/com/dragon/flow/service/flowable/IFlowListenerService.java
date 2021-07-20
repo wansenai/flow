@@ -16,6 +16,12 @@ import java.util.List;
  */
 public interface IFlowListenerService extends IService<FlowListener> {
     /**
+     * 查询监听器 并把参数查出来
+     * @param flowListener 参数
+     * @return
+     */
+    List<FlowListener> getListAndParams(FlowListener flowListener) ;
+    /**
      * 查询监听器
      * @param flowListener 监听器
      * @return

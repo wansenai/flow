@@ -1,12 +1,14 @@
 package com.dragon.flow.web.resource.bpmn;
 
 import com.dragon.flow.model.base.Category;
+import com.dragon.flow.model.flowable.FlowListener;
 import com.dragon.flow.model.flowable.ModelInfo;
 import com.dragon.flow.model.org.Company;
 import com.dragon.flow.model.org.Personal;
 import com.dragon.flow.model.org.PersonalRole;
 import com.dragon.flow.model.org.Role;
 import com.dragon.flow.service.base.ICategoryService;
+import com.dragon.flow.service.flowable.IFlowListenerService;
 import com.dragon.flow.service.flowable.IFlowProcessDiagramService;
 import com.dragon.flow.service.flowable.IFlowableBpmnService;
 import com.dragon.flow.service.flowable.IModelInfoService;
@@ -56,6 +58,8 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
     private ICompanyService companyService;
     @Autowired
     private IRoleService roleService;
+    @Autowired
+    private IFlowListenerService flowListenerService;
 
     /*****************************************************bpmn相关的*************************************************************/
     @PostMapping(value = "/saveBpmnModel", produces = "application/json")
@@ -219,6 +223,15 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
     @GetMapping(value = "/getMatrixCompanyVariables", produces = "application/json")
     public ReturnVo<List> getMatrixCompanyVariables() {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
+        return returnVo;
+    }
+
+    /****************************************监听器*******************************************/
+    @PostMapping(value = "/getListAndParams", produces = "application/json")
+    public ReturnVo<List> getListAndParams(@RequestBody FlowListener flowListener){
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        List<FlowListener> datas = flowListenerService.getListAndParams(flowListener);
+        returnVo.setData(datas);
         return returnVo;
     }
 }

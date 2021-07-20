@@ -8,10 +8,12 @@ import com.dragon.flow.service.flowable.IFlowListenerParamService;
 import com.dragon.flow.service.flowable.IFlowListenerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.FlowList;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import java.util.List;
 
 /**
@@ -27,6 +29,18 @@ public class FlowListenerServiceImpl extends ServiceImpl<IFlowListenerMapper, Fl
 
     @Autowired
     private IFlowListenerParamService flowListenerParamService;
+
+    @Override
+    public List<FlowListener> getListAndParams(FlowListener flowListener) {
+        List<FlowListener> listeners = this.getList(flowListener);
+        if (CollectionUtils.isNotEmpty(listeners)) {
+            listeners.forEach(listener -> {
+                List<FlowListenerParam> listenerParams = flowListenerParamService.getListByListenerId(listener.getId());
+                listener.setFlowListenerParamList(listenerParams);
+            });
+        }
+        return listeners;
+    }
 
     @Override
     public List<FlowListener> getList(FlowListener flowListener) {
