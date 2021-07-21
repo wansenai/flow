@@ -55,7 +55,14 @@
 
         const expressionTypes = await getExpressionTypes();
         const listenerTypes = await getListenerTypes();
-
+        const expressionTypeMap = {};
+        expressionTypes.forEach(item=>{
+          expressionTypeMap[item.value] = item.label;
+        });
+        updateSchema({
+          field: 'value',
+          label: expressionTypeMap[formData.type||'class']
+        });
         await updateSchema([
           {
             field: 'name',
@@ -72,8 +79,8 @@
                   message: '请输入英文或数字！',
                 },
                 {
-                  max: 40,
-                  message: '字符长度不能大于40！',
+                  max: 80,
+                  message: '字符长度不能大于80！',
                 },
                 ...getBaseDynamicRules({id: unref(isUpdate)&&formData&&formData.id||"", field: 'name', fieldValue: "", fieldName:'名称'}),
               ];
@@ -82,7 +89,13 @@
           {
             field: 'type',
             componentProps: {
-              options: expressionTypes
+              options: expressionTypes,
+              onChange: (e)=>{
+                updateSchema({
+                  field: 'value',
+                  label: expressionTypeMap[e.target.value]
+                });
+              }
             }
           },
           {

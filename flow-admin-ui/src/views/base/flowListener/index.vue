@@ -85,7 +85,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, ref, onMounted } from 'vue';
+  import { defineComponent, ref, unref, onMounted } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import {
     getAll,
@@ -105,8 +105,7 @@
     name: 'FlowListener',
     components: { BasicTable, TableAction, ListenerModal, ListenerPropertiesModal },
     setup() {
-
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps: setListenerModalProps }] = useModal();
       const listenerPropertiesData = ref<object>({});
 
       const expressionTypeObj = ref({});
@@ -115,7 +114,7 @@
       const expandedRowKeys = ref([]);
       const currentListener = ref<Recordable>({});
 
-      const [registerPropertiesModal, { openModal: openPropertiesModal, setModalProps }] = useModal();
+      const [registerPropertiesModal, { openModal: openPropertiesModal, setModalProps: setPropertiesModalProps }] = useModal();
 
       const [registerTable, { reload, getForm, setProps }] = useTable({
         title: '列表',
@@ -149,7 +148,6 @@
         resizeHeightOffset:-50,
       });
 
-
       function reloadListenerProperties(listenerId){
         propertiesTableLoading.value = true;
         getListenerParamList({listenerId}).then(res=>{
@@ -157,38 +155,39 @@
             listenerPropertiesData.value[listenerId] = res;
           }else{
             listenerPropertiesData.value[listenerId] = [];
-            /*listenerPropertiesData.value[listenerId] = [{
-              type: '',
-              value: '',
-              name: '',
-              listenerId: '',
-            }];*/
           }
         }).finally(()=>{
           propertiesTableLoading.value = false;
         });
       }
 
-      function handleCreate() {
+      async function handleCreate() {
+        // 获取搜索框上的监听类型传入到新增页面
+        const {validate} = getForm();
+        const values = await validate();
+
         openModal(true, {
           isUpdate: false,
           record: {
-            listenerType: 'taskListener'
+            listenerType: values.listenerType||'taskListener'
           }
+        });
+        setListenerModalProps({
+          title: `新增${unref(listenerTypeObj)[values.listenerType]}`
         });
       }
 
       onMounted(()=>{
         getExpressionTypes().then(res=>{
           res.forEach(item=>{
-            expressionTypeObj.value[item.value] = item.label;
+            unref(expressionTypeObj)[item.value] = item.label;
           });
         });
 
         const {updateSchema} = getForm();
         getListenerTypes().then(res=>{
           res.forEach(item=>{
-            listenerTypeObj.value[item.value] = item.label;
+            unref(listenerTypeObj)[item.value] = item.label;
           })
           updateSchema([
             {
@@ -196,10 +195,14 @@
               defaultValue: res[0].value,
               componentProps: {
                 options: res,
-                onChange: ({target})=>{
+                onChange: async ({target})=>{
+                  // 切换类型时先清空搜索条件
+                  const {setFieldsValue} = getForm();
+                  await setFieldsValue({name: ''});
                   setProps({
                     searchInfo: {listenerType: target.value}
                   });
+
                   reload();
                 }
               }
@@ -215,7 +218,7 @@
           isUpdate: false,
           record: {listenerId: record.id}
         });
-        setModalProps({
+        setPropertiesModalProps({
           title: `添加【${record.name}】的属性`,
         });
       }
@@ -225,7 +228,7 @@
           isUpdate: true,
           record: record
         });
-        setModalProps({
+        setPropertiesModalProps({
           title: `修改【${record.name}】的属性`,
         });
       }
@@ -255,14 +258,14 @@
 
       function handleDeleteProperty(record: Recordable) {
         deleteParamById(record.id).then(()=>{
-          reloadListenerProperties(currentListener.value.id);
+          reloadListenerProperties(unref(currentListener).id);
         }).finally(()=>{
 
         });
       }
       function handleUpdateSecretKeySuccess() {
-        reloadListenerProperties(currentListener.value.id);
-        expandedRowKeys.value = [currentListener.value.id];
+        reloadListenerProperties(unref(currentListener).id);
+        expandedRowKeys.value = [unref(currentListener).id];
       }
 
       return {

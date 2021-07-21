@@ -18,6 +18,15 @@
     setup(_, { emit }) {
       const isUpdate = ref(true);
 
+      let expressionTypes = [
+        {label: '字符串', value: 'string'},
+        {label: '表达式', value: 'expression'},
+      ];
+      let expressionTypeMap = {};
+      expressionTypes.forEach(item=>{
+        expressionTypeMap[item.value] = item.label;
+      })
+
       const [registerForm, { resetFields, updateSchema, setFieldsValue, validate }] = useForm({
         labelWidth: 100,
         schemas: propertiesFormSchema,
@@ -52,7 +61,10 @@
         setModalProps({ confirmLoading: false });
         isUpdate.value = !!data?.isUpdate;
         let formData = data.record;
-
+        updateSchema({
+          field: 'value',
+          label: expressionTypeMap[formData.type]
+        });
         await updateSchema([
           {
             field: 'type',
@@ -60,7 +72,13 @@
               options: [
                 {label: '字符串', value: 'string'},
                 {label: '表达式', value: 'expression'},
-              ]
+              ],
+              onChange: (e)=>{
+                updateSchema({
+                  field: 'value',
+                  label: expressionTypeMap[e.target.value]
+                });
+              }
             }
           },
           {
@@ -78,8 +96,8 @@
                   message: '请输入英文或数字！',
                 },
                 {
-                  max: 40,
-                  message: '字符长度不能大于40！',
+                  max: 80,
+                  message: '字符长度不能大于80！',
                 },
                 ...getBaseDynamicRules({id: unref(isUpdate)&&formData&&formData.id||"", field: 'name', fieldValue: "", fieldName:'名称'}),
               ];

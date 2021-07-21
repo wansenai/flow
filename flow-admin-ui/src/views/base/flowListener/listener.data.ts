@@ -84,7 +84,18 @@ export const propertiesColumns: BasicColumn[] = [
     title: '类型',
     dataIndex: 'type',
     align: 'left',
-
+    customRender: ({ record }) => {
+      let text = '未知';
+      let color = 'default';
+      if(record.type === 'string'){
+        text = '字符串';
+        color = 'default';
+      }else if(record.type === 'expression'){
+        text = '表达式';
+        color = 'processing';
+      }
+      return h(Tag, { color: color }, () => text);
+    },
   },
 
 ];
@@ -93,7 +104,6 @@ export const searchFormSchema: FormSchema[] = [
   {
     field: 'listenerType',
     label: '监听类型',
-    required: true,
     component: 'RadioGroup',
     defaultValue: 'class',
     labelWidth: 80,
@@ -144,8 +154,8 @@ export const formSchema: FormSchema[] = [
         message: '名称不能为空！',
       },
       {
-        max: 32,
-        message: '字符长度不能大于32！',
+        max: 80,
+        message: '字符长度不能大于802！',
       },
     ],
   },
@@ -154,6 +164,17 @@ export const formSchema: FormSchema[] = [
     label: '值',
     required: true,
     component: 'Input',
+    rules: [
+      {
+        required: true,
+        whitespace: true,
+        message: '名称不能为空！',
+      },
+      {
+        max: 300,
+        message: '字符长度不能大于300！',
+      },
+    ],
   },
 
   {
@@ -162,8 +183,8 @@ export const formSchema: FormSchema[] = [
     component: 'InputTextArea',
     rules: [
       {
-        max: 500,
-        message: '字符长度不能大于500！',
+        max: 255,
+        message: '字符长度不能大于255！',
       },
     ],
   },
@@ -195,6 +216,12 @@ export const propertiesFormSchema: FormSchema[] = [
     label: '名称',
     required: true,
     component: 'Input',
+  },
+  {
+    field: 'value',
+    label: '值',
+    required: true,
+    component: 'Input',
     rules: [
       {
         required: true,
@@ -202,15 +229,9 @@ export const propertiesFormSchema: FormSchema[] = [
         message: '名称不能为空！',
       },
       {
-        max: 32,
-        message: '字符长度不能大于32！',
+        max: 255,
+        message: '字符长度不能大于255！',
       },
     ],
-  },
-  {
-    field: 'value',
-    label: '值',
-    required: true,
-    component: 'Input',
   },
 ];
