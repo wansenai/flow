@@ -216,7 +216,7 @@
         currentListener.value = record;
         openPropertiesModal(true, {
           isUpdate: false,
-          record: {listenerId: record.id}
+          record: {listenerId: record.id, type: 'string'}
         });
         setPropertiesModalProps({
           title: `添加【${record.name}】的属性`,
