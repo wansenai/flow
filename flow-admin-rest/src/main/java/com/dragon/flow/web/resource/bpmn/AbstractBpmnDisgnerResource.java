@@ -17,6 +17,7 @@ import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.flow.vo.flowable.task.ActivityVo;
 import com.dragon.flow.vo.org.OrgTreeVo;
+import com.dragon.flow.vo.org.PersonalRoleVo;
 import com.dragon.flow.vo.org.RolePersonalVo;
 import com.dragon.flow.vo.pager.ParamVo;
 import com.dragon.flow.web.resource.BaseResource;
@@ -132,12 +133,14 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
         return returnVo;
     }
 
-    @PostMapping(value = "/getPersonalsByRole/{roleId}", produces = "application/json")
-    public ReturnVo<List> getPersonalsByRole(@PathVariable String roleId, @RequestBody PersonalRole personalRole) {
+    @PostMapping(value = "/getPersonalsByRole", produces = "application/json")
+    public ReturnVo<List> getPersonalsByRole(@RequestBody PersonalRoleVo params) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        personalRole.setRoleId(roleId);
+        PersonalRole personalRole = new PersonalRole();
+        personalRole.setRoleId(params.getRoleId());
+        personalRole.setKeyword(params.getKeyword());
         List<RolePersonalVo> rolePersonalVos = new ArrayList<>();
-        if (StringUtils.isNotEmpty(roleId)) {
+        if (StringUtils.isNotEmpty(params.getRoleId())) {
             rolePersonalVos = this.personalRoleService.getRolePersonals(personalRole);
         }
         returnVo.setData(rolePersonalVos);
