@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author: Bruce.Liu
  * @create: 2021-05-11 16:59
  **/
-@Component
+@Component("skipTaskListener")
 public class SkipTaskListener implements ExecutionListener {
     @Override
     public void notify(DelegateExecution execution) {
