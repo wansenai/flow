@@ -104,10 +104,9 @@ export const searchFormSchema: FormSchema[] = [
   {
     field: 'listenerType',
     label: '监听类型',
-    component: 'RadioGroup',
-    defaultValue: 'class',
+    component: 'Select',
     labelWidth: 80,
-    colProps: {span: 6, lg:{span: 6, offset:0}, sm:{span: 6, offset: 0}, xs:{span: 8, offset: 0}},
+    colProps: {span: 4, lg:{span: 4, offset:0}, sm:{span: 6, offset: 0}, xs:{span: 8, offset: 0}},
   },
   {
     field: 'name',
@@ -132,8 +131,8 @@ export const formSchema: FormSchema[] = [
   {
     field: 'listenerType',
     label: '监听类型',
+    required: true,
     component: 'RadioGroup',
-    defaultValue: 'taskListener',
   },
   {
     field: 'type',

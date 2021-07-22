@@ -173,7 +173,7 @@
           }
         });
         setListenerModalProps({
-          title: `新增${unref(listenerTypeObj)[values.listenerType]}`
+          title: `新增监听`
         });
       }
 
@@ -192,7 +192,6 @@
           updateSchema([
             {
               field: 'listenerType',
-              defaultValue: res[0].value,
               componentProps: {
                 options: res,
                 onChange: async ({target})=>{
@@ -202,7 +201,6 @@
                   setProps({
                     searchInfo: {listenerType: target.value}
                   });
-
                   reload();
                 }
               }
