@@ -134,9 +134,7 @@
             changeLoading(false);
           });*/
         }else{
-
           getBpmnByModelKey({modelKey}).then(res=>{
-            modelName.value = res.modelName||'';
             if(bpmnViewer){
               importXml(res.modelXml);
             } else {
@@ -173,6 +171,7 @@
             }
           })
         }
+
         bpmnViewer.importXML(modelXmlTemp, function (err) {
           if(err){
             console.error(err);
