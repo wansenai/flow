@@ -53,7 +53,7 @@ public class RoleResource extends BaseResource<Role> {
 
 
     /**
-     * 添加用户组
+     * 获取角色的人员列表
      *
      * @param roleId       角色Id
      * @param personalRole 人员
