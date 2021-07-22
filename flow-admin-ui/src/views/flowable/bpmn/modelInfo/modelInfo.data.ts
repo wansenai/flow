@@ -30,7 +30,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '应用范围',
-    dataIndex: 'appliedRange',
+    dataIndex: 'appliedRangeName',
     width: 100,
     align: 'left'
   },
@@ -43,11 +43,11 @@ export const columns: BasicColumn[] = [
       const {status, statusName}= record;
       var color = '';
       if (~~status === 2) {
-        color = 'yellow';
+        color = 'warning';
       }else if(~~status === 3) {
-        color = 'green';
+        color = 'success';
       }else if(~~status === 4){
-        color = 'red';
+        color = 'error';
       }else {
         color = 'gray';
       }

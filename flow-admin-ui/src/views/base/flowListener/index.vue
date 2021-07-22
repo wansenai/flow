@@ -33,7 +33,12 @@
         {{ expressionTypeObj[record.type] }}
       </template>
       <template #listenerTypeRender="{ record }">
-        {{ listenerTypeObj[record.listenerType] }}
+        <Tag v-if="record.listenerType === 'taskListener'" color="default">
+          {{ listenerTypeObj[record.listenerType] }}
+        </Tag>
+        <Tag v-if="record.listenerType === 'executionListener'" color="processing">
+          {{ listenerTypeObj[record.listenerType] }}
+        </Tag>
       </template>
 
       <template #expandedRowRender="{ record, index, indent, expanded }">
@@ -94,7 +99,7 @@
     getListenerTypes,
     getListenerParamList, deleteParamById
   } from '/@/api/base/flowListener';
-
+  import {Tag} from "ant-design-vue";
   import { columns, searchFormSchema, propertiesColumns } from './listener.data';
   import ListenerModal from './ListenerModal.vue';
   import ListenerPropertiesModal from './ListenerPropertiesModal.vue';
@@ -103,7 +108,7 @@
 
   export default defineComponent({
     name: 'FlowListener',
-    components: { BasicTable, TableAction, ListenerModal, ListenerPropertiesModal },
+    components: { Tag, BasicTable, TableAction, ListenerModal, ListenerPropertiesModal },
     setup() {
       const [registerModal, { openModal, setModalProps: setListenerModalProps }] = useModal();
       const listenerPropertiesData = ref<object>({});
