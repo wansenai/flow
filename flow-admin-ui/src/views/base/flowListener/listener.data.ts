@@ -107,7 +107,7 @@ export const searchFormSchema: FormSchema[] = [
     component: 'RadioGroup',
     defaultValue: 'class',
     labelWidth: 80,
-    colProps: {span: 4, lg:{span: 4, offset:0}, sm:{span: 6, offset: 0}, xs:{span: 8, offset: 0}},
+    colProps: {span: 6, lg:{span: 6, offset:0}, sm:{span: 6, offset: 0}, xs:{span: 8, offset: 0}},
   },
   {
     field: 'name',
@@ -214,19 +214,21 @@ export const propertiesFormSchema: FormSchema[] = [
   {
     field: 'name',
     label: '名称',
+    helpMessage: '监听器的属性名',
     required: true,
     component: 'Input',
   },
   {
     field: 'value',
     label: '值',
+    helpMessage: '监听器的属性值',
     required: true,
     component: 'Input',
     rules: [
       {
         required: true,
         whitespace: true,
-        message: '名称不能为空！',
+        message: '值不能为空！',
       },
       {
         max: 255,

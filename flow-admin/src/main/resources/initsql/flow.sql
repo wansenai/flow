@@ -7286,6 +7286,7 @@ INSERT INTO `tbl_privilege_module` VALUES ('dd335c89f01da59d8f4edbe7436d68fe', '
 INSERT INTO `tbl_privilege_module` VALUES ('e72804d5e6a00d7af97ca8b0f40d272e', '岗位序列管理', 'positionSeq', 'PositionSeq', '/org/positionSeq/index', '1', '1', '15', 'ant-design:audio-filled', '7', '4418c29147a7c2586713823ba8a71ce6', null, '1', '2021-05-14 00:17:53', null, null, null, '1');
 INSERT INTO `tbl_privilege_module` VALUES ('e9d45d9e87570a0324692739d9ce5a91', '测试-系统', 'system', 'system', 'LAYOUT', '1', '1', '15', null, null, '5', null, '1', '2021-04-21 10:43:14', null, null, null, '1');
 INSERT INTO `tbl_privilege_module` VALUES ('f37ff584d3f9ff2b1b358abb784ac788', '人员管理', 'personal', 'Personal', '/org/personal/index', '1', '1', '15', 'ant-design:bug-filled', '3', '4418c29147a7c2586713823ba8a71ce6', null, '1', '2021-05-13 14:04:49', null, null, null, '1');
+INSERT INTO `tbl_privilege_module` VALUES ('2c8a12cd8cf99307b3310076f372e361','流程监听管理','flowListener','FlowListener','/base/flowListener/index','1','1','15','ant-design:customer-service-filled','1','77737a345ee0503907e29e0fc6656060',NULL,'1',NULL,NULL,NULL,NULL,'1');
 
 -- ----------------------------
 -- Table structure for tbl_privilege_pvalue
@@ -7454,4 +7455,29 @@ CREATE TABLE `tbl_sys_oper_record` (
   `day` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `tbl_flow_listener`;
+CREATE TABLE `tbl_flow_listener` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(80) DEFAULT NULL,
+  `listener_type` varchar(80) DEFAULT NULL,
+  `type` varchar(25) DEFAULT NULL,
+  `value` varchar(300) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `tbl_flow_listener` VALUES('1418011167482535937','测试任务监听器','taskListener','delegateExpression','${taskListenerTest}','测试任务监听器');
+INSERT INTO `tbl_flow_listener` VALUES('1418011500015345666','自动跳过执行监听','executionListener','delegateExpression','${skipTaskListener}',NULL);
+INSERT INTO `tbl_flow_listener` VALUES('1418011755431682049','执行监听消息推送','executionListener','delegateExpression','${sendMessageExecutionCallListener}',NULL);
+
+DROP TABLE IF EXISTS `tbl_flow_listener_param`;
+CREATE TABLE `tbl_flow_listener_param` (
+  `id` varchar(32) NOT NULL,
+  `listener_id` varchar(32) NOT NULL,
+  `name` varchar(80) DEFAULT NULL,
+  `type` varchar(15) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `tbl_flow_listener_param` VALUES('1418011905713594370','1418011755431682049','userCodes','string','10001,10002,10003');
 

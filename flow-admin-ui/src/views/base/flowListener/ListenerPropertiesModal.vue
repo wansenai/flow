@@ -69,10 +69,7 @@
           {
             field: 'type',
             componentProps: {
-              options: [
-                {label: '字符串', value: 'string'},
-                {label: '表达式', value: 'expression'},
-              ],
+              options: expressionTypes,
               onChange: (e)=>{
                 updateSchema({
                   field: 'value',
@@ -89,11 +86,6 @@
                   required: true,
                   whitespace: true,
                   message: '标识不能为空！',
-                },
-                {
-                  pattern: new RegExp('^[0-9a-zA-Z_]{1,}$'),
-                  type: 'string',
-                  message: '请输入英文或数字！',
                 },
                 {
                   max: 80,

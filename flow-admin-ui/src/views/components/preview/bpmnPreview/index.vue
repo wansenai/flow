@@ -82,13 +82,10 @@
       PlusCircleOutlined, MinusCircleOutlined, OneToOneOutlined
     },
     setup(_, {emit}) {
-      const bpmnCanvas = ref<ElRef>();
-      const container  = ref<ElRef>();
       const triggerEl  = ref<ElRef>();
       const flowMsgPopover  = ref<ElRef>();
       const previewUrl = ref<string>('');
       const popoverVisible = ref<boolean>(false);
-      const treeEl = null;
       const modelName = ref('');
       const defaultZoom = ref<number>(1);
       const bpmnCanvasId = ref<string>('bpmnCanvas'+new Date().getTime());
@@ -104,12 +101,18 @@
         processInstanceId = procInstId;
         const isDev = import.meta.env.DEV;
         changeLoading(true);
-        init(modelKey, procInstId);
+        try{
+          await init(modelKey, procInstId);
+        }catch (e) {
+
+        }finally {
+          changeLoading(false);
+        }
       });
 
       const getTitle = computed(() => ("流程图-"+modelName.value));
 
-      function init(modelKey, procInstId){
+      async function init(modelKey, procInstId){
         bpmnViewer && bpmnViewer.destroy();
         bpmnViewer = new BpmnViewer({
           container: document.getElementById(unref(bpmnCanvasId)),
@@ -118,7 +121,6 @@
             MoveCanvasModule // 移动整个画布
           ]
         });
-
         if(procInstId){
           /*getHighLightedNodeVoByProcessInstanceId({procInstId}).then(res=>{
             modelName.value = res.mldelName||'';
@@ -132,6 +134,7 @@
             changeLoading(false);
           });*/
         }else{
+
           getBpmnByModelKey({modelKey}).then(res=>{
             modelName.value = res.modelName||'';
             if(bpmnViewer){
@@ -139,7 +142,10 @@
             } else {
               console.error('bpmnViewer is null or undefined!');
             }
-            changeLoading(false);
+          }).catch((e)=>{
+            console.error(e);
+          }).finally(()=>{
+
           });
         }
       }

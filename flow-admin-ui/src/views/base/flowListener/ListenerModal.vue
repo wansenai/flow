@@ -74,11 +74,6 @@
                   message: '名称不能为空！',
                 },
                 {
-                  pattern: new RegExp('^[0-9a-zA-Z_]{1,}$'),
-                  type: 'string',
-                  message: '请输入英文或数字！',
-                },
-                {
                   max: 80,
                   message: '字符长度不能大于80！',
                 },
