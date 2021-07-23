@@ -33,13 +33,6 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
 }
 
 /**
- * @description: user login api
- */
-export function logout() {
-  return defHttp.post<any>({url: Api.Logout,});
-}
-
-/**
  * @description: getUserInfoById
  */
 export function getUserInfoById(params: GetUserInfoByUserIdParams) {
@@ -60,4 +53,8 @@ export function getLoginInfo() {
 
 export function getPermCode() {
   return defHttp.get<string[]>({ url: Api.GetPermissions });
+}
+
+export function doLogout() {
+  return defHttp.post({ url: Api.Logout });
 }

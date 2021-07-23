@@ -60,6 +60,7 @@
           showResetButton: false,
           autoSubmitOnEnter: true,
         },
+        isTreeTable: true,
         expandRowByClick: true,
         canColDrag: true,
         pagination:false,
@@ -100,7 +101,7 @@
         setModalProps({
           title: '新增【'+record.name+'】的子序列'
         });
-        record = {pid: record.id};
+        record = {pid: record.id, status: 1};
         openModal(true, {
           record,
           isUpdate: true,

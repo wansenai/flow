@@ -18,8 +18,8 @@
   import TreeHeader from './TreeHeader.vue';
   import { ScrollContainer } from '/@/components/Container';
 
-  import { omit, get } from 'lodash-es';
-  import { isBoolean, isFunction } from '/@/utils/is';
+  import { omit, get, difference } from 'lodash-es';
+  import { isArray, isBoolean, isFunction } from '/@/utils/is';
   import { extendSlots, getSlot } from '/@/utils/helper/tsxHelper';
   import { filter } from '/@/utils/helper/treeHelper';
 
@@ -90,15 +90,25 @@
             emit('update:selectedKeys', v);
           },
           onCheck: (v: CheckKeys, e: CheckEvent) => {
-            state.checkedKeys = v;
-            const rawVal = toRaw(v);
+            let currentValue = toRaw(state.checkedKeys) as Keys;
+            if (isArray(currentValue) && searchState.startSearch) {
+              const { key } = unref(getReplaceFields);
+              currentValue = difference(currentValue, getChildrenKeys(e.node.$attrs.node[key]));
+              if (e.checked) {
+                currentValue.push(e.node.$attrs.node[key]);
+              }
+              state.checkedKeys = currentValue;
+            } else {
+              state.checkedKeys = v;
+            }
+
+            const rawVal = toRaw(state.checkedKeys);
             emit('update:value', rawVal);
             emit('check', rawVal, e);
           },
           onRightClick: handleRightClick,
         };
-        propsData = omit(propsData, 'treeData', 'class');
-        return propsData;
+        return omit(propsData, 'treeData', 'class');
       });
 
       const getTreeData = computed((): TreeItem[] =>
@@ -106,11 +116,18 @@
       );
 
       const getNotFound = computed((): boolean => {
-        return searchState.startSearch && searchState.searchData?.length === 0;
+        return !getTreeData.value || getTreeData.value.length === 0;
       });
 
-      const { deleteNodeByKey, insertNodeByKey, filterByLevel, updateNodeByKey, getAllKeys } =
-        useTree(treeDataRef, getReplaceFields);
+      const {
+        deleteNodeByKey,
+        insertNodeByKey,
+        insertNodesByKey,
+        filterByLevel,
+        updateNodeByKey,
+        getAllKeys,
+        getChildrenKeys,
+      } = useTree(treeDataRef, getReplaceFields);
 
       function getIcon(params: Recordable, icon?: string) {
         if (!icon) {
@@ -267,6 +284,7 @@
         setCheckedKeys,
         getCheckedKeys,
         insertNodeByKey,
+        insertNodesByKey,
         deleteNodeByKey,
         updateNodeByKey,
         checkAll,
@@ -375,7 +393,7 @@
               </Tree>
             </ScrollContainer>
 
-            <Empty v-show={unref(getNotFound)} class="!mt-4" />
+            <Empty v-show={unref(getNotFound)} image={Empty.PRESENTED_IMAGE_SIMPLE} class="!mt-4" />
           </div>
         );
       };

@@ -1,9 +1,7 @@
 import '/@/design/index.less';
 import '/@/design/tailwind.css';
-
 // Register icon sprite
 import 'virtual:svg-icons-register';
-
 import App from './App.vue';
 import { createApp } from 'vue';
 import { initAppConfigStore } from '/@/logics/initAppConfig';
@@ -17,9 +15,6 @@ import { registerGlobComp } from '/@/components/registerGlobComp';
 import 'xe-utils'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
-
-// Register icon Sprite
-import 'virtual:svg-icons-register';
 
 // Do not introduce on-demand in local development?
 // In the local development for introduce on-demand, the number of browser requests will increase by about 20%.
@@ -54,7 +49,7 @@ async function bootstrap() {
   setupRouter(app);
 
   // router-guard
-  setupRouterGuard();
+  setupRouterGuard(router);
 
   // Register global directive
   setupGlobDirectives(app);

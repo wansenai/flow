@@ -1,16 +1,18 @@
 import { MockMethod } from 'vite-plugin-mock';
-import { resultError, resultSuccess } from '../_util';
+import { resultError, resultSuccess, getRequestToken, requestParams } from '../_util';
 
-function createFakeUserList() {
+export function createFakeUserList() {
   return [
     {
       id:'1',
       userId: '1',
       username: '0000001',
       realName: 'Vben Admin',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=190848757&s=640',
       desc: 'manager',
       password: '888888',
       token: 'fakeToken1',
+      homePath: '/dashboard/analysis',
       roles: [
         {
           roleName: 'Super Admin',
@@ -24,8 +26,10 @@ function createFakeUserList() {
       username: 'test',
       password: '123456',
       realName: 'test user',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=339449197&s=640',
       desc: 'tester',
       token: 'fakeToken2',
+      homePath: '/dashboard/workbench',
       roles: [
         {
           roleName: 'Tester',

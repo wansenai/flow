@@ -1,5 +1,6 @@
-import { resultSuccess } from '../_util';
+import { resultSuccess, resultError, getRequestToken, requestParams } from '../_util';
 import { MockMethod } from 'vite-plugin-mock';
+import { createFakeUserList } from './user';
 
 // single
 const dashboardRoute = {
@@ -90,6 +91,7 @@ const frontRoute = {
     },
   ],
 };
+
 const backRoute = {
   path: 'back',
   name: 'PermissionBackDemo',
@@ -116,6 +118,7 @@ const backRoute = {
     },
   ],
 };
+
 const authRoute = {
   path: '/permission',
   name: 'Permission',

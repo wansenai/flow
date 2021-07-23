@@ -53,11 +53,35 @@
         isUpdate.value = !!data?.isUpdate;
         let formData = data.record;
 
-
+        await updateSchema([
+          {
+            field: 'code',
+            dynamicRules: () => {
+              return [
+                {
+                  required: true,
+                  whitespace: true,
+                  message: '标识不能为空！',
+                },
+                {
+                  pattern: new RegExp('^[0-9a-zA-Z_]{1,}$'),
+                  type: 'string',
+                  message: '请输入英文或数字！',
+                },
+                {
+                  max: 40,
+                  message: '字符长度不能大于40！',
+                },
+                ...getBaseDynamicRules({id: unref(isUpdate)&&formData&&formData.id||"", field: 'code', fieldValue: "", fieldName:'标识'}),
+              ];
+            },
+          }
+        ]);
 
         if (unref(isUpdate)) {
           setFieldsValue({
-            ...data.record,
+            ...formData,
+            status: formData.status===1?true:false
           });
         }
       });
