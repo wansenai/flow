@@ -30,7 +30,6 @@
     "test:gzip": "http-server dist --cors --gzip -c-1",
     "test:br": "http-server dist --cors --brotli -c-1",
     "reinstall": "rimraf yarn.lock && rimraf package.lock.json && rimraf node_modules && npm run bootstrap",
-    "prepare": "husky install",
     "gen:icon": "esno ./build/generate/icon/index.ts"
   },
   "dependencies": {
