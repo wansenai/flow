@@ -181,10 +181,10 @@ export const usePermissionStore = defineStore({
         case PermissionModeEnum.BACK:
           const { createMessage } = useMessage();
 
-          createMessage.loading({
-            content: t('sys.app.menuLoading'),
-            duration: 1,
-          });
+        /*createMessage.loading({
+          content: t('sys.app.menuLoading'),
+          duration: 1,
+        });*/
 
           // !Simulate to obtain permission codes from the background,
           // this function may only need to be executed once, and the actual project can be put at the right time by itself
@@ -195,22 +195,6 @@ export const usePermissionStore = defineStore({
           } catch (error) {
             console.error(error);
           }
-
-          // 将返回的模块对象转换成前端路由对象
-          routeList.forEach(item => {
-            const sn = item.sn;
-            item.path = item.url;
-            item.meta = {
-              title: item.name,
-              icon: item.image,
-              hideMenu: item.showStatus === 0,
-              // hideChildrenInMenu: item.sn==="ModelInfo",
-              // frameSrc: item.sn==='doc'?'http://localhost:3100':''
-            };
-            item.name = sn;
-            item.component = item.component;
-          });
-          routeList = listToTree(routeList, {id: 'id', children: 'children', pid: 'pid',})
 
           // Dynamically introduce components
           routeList = transformObjToRoute(routeList);

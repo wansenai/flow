@@ -4,7 +4,7 @@
 
     <a-tab-pane key="todo" >
       <template #tab>
-        <Badge :count="todoCount" :offset="[15, -2]" size="small">
+        <Badge :count="todoCount" :offset="[15, -2]" size="default">
           <span style="font-size: 16px;">待办</span>
         </Badge>
       </template>

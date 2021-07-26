@@ -63,14 +63,13 @@
   import { BasicTree, TreeItem } from '/@/components/Tree';
 
   import { PageWrapper } from '/@/components/Page';
-  import { Divider, Card, Empty, Descriptions, Steps, Tabs, Icon, List, Row, Col, Progress } from 'ant-design-vue';
+  import { Divider, Card, Empty, Descriptions, Steps, Tabs, List, Row, Col, Progress } from 'ant-design-vue';
 
   import { searchFormSchema, cardList } from './data';
   import ProcessHeader from '/@/views/process/components/ProcessHeader.vue';
 
   export default defineComponent({
     components: {
-      Icon,
       Progress,
       PageWrapper,
       BasicForm,
