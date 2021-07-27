@@ -11,25 +11,25 @@
           :actions="[
             {
               auth: 'Module:0',
-              title: '添加子节点',
+              tooltip: '添加子菜单',
               icon: 'ant-design:plus-outlined',
               onClick: handleCreateChild.bind(null, record),
             },
             {
               auth: 'Module:6',
-              title: '设置权限值',
+              tooltip: '设置权限值',
               icon: 'ant-design:setting-outlined',
               onClick: handleEditPValue.bind(null, record),
             },
             {
               auth: 'Module:2',
-              title: '修改',
+              tooltip: '修改',
               icon: 'clarity:note-edit-line',
               onClick: handleEdit.bind(null, record),
             },
             {
               auth: 'Module:3',
-              title: '删除',
+              tooltip: '删除',
               icon: 'ant-design:delete-outlined',
               color: 'error',
               onClick: (e)=>{e.stopPropagation();},

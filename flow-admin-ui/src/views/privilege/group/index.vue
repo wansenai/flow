@@ -11,25 +11,25 @@
           :actions="[
             {
               auth: this.$options.name+':'+PerEnum.AUTH,
-              title: '分配权限',
+              tooltip: '分配权限',
               icon: 'ant-design:safety',
               onClick: handleAcl.bind(null, record),
             },
             {
               auth: this.$options.name+':'+PerEnum.AUTH,
-              title: '分配用户',
+              tooltip: '分配用户',
               icon: 'ant-design:user-add',
               onClick: handleAddUser.bind(null, record),
             },
             {
               // auth: this.$options.name+':'+PerEnum.UPDATE,
-              title: '修改',
+              tooltip: '修改',
               icon: 'clarity:note-edit-line',
               onClick: handleEdit.bind(null, record),
             },
             {
               // auth: this.$options.name+':'+PerEnum.DELETE,
-              title: '删除',
+              tooltip: '删除',
               icon: 'ant-design:delete-outlined',
               color: 'error',
               popConfirm: {

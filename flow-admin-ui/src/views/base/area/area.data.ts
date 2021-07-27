@@ -33,13 +33,6 @@ export const searchFormSchema: FormSchema[] = [
 ];
 
 export const formSchema: FormSchema[] = [
-/*  {
-    field: 'code',
-    label: 'code',
-    required: true,
-    component: 'Input',
-    show: false,
-  },*/
   {
     field: 'pcode',
     label: 'pcode',

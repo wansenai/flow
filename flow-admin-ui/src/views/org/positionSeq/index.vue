@@ -8,17 +8,17 @@
         <TableAction
           :actions="[
             {
-              title: '添加子序列',
+              tooltip: '添加子序列',
               icon: 'ant-design:plus-outlined',
               onClick: handleCreateChild.bind(null, record),
             },
             {
-              title: '修改',
+              tooltip: '修改',
               icon: 'clarity:note-edit-line',
               onClick: handleEdit.bind(null, record),
             },
             {
-              title: '删除',
+              tooltip: '删除',
               icon: 'ant-design:delete-outlined',
               color: 'error',
               onClick: (e)=>{e.stopPropagation();},

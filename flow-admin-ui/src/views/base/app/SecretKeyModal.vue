@@ -7,15 +7,13 @@
       <template #secretKeySlot="{ model, field }">
         <div class="">
           <TextArea readonly :rows="4" v-model:value="model[field]" />
-          <Space>
+          <Space class="mt-2">
             <Popconfirm title="重新获取秘钥吗？" @confirm="refreshSecretKeyHandle(model)">
               <template #icon><QuestionCircleOutlined style="color: red" /></template>
               <a-button> 获取 </a-button>
             </Popconfirm>
-
             <a-button type="primary" @click="handleCopy"> 复制 </a-button>
           </Space>
-
         </div>
       </template>
     </BasicForm>
@@ -44,13 +42,13 @@
       const { createMessage } = useMessage();
       const { clipboardRef, copiedRef } = useCopyToClipboard();
 
-      const [registerForm, { resetFields, updateSchema, setFieldsValue, validate }] = useForm({
+      const [registerForm, { resetFields, setFieldsValue }] = useForm({
         labelWidth: 100,
         schemas: secretKeyFormSchema,
         showActionButtonGroup: false,
       });
 
-      const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
+      const [registerModal, { setModalProps }] = useModalInner(async (data) => {
         await resetFields();
         setModalProps({ confirmLoading: false });
         isUpdate.value = !!data?.isUpdate;
@@ -74,7 +72,6 @@
           setFieldsValue({
             secretKey: result
           });
-
         } finally {
           setModalProps({ confirmLoading: false });
         }
@@ -95,7 +92,13 @@
         }
       }
 
-      return { registerModal, registerForm, getTitle, handleCopy, refreshSecretKeyHandle };
+      return {
+        registerModal,
+        registerForm,
+        getTitle,
+        handleCopy,
+        refreshSecretKeyHandle
+      };
     },
   });
 </script>

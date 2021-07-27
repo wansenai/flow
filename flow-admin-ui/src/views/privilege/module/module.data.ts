@@ -9,7 +9,7 @@ export const columns: BasicColumn[] = [
     title: '菜单名称',
     dataIndex: 'name',
     align: 'left',
-    width: 150,
+    width: 200,
     customRender: ({ record }) => {
       return h('span', {}, [
         h(Icon, {icon: record.image}),
@@ -48,12 +48,24 @@ export const columns: BasicColumn[] = [
     },
   },
   {
+    title: '菜单类型',
+    dataIndex: 'showStatus',
+    width: 100,
+    customRender: ({ record }) => {
+      const status = record.showStatus;
+      const enable = ~~status === 1;
+      const color = enable ? 'green' : 'gray';
+      const text = enable ? '显示' : '隐藏';
+      return h(Tag, { color: color }, () => text);
+    },
+  },
+  {
     title: '权限值',
     dataIndex: 'pvs',
     align: 'left',
     customRender: ({ record }) => {
       const pvs = record.pvs;
-      const color = 'green';
+      const color = 'processing';
       const result = pvs.map(item=>{
         return h(Tag, { color: color, style: {marginRight:'5px'} }, () => item.name);
       });

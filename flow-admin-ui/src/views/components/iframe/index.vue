@@ -49,7 +49,7 @@
         top += 20;
         topRef.value = top;
         heightRef.value = window.innerHeight - top;
-        debugger;
+        // debugger;
         const clientHeight = document.documentElement.clientHeight - top;
         iframe.style.height = `100%`;
       }

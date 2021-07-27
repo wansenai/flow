@@ -8,12 +8,12 @@
         <TableAction
           :actions="[
             {
-              title: '修改字典项',
+              tooltip: '修改字典项',
               icon: 'clarity:note-edit-line',
               onClick: handleEdit.bind(null, record),
             },
             {
-              title: '删除',
+              tooltip: '删除',
               icon: 'ant-design:delete-outlined',
               color: 'error',
               popConfirm: {
@@ -48,7 +48,7 @@
       const [registerModal, { openModal, setModalProps }] = useModal();
       const dictId = ref<string>('');
       const [registerTable, { reload, setProps, setTableData }] = useTable({
-        title: '列表',
+        title: '字典项列表',
         api: dictionaryItemPageList,
         columns: itemColumns,
         formConfig: {

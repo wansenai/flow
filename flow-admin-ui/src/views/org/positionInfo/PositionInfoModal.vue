@@ -81,7 +81,7 @@
         if (unref(isUpdate)) {
           setFieldsValue({
             ...data.record,
-            status: formData.status===1?true:false
+            status: (typeof formData.status === 'undefined' || formData.status===1)
           });
         }
       });

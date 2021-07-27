@@ -101,7 +101,12 @@
         }
       }
 
-      return { registerModal, registerForm, getTitle, handleSubmit };
+      return {
+        registerModal,
+        registerForm,
+        getTitle,
+        handleSubmit
+      };
     },
   });
 </script>

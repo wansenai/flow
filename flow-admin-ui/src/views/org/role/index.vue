@@ -13,17 +13,17 @@
         <TableAction
           :actions="[
             {
-              title: '添加人员',
+              tooltip: '添加人员',
               icon: 'ant-design:user-add',
               onClick: handleAddPersonal.bind(null, record),
             },
             {
-              title: '修改',
+              tooltip: '修改',
               icon: 'clarity:note-edit-line',
               onClick: handleEdit.bind(null, record),
             },
             {
-              title: '删除',
+              tooltip: '删除',
               icon: 'ant-design:delete-outlined',
               color: 'error',
               onClick: (e)=>{e.stopPropagation();},

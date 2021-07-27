@@ -8,17 +8,17 @@
         <TableAction
           :actions="[
             {
-              title: '编辑密钥',
-              icon: 'ant-design:eye-outlined',
+              tooltip: '查看密钥',
+              icon: 'ant-design:key-outlined',
               onClick: handleEditSecretKey.bind(null, record),
             },
             {
-              title: '修改',
+              tooltip: '修改',
               icon: 'clarity:note-edit-line',
               onClick: handleEdit.bind(null, record),
             },
             {
-              title: '删除',
+              tooltip: '删除',
               icon: 'ant-design:delete-outlined',
               color: 'error',
               popConfirm: {
@@ -38,11 +38,9 @@
   import { defineComponent } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { getAppListByPage } from '/@/api/base/app';
-
   import { columns, searchFormSchema } from './app.data';
   import AppModal from './AppModal.vue';
   import SecretKeyModal from './SecretKeyModal.vue';
-
   import { useModal } from '/@/components/Modal';
   import { deleteByIds } from '/@/api/base/app';
 
@@ -50,9 +48,7 @@
     name: 'App',
     components: { BasicTable, TableAction, AppModal, SecretKeyModal },
     setup() {
-
       const [registerModal, { openModal }] = useModal();
-
       const [registerSecretKeyModal, { openModal: openSecretKeyModal, setModalProps }] = useModal();
 
       const [registerTable, { reload }] = useTable({

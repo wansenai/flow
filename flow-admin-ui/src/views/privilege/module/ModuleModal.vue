@@ -82,8 +82,8 @@
         if (unref(isUpdate)) {
           setFieldsValue({
             ...formData,
-            status: formData.status === 1 ? true : false,
-            showStatus: formData.showStatus === 1 ? true : false,
+            status: formData.status === 1,
+            showStatus: formData.showStatus === 1,
           });
 
         }
