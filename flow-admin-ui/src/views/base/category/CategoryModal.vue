@@ -87,7 +87,8 @@
         ]);
         if (unref(isUpdate)) {
           setFieldsValue({
-            ...data.record,
+            ...formData,
+            frontShow: formData.frontShow === 1 ? true : false
           });
         }
       });
@@ -107,7 +108,11 @@
         }
       }
 
-      return { registerModal, registerForm, getTitle, handleSubmit };
+      return {
+        registerModal,
+        registerForm,
+        getTitle,
+        handleSubmit };
     },
   });
 </script>
