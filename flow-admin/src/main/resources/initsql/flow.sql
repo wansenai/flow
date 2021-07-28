@@ -7442,7 +7442,7 @@ CREATE TABLE `tbl_shiro_session` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_sys_oper_record`;
 CREATE TABLE `tbl_sys_oper_record` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `ip` varchar(18) DEFAULT NULL,
   `user_code` varchar(20) DEFAULT NULL,
   `user_name` varchar(80) DEFAULT NULL,
