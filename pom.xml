@@ -14,6 +14,7 @@
         <module>flow-api-rest</module>
         <module>flow-front-rest</module>
         <module>flow-log</module>
+        <module>flow-dubbo</module>
     </modules>
 	<groupId>com.dragon</groupId>
 	<artifactId>flow</artifactId>

@@ -41,6 +41,7 @@ import java.util.List;
  * @date 2021/7/9 10:02
  */
 public abstract class AbstractBpmnDisgnerResource extends BaseResource {
+    public static final String WARNING = "暂未开放！";
     @Autowired
     private IFlowableBpmnService flowableBpmnService;
     @Autowired
@@ -112,7 +113,7 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
 
     @GetMapping(value = "/getTaskFormInfoByModelKey/{modelKey}", produces = "application/json")
     public ReturnVo<List> getTaskFormInfoByModelKey(@PathVariable String modelKey) {
-        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
         return returnVo;
     }
 
@@ -165,7 +166,7 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
 
     @PostMapping(value = "/getMatrixRoles/{roleType}", produces = "application/json")
     public ReturnVo<List> getMatrixRoles(@PathVariable Integer roleType) {
-        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
         return returnVo;
     }
 
@@ -189,7 +190,7 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
     /******************************************************变量设置接口************************************************************/
     @GetMapping(value = "/getFormVariablesByCode/{formCode}", produces = "application/json")
     public ReturnVo<List> getFormVariablesByCode(@PathVariable String formCode) {
-        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
         return returnVo;
     }
 
@@ -201,31 +202,31 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
      */
     @GetMapping(value = "/getRoleVariablesByOrgId/{orgId}/{flag}", produces = "application/json")
     public ReturnVo<List> getRoleVariablesByOrgId(@PathVariable String orgId,@PathVariable String flag) {
-        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
         return returnVo;
     }
 
     @GetMapping(value = "/getDeptVariables", produces = "application/json")
     public ReturnVo<List> getDeptVariables() {
-        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
         return returnVo;
     }
 
     @GetMapping(value = "/getCompanyVariables", produces = "application/json")
     public ReturnVo<List> getCompanyVariables() {
-        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
         return returnVo;
     }
 
     @GetMapping(value = "/getMatrixDeptVariables", produces = "application/json")
     public ReturnVo<List> getMatrixDeptVariables() {
-        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
         return returnVo;
     }
 
     @GetMapping(value = "/getMatrixCompanyVariables", produces = "application/json")
     public ReturnVo<List> getMatrixCompanyVariables() {
-        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, "暂未开放!");
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
         return returnVo;
     }
 

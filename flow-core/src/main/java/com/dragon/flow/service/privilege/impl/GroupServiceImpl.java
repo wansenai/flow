@@ -39,6 +39,7 @@ public class GroupServiceImpl extends ServiceImpl<IGroupMapper, Group> implement
     private IUserGroupService userGroupService;
     @Autowired
     private IUserService userService;
+    @Lazy
     @Autowired
     private IAclService aclService;
     @Autowired

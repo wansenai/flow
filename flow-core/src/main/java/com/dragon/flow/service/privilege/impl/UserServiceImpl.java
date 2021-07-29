@@ -24,6 +24,7 @@ import groovyjarjarantlr.actions.python.CodeLexer;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,9 +40,10 @@ import java.util.List;
  **/
 @Service
 public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements IUserService {
-
+    @Lazy
     @Autowired
     private IUserGroupService userGroupService;
+    @Lazy
     @Autowired
     private IGroupService groupService;
 

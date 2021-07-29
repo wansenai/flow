@@ -34,6 +34,7 @@ public class FlowBpmnConfig implements EngineConfigurationConfigurer<SpringProce
         configuration.setEnableProcessDefinitionInfoCache(true);
         configuration.setProcessDefinitionCache(customDeploymentCache);
         configuration.setAsyncExecutorActivate(true);
+//        configuration.setAsyncHistoryEnabled(true);
         configuration.setProcessDefinitionInfoCache(customProcessDefinitionInfoCache);
         //设置自定义的uuid生成策略
         configuration.setIdGenerator(uuidGenerator());
