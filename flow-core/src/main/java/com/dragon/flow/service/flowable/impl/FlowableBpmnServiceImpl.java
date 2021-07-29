@@ -114,13 +114,16 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
                 LambdaQueryWrapper<ModelInfo> modelInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
                 modelInfoLambdaQueryWrapper.eq(ModelInfo::getModelId, savedModel.getId());
                 ModelInfo modelInfo = modelInfoService.getOne(modelInfoLambdaQueryWrapper);
-                if (ModelFormStatusEnum.TY.getStatus().equals(modelInfo.getStatus()) &&
-                        ModelFormStatusEnum.TY.getStatus().equals(modelInfo.getExtendStatus())) {
-                    modelInfo.setStatus(ModelFormStatusEnum.DFB.getStatus());
-                    modelInfo.setExtendStatus(ModelFormStatusEnum.DFB.getStatus());
-                } else {
-                    modelInfo.setStatus(ModelFormStatusEnum.DFB.getStatus());
-                }
+                modelInfo.setStatus(ModelFormStatusEnum.DFB.getStatus());
+                modelInfo.setExtendStatus(ModelFormStatusEnum.DFB.getStatus());
+//                if (ModelFormStatusEnum.TY.getStatus().equals(modelInfo.getStatus()) &&
+//                        ModelFormStatusEnum.TY.getStatus().equals(modelInfo.getExtendStatus())) {
+//                    modelInfo.setStatus(ModelFormStatusEnum.DFB.getStatus());
+//                    modelInfo.setExtendStatus(ModelFormStatusEnum.DFB.getStatus());
+//                } else {
+//                    modelInfo.setStatus(ModelFormStatusEnum.DFB.getStatus());
+//                    modelInfo.setExtendStatus(ModelFormStatusEnum.DFB.getStatus());
+//                }
                 modelInfoService.saveOrUpdate(modelInfo);
                 returnVo.setData(savedModel.getId());
                 return returnVo;
