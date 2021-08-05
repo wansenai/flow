@@ -10,6 +10,7 @@
         <TableAction
           :actions="[
             {
+              tooltip: '删除',
               auth: this.$options.name+':'+PerEnum.DELETE,
               icon: 'ant-design:delete-outlined',
               color: 'error',

@@ -41,6 +41,7 @@ export const columns: BasicColumn[] = [
   {
     title: '操作',
     dataIndex: 'option',
+    width: 150,
     align: 'left',
     slots: { customRender: 'action' },
   },

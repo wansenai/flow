@@ -8,13 +8,14 @@
       :treeData="treeData"
       :replaceFields="{ key: 'id', title: 'name' }"
       @select="handleSelect"
+      ref="basicTreeRef"
     />
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue';
+  import { defineComponent, onMounted, ref, unref, nextTick } from 'vue';
   import {Spin} from "ant-design-vue";
-  import { BasicTree, TreeItem } from '/@/components/Tree';
+  import { BasicTree, TreeActionType, TreeItem } from '/@/components/Tree';
   import {findNode} from "/@/utils/helper/treeHelper";
   import {getPositionSeqs} from "/@/api/org/positionSeq";
 
@@ -26,11 +27,18 @@
     setup(_, { emit }) {
       const treeData = ref<TreeItem[]>([]);
       const treeLoading = ref<boolean>(false);
+      const basicTreeRef = ref<Nullable<TreeActionType>>(null);
 
       async function fetch() {
         treeLoading.value = true;
         getPositionSeqs().then(res => {
           treeData.value = (res as unknown) as TreeItem[];
+          nextTick(() => {
+            // 加载后展开节层级
+            if(unref(treeData).length < 10){
+              unref(basicTreeRef)?.filterByLevel(1);
+            }
+          });
         }).finally(()=>{
           treeLoading.value = false;
         });
@@ -44,7 +52,7 @@
       onMounted(() => {
         fetch();
       });
-      return { treeData, treeLoading, handleSelect };
+      return { treeData, treeLoading, basicTreeRef, handleSelect };
     },
   });
 </script>

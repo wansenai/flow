@@ -13,6 +13,7 @@
             <PlusCircleOutlined />
           </template>
         </Button>
+
         <Button value="center" title="重置视图并居中" style="width: 40px;" size="small" @click="processReZoom()">
           <OneToOneOutlined />
         </Button>
@@ -26,6 +27,7 @@
            v-bind:style="{width: 100 * scale + '%',height: 100 * scale + '%'}"
       ></div>
     </div>
+
     <Popover overlayClassName="flowMsgPopover" ref="flowMsgPopover" :visible="true" >
       <template #title>
         <h1 class="popover-title">{{detailInfo.name}}</h1>
@@ -41,6 +43,8 @@
         <p>审批耗时：{{detailInfo.duration||""}}</p>
       </template>
     </Popover>
+
+
   </BasicModal>
 </template>
 <script lang="ts">
@@ -50,6 +54,7 @@
   import {Spin , Tag, Popover, Button, Space, Affix} from "ant-design-vue";
   import FramePage from '/@/views/components/iframe/index.vue';
   import { PlusCircleOutlined, MinusCircleOutlined, OneToOneOutlined } from '@ant-design/icons-vue';
+
   import BpmnViewer from 'bpmn-js/lib/Viewer'
   import MoveCanvasModule from 'diagram-js/lib/navigation/movecanvas'
   import {
@@ -339,7 +344,7 @@
   .containers{
     background-color: #ffffff;
     width: 100%;
-    height: 100%;
+    height: 50vh;
     .canvas{
       width: 100%;
       height: 100%;

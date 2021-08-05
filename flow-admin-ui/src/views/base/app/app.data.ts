@@ -201,5 +201,4 @@ export const secretKeyFormSchema: FormSchema[] = [
     component: 'InputTextArea',
     slot: 'secretKeySlot',
   },
-
 ];

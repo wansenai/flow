@@ -16,7 +16,7 @@ export const columns: BasicColumn[] = [
   {
     title: '排序号',
     dataIndex: 'orderNo',
-    width: 60,
+    width: 100,
     align: 'left',
   },
   /*{

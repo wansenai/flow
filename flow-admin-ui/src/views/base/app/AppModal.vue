@@ -79,7 +79,8 @@
         ]);
         if (unref(isUpdate)) {
           setFieldsValue({
-            ...data.record,
+            ...formData,
+            status: formData.status === 1,
           });
         }
       });
@@ -99,7 +100,12 @@
         }
       }
 
-      return { registerModal, registerForm, getTitle, handleSubmit };
+      return {
+        registerModal,
+        registerForm,
+        getTitle,
+        handleSubmit
+      };
     },
   });
 </script>

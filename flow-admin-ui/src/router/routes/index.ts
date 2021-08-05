@@ -45,4 +45,11 @@ export const HomeRoute: AppRouteRecordRaw = {
 };
 
 // Basic routing without permission
-export const basicRoutes = [LoginRoute, RootRoute, HomeRoute, ...mainOutRoutes, REDIRECT_ROUTE];
+export const basicRoutes = [
+  LoginRoute,
+  RootRoute,
+  HomeRoute,
+  ...mainOutRoutes,
+  REDIRECT_ROUTE,
+  PAGE_NOT_FOUND_ROUTE,
+];

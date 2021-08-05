@@ -5,6 +5,7 @@ import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
   Login = '/login',
+  Logout = '/logout',
   GetUserInfo = '/front/user/getLoginUser',
   GetPermCode = '/front/getPermCodeByUserId',
 }
@@ -37,4 +38,8 @@ export function getPermCode() {
     url: Api.GetPermCode,
     params,
   });*/
+}
+
+export function doLogout() {
+  return defHttp.post({ url: Api.Logout });
 }

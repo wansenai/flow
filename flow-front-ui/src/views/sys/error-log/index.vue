@@ -35,13 +35,13 @@
   import DetailModal from './DetailModal.vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table/index';
 
-  import { useModal } from '/@/components/Modal/index';
+  import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useI18n } from '/@/hooks/web/useI18n';
 
   import { useErrorLogStore } from '/@/store/modules/errorLog';
 
-  // import { fireErrorApi } from '/@/api/demo/error';
+  import { fireErrorApi } from '/@/api/demo/error';
 
   import { getColumns } from './data';
 
@@ -98,7 +98,7 @@
       }
 
       async function fireAjaxError() {
-        // await fireErrorApi();
+        await fireErrorApi();
       }
 
       return {

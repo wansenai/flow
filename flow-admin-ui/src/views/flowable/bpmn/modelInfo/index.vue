@@ -111,13 +111,13 @@
         let actions: ActionItem[] = [
           {
             icon: 'ant-design:eye',
-            title: '预览',
+            tooltip: '流程图预览',
             label: '',
             onClick: handlePreview.bind(null, record),
           },
           {
             icon: 'ant-design:play-circle-filled',
-            title: '发布',
+            tooltip: '发布',
             label: '',
             popConfirm: {
               title: '确认发布吗?',
@@ -127,7 +127,7 @@
           },
           {
             icon: 'ant-design:stop-twotone',
-            title: '停用',
+            tooltip: '停用',
             label: '',
             popConfirm: {
               title: '确认停用吗?',
@@ -137,14 +137,14 @@
           },
           {
             icon: 'clarity:note-edit-line',
-            title: '修改',
+            tooltip: '修改',
             label: '',
             onClick: handleEdit.bind(null, record),
           },
           {
             icon: 'ant-design:delete-outlined',
             color: 'error',
-            title: '删除',
+            tooltip: '删除',
             label: '',
             popConfirm: {
               title: '是否确认删除',

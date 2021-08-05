@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <FramePage :frameSrc="url" />
   </div>
 </template>

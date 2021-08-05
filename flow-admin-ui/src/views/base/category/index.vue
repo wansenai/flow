@@ -8,17 +8,17 @@
         <TableAction
           :actions="[
             {
-              title: '添加子分类',
+              tooltip: '添加子分类',
               icon: 'ant-design:plus-outlined',
               onClick: handleCreateChild.bind(null, record),
             },
             {
-              title: '修改',
+              tooltip: '修改',
               icon: 'clarity:note-edit-line',
               onClick: handleEdit.bind(null, record),
             },
             {
-              title: '删除',
+              tooltip: '删除',
               icon: 'ant-design:delete-outlined',
               color: 'error',
               onClick: (e)=>{e.stopPropagation();},
@@ -38,11 +38,11 @@
   import { defineComponent } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { getCategories, deleteByIds } from '/@/api/base/category';
-
   import { columns, searchFormSchema } from './category.data';
   import CategoryModal from './CategoryModal.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useModal } from '/@/components/Modal';
+
   const { createMessage } = useMessage();
 
   export default defineComponent({

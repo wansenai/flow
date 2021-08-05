@@ -1,7 +1,13 @@
 <template>
   <div :class="prefixCls">
-    <div v-show="!isEdit" :class="`${prefixCls}__normal`" @click="handleEdit">
-      {{ getValues || '&nbsp;' }}
+    <div
+      v-show="!isEdit"
+      :class="{ [`${prefixCls}__normal`]: true, 'ellipsis-cell': column.ellipsis }"
+      @click="handleEdit"
+    >
+      <div class="cell-content" :title="column.ellipsis ? getValues || '' : ''">{{
+        getValues || '&nbsp;'
+      }}</div>
       <FormOutlined :class="`${prefixCls}__normal-icon`" v-if="!column.editRow" />
     </div>
 
@@ -44,6 +50,8 @@
   import { propTypes } from '/@/utils/propTypes';
   import { isString, isBoolean, isFunction, isNumber, isArray } from '/@/utils/is';
   import { createPlaceholderMessage } from './helper';
+  import { set, omit } from 'lodash-es';
+  import { treeToList } from '/@/utils/helper/treeHelper';
 
   export default defineComponent({
     name: 'EditableCell',
@@ -107,7 +115,7 @@
         return {
           placeholder: createPlaceholderMessage(unref(getComponent)),
           ...apiSelectProps,
-          ...compProps,
+          ...omit(compProps, 'onChange'),
           [valueField]: value,
         };
       });
@@ -153,6 +161,7 @@
 
       watchEffect(() => {
         defaultValueRef.value = props.value;
+        currentValueRef.value = props.value;
       });
 
       watchEffect(() => {
@@ -183,6 +192,8 @@
         } else if (isString(e) || isBoolean(e) || isNumber(e)) {
           currentValueRef.value = e;
         }
+        const onChange = props.column?.editComponentProps?.onChange;
+        if (onChange && isFunction(onChange)) onChange(...arguments);
 
         table.emit?.('edit-change', {
           column: props.column,
@@ -227,14 +238,16 @@
           if (!isPass) return false;
         }
 
-        const { column, index } = props;
+        const { column, index, record } = props;
+        if (!record) return false;
         const { key, dataIndex } = column;
         const value = unref(currentValueRef);
         if (!key || !dataIndex) return;
 
         const dataKey = (dataIndex || key) as string;
 
-        const record = await table.updateTableData(index, dataKey, value);
+        set(record, dataKey, value);
+        //const record = await table.updateTableData(index, dataKey, value);
         needEmit && table.emit?.('edit-end', { record, index, key, value });
         isEdit.value = false;
       }
@@ -249,7 +262,14 @@
       function handleCancel() {
         isEdit.value = false;
         currentValueRef.value = defaultValueRef.value;
-        table.emit?.('edit-cancel', unref(currentValueRef));
+        const { column, index, record } = props;
+        const { key, dataIndex } = column;
+        table.emit?.('edit-cancel', {
+          record,
+          index,
+          key: dataIndex || key,
+          value: unref(currentValueRef),
+        });
       }
 
       function onClickOutside() {
@@ -263,9 +283,23 @@
         }
       }
 
-      // only ApiSelect
+      // only ApiSelect or TreeSelect
       function handleOptionsChange(options: LabelValueOptions) {
-        optionsRef.value = options;
+        const { replaceFields } = props.column?.editComponentProps ?? {};
+        const component = unref(getComponent);
+        if (component === 'ApiTreeSelect') {
+          const { title = 'title', value = 'value', children = 'children' } = replaceFields || {};
+          let listOptions: Recordable[] = treeToList(options, { children });
+          listOptions = listOptions.map((item) => {
+            return {
+              label: item[title],
+              value: item[value],
+            };
+          });
+          optionsRef.value = listOptions as LabelValueOptions;
+        } else {
+          optionsRef.value = options;
+        }
       }
 
       function initCbs(cbs: 'submitCbs' | 'validCbs' | 'cancelCbs', handle: Fn) {
@@ -389,6 +423,16 @@
         svg {
           color: @primary-color;
         }
+      }
+    }
+
+    .ellipsis-cell {
+      .cell-content {
+        overflow-wrap: break-word;
+        word-break: break-word;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
 

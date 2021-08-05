@@ -83,7 +83,6 @@
             delete node.children;
             return node
           });
-          debugger;
           nextTick(()=>{
             selectedList.value = JSON.parse(JSON.stringify(selected));
             getTree().setSelectedKeys(nv);
@@ -95,7 +94,6 @@
       });
 
       watch(selectedKeys, (nv, ov)=>{
-        debugger;
         if(!multiSelect.value){
           const selected = nv.map(key=>{
             let node = findNode(treeData.value, (item)=>item.id===key, {id: 'id', pid:'pid', children:'children'});

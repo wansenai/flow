@@ -2,8 +2,6 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
-import {checkEntityExist} from "/@/api/base/category";
-
 
 export const columns: BasicColumn[] = [
   {

@@ -11,13 +11,13 @@
           :actions="[
             {
               auth: this.$options.name+':'+PerEnum.UPDATE,
-              title: '修改',
+              tooltip: '修改',
               icon: 'clarity:note-edit-line',
               onClick: handleEdit.bind(null, record),
             },
             {
               auth: this.$options.name+':'+PerEnum.DELETE,
-              title: '删除',
+              tooltip: '删除',
               icon: 'ant-design:delete-outlined',
               color: 'error',
               popConfirm: {

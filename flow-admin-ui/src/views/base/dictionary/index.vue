@@ -3,7 +3,6 @@
     <DictTypeTree class="w-1/5 xl:w-1/5" @select="handleDictTypeSelect" />
     <DictionaryTable ref="dictionaryRef" @handleSelect="handleDictSelect" class="w-2/5 xl:w-2/5" />
     <DictionaryItemTable ref="dictionaryItemRef" class="w-2/5 xl:w-2/5" />
-
   </PageWrapper>
 </template>
 <script lang="ts">
@@ -22,7 +21,6 @@
   const { createMessage } = useMessage();
 
   export default defineComponent({
-    name: 'Dictionary',
     components: { BasicTable, PageWrapper, DictTypeTree, DictionaryTable, DictionaryItemTable, TableAction },
     setup() {
       const [registerModal, { openModal }] = useModal();

@@ -30,7 +30,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '应用范围',
-    dataIndex: 'appliedRange',
+    dataIndex: 'appliedRangeName',
     width: 100,
     align: 'left'
   },
