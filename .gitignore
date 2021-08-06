@@ -33,6 +33,8 @@ target/
 .vscode/
 
 application-local.properties
+application-test.properties
+application-prod.properties
 
 ### LOG ###
 /logPath_IS_UNDEFINED

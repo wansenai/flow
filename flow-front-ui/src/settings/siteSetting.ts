@@ -5,4 +5,4 @@ export const GITHUB_URL = 'https://github.com/ecnice/flow';
 export const DOC_URL = 'https://gitee.com/lwj/flow';
 
 // site url
-export const SITE_URL = 'http://8.129.209.112:8100/';
+export const SITE_URL = 'http://47.106.196.177:8100/';

@@ -1,6 +1,6 @@
 ## 预览
-- [企业数智化 - 流程中心](http://8.129.209.112:8100/idm/#/login?_blank)
-- [企业数智化 - 门户](http://8.129.209.112:8200/idm/#/login)
+- [企业数智化 - 流程中心](http://47.106.196.177:8100/idm/#/login?_blank)
+- [企业数智化 - 门户](http://47.106.196.177:8200/idm/#/login)
 
 
 - [操作演示 - 流程中心](https://www.bilibili.com/video/BV1qU4y1L7pB/)
