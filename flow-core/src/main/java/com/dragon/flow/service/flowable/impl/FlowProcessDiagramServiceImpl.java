@@ -69,12 +69,14 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
     private ModelService modelService;
 
     @Override
-    public HighLightedNodeVo getHighLightedNodeVoByProcessInstanceId(String processInstanceId) {
+    public HighLightedNodeVo createCacheHighLightedNodeVoByProcessInstanceId(String processInstanceId) {
+        HighLightedNodeVo highLightedNodeVo = this.findHighLightedNodeVoByProcessInstanceId(processInstanceId);
         Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_HIGHLIGHTEDNODES);
-        Cache.ValueWrapper valueWrapper = cache.get(processInstanceId);
-        if (valueWrapper != null){
-            return (HighLightedNodeVo) valueWrapper.get();
-        }
+        cache.put(processInstanceId, highLightedNodeVo);
+        return null;
+    }
+
+    private HighLightedNodeVo findHighLightedNodeVoByProcessInstanceId(String processInstanceId) {
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
         List<String> activeActivityIds = new ArrayList<>();
         List<String> highLightedFlows = new ArrayList<>();
@@ -100,6 +102,17 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
         byte[] bpmnXML = modelService.getBpmnXML(bpmnModel);
         String modelXml = new String(bpmnXML, StandardCharsets.UTF_8);
         HighLightedNodeVo highLightedNodeVo = new HighLightedNodeVo(highLightedFlows, activeActivityIds, modelXml, modelName);
+        return highLightedNodeVo;
+    }
+
+    @Override
+    public HighLightedNodeVo getHighLightedNodeVoByProcessInstanceId(String processInstanceId) {
+        Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_HIGHLIGHTEDNODES);
+        Cache.ValueWrapper valueWrapper = cache.get(processInstanceId);
+        if (valueWrapper != null){
+            return (HighLightedNodeVo) valueWrapper.get();
+        }
+        HighLightedNodeVo highLightedNodeVo = this.findHighLightedNodeVoByProcessInstanceId(processInstanceId);
         cache.put(processInstanceId, highLightedNodeVo);
         return highLightedNodeVo;
     }
