@@ -23,10 +23,10 @@ public class DurationUtils {
                 durationStr.append(day).append("天 ");
             }
             if (hour > 0){
-                durationStr.append(hour).append("小时 ");
+                durationStr.append(hour).append("时 ");
             }
             if (minute > 0){
-                durationStr.append(minute).append("分钟 ");
+                durationStr.append(minute).append("分 ");
             }
             if (second > 0){
                 durationStr.append(second).append("秒");
