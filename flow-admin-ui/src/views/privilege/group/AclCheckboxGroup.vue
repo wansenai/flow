@@ -20,7 +20,7 @@
   import { defineComponent, ref } from 'vue';
   import { propTypes } from '/@/utils/propTypes';
   import { Checkbox, Spin } from 'ant-design-vue';
-  import {setAcl, setAclByModule, setAclModuleList} from "/@/api/privilege/acl";
+  import {setAclByModule, setAclModuleList} from "/@/api/privilege/acl";
 
   export default defineComponent({
     name: 'AclCheckboxGroup',
@@ -92,6 +92,3 @@
     },
   });
 </script>
-<style lang="less">
-
-</style>
