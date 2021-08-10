@@ -158,6 +158,7 @@ public interface IBpmnModelService {
     Activity findActivityByName(String processDefId, String name);
     Activity findActivityById(String processDefId, String activityId);
     Activity findActivityByBpmnModelAndId(BpmnModel bpmnModel, String activityId);
+    List<FlowElement> findFlowElementByIds(BpmnModel bpmnModel, List<String> activityIds) ;
     /**
      * 通过流程定义的id获取所有的节点信息
      * @param processDefId 流程定义的id

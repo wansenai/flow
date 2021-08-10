@@ -37,6 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @program: flow
@@ -73,7 +74,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
         HighLightedNodeVo highLightedNodeVo = this.findHighLightedNodeVoByProcessInstanceId(processInstanceId);
         Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_HIGHLIGHTEDNODES);
         cache.put(processInstanceId, highLightedNodeVo);
-        return null;
+        return highLightedNodeVo;
     }
 
     private HighLightedNodeVo findHighLightedNodeVoByProcessInstanceId(String processInstanceId) {
@@ -85,7 +86,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
         historicSquenceFlows.forEach(historicActivityInstance -> highLightedFlows.add(historicActivityInstance.getActivityId()));
         String processDefinitionId = null;
         String modelName = null;
-        if (processInstance == null){
+        if (processInstance == null) {
             ExtendHisprocinst extendHisprocinst = extendHisprocinstService.findExtendHisprocinstByProcessInstanceId(processInstanceId);
             processDefinitionId = extendHisprocinst.getProcessDefinitionId();
             List<HistoricActivityInstance> historicEnds = historyService.createHistoricActivityInstanceQuery()
@@ -109,7 +110,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
     public HighLightedNodeVo getHighLightedNodeVoByProcessInstanceId(String processInstanceId) {
         Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_HIGHLIGHTEDNODES);
         Cache.ValueWrapper valueWrapper = cache.get(processInstanceId);
-        if (valueWrapper != null){
+        if (valueWrapper != null) {
             return (HighLightedNodeVo) valueWrapper.get();
         }
         HighLightedNodeVo highLightedNodeVo = this.findHighLightedNodeVoByProcessInstanceId(processInstanceId);
@@ -120,11 +121,11 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
     @Override
     public ActivityVo getOneActivityVoByProcessInstanceIdAndActivityId(String processInstanceId, String activityId) {
         ActivityVo vo = null;
-        if (StringUtils.isNotBlank(processInstanceId) && StringUtils.isNotBlank(activityId)){
+        if (StringUtils.isNotBlank(processInstanceId) && StringUtils.isNotBlank(activityId)) {
             Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_ACTIVITYS);
             String key = processInstanceId + "-" + activityId;
             Cache.ValueWrapper valueWrapper = cache.get(key);
-            if (valueWrapper != null){
+            if (valueWrapper != null) {
                 return (ActivityVo) valueWrapper.get();
             }
             List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
@@ -132,28 +133,33 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
                     .orderByTaskCreateTime().desc().list();
             ExtendHisprocinst extendHisprocinst = extendHisprocinstService.findExtendHisprocinstByProcessInstanceId(processInstanceId);
             HistoricTaskInstance historicTaskInstance = null;
-            if (CollectionUtils.isNotEmpty(historicTaskInstances)){
+            if (CollectionUtils.isNotEmpty(historicTaskInstances)) {
                 for (HistoricTaskInstance hisTask : historicTaskInstances) {
-                    if (hisTask.getEndTime() == null){
+                    if (hisTask.getEndTime() == null) {
                         historicTaskInstance = hisTask;
                         break;
                     }
                 }
-                if (historicTaskInstance == null){
+                if (historicTaskInstance == null) {
                     historicTaskInstance = historicTaskInstances.get(0);
                 }
             }
             BpmnModel bpmnModel = bpmnModelService.getBpmnModelByProcessDefId(extendHisprocinst.getProcessDefinitionId());
             Activity activity = bpmnModelService.findActivityByBpmnModelAndId(bpmnModel, activityId);
-            if (activity instanceof UserTask){
+            if (activity instanceof UserTask) {
                 UserTask userTask = (UserTask) activity;
-                if (historicTaskInstance == null){
+                if (historicTaskInstance == null) {
                     vo = this.setUnStartTaskNodeInfo(userTask, bpmnModel, extendHisprocinst);
                     vo.setStatus(NodeStatusEnum.PENDING.getDescription());
                 } else {
-                    vo = this.setUserTask(historicTaskInstances, historicTaskInstance, userTask, bpmnModel, extendHisprocinst);
+                    if (this.checkUserTaskExist(processInstanceId, bpmnModel, userTask)) {
+                        vo = this.setUserTask(historicTaskInstances, historicTaskInstance, userTask, bpmnModel, extendHisprocinst);
+                    } else {
+                        vo = this.setUnStartTaskNodeInfo(userTask, bpmnModel, extendHisprocinst);
+                        vo.setStatus(NodeStatusEnum.PENDING.getDescription());
+                    }
                 }
-            } else if (activity instanceof ServiceTask){
+            } else if (activity instanceof ServiceTask) {
 
             }
             cache.put(key, vo);
@@ -161,29 +167,47 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
         return vo;
     }
 
+    private boolean checkUserTaskExist(String processInstanceId, BpmnModel bpmnModel, UserTask userTask) {
+        boolean flag = false;
+        List<HistoricActivityInstance> historicSquenceFlows = historyService.createHistoricActivityInstanceQuery()
+                .processInstanceId(processInstanceId).activityType(BpmnXMLConstants.ELEMENT_SEQUENCE_FLOW).list();
+        List<String> squenceFlowIds = historicSquenceFlows.stream().map(HistoricActivityInstance::getActivityId).collect(Collectors.toList());
+        List<FlowElement> flowElements = bpmnModelService.findFlowElementByIds(bpmnModel, squenceFlowIds);
+        for (FlowElement flowElement : flowElements) {
+            SequenceFlow sequenceFlow = (SequenceFlow) flowElement;
+            FlowElement sourceFlowElement = sequenceFlow.getSourceFlowElement();
+            FlowElement targetFlowElement = sequenceFlow.getTargetFlowElement();
+            if (userTask.getId().equals(sourceFlowElement.getId()) || userTask.getId().equals(targetFlowElement.getId())) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
+
     @Override
     public List<ActivityVo> getProcessActivityVosByProcessInstanceId(String processInstanceId) {
         Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_ACTIVITYS);
         Cache.ValueWrapper valueWrapper = cache.get(processInstanceId);
-        if (valueWrapper != null){
+        if (valueWrapper != null) {
             return (List<ActivityVo>) valueWrapper.get();
         }
         List<ActivityVo> datas = new ArrayList<>();
         ExtendHisprocinst extendHisprocinst = extendHisprocinstService.findExtendHisprocinstByProcessInstanceId(processInstanceId);
-        if (extendHisprocinst == null){
+        if (extendHisprocinst == null) {
             throw new FlowException(String.format("通过流程实例ID【%s】未找到扩展流程实例历史数据！", processInstanceId));
         }
         BpmnModel bpmnModel = bpmnModelService.getBpmnModelByProcessDefId(extendHisprocinst.getProcessDefinitionId());
         List<UserTask> userTasks = bpmnModelService.findUserTasksByBpmnModel(bpmnModel);
-        if (CollectionUtils.isNotEmpty(userTasks)){
+        if (CollectionUtils.isNotEmpty(userTasks)) {
             List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId).list();
             Map<String, HistoricTaskInstance> historicTaskInstanceMap = new HashMap<>();
-            if (CollectionUtils.isNotEmpty(historicTaskInstances)){
+            if (CollectionUtils.isNotEmpty(historicTaskInstances)) {
                 historicTaskInstanceMap = historicTaskInstances.stream().collect(Collectors.toMap(HistoricTaskInstance::getTaskDefinitionKey, Function.identity(), (key1, key2) -> key2));
             }
             for (UserTask userTask : userTasks) {
                 ActivityVo vo = null;
-                if (!historicTaskInstanceMap.containsKey(userTask.getId())){
+                if (!historicTaskInstanceMap.containsKey(userTask.getId())) {
                     vo = this.setUnStartTaskNodeInfo(userTask, bpmnModel, extendHisprocinst);
                     vo.setStatus(NodeStatusEnum.PENDING.getDescription());
                 } else {
@@ -199,7 +223,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
 
     private ActivityVo setUserTask(List<HistoricTaskInstance> historicTaskInstances, HistoricTaskInstance historicTaskInstance, UserTask userTask, BpmnModel bpmnModel, ExtendHisprocinst extendHisprocinst) {
         ActivityVo vo = null;
-        if (historicTaskInstance != null && historicTaskInstance.getEndTime() == null){
+        if (historicTaskInstance != null && historicTaskInstance.getEndTime() == null) {
             vo = this.setUnStartTaskNodeInfo(userTask, bpmnModel, extendHisprocinst);
             List<Date> createTimes = new ArrayList<>();
             historicTaskInstances.forEach(hisTask -> createTimes.add(hisTask.getCreateTime()));
@@ -211,36 +235,36 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
                 List<String> personalCodes = new ArrayList<>();
                 List<Date> createTimes = new ArrayList<>();
                 List<Date> endTimes = new ArrayList<>();
-                if (userTask.getName().equals(FlowConstant.FLOW_SUBMITTER)){
+                if (userTask.getName().equals(FlowConstant.FLOW_SUBMITTER)) {
                     personalCodes.add(extendHisprocinst.getCurrentUserCode());
                 } else {
                     historicTaskInstances.forEach(hisTask -> {
                         createTimes.add(hisTask.getCreateTime());
                         endTimes.add(hisTask.getEndTime());
                         String assignee = hisTask.getAssignee();
-                        if (StringUtils.isNotBlank(assignee)){
+                        if (StringUtils.isNotBlank(assignee)) {
                             personalCodes.add(assignee);
                         }
                     });
                 }
-                if (CollectionUtils.isNotEmpty(personalCodes)){
+                if (CollectionUtils.isNotEmpty(personalCodes)) {
                     List<Personal> personals = personalService.getPersonalsByCodes(personalCodes);
-                    if (CollectionUtils.isNotEmpty(personals)){
+                    if (CollectionUtils.isNotEmpty(personals)) {
                         this.getApplyNames(personals, vo);
                     }
                 }
-                if (CollectionUtils.isNotEmpty(createTimes) && createTimes.size() > 0){
+                if (CollectionUtils.isNotEmpty(createTimes) && createTimes.size() > 0) {
                     vo.setStartDate(Collections.min(createTimes));
                 }
-                if (CollectionUtils.isNotEmpty(endTimes) && endTimes.size() > 0){
+                if (CollectionUtils.isNotEmpty(endTimes) && endTimes.size() > 0) {
                     vo.setEndDate(Collections.max(endTimes));
                 }
                 vo.setStatus(NodeStatusEnum.FINISH.getDescription());
                 long duration = 0;
-                if (userTask.getBehavior() instanceof SequentialMultiInstanceBehavior){
+                if (userTask.getBehavior() instanceof SequentialMultiInstanceBehavior) {
                     for (HistoricTaskInstance taskInstance : historicTaskInstances) {
-                        if (taskInstance.getDurationInMillis() != null){
-                            if (taskInstance.getDurationInMillis() != null){
+                        if (taskInstance.getDurationInMillis() != null) {
+                            if (taskInstance.getDurationInMillis() != null) {
                                 duration += taskInstance.getDurationInMillis();
                             }
                         }
@@ -273,16 +297,16 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
         vo.setTaskDefKey(userTask.getId());
         try {
             String taskType = bpmnModelService.getSingleCustomProperty(userTask.getId(), bpmnModel, FlowConstant.NODE_TYPE);
-            if (StringUtils.isNotBlank(taskType)){
-                if (taskType.equals(NodeTypeEnum.NOTIFY.getType())){
+            if (StringUtils.isNotBlank(taskType)) {
+                if (taskType.equals(NodeTypeEnum.NOTIFY.getType())) {
                     vo.setNodeType(NodeTypeEnum.NOTIFY.getDescription());
-                } else if (taskType.equals(NodeTypeEnum.NOAPPROVE.getType())){
+                } else if (taskType.equals(NodeTypeEnum.NOAPPROVE.getType())) {
                     vo.setNodeType(NodeTypeEnum.NOAPPROVE.getDescription());
-                } else if (taskType.equals(NodeTypeEnum.COORDINATION.getType())){
+                } else if (taskType.equals(NodeTypeEnum.COORDINATION.getType())) {
                     vo.setNodeType(NodeTypeEnum.COORDINATION.getDescription());
-                } else if (taskType.equals(NodeTypeEnum.REVIEW.getType())){
+                } else if (taskType.equals(NodeTypeEnum.REVIEW.getType())) {
                     vo.setNodeType(NodeTypeEnum.REVIEW.getDescription());
-                } else if (taskType.equals(NodeTypeEnum.APPLYING.getType())){
+                } else if (taskType.equals(NodeTypeEnum.APPLYING.getType())) {
                     vo.setNodeType(NodeTypeEnum.APPLYING.getDescription());
                 } else {
                     vo.setNodeType(NodeTypeEnum.APPLY.getDescription());
@@ -301,23 +325,23 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
                                               ExtendHisprocinst extendHisprocinst) {
         ActivityVo vo = this.setXYWH(userTask, bpmnModel, extendHisprocinst);
         try {
-            if (StringUtils.isNotBlank(userTask.getAssignee())){
+            if (StringUtils.isNotBlank(userTask.getAssignee())) {
                 MultiInstanceLoopCharacteristics loopCharacteristics = userTask.getLoopCharacteristics();
-                if (loopCharacteristics == null){
+                if (loopCharacteristics == null) {
                     String expressionValue = null;
-                    if (userTask.getName().equals(FlowConstant.FLOW_SUBMITTER)){
+                    if (userTask.getName().equals(FlowConstant.FLOW_SUBMITTER)) {
                         expressionValue = extendHisprocinst.getCurrentUserCode();
                     } else {
                         String processInstanceId = extendHisprocinst.getProcessInstanceId();
                         expressionValue = expressionService.getStrValue(processInstanceId, userTask.getAssignee());
                     }
-                    if (StringUtils.isNotBlank(expressionValue)){
+                    if (StringUtils.isNotBlank(expressionValue)) {
                         List<Personal> personals = null;
-                        if (StringUtils.contains(expressionValue, ",")){
+                        if (StringUtils.contains(expressionValue, ",")) {
                             String[] assignees = expressionValue.split(",");
                             List<String> as = Arrays.asList(assignees);
                             try {
-                                if (CollectionUtils.isNotEmpty(as)){
+                                if (CollectionUtils.isNotEmpty(as)) {
                                     personals = personalService.getPersonalsByCodes(as);
                                 }
                             } catch (Exception e) {
@@ -326,7 +350,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
                         } else {
                             personals = new ArrayList<>();
                             Personal personal = personalService.getPersonalByCode(expressionValue);
-                            if (personal != null){
+                            if (personal != null) {
                                 personals.add(personal);
                             }
                         }
@@ -337,14 +361,14 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
                     String processInstanceId = extendHisprocinst.getProcessInstanceId();
                     Object value = expressionService.getValue(processInstanceId, inputDataItem);
                     List<String> userCodes = null;
-                    if (value instanceof ArrayList){
+                    if (value instanceof ArrayList) {
                         userCodes = typeConverter.convert(value, ArrayList.class);
-                    } else if (value instanceof HashSet){
+                    } else if (value instanceof HashSet) {
                         HashSet hashSet = typeConverter.convert(value, HashSet.class);
                         userCodes = new ArrayList<String>(hashSet);
                     }
-                    if (CollectionUtils.isNotEmpty(userCodes)){
-                        if (CollectionUtils.isNotEmpty(userCodes)){
+                    if (CollectionUtils.isNotEmpty(userCodes)) {
+                        if (CollectionUtils.isNotEmpty(userCodes)) {
                             List<Personal> personals = personalService.getPersonalsByCodes(userCodes);
                             this.getApplyNames(personals, vo);
                         }
@@ -353,11 +377,11 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
             } else {
                 List<String> candidateUsers = userTask.getCandidateUsers();
                 List<String> candidateGroups = userTask.getCandidateGroups();
-                if (CollectionUtils.isNotEmpty(candidateUsers)){
+                if (CollectionUtils.isNotEmpty(candidateUsers)) {
                     List<Personal> personals = personalService.getPersonalsByCodes(candidateUsers);
                     this.getApplyNames(personals, vo);
-                } else if (CollectionUtils.isNotEmpty(candidateGroups)){
-                    if (CollectionUtils.isNotEmpty(candidateGroups)){
+                } else if (CollectionUtils.isNotEmpty(candidateGroups)) {
+                    if (CollectionUtils.isNotEmpty(candidateGroups)) {
                         List<Personal> personals = personalService.getPersonalsByRoleSns(candidateGroups);
                         this.getApplyNames(personals, vo);
 //                        String startUserId = extendHisprocinst.getCurrentUserCode();
@@ -393,14 +417,14 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
 
     private void getApplyNames(List<Personal> personals, ActivityVo vo) {
         StringBuilder names = new StringBuilder("");
-        if (CollectionUtils.isNotEmpty(personals)){
+        if (CollectionUtils.isNotEmpty(personals)) {
             for (Personal personal : personals) {
-                if (personal != null){
+                if (personal != null) {
                     names.append(personal.getName()).append(";");
                 }
             }
         }
-        if (names.length() > 0){
+        if (names.length() > 0) {
             names = names.deleteCharAt(names.length() - 1);
         }
         vo.setApprover(names.toString());

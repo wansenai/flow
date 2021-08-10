@@ -88,7 +88,7 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
 
     @Override
     public ReturnVo<String> stopProcess(EndVo endVo) {
-        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "流程已拒绝！");
         endVo.setCommentTypeEnum(CommentTypeEnum.LCZZ);
         endVo.setProcessStatusEnum(ProcessStatusEnum.ZZ);
         TaskEntity task = (TaskEntity) taskService.createTaskQuery().taskId(endVo.getTaskId()).singleResult();

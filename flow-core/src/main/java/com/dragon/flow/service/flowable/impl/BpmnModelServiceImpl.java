@@ -313,6 +313,21 @@ public class BpmnModelServiceImpl implements IBpmnModelService {
     }
 
     @Override
+    public List<FlowElement> findFlowElementByIds(BpmnModel bpmnModel, List<String> activityIds) {
+        List<FlowElement> flowElements = new ArrayList<>();
+        Process process = bpmnModel.getMainProcess();
+        Collection<FlowElement> list = process.getFlowElements();
+        for (FlowElement f : list) {
+            if (CollectionUtils.isNotEmpty(activityIds)) {
+                if (activityIds.contains(f.getId())) {
+                    flowElements.add(f);
+                }
+            }
+        }
+        return flowElements;
+    }
+
+    @Override
     public Activity findActivityById(String processDefId, String activityId) {
         Activity activity = null;
         BpmnModel bpmnModel = this.getBpmnModelByProcessDefId(processDefId);
