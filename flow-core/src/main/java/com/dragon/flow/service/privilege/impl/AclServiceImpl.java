@@ -230,11 +230,11 @@ public class AclServiceImpl extends ServiceImpl<IAclMapper, ACL> implements IAcl
 
     @Override
     public Set<ModulePermission> getModulePermissionsByUserId(String userId) {
-        Cache cache = cacheManager.getCache(FlowConstant.CACHE_ACL_PERMISSIONVALS);
-        Cache.ValueWrapper valueWrapper = cache.get(userId);
-        if (valueWrapper != null){
-            return (Set<ModulePermission>) valueWrapper.get();
-        }
+//        Cache cache = cacheManager.getCache(FlowConstant.CACHE_ACL_PERMISSIONVALS);
+//        Cache.ValueWrapper valueWrapper = cache.get(userId);
+//        if (valueWrapper != null){
+//            return (Set<ModulePermission>) valueWrapper.get();
+//        }
         Set<ACL> acls = this.getAclsByUserId(userId);
         if (CollectionUtils.isEmpty(acls)){
             return null;
@@ -252,17 +252,17 @@ public class AclServiceImpl extends ServiceImpl<IAclMapper, ACL> implements IAcl
                 });
             }
         }
-        cache.put(userId, mps);
+//        cache.put(userId, mps);
         return mps;
     }
 
     @Override
     public Set<ModulePermission> getModulePermissionsByAdminId(String userId) {
-        Cache cache = cacheManager.getCache(FlowConstant.CACHE_ACL_PERMISSIONVALS);
-        Cache.ValueWrapper valueWrapper = cache.get(userId);
-        if (valueWrapper != null){
-            return (Set<ModulePermission>) valueWrapper.get();
-        }
+//        Cache cache = cacheManager.getCache(FlowConstant.CACHE_ACL_PERMISSIONVALS);
+//        Cache.ValueWrapper valueWrapper = cache.get(userId);
+//        if (valueWrapper != null){
+//            return (Set<ModulePermission>) valueWrapper.get();
+//        }
         List<Module> moduleList = moduleService.list();
         Set<ModulePermission> mps = new HashSet<>();
         List<AppPrivilegeValue> appPrivilegeValues = appPrivilegeValueMapper.selectList(null);
@@ -277,7 +277,7 @@ public class AclServiceImpl extends ServiceImpl<IAclMapper, ACL> implements IAcl
                 });
             }
         }
-        cache.put(userId, mps);
+//        cache.put(userId, mps);
         return mps;
     }
 
