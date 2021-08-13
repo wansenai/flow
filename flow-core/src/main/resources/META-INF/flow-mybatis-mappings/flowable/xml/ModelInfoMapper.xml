@@ -61,13 +61,20 @@
             <if test="modelInfo.formType!=null">
                 and t1.form_type=#{modelInfo.formType}
             </if>
+            <if test="modelInfo.status!=null">
+                and t1.status=#{modelInfo.status}
+            </if>
+            <if test="modelInfo.extendStatus!=null">
+                and t1.extend_status=#{modelInfo.extendStatus}
+            </if>
             <if test="modelInfo.modelType!=null">
                 and t2.model_type=#{modelInfo.modelType}
             </if>
             <choose>
                 <when test="modelInfo.categoryCodes!=null and modelInfo.categoryCodes.size() &gt; 0">
                     and t1.`category_code` in
-                    <foreach item="categoryCode" collection="modelInfo.categoryCodes" separator="," open="(" close=")" index="">
+                    <foreach item="categoryCode" collection="modelInfo.categoryCodes" separator="," open="(" close=")"
+                             index="">
                         #{categoryCode}
                     </foreach>
                 </when>
