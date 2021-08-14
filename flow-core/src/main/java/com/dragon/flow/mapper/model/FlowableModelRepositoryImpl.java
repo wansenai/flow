@@ -79,7 +79,7 @@ public class FlowableModelRepositoryImpl implements ModelRepository {
 
     @Override
     public void save(Model model) {
-        if (model.getId() == null){
+        if (model.getId() == null) {
             model.setId(idGenerator.getNextId());
             sqlSessionTemplate.insert(NAMESPACE + "insertModel", model);
         } else {
