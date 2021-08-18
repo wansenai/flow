@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * @author bruce.liu
- * @description TODO
+ * @description 对外公开的dubbo接口
  * @date 2021/8/18 17:40
  */
 @DubboService(version = "1.0.0")
