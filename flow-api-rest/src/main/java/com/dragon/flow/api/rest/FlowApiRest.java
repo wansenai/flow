@@ -8,6 +8,7 @@ import com.baomidou.kisso.common.RsaKeyHelper;
 import com.baomidou.kisso.enums.TokenOrigin;
 import com.baomidou.kisso.security.token.SSOToken;
 import com.dragon.flow.api.IFlowApi;
+import com.dragon.flow.api.impl.AbstractFlowApiImpl;
 import com.dragon.flow.constant.FlowConstant;
 import com.dragon.flow.exception.FlowException;
 import com.dragon.flow.model.base.App;
@@ -54,18 +55,8 @@ import java.util.*;
 @Api(tags = "流程中心相关接口")
 @RestController
 @RequestMapping("/api/flow")
-public class FlowApiRest implements IFlowApi {
+public class FlowApiRest extends AbstractFlowApiImpl {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    private IFlowableProcessInstanceService flowableProcessInstanceService;
-    @Autowired
-    private IFlowableTaskService flowableTaskService;
-    @Autowired
-    private ICommentInfoService commentInfoService;
-    @Autowired
-    private IFlowProcessDiagramService flowProcessDiagramService;
-    @Autowired
-    private IFlowableBpmnService flowableBpmnService;
     @Autowired
     private IAppService appService;
 
@@ -128,10 +119,7 @@ public class FlowApiRest implements IFlowApi {
     @ApiImplicitParam(name = "modelKey", dataType = "String", required = true, value = "模型Key", defaultValue = "test_leave")
     @PostMapping(value = "/loadBpmnXmlByModelKey", produces = "application/json")
     public ReturnVo<ModelInfoVo> loadBpmnXmlByModelKey(String modelKey) {
-        ReturnVo<ModelInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        ModelInfoVo modelInfoVo = flowableBpmnService.loadBpmnXmlByModelKey(modelKey);
-        returnVo.setData(modelInfoVo);
-        return returnVo;
+        return super.loadBpmnXmlByModelKey(modelKey);
     }
 
     @Override
@@ -142,10 +130,7 @@ public class FlowApiRest implements IFlowApi {
     })
     @PostMapping(value = "/getOneActivityVoByProcessInstanceIdAndActivityId", produces = "application/json")
     public ReturnVo<ActivityVo> getOneActivityVoByProcessInstanceIdAndActivityId(String processInstanceId, String activityId) {
-        ReturnVo<ActivityVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        ActivityVo processActivityVo = flowProcessDiagramService.getOneActivityVoByProcessInstanceIdAndActivityId(processInstanceId, activityId);
-        returnVo.setData(processActivityVo);
-        return returnVo;
+        return super.getOneActivityVoByProcessInstanceIdAndActivityId(processInstanceId,activityId);
     }
 
     @Override
@@ -153,10 +138,7 @@ public class FlowApiRest implements IFlowApi {
     @ApiImplicitParam(name = "processInstanceVoParamVo", value = "分页查询参数", required = true, dataType = "ParamVo")
     @PostMapping(value = "/findMyProcessinstancesPagerModel", produces = "application/json")
     public ReturnVo<PagerModel> findMyProcessinstancesPagerModel(@RequestBody ParamVo<InstanceQueryParamsVo> processInstanceVoParamVo) {
-        ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        PagerModel<ProcessInstanceVo> pagerModel = flowableProcessInstanceService.findMyProcessinstancesPagerModel(processInstanceVoParamVo.getEntity(), processInstanceVoParamVo.getQuery());
-        returnVo.setData(pagerModel);
-        return returnVo;
+        return super.findMyProcessinstancesPagerModel(processInstanceVoParamVo);
     }
 
     @Override
@@ -164,10 +146,7 @@ public class FlowApiRest implements IFlowApi {
     @ApiImplicitParam(name = "getAppingTaskCont", value = "查询参数", required = true, dataType = "params")
     @PostMapping(value = "/getAppingTaskCont", produces = "application/json")
     public ReturnVo<Long> getAppingTaskCont(@RequestBody TaskQueryParamsVo params) {
-        ReturnVo<Long> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        Long count = flowableTaskService.getAppingTaskCont(params);
-        returnVo.setData(count);
-        return returnVo;
+        return super.getAppingTaskCont(params);
     }
 
     @Override
@@ -175,10 +154,7 @@ public class FlowApiRest implements IFlowApi {
     @ApiImplicitParam(name = "getAppingTasksPagerModel", value = "分页查询参数", required = true, dataType = "ParamVo")
     @PostMapping(value = "/getAppingTasksPagerModel", produces = "application/json")
     public ReturnVo<PagerModel> getAppingTasksPagerModel(@RequestBody ParamVo<TaskQueryParamsVo> taskQueryParamsVoParamVo) {
-        ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        PagerModel<TaskVo> pagerModel = flowableTaskService.getAppingTasksPagerModel(taskQueryParamsVoParamVo.getEntity(), taskQueryParamsVoParamVo.getQuery());
-        returnVo.setData(pagerModel);
-        return returnVo;
+        return super.getAppingTasksPagerModel(taskQueryParamsVoParamVo);
     }
 
     @Override
@@ -186,10 +162,7 @@ public class FlowApiRest implements IFlowApi {
     @ApiImplicitParam(name = "getApplyedTasksPagerModel", value = "分页查询参数", required = true, dataType = "ParamVo")
     @PostMapping(value = "/getApplyedTasksPagerModel", produces = "application/json")
     public ReturnVo<PagerModel> getApplyedTasksPagerModel(@RequestBody ParamVo<TaskQueryParamsVo> taskQueryParamsVoParamVo) {
-        ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        PagerModel<TaskVo> pagerModel = flowableTaskService.getApplyedTasksPagerModel(taskQueryParamsVoParamVo.getEntity(), taskQueryParamsVoParamVo.getQuery());
-        returnVo.setData(pagerModel);
-        return returnVo;
+        return super.getApplyedTasksPagerModel(taskQueryParamsVoParamVo);
     }
 
     @Override
@@ -197,10 +170,7 @@ public class FlowApiRest implements IFlowApi {
     @ApiImplicitParam(name = "getCommentInfosByProcessInstanceId", value = "流程实例id", required = true, dataType = "String")
     @PostMapping(value = "/getCommentInfosByProcessInstanceId", produces = "application/json")
     public ReturnVo<List> getCommentInfosByProcessInstanceId(String processInstanceId) {
-        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        List<CommentInfo> commentInfoList = commentInfoService.getCommentInfosByProcessInstanceId(processInstanceId);
-        returnVo.setData(commentInfoList);
-        return returnVo;
+        return super.getCommentInfosByProcessInstanceId(processInstanceId);
     }
 
     @Override
@@ -208,15 +178,7 @@ public class FlowApiRest implements IFlowApi {
     @ApiImplicitParam(name = "startProcessInstanceByKey", value = "启动流程", required = true, dataType = "StartProcessInstanceVo")
     @PostMapping(value = "/startProcessInstanceByKey", produces = "application/json")
     public ReturnVo<String> startProcessInstanceByKey(@RequestBody StartProcessInstanceVo params) {
-        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        ReturnVo<ProcessInstance> processInstanceReturnVo = flowableProcessInstanceService.startProcessInstanceByKey(params);
-        if (processInstanceReturnVo.isSuccess()){
-            returnVo.setData(processInstanceReturnVo.getData().getProcessInstanceId());
-        } else {
-            returnVo.setCode(processInstanceReturnVo.getCode());
-            returnVo.setMsg(processInstanceReturnVo.getMsg());
-        }
-        return returnVo;
+        return super.startProcessInstanceByKey(params);
     }
 
     @Override
@@ -224,7 +186,7 @@ public class FlowApiRest implements IFlowApi {
     @ApiImplicitParam(name = "complete", value = "审批", required = true, dataType = "completeTaskVo")
     @PostMapping(value = "/complete", produces = "application/json")
     public ReturnVo<String> complete(@RequestBody CompleteTaskVo completeTaskVo) throws FlowException {
-        return flowableTaskService.complete(completeTaskVo);
+        return super.complete(completeTaskVo);
     }
 
     @Override
@@ -232,7 +194,7 @@ public class FlowApiRest implements IFlowApi {
     @ApiImplicitParam(name = "stopProcess", value = "拒绝", required = true, dataType = "endVo")
     @PostMapping(value = "/stopProcess", produces = "application/json")
     public ReturnVo<String> stopProcess(@RequestBody EndVo endVo) {
-        return flowableProcessInstanceService.stopProcess(endVo);
+        return super.stopProcess(endVo);
     }
 
     @Override
@@ -240,10 +202,7 @@ public class FlowApiRest implements IFlowApi {
     @ApiImplicitParam(name = "getHighLightedNodeVoByProcessInstanceId", value = "getHighLightedNodeVoByProcessInstanceId", required = true, dataType = "String")
     @PostMapping(value = "/getHighLightedNodeVoByProcessInstanceId", produces = "application/json")
     public ReturnVo<HighLightedNodeVo> getHighLightedNodeVoByProcessInstanceId(String processInstanceId) {
-        ReturnVo<HighLightedNodeVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        HighLightedNodeVo highLightedNodeVo = flowProcessDiagramService.getHighLightedNodeVoByProcessInstanceId(processInstanceId);
-        returnVo.setData(highLightedNodeVo);
-        return returnVo;
+        return super.getHighLightedNodeVoByProcessInstanceId(processInstanceId);
     }
 
     @Override
@@ -251,9 +210,6 @@ public class FlowApiRest implements IFlowApi {
     @ApiImplicitParam(name = "getApps", value = "getApps")
     @PostMapping(value = "/getApps", produces = "application/json")
     public ReturnVo<List> getApps() {
-        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        List<App> apps = appService.list();
-        returnVo.setData(apps);
-        return returnVo;
+        return super.getApps();
     }
 }
