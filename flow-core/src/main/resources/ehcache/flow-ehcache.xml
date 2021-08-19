@@ -116,6 +116,15 @@
            overflowToDisk="false"
            statistics="true">
     </cache>
+    <!-- 登录记录缓存锁定10分钟 -->
+    <cache name="cache-process-status"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="30"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
 </ehcache>
 
         <!--<diskStore>==========当内存缓存中对象数量超过maxElementsInMemory时,将缓存对象写到磁盘缓存中(需对象实现序列化接口)  -->

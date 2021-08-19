@@ -67,6 +67,7 @@ public class FlowConstant {
     public static final String CACHE_COMMON_DICTIONARY = "cache-common-dictionary";
     public static final String CACHE_START_PROCESSINSTANCE = "cache-start-processinstance";
     public static final String CACHE_ACL_PERMISSIONVALS = "cache-acl-permissionvals";
+    public static final String CACHE_PROCESS_STATUS = "cache-process-status";
 
 
 
