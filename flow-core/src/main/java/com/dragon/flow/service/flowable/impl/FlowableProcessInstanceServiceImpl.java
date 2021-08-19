@@ -104,6 +104,9 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
             if (CollectionUtils.isNotEmpty(disActivitys)){
                 String distFilwElementId = disActivitys.get(0).getId();
                 List<String> executionIds = new ArrayList<>();
+                endVo.setActivityId(task.getTaskDefinitionKey());
+                endVo.setActivityName(task.getName());
+                this.addFlowCommentInfoAndProcessStatus(endVo);
                 if (bpmnModelService.checkActivitySubprocessByActivityId(task.getProcessDefinitionId(),
                         distFilwElementId)
                         && bpmnModelService.checkActivitySubprocessByActivityId(task.getProcessDefinitionId(),
@@ -121,9 +124,6 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
                 this.evictHighLightedNodeCache(task.getProcessInstanceId());
                 this.evictOneActivityVoCache(task.getProcessInstanceId(), task.getTaskDefinitionKey());
             }
-            endVo.setActivityId(task.getTaskDefinitionKey());
-            endVo.setActivityName(task.getName());
-            this.addFlowCommentInfoAndProcessStatus(endVo);
         } else {
             returnVo = new ReturnVo<>(ReturnCode.FAIL, "未找到流程实例，请确认!");
         }
