@@ -2,6 +2,7 @@ package com.dragon.flow.service.flowable;
 
 import com.dragon.flow.constant.FlowConstant;
 import com.dragon.flow.enm.flowable.runtime.CommentTypeEnum;
+import com.dragon.flow.enm.flowable.runtime.ProcessStatusEnum;
 import com.dragon.flow.exception.FlowException;
 import com.dragon.flow.model.flowable.CommentInfo;
 import com.dragon.flow.model.flowable.ExtendHisprocinst;
@@ -38,14 +39,21 @@ public abstract class BaseProcessService {
      * @param baseProcessVo 参数
      */
     protected void addFlowCommentInfoAndProcessStatus(BaseProcessVo baseProcessVo) {
+        ProcessStatusEnum processStatusEnum = baseProcessVo.getProcessStatusEnum();
+        if (processStatusEnum != null) {
+            Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_STATUS);
+            if (cache != null) {
+                cache.put(baseProcessVo.getProcessInstanceId(), processStatusEnum.toString());
+            }
+        }
         CommentInfo commentInfo = new CommentInfo(baseProcessVo.getCommentTypeEnum().name(), baseProcessVo.getUserCode(), baseProcessVo.getProcessInstanceId(), baseProcessVo.getMessage());
         commentInfo.setTaskId(baseProcessVo.getTaskId());
         commentInfo.setActivityId(baseProcessVo.getActivityId());
         commentInfo.setActivityName(baseProcessVo.getActivityName());
         commentInfoService.saveComment(commentInfo);
         //2.修改流程实例的状态,
-        if (baseProcessVo.getCommentTypeEnum() != null && !baseProcessVo.getCommentTypeEnum().equals(CommentTypeEnum.YY)){
-            if (StringUtils.isBlank(baseProcessVo.getProcessInstanceId())){
+        if (baseProcessVo.getCommentTypeEnum() != null && !baseProcessVo.getCommentTypeEnum().equals(CommentTypeEnum.YY)) {
+            if (StringUtils.isBlank(baseProcessVo.getProcessInstanceId())) {
                 throw new FlowException("请传入流程实例id");
             }
             ExtendHisprocinst extendHisprocinst = new ExtendHisprocinst(baseProcessVo.getProcessInstanceId(), baseProcessVo.getProcessStatusEnum().toString());
