@@ -5,12 +5,9 @@ import com.dragon.flow.model.privilege.User;
 import com.dragon.flow.service.privilege.IUserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @program: flow
@@ -18,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author: Bruce.Liu
  * @create: 2021-03-25 09:17
  **/
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = FlowAdminApplication.class)
 public class TestUser {
     protected final Log logger = LogFactory.getLog(getClass());

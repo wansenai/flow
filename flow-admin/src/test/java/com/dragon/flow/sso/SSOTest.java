@@ -7,8 +7,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,7 +25,6 @@ import java.util.Map;
  * @author: Bruce.Liu
  * @create: 2021-05-18 11:14
  **/
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = FlowAdminApplication.class)
 public class SSOTest {
 
