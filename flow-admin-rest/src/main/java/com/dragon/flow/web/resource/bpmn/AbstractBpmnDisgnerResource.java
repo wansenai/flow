@@ -212,6 +212,12 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
         return returnVo;
     }
 
+    @GetMapping(value = "/getBaseVariables", produces = "application/json")
+    public ReturnVo<List> getBaseVariables(){
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
+        return returnVo;
+    }
+
     @GetMapping(value = "/getCompanyVariables", produces = "application/json")
     public ReturnVo<List> getCompanyVariables() {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);

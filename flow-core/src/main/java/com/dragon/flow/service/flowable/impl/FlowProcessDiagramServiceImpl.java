@@ -235,7 +235,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
                 List<String> personalCodes = new ArrayList<>();
                 List<Date> createTimes = new ArrayList<>();
                 List<Date> endTimes = new ArrayList<>();
-                if (userTask.getName().equals(FlowConstant.FLOW_SUBMITTER)) {
+                if (FlowConstant.FLOW_SUBMITTER.equals(userTask.getName())) {
                     personalCodes.add(extendHisprocinst.getCurrentUserCode());
                 } else {
                     historicTaskInstances.forEach(hisTask -> {
@@ -329,7 +329,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
                 MultiInstanceLoopCharacteristics loopCharacteristics = userTask.getLoopCharacteristics();
                 if (loopCharacteristics == null) {
                     String expressionValue = null;
-                    if (userTask.getName().equals(FlowConstant.FLOW_SUBMITTER)) {
+                    if (FlowConstant.FLOW_SUBMITTER.equals(userTask.getName())) {
                         expressionValue = extendHisprocinst.getCurrentUserCode();
                     } else {
                         String processInstanceId = extendHisprocinst.getProcessInstanceId();
