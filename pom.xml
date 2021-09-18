@@ -19,7 +19,7 @@
     </modules>
 	<groupId>com.dragon</groupId>
 	<artifactId>flow</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<name>flow</name>
 	<description>企业数智化</description>
 	<build>
