@@ -52,7 +52,7 @@
         <dependency>
             <groupId>com.dragon</groupId>
             <artifactId>flow-api</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${flow.version}</version>
         </dependency>
         <dependency>
             <groupId>com.dragon</groupId>
