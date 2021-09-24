@@ -14,12 +14,12 @@ import java.util.Map;
  * @Since:10:11 2021/05/08
  */
 public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
-    private static final String ASSIGNEE_TYPE = "assigneeType";
-    private static final String IDM_ASSIGNEE = "idmAssignee";
-    private static final String IDM_CANDIDATE_GROUPS = "idmCandidateGroups";
-    private static final String IDM_CANDIDATE_USERS = "idmCandidateUsers";
-    private static final String IS_EDITDATA = "isEditdata";
-    private static final String NODE_TYPE = "nodeType";
+    public static final String ASSIGNEE_TYPE = "assigneeType";
+    public static final String IDM_ASSIGNEE = "idmAssignee";
+    public static final String IDM_CANDIDATE_GROUPS = "idmCandidateGroups";
+    public static final String IDM_CANDIDATE_USERS = "idmCandidateUsers";
+    public static final String IS_EDITDATA = "isEditdata";
+    public static final String NODE_TYPE = "nodeType";
 
 
     static void customFillTypes(Map<String, Class<? extends BaseBpmnJsonConverter>> convertersToBpmnMap, Map<Class<? extends BaseElement>, Class<? extends BaseBpmnJsonConverter>> convertersToJsonMap) {
