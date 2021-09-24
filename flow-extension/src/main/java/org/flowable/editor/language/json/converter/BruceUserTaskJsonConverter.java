@@ -20,8 +20,8 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
     public static final String IDM_CANDIDATE_USERS = "idmCandidateUsers";
     public static final String IS_EDITDATA = "isEditdata";
     public static final String NODE_TYPE = "nodeType";
-    private static final String NEXT_SEQUENCE_FLOW = "nextSequenceFlow";
-    private static final String NEXT_USER = "nextUser";
+    public static final String NEXT_SEQUENCE_FLOW = "nextSequenceFlow";
+    public static final String NEXT_USER = "nextUser";
 
 
     static void customFillTypes(Map<String, Class<? extends BaseBpmnJsonConverter>> convertersToBpmnMap, Map<Class<? extends BaseElement>, Class<? extends BaseBpmnJsonConverter>> convertersToJsonMap) {

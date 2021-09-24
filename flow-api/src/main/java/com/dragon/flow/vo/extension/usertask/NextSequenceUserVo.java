@@ -23,7 +23,11 @@ public class NextSequenceUserVo implements Serializable {
      */
     private String name;
     /**
-     * 是否单选  true单选  false多选
+     * 是否单选  true多选  false单选
      */
-    private boolean select;
+    private boolean multiple;
+    /**
+     * 选择的值 多个人的code以逗号分割
+     */
+    private String values;
 }
