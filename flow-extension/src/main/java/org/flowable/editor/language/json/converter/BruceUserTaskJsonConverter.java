@@ -20,6 +20,8 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
     public static final String IDM_CANDIDATE_USERS = "idmCandidateUsers";
     public static final String IS_EDITDATA = "isEditdata";
     public static final String NODE_TYPE = "nodeType";
+    private static final String NEXT_SEQUENCE_FLOW = "nextSequenceFlow";
+    private static final String NEXT_USER = "nextUser";
 
 
     static void customFillTypes(Map<String, Class<? extends BaseBpmnJsonConverter>> convertersToBpmnMap, Map<Class<? extends BaseElement>, Class<? extends BaseBpmnJsonConverter>> convertersToJsonMap) {
@@ -39,7 +41,7 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
     protected void convertElementToJson(ObjectNode propertiesNode, BaseElement baseElement, BpmnJsonConverterContext converterContext) {
         super.convertElementToJson(propertiesNode, baseElement, converterContext);
         if (baseElement instanceof UserTask){
-            final String[] text = new String[6];
+            final String[] text = new String[8];
             baseElement.getExtensionElements().forEach((s, elements) -> elements.forEach(extensionElement -> {
                 if (ASSIGNEE_TYPE.equals(extensionElement.getName())){
                     text[0] = extensionElement.getElementText();
@@ -58,6 +60,12 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
                 }
                 if (NODE_TYPE.equals(extensionElement.getName())){
                     text[5] = extensionElement.getElementText();
+                }
+                if (NEXT_SEQUENCE_FLOW.equals(extensionElement.getName())) {
+                    text[6] = extensionElement.getElementText();
+                }
+                if (NEXT_USER.equals(extensionElement.getName())) {
+                    text[7] = extensionElement.getElementText();
                 }
             }));
             if (StringUtils.isNotBlank(text[0])){
@@ -78,6 +86,13 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
             if (StringUtils.isNotBlank(text[5])){
                 propertiesNode.put(NODE_TYPE, text[5]);
             }
+            if (StringUtils.isNotBlank(text[6])) {
+                propertiesNode.put(NEXT_SEQUENCE_FLOW, text[0]);
+            }
+
+            if (StringUtils.isNotBlank(text[7])) {
+                propertiesNode.put(NEXT_USER, text[1]);
+            }
         }
     }
 
@@ -97,6 +112,8 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
             ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, IDM_CANDIDATE_USERS);
             ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, IS_EDITDATA);
             ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, NODE_TYPE);
+            ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, NEXT_SEQUENCE_FLOW);
+            ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, NEXT_USER);
         }
     }
 

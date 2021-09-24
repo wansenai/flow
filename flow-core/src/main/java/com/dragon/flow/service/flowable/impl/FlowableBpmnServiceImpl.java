@@ -27,7 +27,6 @@ import org.flowable.ui.common.service.exception.BadRequestException;
 import org.flowable.ui.common.util.XmlUtil;
 import org.flowable.ui.modeler.domain.AbstractModel;
 import org.flowable.ui.modeler.domain.Model;
-import org.flowable.ui.modeler.model.ModelKeyRepresentation;
 import org.flowable.ui.modeler.model.ModelRepresentation;
 import org.flowable.ui.modeler.serviceapi.ModelService;
 import org.flowable.validation.ProcessValidator;
