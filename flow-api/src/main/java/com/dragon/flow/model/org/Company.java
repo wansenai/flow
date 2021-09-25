@@ -24,9 +24,9 @@ public class Company extends BaseModel implements Serializable{
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
     /**
-     * 公司类型
+     * 公司类型Id
      */
-    private String type;
+    private String typeId;
     /**
      * 上级公司id
      */
@@ -71,4 +71,8 @@ public class Company extends BaseModel implements Serializable{
      */
     @TableField(exist = false)
     private List<String> companyIds;
+    @TableField(exist = false)
+    private String typeCode;
+    @TableField(exist = false)
+    private String typeName;
 }
