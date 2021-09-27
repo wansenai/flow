@@ -7244,7 +7244,6 @@ CREATE TABLE `tbl_privilege_login_log` (
 DROP TABLE IF EXISTS `tbl_privilege_module`;
 CREATE TABLE `tbl_privilege_module` (
   `id` varchar(40) COLLATE utf8_bin NOT NULL,
-  `app_id` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '应用id',
   `name` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '名称',
   `url` varchar(128) COLLATE utf8_bin DEFAULT NULL COMMENT '链接',
   `sn` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '标识',
