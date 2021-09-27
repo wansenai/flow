@@ -20,8 +20,8 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
     public static final String IDM_CANDIDATE_USERS = "idmCandidateUsers";
     public static final String IS_EDITDATA = "isEditdata";
     public static final String NODE_TYPE = "nodeType";
-    public static final String NEXT_SEQUENCE_FLOW = "nextSequenceFlow";
-    public static final String NEXT_USER = "nextUser";
+    public static final String NEXT_SEQUENCE_FLOW_LABEL = "nextSequenceFlow";
+    public static final String NEXT_USER_LABEL = "nextUser";
 
 
     static void customFillTypes(Map<String, Class<? extends BaseBpmnJsonConverter>> convertersToBpmnMap, Map<Class<? extends BaseElement>, Class<? extends BaseBpmnJsonConverter>> convertersToJsonMap) {
@@ -61,10 +61,10 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
                 if (NODE_TYPE.equals(extensionElement.getName())){
                     text[5] = extensionElement.getElementText();
                 }
-                if (NEXT_SEQUENCE_FLOW.equals(extensionElement.getName())) {
+                if (NEXT_SEQUENCE_FLOW_LABEL.equals(extensionElement.getName())) {
                     text[6] = extensionElement.getElementText();
                 }
-                if (NEXT_USER.equals(extensionElement.getName())) {
+                if (NEXT_USER_LABEL.equals(extensionElement.getName())) {
                     text[7] = extensionElement.getElementText();
                 }
             }));
@@ -87,11 +87,11 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
                 propertiesNode.put(NODE_TYPE, text[5]);
             }
             if (StringUtils.isNotBlank(text[6])) {
-                propertiesNode.put(NEXT_SEQUENCE_FLOW, text[6]);
+                propertiesNode.put(NEXT_SEQUENCE_FLOW_LABEL, text[6]);
             }
 
             if (StringUtils.isNotBlank(text[7])) {
-                propertiesNode.put(NEXT_USER, text[7]);
+                propertiesNode.put(NEXT_USER_LABEL, text[7]);
             }
         }
     }
@@ -112,8 +112,8 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
             ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, IDM_CANDIDATE_USERS);
             ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, IS_EDITDATA);
             ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, NODE_TYPE);
-            ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, NEXT_SEQUENCE_FLOW);
-            ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, NEXT_USER);
+            ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, NEXT_SEQUENCE_FLOW_LABEL);
+            ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, NEXT_USER_LABEL);
         }
     }
 
