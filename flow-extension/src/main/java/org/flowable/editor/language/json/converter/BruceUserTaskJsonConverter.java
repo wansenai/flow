@@ -87,11 +87,11 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
                 propertiesNode.put(NODE_TYPE, text[5]);
             }
             if (StringUtils.isNotBlank(text[6])) {
-                propertiesNode.put(NEXT_SEQUENCE_FLOW, text[0]);
+                propertiesNode.put(NEXT_SEQUENCE_FLOW, text[6]);
             }
 
             if (StringUtils.isNotBlank(text[7])) {
-                propertiesNode.put(NEXT_USER, text[1]);
+                propertiesNode.put(NEXT_USER, text[7]);
             }
         }
     }
