@@ -111,7 +111,7 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
         List<ValidationError> validationErrors = processValidator.validate(bpmnModel);
         if (CollectionUtils.isNotEmpty(validationErrors)) {
             StringBuffer message = new StringBuffer();
-            validationErrors.forEach(validationError -> message.append(validationError.toString()));
+            validationErrors.forEach(validationError -> message.append(validationError.toString()+"\n"));
             returnVo = new ReturnVo(ReturnCode.FAIL, message.toString());
             return returnVo;
         }
