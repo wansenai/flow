@@ -18,6 +18,16 @@ import java.io.InputStream;
  **/
 public interface IFlowableBpmnService {
     /**
+     * 验证流程图
+     *
+     * @param modelId     模型ID
+     * @param fileName    文件名称
+     * @param modelStream 模型文件流
+     * @return
+     */
+    ReturnVo<String> validateBpmnModel(String modelId, String fileName, InputStream modelStream);
+
+    /**
      * 导入bpmn模型
      *
      * @param modelId     模型ID
@@ -27,12 +37,14 @@ public interface IFlowableBpmnService {
      * @return
      */
     ReturnVo<String> importBpmnModel(String modelId, String fileName, InputStream modelStream, User user);
+
     /**
      * 发布流程
+     *
      * @param modelId 模型id
      * @return
      */
-    ReturnVo<String> publishBpmn(String modelId) ;
+    ReturnVo<String> publishBpmn(String modelId);
 
     /**
      * 部署流程
@@ -44,21 +56,25 @@ public interface IFlowableBpmnService {
 
     /**
      * 创建初始化BPMN模型
+     *
      * @param modelInfo 参数
      * @return
      */
-    ReturnVo<Model> createInitBpmn(ModelInfo modelInfo, User  user) ;
+    ReturnVo<Model> createInitBpmn(ModelInfo modelInfo, User user);
 
     /**
      * 加载bpmn的xml文件
+     *
      * @param modelId 流程模型id
      * @return
      */
-    ModelInfoVo loadBpmnXmlByModelId(String modelId) ;
-    ModelInfoVo loadBpmnXmlByModelKey(String modelKey) ;
+    ModelInfoVo loadBpmnXmlByModelId(String modelId);
+
+    ModelInfoVo loadBpmnXmlByModelKey(String modelKey);
 
     /**
      * 停用
+     *
      * @param modelId 流程模型id
      * @return
      */
