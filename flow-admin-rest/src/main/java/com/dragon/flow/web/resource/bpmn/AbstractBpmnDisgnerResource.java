@@ -64,6 +64,21 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
     private IFlowListenerService flowListenerService;
 
     /*****************************************************bpmn相关的*************************************************************/
+    @PostMapping(value = "/validateBpmnModel", produces = "application/json")
+    public ReturnVo<String> validateBpmnModel(@RequestBody ModelInfoVo modelInfoVo) {
+        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(modelInfoVo.getModelXml().getBytes());
+        ReturnVo<String> representationReturnVo = flowableBpmnService.validateBpmnModel(modelInfoVo.getModelId(),
+                modelInfoVo.getFileName(), byteArrayInputStream);
+        if (!representationReturnVo.isSuccess()) {
+            returnVo = new ReturnVo<>(ReturnCode.FAIL, representationReturnVo.getMsg());
+            return returnVo;
+        } else {
+            returnVo.setData(representationReturnVo.getData());
+        }
+        return returnVo;
+    }
+
     @PostMapping(value = "/saveBpmnModel", produces = "application/json")
     public ReturnVo<String> saveBpmnModel(@RequestBody ModelInfoVo modelInfoVo) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -196,12 +211,13 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
 
     /**
      * 查询角色人员
+     *
      * @param orgId 组织id
-     * @param flag 标记 one单个 multi多个
+     * @param flag  标记 one单个 multi多个
      * @return
      */
     @GetMapping(value = "/getRoleVariablesByOrgId/{orgId}/{flag}", produces = "application/json")
-    public ReturnVo<List> getRoleVariablesByOrgId(@PathVariable String orgId,@PathVariable String flag) {
+    public ReturnVo<List> getRoleVariablesByOrgId(@PathVariable String orgId, @PathVariable String flag) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
         return returnVo;
     }
@@ -213,7 +229,7 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
     }
 
     @GetMapping(value = "/getBaseVariables", produces = "application/json")
-    public ReturnVo<List> getBaseVariables(){
+    public ReturnVo<List> getBaseVariables() {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
         return returnVo;
     }
@@ -238,7 +254,7 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
 
     /****************************************监听器*******************************************/
     @PostMapping(value = "/getListenersAndParams", produces = "application/json")
-    public ReturnVo<List> getListenersAndParams(@RequestBody FlowListener flowListener){
+    public ReturnVo<List> getListenersAndParams(@RequestBody FlowListener flowListener) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         List<FlowListener> datas = flowListenerService.getListAndParams(flowListener);
         returnVo.setData(datas);
