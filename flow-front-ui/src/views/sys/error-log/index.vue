@@ -41,7 +41,7 @@
 
   import { useErrorLogStore } from '/@/store/modules/errorLog';
 
-  import { fireErrorApi } from '/@/api/demo/error';
+  // import { fireErrorApi } from '/@/api/demo/error';
 
   import { getColumns } from './data';
 
@@ -98,7 +98,7 @@
       }
 
       async function fireAjaxError() {
-        await fireErrorApi();
+        // await fireErrorApi();
       }
 
       return {
