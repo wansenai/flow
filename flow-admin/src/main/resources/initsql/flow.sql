@@ -6253,7 +6253,6 @@ CREATE TABLE `tbl_org_company` (
   `id` varchar(32) COLLATE utf8_bin NOT NULL COMMENT '主键',
   `type_id` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '公司类型ID',
   `pid` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '上级公司id',
-  `type_id` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '公司类型id',
   `cname` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '公司中文名称',
   `short_name` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '公司简称',
   `ename` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '公司英文名称',
