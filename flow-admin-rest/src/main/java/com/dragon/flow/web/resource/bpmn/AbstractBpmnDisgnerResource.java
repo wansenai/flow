@@ -65,16 +65,15 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
 
     /*****************************************************bpmn相关的*************************************************************/
     @PostMapping(value = "/validateBpmnModel", produces = "application/json")
-    public ReturnVo<String> validateBpmnModel(@RequestBody ModelInfoVo modelInfoVo) {
-        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+    public ReturnVo<Boolean> validateBpmnModel(@RequestBody ModelInfoVo modelInfoVo) {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(modelInfoVo.getModelXml().getBytes());
-        ReturnVo<String> representationReturnVo = flowableBpmnService.validateBpmnModel(modelInfoVo.getModelId(),
+        ReturnVo<String> validateBpmnModelReturnVo = flowableBpmnService.validateBpmnModel(modelInfoVo.getModelId(),
                 modelInfoVo.getFileName(), byteArrayInputStream);
-        if (!representationReturnVo.isSuccess()) {
-            returnVo = new ReturnVo<>(ReturnCode.FAIL, representationReturnVo.getMsg());
-            return returnVo;
-        } else {
-            returnVo.setData(representationReturnVo.getData());
+        ReturnVo<Boolean> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, validateBpmnModelReturnVo.getMsg());
+        if (validateBpmnModelReturnVo.isSuccess()) {
+            returnVo.setData(true);
+        }else {
+            returnVo.setData(false);
         }
         return returnVo;
     }
