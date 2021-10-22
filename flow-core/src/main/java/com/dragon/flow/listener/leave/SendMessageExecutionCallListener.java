@@ -1,5 +1,6 @@
 package com.dragon.flow.listener.leave;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flowable.common.engine.api.delegate.Expression;
@@ -17,11 +18,11 @@ import java.util.List;
  * @Author: Bruce.liu
  * @Since:13:40 2021/05/11
  */
+@Slf4j
 @Component(value = "sendMessageExecutionCallListener")
 public class SendMessageExecutionCallListener implements ExecutionListener {
 
     private static final long serialVersionUID = -5140234938739863473L;
-    protected Logger logger = LoggerFactory.getLogger(getClass());
     /**
      * 抄送的用户的表达式 如${userIds}
      */

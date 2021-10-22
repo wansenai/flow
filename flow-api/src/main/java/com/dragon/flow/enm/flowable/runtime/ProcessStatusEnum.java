@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public enum ProcessStatusEnum implements Serializable {
 
-    SPZ("审批中"), BH("驳回"), CH("撤回"), JQ("加签"), ZC("暂存"), ZB("转办"), BJ("办结"), ZZ("终止");
+    CG("草稿"), SPZ("审批中"), BH("驳回"), CH("撤回"), JQ("加签"), ZC("暂存"), ZB("转办"), BJ("办结"), ZZ("终止");
 
     private String msg;
     private String type;
