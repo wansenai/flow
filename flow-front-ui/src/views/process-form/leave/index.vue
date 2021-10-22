@@ -30,7 +30,7 @@
       AEmpty: Empty,
       [Descriptions.name]: Descriptions,
       [Descriptions.Item.name]: Descriptions.Item,
-      BasicForm, CollapseContainer, PageWrapper
+      BasicForm, CollapseContainer
     },
     setup() {
       const check = ref(null);

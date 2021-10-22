@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,6 +49,7 @@ public class ModuleServiceImpl extends ServiceImpl<IModuleMapper, Module> implem
             positions.add(3);
             positions.forEach(position -> module.setPermission(position, true));
         }
+        module.setCreateTime(new Date());
         this.saveOrUpdate(module);
     }
 
