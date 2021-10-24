@@ -33,7 +33,7 @@
         LEFT JOIN tbl_org_position_info t3 ON t1.superior_code = t3.`code`
         WHERE t1.del_flag = 1
         <if test="positionInfo.keyword!=null and positionInfo.keyword!=''">
-            and (t1.name like concat('%', #{personal.keyword}, '%') or t1.code like concat('%', #{personal.keyword}, '%'))
+            and (t1.name like concat('%', #{positionInfo.keyword}, '%') or t1.code like concat('%', #{positionInfo.keyword}, '%'))
         </if>
         <if test="positionInfo.positionSeqCode!=null and positionInfo.positionSeqCode!=''">
             and t1.position_seq_code=#{positionInfo.positionSeqCode}
