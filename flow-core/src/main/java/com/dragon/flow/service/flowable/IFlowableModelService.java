@@ -31,7 +31,7 @@ public interface IFlowableModelService {
      * @param user    user
      * @return
      */
-    ModelRepresentation importCaseModel(String modelId, MultipartFile file, User user);
+//    ModelRepresentation importCaseModel(String modelId, MultipartFile file, User user);
 
     /**
      * 导入dmn
