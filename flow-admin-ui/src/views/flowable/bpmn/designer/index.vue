@@ -41,8 +41,8 @@
           console.error('通过ModelId查询modelInfo失败！');
         })
       });
-      debugger;
-      url.value = ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
+      const isDev = import.meta.env.DEV;
+      url.value = isDev ? ('/flow-bpmn-front/index.html/#/bpmn/designer?modelId=' + modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
 
       const { getFramePages, hasRenderFrame, showIframe } = useFrameKeepAlive();
       const showFrame = computed(() => unref(getFramePages).length > 0);
