@@ -99,8 +99,10 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
         if (CollectionUtils.isNotEmpty(records)) {
             records.forEach(mi -> {
                 ModelFormStatusEnum minStatus = ModelFormStatusEnum.getMinStatus(mi.getStatus(), mi.getExtendStatus());
-                mi.setStatusName(minStatus.getMsg());
-                mi.setStatus(minStatus.getStatus());
+                if (minStatus != null) {
+                    mi.setStatusName(minStatus.getMsg());
+                    mi.setStatus(minStatus.getStatus());
+                }
             });
         }
         return new PagerModel<>(page.getTotal(), page.getRecords());
