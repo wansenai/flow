@@ -1,0 +1,1 @@
+const t=[];for(let a=0;a<=15;a++)t[a]=a.toString(16);function n(){let n="";for(let o=1;o<=36;o++)n+=9===o||14===o||19===o||24===o?"-":15===o?4:20===o?t[4*Math.random()|8]:t[16*Math.random()|0];return n.replace(/-/g,"")}let o=0;function r(t=""){const n=Date.now(),r=Math.floor(1e9*Math.random());return o++,t+"_"+r+o+String(n)}export{r as a,n as b};
