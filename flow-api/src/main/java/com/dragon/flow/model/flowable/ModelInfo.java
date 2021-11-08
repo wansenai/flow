@@ -153,6 +153,5 @@ public class ModelInfo extends BaseModel implements Serializable {
      * MODEL_TYPE_CMMN = 5;
      * MODEL_TYPE_DECISION_SERVICE = 6;
      */
-    @TableField(exist = false)
     private Integer modelType;
 }
