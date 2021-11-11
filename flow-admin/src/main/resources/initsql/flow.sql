@@ -6084,7 +6084,7 @@ CREATE TABLE `tbl_flow_model_info` (
 -- ----------------------------
 -- Records of tbl_flow_model_info
 -- ----------------------------
-INSERT INTO `tbl_flow_model_info` VALUES ('e4f3ff64f53d1f7580faec85fc82252f', '7a76271c200d11ecbaee00e04d680167', '请假', 'leave', null, null, 'flow', '222', '3', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '3', null, '2021-09-28 11:38:00', '10101', '2021-09-28 11:44:23', '10101', '1');
+INSERT INTO `tbl_flow_model_info` VALUES ('e4f3ff64f53d1f7580faec85fc82252f', '7a76271c200d11ecbaee00e04d680167', '请假', 'leave',0, null, null, 'flow', '222', '3', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '3', null, '2021-09-28 11:38:00', '10101', '2021-09-28 11:44:23', '10101', '1');
 
 -- ----------------------------
 -- Table structure for tbl_front_account
