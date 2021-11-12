@@ -251,6 +251,12 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
         return returnVo;
     }
 
+    @GetMapping(value = "/getDmnPagerModel", produces = "application/json")
+    public ReturnVo<PagerModel> getDmnPagerModel(@RequestBody ParamVo<ModelInfo> params) {
+        ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
+        return returnVo;
+    }
+
     /****************************************监听器*******************************************/
     @PostMapping(value = "/getListenersAndParams", produces = "application/json")
     public ReturnVo<List> getListenersAndParams(@RequestBody FlowListener flowListener) {
