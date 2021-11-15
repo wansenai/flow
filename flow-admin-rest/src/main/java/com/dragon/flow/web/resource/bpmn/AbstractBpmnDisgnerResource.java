@@ -251,7 +251,7 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
         return returnVo;
     }
 
-    @GetMapping(value = "/getDmnPagerModel", produces = "application/json")
+    @PostMapping(value = "/getDmnPagerModel", produces = "application/json")
     public ReturnVo<PagerModel> getDmnPagerModel(@RequestBody ParamVo<ModelInfo> params) {
         ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
         return returnVo;
