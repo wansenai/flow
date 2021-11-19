@@ -14,6 +14,7 @@ import com.dragon.flow.service.flowable.IModelInfoService;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang.StringUtils;
 import org.flowable.bpmn.converter.BpmnXMLConverter;
@@ -28,6 +29,8 @@ import org.flowable.ui.common.util.XmlUtil;
 import org.flowable.ui.modeler.domain.AbstractModel;
 import org.flowable.ui.modeler.domain.Model;
 import org.flowable.ui.modeler.model.ModelRepresentation;
+import org.flowable.ui.modeler.service.AppDefinitionImportService;
+import org.flowable.ui.modeler.service.ConverterContext;
 import org.flowable.ui.modeler.serviceapi.ModelService;
 import org.flowable.validation.ProcessValidator;
 import org.flowable.validation.ProcessValidatorFactory;
@@ -74,6 +77,10 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
     protected DragonFlowProperties dragonFlowProperties;
     @Autowired
     private ProcessValidatorFactory processValidatorFactory;
+    @Autowired
+    private ObjectMapper objectMapper;
+    @Autowired
+    private AppDefinitionImportService appDefinitionImportService;
 
     @Override
     public ReturnVo<String> validateBpmnModel(String modelId, String fileName, InputStream modelStream) {
@@ -111,7 +118,7 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
         List<ValidationError> validationErrors = processValidator.validate(bpmnModel);
         if (CollectionUtils.isNotEmpty(validationErrors)) {
             StringBuffer message = new StringBuffer();
-            validationErrors.forEach(validationError -> message.append(validationError.toString()+"\n"));
+            validationErrors.forEach(validationError -> message.append(validationError.toString() + "\n"));
             returnVo = new ReturnVo(ReturnCode.FAIL, message.toString());
             return returnVo;
         }
@@ -141,7 +148,13 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
                     returnVo = new ReturnVo(ReturnCode.FAIL, "No required BPMN DI information found in definition " + fileName);
                     return returnVo;
                 }
-                ObjectNode modelNode = bpmnJsonConverter.convertToJson(bpmnModel);
+                ConverterContext converterContext = new ConverterContext(modelService, objectMapper);
+                List<AbstractModel> decisionTables = modelService.getModelsByModelType(AbstractModel.MODEL_TYPE_DECISION_TABLE);
+                decisionTables.forEach(abstractModel -> {
+                    Model model = (Model) abstractModel;
+                    converterContext.addDecisionTableModel(model);
+                });
+                ObjectNode modelNode = bpmnJsonConverter.convertToJson(bpmnModel, converterContext);
                 this.setProcessPropertiesToKey(modelNode, processModel.getKey());
                 AbstractModel savedModel = modelService.saveModel(modelId, processModel.getName(), processModel.getKey(),
                         processModel.getDescription(), modelNode.toString(), false,

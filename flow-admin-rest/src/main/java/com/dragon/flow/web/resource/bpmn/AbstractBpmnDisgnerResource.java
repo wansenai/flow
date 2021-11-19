@@ -144,6 +144,12 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
         return returnVo;
     }
 
+    @GetMapping(value = "/getDmnByModelKey/{modelKey}", produces = "application/json")
+    public ReturnVo getDmnByModelKey(@PathVariable String modelKey) {
+        ReturnVo returnVo = new ReturnVo<>(ReturnCode.WARN, WARNING);
+        return returnVo;
+    }
+
     /*********************************************************组织的************************************************************/
     @GetMapping(value = "/getOrgTree", produces = "application/json")
     public ReturnVo<List> getOrgTree() {
