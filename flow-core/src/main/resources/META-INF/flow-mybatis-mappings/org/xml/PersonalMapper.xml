@@ -34,12 +34,12 @@
     </resultMap>
     <select id="getPersonalsByRoleId" resultType="com.dragon.flow.model.org.Personal">
         SELECT
-            t1.*
+        t1.*
         FROM
-            tbl_org_personal t1
+        tbl_org_personal t1
         INNER JOIN tbl_org_personal_role t2 ON t1.id = t2.personal_id
         WHERE t1.del_flag=1
-        <if test="roleId!=null and roleId!=''" >
+        <if test="roleId!=null and roleId!=''">
             and t2.role_id = #{roleId}
         </if>
     </select>
@@ -51,7 +51,7 @@
         INNER JOIN tbl_org_personal_role t2 ON t1.id = t2.personal_id
         INNER JOIN tbl_org_role t3 ON t2.role_id=t3.id
         WHERE t1.del_flag=1
-        <if test="roleSns!=null and roleSns.size>0" >
+        <if test="roleSns!=null and roleSns.size>0">
             and t3.sn in
             <foreach collection="roleSns" item="item" index="index" open="("
                      separator="," close=")">
@@ -66,7 +66,7 @@
         tbl_org_personal t1
         INNER JOIN tbl_org_personal_role t2 ON t1.id = t2.personal_id
         WHERE t1.del_flag=1
-        <if test="roleIds!=null and roleIds.size>0" >
+        <if test="roleIds!=null and roleIds.size>0">
             and t2.role_id in
             <foreach collection="roleIds" item="item" index="index" open="("
                      separator="," close=")">
@@ -84,8 +84,9 @@
         LEFT JOIN tbl_org_position_info t4 on t1.position_code=t4.`code`
         where t1.del_flag=1
         <if test="personal.keyword!=null and personal.keyword!=''">
-            and (t1.name like concat('%', #{personal.keyword}, '%') or t1.code like concat('%', #{personal.keyword},
-            '%'))
+            and (t1.name like concat('%', #{personal.keyword}, '%')
+            or t1.code like concat('%', #{personal.keyword},'%')
+            or t1.mobile like concat('%', #{personal.keyword},'%'))
         </if>
         <if test="personal.companyIds!=null and personal.companyIds.size>0">
             and t1.company_id in

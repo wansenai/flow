@@ -17,7 +17,7 @@
     <description>企业数智化</description>
     <properties>
         <java.version>1.8</java.version>
-        <flowable.version>6.7.0</flowable.version>
+        <flowable.version>6.7.1</flowable.version>
         <mybatis-plus-boot-starter.version>3.4.2</mybatis-plus-boot-starter.version>
         <mysql-connector-java.version>8.0.23</mysql-connector-java.version>
         <druid-spring-boot-starter.version>1.2.5</druid-spring-boot-starter.version>
@@ -25,7 +25,7 @@
         <lombok.version>1.18.18</lombok.version>
         <fastjson.version>1.2.68</fastjson.version>
         <flow.version>1.1.0-SNAPSHOT</flow.version>
-        <spring.boot.version>2.5.4</spring.boot.version>
+        <spring.boot.version>2.5.7</spring.boot.version>
     </properties>
     <!-- 部署远程maven仓库里面 -->
     <distributionManagement>

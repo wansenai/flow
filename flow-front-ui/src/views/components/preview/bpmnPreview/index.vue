@@ -54,6 +54,7 @@
   import {Spin , Tag, Popover, Button, Space, Affix} from "ant-design-vue";
   import FramePage from '/@/views/components/iframe/index.vue';
   import { PlusCircleOutlined, MinusCircleOutlined, OneToOneOutlined } from '@ant-design/icons-vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
   import BpmnViewer from 'bpmn-js/lib/Viewer'
   import MoveCanvasModule from 'diagram-js/lib/navigation/movecanvas'
@@ -64,6 +65,7 @@
   } from "/@/api/process/process";
 
   let bpmnViewer = null;
+  const { createMessage } = useMessage();
 
   export default defineComponent({
     props: {
@@ -129,11 +131,16 @@
           });
         }else{
           loadBpmnXmlByModelKey({modelKey}).then(res=>{
-            setModalProps({ title: '流程图 - ' + (res.modelName||'') });
-            if(bpmnViewer){
-              importXml(res.modelXml);
+            if (res) {
+              setModalProps({ title: '流程图 - ' + (res.modelName||'') });
+              if(bpmnViewer){
+                importXml(res.modelXml);
+              } else {
+                console.error('bpmnViewer is null or undefined!');
+              }
             } else {
-              console.error('bpmnViewer is null or undefined!');
+              setModalProps({ title: '流程图 - 未定义' });
+              createMessage.warning("未找到流程模板数据！");
             }
           }).finally(()=>{
             // changeLoading(false);

@@ -118,6 +118,10 @@
                     <groupId>org.flowable</groupId>
                     <artifactId>flowable-spring-boot-starter-cmmn</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.flowable</groupId>
+                    <artifactId>flowable-cmmn-spring-configurator</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <!--json解析器-->
@@ -169,6 +173,11 @@
                     <artifactId>jul-to-slf4j</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-api</artifactId>
+            <version>7.6.0.Final</version>
         </dependency>
         <!-- 自动生成代码 -->
         <dependency>
