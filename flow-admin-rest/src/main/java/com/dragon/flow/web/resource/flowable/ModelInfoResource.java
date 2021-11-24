@@ -2,9 +2,8 @@ package com.dragon.flow.web.resource.flowable;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.dragon.flow.constant.PermissionConatant;
+import com.dragon.flow.enm.form.ModelFormStatusEnum;
 import com.dragon.flow.model.flowable.ModelInfo;
-import com.dragon.flow.model.privilege.Module;
 import com.dragon.flow.service.flowable.IModelInfoService;
 import com.dragon.flow.vo.CheckExistVo;
 import com.dragon.flow.vo.pager.ParamVo;
@@ -13,7 +12,6 @@ import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.vo.ReturnVo;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -119,6 +117,11 @@ public class ModelInfoResource extends BaseResource<ModelInfo> {
         LambdaQueryWrapper<ModelInfo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ModelInfo::getModelId, modelId);
         ModelInfo modelInfo = modelInfoService.getOne(queryWrapper);
+        ModelFormStatusEnum minStatus = ModelFormStatusEnum.getMinStatus(modelInfo.getStatus(), modelInfo.getExtendStatus());
+        if (minStatus != null) {
+            modelInfo.setStatusName(minStatus.getMsg());
+            modelInfo.setStatus(minStatus.getStatus());
+        }
         returnVo.setData(modelInfo);
         return returnVo;
     }
