@@ -1,8 +1,6 @@
 package com.dragon.flow.config;
 
 import com.dragon.tools.common.SpringContextHolder;
-import org.flowable.common.engine.impl.de.odysseus.el.misc.TypeConverter;
-import org.flowable.common.engine.impl.de.odysseus.el.misc.TypeConverterImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,11 +16,6 @@ public class FlowConfig {
     public SpringContextHolder springContextHolder() {
         SpringContextHolder springContextHolder = new SpringContextHolder();
         return springContextHolder;
-    }
-
-    @Bean
-    public TypeConverter typeConverter() {
-        return new TypeConverterImpl();
     }
 
 }
