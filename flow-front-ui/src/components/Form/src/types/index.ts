@@ -92,11 +92,13 @@ export type ComponentType =
   | 'ApiSelect'
   | 'TreeSelect'
   | 'ApiTreeSelect'
+  | 'ApiRadioGroup'
   | 'RadioButtonGroup'
   | 'RadioGroup'
   | 'Checkbox'
   | 'CheckboxGroup'
   | 'AutoComplete'
+  | 'ApiCascader'
   | 'Cascader'
   | 'DatePicker'
   | 'MonthPicker'
@@ -109,4 +111,5 @@ export type ComponentType =
   | 'IconPicker'
   | 'Render'
   | 'Slider'
-  | 'Rate';
+  | 'Rate'
+  | 'Divider';

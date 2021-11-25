@@ -19,9 +19,9 @@
   import { ScrollContainer } from '/@/components/Container';
 
   import { omit, get, difference } from 'lodash-es';
-  import { isArray, isBoolean, isFunction } from '/@/utils/is';
+  import { isArray, isBoolean, isEmpty, isFunction } from '/@/utils/is';
   import { extendSlots, getSlot } from '/@/utils/helper/tsxHelper';
-  import { filter } from '/@/utils/helper/treeHelper';
+  import { filter, treeToList } from '/@/utils/helper/treeHelper';
 
   import { useTree } from './useTree';
   import { useContextMenu } from '/@/hooks/web/useContextMenu';
@@ -42,7 +42,14 @@
     name: 'BasicTree',
     inheritAttrs: false,
     props: basicProps,
-    emits: ['update:expandedKeys', 'update:selectedKeys', 'update:value', 'change', 'check'],
+    emits: [
+      'update:expandedKeys',
+      'update:selectedKeys',
+      'update:value',
+      'change',
+      'check',
+      'update:searchValue',
+    ],
     setup(props, { attrs, slots, emit, expose }) {
       const state = reactive<State>({
         checkStrictly: props.checkStrictly,
@@ -53,6 +60,7 @@
 
       const searchState = reactive({
         startSearch: false,
+        searchText: '',
         searchData: [] as TreeItem[],
       });
 
@@ -112,7 +120,7 @@
       });
 
       const getTreeData = computed((): TreeItem[] =>
-        searchState.startSearch ? searchState.searchData : unref(treeDataRef)
+        searchState.startSearch ? searchState.searchData : unref(treeDataRef),
       );
 
       const getNotFound = computed((): boolean => {
@@ -127,6 +135,7 @@
         updateNodeByKey,
         getAllKeys,
         getChildrenKeys,
+        getEnabledKeys,
       } = useTree(treeDataRef, getReplaceFields);
 
       function getIcon(params: Recordable, icon?: string) {
@@ -180,7 +189,7 @@
       }
 
       function checkAll(checkAll: boolean) {
-        state.checkedKeys = checkAll ? getAllKeys() : ([] as Keys);
+        state.checkedKeys = checkAll ? getEnabledKeys() : ([] as Keys);
       }
 
       function expandAll(expandAll: boolean) {
@@ -191,21 +200,70 @@
         state.checkStrictly = strictly;
       }
 
+      watch(
+        () => props.searchValue,
+        (val) => {
+          if (val !== searchState.searchText) {
+            searchState.searchText = val;
+          }
+        },
+        {
+          immediate: true,
+        },
+      );
+
+      watch(
+        () => props.treeData,
+        (val) => {
+          if (val) {
+            handleSearch(searchState.searchText);
+          }
+        },
+      );
+
       function handleSearch(searchValue: string) {
+        if (searchValue !== searchState.searchText) searchState.searchText = searchValue;
+        emit('update:searchValue', searchValue);
         if (!searchValue) {
           searchState.startSearch = false;
           return;
         }
+        const { filterFn, checkable, expandOnSearch, checkOnSearch, selectedOnSearch } =
+          unref(props);
         searchState.startSearch = true;
-        const { title: titleField } = unref(getReplaceFields);
+        const { title: titleField, key: keyField } = unref(getReplaceFields);
 
+        const matchedKeys: string[] = [];
         searchState.searchData = filter(
           unref(treeDataRef),
           (node) => {
-            return node[titleField]?.includes(searchValue) ?? false;
+            const result = filterFn
+              ? filterFn(searchValue, node, unref(getReplaceFields))
+              : node[titleField]?.includes(searchValue) ?? false;
+            if (result) {
+              matchedKeys.push(node[keyField]);
+            }
+            return result;
           },
-          unref(getReplaceFields)
+          unref(getReplaceFields),
         );
+
+        if (expandOnSearch) {
+          const expandKeys = treeToList(searchState.searchData).map((val) => {
+            return val[keyField];
+          });
+          if (expandKeys && expandKeys.length) {
+            setExpandedKeys(expandKeys);
+          }
+        }
+
+        if (checkOnSearch && checkable && matchedKeys.length) {
+          setCheckedKeys(matchedKeys);
+        }
+
+        if (selectedOnSearch && matchedKeys.length) {
+          setSelectedKeys(matchedKeys);
+        }
       }
 
       function handleClickNode(key: string, children: TreeItem[]) {
@@ -251,7 +309,7 @@
         () => props.value,
         () => {
           state.checkedKeys = toRaw(props.value || []);
-        }
+        },
       );
 
       watch(
@@ -260,7 +318,7 @@
           const v = toRaw(state.checkedKeys);
           emit('update:value', v);
           emit('change', v);
-        }
+        },
       );
 
       // watchEffect(() => {
@@ -292,6 +350,12 @@
         filterByLevel: (level: number) => {
           state.expandedKeys = filterByLevel(level);
         },
+        setSearchValue: (value: string) => {
+          handleSearch(value);
+        },
+        getSearchValue: () => {
+          return searchState.searchText;
+        },
       };
 
       expose(instance);
@@ -321,6 +385,8 @@
         if (!data) {
           return null;
         }
+        const searchText = searchState.searchText;
+        const { highlight } = unref(props);
         return data.map((item) => {
           const {
             title: titleField,
@@ -331,6 +397,23 @@
           const propsData = omit(item, 'title');
           const icon = getIcon({ ...item, level }, item.icon);
           const children = get(item, childrenField) || [];
+          const title = get(item, titleField);
+
+          const searchIdx = searchText ? title.indexOf(searchText) : -1;
+          const isHighlight =
+            searchState.startSearch && !isEmpty(searchText) && highlight && searchIdx !== -1;
+          const highlightStyle = `color: ${isBoolean(highlight) ? '#f50' : highlight}`;
+
+          const titleDom = isHighlight ? (
+            <span class={unref(getBindValues)?.blockNode ? `${prefixCls}__content` : ''}>
+              <span>{title.substr(0, searchIdx)}</span>
+              <span style={highlightStyle}>{searchText}</span>
+              <span>{title.substr(searchIdx + (searchText as string).length)}</span>
+            </span>
+          ) : (
+            title
+          );
+
           return (
             <Tree.TreeNode {...propsData} node={toRaw(item)} key={get(item, keyField)}>
               {{
@@ -339,16 +422,13 @@
                     class={`${prefixCls}-title pl-2`}
                     onClick={handleClickNode.bind(null, item[keyField], item[childrenField])}
                   >
-                    {slots?.title ? (
-                      getSlot(slots, 'title', item)
+                    {item.slots?.title ? (
+                      getSlot(slots, item.slots?.title, item)
                     ) : (
                       <>
                         {icon && <TreeIcon icon={icon} />}
-                        <span
-                          class={unref(getBindValues)?.blockNode ? `${prefixCls}__content` : ''}
-                        >
-                          {get(item, titleField)}
-                        </span>
+                        {titleDom}
+                        {/*{get(item, titleField)}*/}
                         <span class={`${prefixCls}__actions`}>
                           {renderAction({ ...item, level })}
                         </span>
@@ -379,6 +459,7 @@
                 helpMessage={helpMessage}
                 onStrictlyChange={onStrictlyChange}
                 onSearch={handleSearch}
+                searchText={searchState.searchText}
               >
                 {extendSlots(slots)}
               </TreeHeader>
