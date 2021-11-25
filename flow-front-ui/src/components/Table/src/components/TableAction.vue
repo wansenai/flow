@@ -14,11 +14,7 @@
       <Divider
         type="vertical"
         class="action-divider"
-        v-if="
-          divider &&
-          index < getActions.length - (dropDownActions ? 0 : 1) &&
-          getDropdownList.length > 0
-        "
+        v-if="divider && index < getActions.length - 1"
       />
     </template>
     <Dropdown
@@ -35,7 +31,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, PropType, computed, toRaw } from 'vue';
+  import { defineComponent, PropType, computed, toRaw, unref } from 'vue';
   import { MoreOutlined } from '@ant-design/icons-vue';
   import { Divider, Tooltip, TooltipProps } from 'ant-design-vue';
   import Icon from '/@/components/Icon/index';
@@ -95,6 +91,7 @@
           .map((action) => {
             const { popConfirm } = action;
             return {
+              getPopupContainer: () => unref((table as any)?.wrapRef.value) ?? document.body,
               type: 'link',
               size: 'small',
               ...action,
@@ -106,7 +103,7 @@
           });
       });
 
-      const getDropdownList = computed(() => {
+      const getDropdownList = computed((): any[] => {
         return (toRaw(props.dropDownActions) || [])
           .filter((action) => {
             return hasPermission(action.auth) && isIfShow(action);
@@ -131,19 +128,20 @@
       });
 
       function getTooltip(data: string | TooltipProps): TooltipProps {
-        if (isString(data)) {
-          return { title: data, placement: 'bottom' };
-        } else {
-          return Object.assign({ placement: 'bottom' }, data);
-        }
+        return {
+          getPopupContainer: () => unref((table as any)?.wrapRef.value) ?? document.body,
+          placement: 'bottom',
+          ...(isString(data) ? { title: data } : data),
+        };
       }
 
       function onCellClick(e: MouseEvent) {
         if (!props.stopButtonPropagation) return;
-        const target = e.target as HTMLElement;
-        if (target.tagName === 'BUTTON') {
-          e.stopPropagation();
-        }
+        const path = e.composedPath() as HTMLElement[];
+        const isInButton = path.find((ele) => {
+          return ele.tagName?.toUpperCase() === 'BUTTON';
+        });
+        isInButton && e.stopPropagation();
       }
 
       return { prefixCls, getActions, getDropdownList, getAlign, onCellClick, getTooltip };

@@ -1,13 +1,13 @@
 <template>
   <Select
     @dropdownVisibleChange="handleFetch"
-    v-bind="attrs"
+    v-bind="$attrs"
     @change="handleChange"
     :options="getOptions"
     v-model:value="state"
   >
     <template #[item]="data" v-for="item in Object.keys($slots)">
-      <slot :name="item" v-bind="data"></slot>
+      <slot :name="item" v-bind="data || {}"></slot>
     </template>
     <template #suffixIcon v-if="loading">
       <LoadingOutlined spin />
@@ -41,12 +41,7 @@
     },
     inheritAttrs: false,
     props: {
-      value: propTypes.oneOfType([
-        propTypes.object,
-        propTypes.number,
-        propTypes.string,
-        propTypes.array,
-      ]),
+      value: [Array, Object, String, Number],
       numberToString: propTypes.bool,
       api: {
         type: Function as PropType<(arg?: Recordable) => Promise<OptionsItem[]>>,
@@ -82,9 +77,9 @@
           if (next) {
             const value = next[valueField];
             prev.push({
+              ...omit(next, [labelField, valueField]),
               label: next[labelField],
               value: numberToString ? `${value}` : value,
-              ...omit(next, [labelField, valueField]),
             });
           }
           return prev;
@@ -100,7 +95,7 @@
         () => {
           !unref(isFirstLoad) && fetch();
         },
-        { deep: true }
+        { deep: true },
       );
 
       async function fetch() {

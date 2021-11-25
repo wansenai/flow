@@ -1,15 +1,18 @@
 import { MockMethod } from 'vite-plugin-mock';
-import { resultError, resultSuccess } from '../_util';
+import { resultError, resultSuccess, getRequestToken, requestParams } from '../_util';
 
-function createFakeUserList() {
+export function createFakeUserList() {
   return [
     {
+      id:'1',
       userId: '1',
-      username: 'vben',
+      username: '0000001',
       realName: 'Vben Admin',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=190848757&s=640',
       desc: 'manager',
-      password: '123456',
+      password: '888888',
       token: 'fakeToken1',
+      homePath: '/dashboard/analysis',
       roles: [
         {
           roleName: 'Super Admin',
@@ -18,12 +21,15 @@ function createFakeUserList() {
       ],
     },
     {
+      id: '2',
       userId: '2',
       username: 'test',
       password: '123456',
       realName: 'test user',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=339449197&s=640',
       desc: 'tester',
       token: 'fakeToken2',
+      homePath: '/dashboard/workbench',
       roles: [
         {
           roleName: 'Tester',
@@ -42,7 +48,7 @@ const fakeCodeList: any = {
 export default [
   // mock user login
   {
-    url: '/basic-api/login',
+    url: '/dragon-api/login',
     timeout: 200,
     method: 'post',
     response: ({ body }) => {
@@ -54,18 +60,11 @@ export default [
         return resultError('Incorrect account or password！');
       }
       const { userId, username: _username, token, realName, desc, roles } = checkUser;
-      return resultSuccess({
-        roles,
-        userId,
-        username: _username,
-        token,
-        realName,
-        desc,
-      });
+      return resultSuccess("login-token");
     },
   },
   {
-    url: '/basic-api/getUserInfoById',
+    url: '/dragon-api/getUserInfoById',
     method: 'get',
     response: ({ query }) => {
       const { userId } = query;
@@ -77,7 +76,26 @@ export default [
     },
   },
   {
-    url: '/basic-api/getPermCodeByUserId',
+    url: '/dragon-api/flow/main/getLoginUser',
+    method: 'get',
+    response: () => {
+      const checkUser = createFakeUserList()[0];
+      if (!checkUser) {
+        return resultError('The corresponding user information was not obtained!');
+      }
+      return resultSuccess(checkUser);
+    },
+  },
+  {
+    url: '/dragon-api/getLoginUser',
+    method: 'get',
+    response: () => {
+      const checkUser = createFakeUserList()[0];
+      return resultSuccess(checkUser);
+    },
+  },
+  {
+    url: '/dragon-api/flow/main/getPermCodeByUserId',
     timeout: 200,
     method: 'get',
     response: ({ query }) => {

@@ -1,1 +1,1 @@
-var E,P;(P=E||(E={})).ADD="0",P.QUERY="1",P.UPDATE="2",P.DELETE="3",P.PRINT="4",P.EXPORT="5",P.AUTH="6",P.PUBLISH="7";export{E as P};
+var D;(function(T){T.ADD="0",T.QUERY="1",T.UPDATE="2",T.DELETE="3",T.PRINT="4",T.EXPORT="5",T.AUTH="6",T.PUBLISH="7"})(D||(D={}));export{D as P};

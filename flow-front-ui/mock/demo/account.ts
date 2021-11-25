@@ -3,7 +3,7 @@ import { resultSuccess } from '../_util';
 
 const userInfo = {
   name: 'Vben',
-  userid: '00000001',
+  userid: '10101',
   email: 'test@gmail.com',
   signature: '海纳百川，有容乃大',
   introduction: '微笑着，努力着，欣赏着',
@@ -44,7 +44,7 @@ const userInfo = {
 
 export default [
   {
-    url: '/basic-api/account/getAccountInfo',
+    url: '/dragon-api/account/getAccountInfo',
     timeout: 1000,
     method: 'get',
     response: () => {

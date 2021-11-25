@@ -149,11 +149,13 @@ export function useFormEvents({
       updateData = [...data];
     }
 
-    const hasField = updateData.every((item) => Reflect.has(item, 'field') && item.field);
+    const hasField = updateData.every(
+      (item) => item.component === 'Divider' || (Reflect.has(item, 'field') && item.field),
+    );
 
     if (!hasField) {
       error(
-        'All children of the form Schema array that need to be updated must contain the `field` field'
+        'All children of the form Schema array that need to be updated must contain the `field` field',
       );
       return;
     }
@@ -169,11 +171,13 @@ export function useFormEvents({
       updateData = [...data];
     }
 
-    const hasField = updateData.every((item) => Reflect.has(item, 'field') && item.field);
+    const hasField = updateData.every(
+      (item) => item.component === 'Divider' || (Reflect.has(item, 'field') && item.field),
+    );
 
     if (!hasField) {
       error(
-        'All children of the form Schema array that need to be updated must contain the `field` field'
+        'All children of the form Schema array that need to be updated must contain the `field` field',
       );
       return;
     }
@@ -238,7 +242,7 @@ export function useFormEvents({
       const values = await validate();
       const res = handleFormValues(values);
       emit('submit', res);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error);
     }
   }
