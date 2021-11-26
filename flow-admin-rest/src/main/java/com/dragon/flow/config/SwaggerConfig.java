@@ -51,7 +51,7 @@ public class SwaggerConfig {
     @Bean
     public Docket docket(Environment environment) {
         //判定springboot的配置文件是否使用dev（开发环境）
-        Profiles profiles = Profiles.of("local");
+        Profiles profiles = Profiles.of("local", "dev");
         boolean flag = environment.acceptsProfiles(profiles);
         return new Docket(DocumentationType.OAS_30)
                 //只有当springboot配置文件为dev开发环境时，才开启swaggerAPI文档功能
