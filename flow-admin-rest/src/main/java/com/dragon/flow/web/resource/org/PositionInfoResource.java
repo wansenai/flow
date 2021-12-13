@@ -103,14 +103,16 @@ public class PositionInfoResource extends BaseResource<PositionInfo> {
     /**
      * 删除
      *
-     * @param id
+     * @param ids
      * @return
      */
     @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
-    public ReturnVo<String> delete(@RequestBody String id) {
+    public ReturnVo<String> delete(@RequestBody List<String> ids) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        positionInfoService.deleteById(id);
+        for(String id : ids){
+            positionInfoService.deleteById(id);
+        }
         return returnVo;
     }
 

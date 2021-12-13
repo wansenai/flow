@@ -45,5 +45,5 @@ export const batchSaveJobGradeTypeAndJobGrade = (params?: BatchJobGradeVo) =>
 export const checkEntityExist = (params?: CheckExistParams) =>
   defHttp.post<boolean>({ url: Api.CheckEntityExist, params });
 
-export const deleteById = (params?: object) =>
+export const deleteById = (params?: Array<string>) =>
   defHttp.post<JobGradeInfo>({url: Api.Delete, params});

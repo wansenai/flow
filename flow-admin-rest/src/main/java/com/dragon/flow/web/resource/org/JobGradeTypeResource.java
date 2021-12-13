@@ -90,14 +90,16 @@ public class JobGradeTypeResource extends BaseResource<JobGradeType> {
     /**
      * 删除
      *
-     * @param id id
+     * @param ids
      * @return
      */
     @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
-    public ReturnVo<String> delete(@RequestBody String id) {
+    public ReturnVo<String> delete(@RequestBody List<String> ids) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        jobGradeTypeService.deleteById(id);
+        for(String id : ids) {
+            jobGradeTypeService.deleteById(id);
+        }
         return returnVo;
     }
 

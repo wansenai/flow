@@ -123,13 +123,17 @@ public class JobGradeResource extends BaseResource<JobGrade> {
     /**
      * 删除
      *
-     * @param id id
+     * @param ids
      * @return
      */
     @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
-    public ReturnVo<String> delete(@RequestBody String id) {
-        return jobGradeService.deleteById(id);
+    public ReturnVo<String> delete(@RequestBody List<String> ids) {
+        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        for(String id : ids) {
+            return jobGradeService.deleteById(id);
+        }
+        return returnVo;
     }
 
     /**

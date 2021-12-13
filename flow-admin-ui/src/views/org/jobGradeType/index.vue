@@ -81,7 +81,7 @@
       }
 
       function handleDelete(record: Recordable) {
-        deleteById(record.id).then(() => {
+        deleteById([record.id]).then(() => {
           reload();
         });
       }

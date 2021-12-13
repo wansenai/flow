@@ -89,13 +89,16 @@ public class PositionSeqResource extends BaseResource<PositionSeq> {
     /**
      * 删除
      *
-     * @param id id
+     * @param ids
      * @return
      */
     @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/deleteById", produces = "application/json")
-    public ReturnVo<String> deleteById(@RequestBody String id) {
-        ReturnVo<String> returnVo = this.positionSeqService.deleteById(id);
+    public ReturnVo<String> deleteById(@RequestBody List<String> ids) {
+        ReturnVo<String> returnVo = null;
+        for(String id : ids) {
+            returnVo = this.positionSeqService.deleteById(id);
+        }
         return returnVo;
     }
 

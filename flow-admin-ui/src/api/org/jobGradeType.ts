@@ -35,5 +35,5 @@ export const saveOrUpdate = (params?: JobGradeTypeInfo) =>
 export const checkEntityExist = (params?: CheckExistParams) =>
   defHttp.post<boolean>({ url: Api.CheckEntityExist, params });
 
-export const deleteById = (params?: object) =>
+export const deleteById = (params?: Array<string>) =>
   defHttp.post<JobGradeTypeInfo>({url: Api.Delete, params});
