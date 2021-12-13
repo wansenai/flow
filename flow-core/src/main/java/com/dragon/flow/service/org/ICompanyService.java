@@ -51,7 +51,7 @@ public interface ICompanyService extends IService<Company> {
      *
      * @return
      */
-    List<OrgTreeVo> getCompanyTree();
+    List<OrgTreeVo> getCompanyTree(String companyName);
 
     /**
      * 删除公司
