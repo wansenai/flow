@@ -46,7 +46,7 @@ public class CompanyResource extends BaseResource<Company> {
     @GetMapping(value = "/getCompanyTree", produces = "application/json")
     public ReturnVo<List> getCompanyTree() {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        List<OrgTreeVo> datas = companyService.getCompanyTree();
+        List<OrgTreeVo> datas = companyService.getCompanyTree(null);
         returnVo.setData(datas);
         return returnVo;
     }

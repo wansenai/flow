@@ -211,7 +211,7 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
 
     @Override
     public List<OrgTreeVo> getOrgTree() {
-        List<OrgTreeVo> orgTreeVos = companyService.getCompanyTree();
+        List<OrgTreeVo> orgTreeVos = companyService.getCompanyTree(null);
         Map<String, OrgTreeVo> companyMap = orgTreeVos.stream().collect(Collectors.toMap(OrgTreeVo::getId, orgTreeVo -> orgTreeVo));
         List<Department> departments = departmentMapper.getDepartments(new Department());
         if (CollectionUtils.isNotEmpty(departments)){
