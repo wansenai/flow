@@ -192,12 +192,15 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
     }
 
     @Override
-    public List<OrgTreeVo> getDepartmentTree(String companyId) {
+    public List<OrgTreeVo> getDepartmentTree(String companyId,String deptName) {
         List<OrgTreeVo> orgTreeVos = new ArrayList<>();
         LambdaQueryWrapper<Department> departmentLambdaQueryWrapper = new LambdaQueryWrapper<>();
         departmentLambdaQueryWrapper.eq(Department::getDelFlag, 1);
         if (StringUtils.isNotBlank(companyId)){
             departmentLambdaQueryWrapper.eq(Department::getCompanyId, companyId);
+        }
+        if (StringUtils.isNotBlank(deptName)){
+            departmentLambdaQueryWrapper.like(Department::getName, deptName);
         }
         List<Department> departments = this.list(departmentLambdaQueryWrapper);
         if (CollectionUtils.isNotEmpty(departments)){
