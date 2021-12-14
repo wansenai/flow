@@ -90,7 +90,7 @@ public class CategoryServiceImpl extends ServiceImpl<ICategoryMapper, Category> 
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         LambdaQueryWrapper<Category> categoryLambdaQueryWrapper = new LambdaQueryWrapper<>();
         categoryLambdaQueryWrapper.eq(Category::getDelFlag, FlowConstant.DEL_FLAG_1)
-                .in(Category::getId, ids);
+                .in(Category::getPid, ids);
         int count = this.count(categoryLambdaQueryWrapper);
         if (count > 0){
             returnVo = new ReturnVo<>(ReturnCode.FAIL, "该分类还存在子分类，请确认！");
