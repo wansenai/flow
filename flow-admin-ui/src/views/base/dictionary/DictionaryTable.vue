@@ -49,7 +49,7 @@
       const [registerModal, { openModal, setModalProps }] = useModal();
       const dictTypeId = ref<string>('');
       const [registerTable, { reload, setProps, setTableData, setSelectedRowKeys }] = useTable({
-        title: '列表',
+        title: '数据字典列表',
         api: dictionaryPageList,
         columns,
         formConfig: {

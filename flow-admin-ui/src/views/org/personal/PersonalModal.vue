@@ -134,7 +134,7 @@
                   message: '工号不能为空！',
                 },
                 {
-                  pattern: new RegExp('^[0-9a-zA-Z_]{1,}$'),
+                  pattern: new RegExp('^[0-9a-zA-Z\-_]{1,}$'),
                   type: 'string',
                   message: '请输入英文或数字！',
                 },

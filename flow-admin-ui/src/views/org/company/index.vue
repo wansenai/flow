@@ -96,7 +96,10 @@
       function handleCreateChild(record: Recordable, e) {
         e.stopPropagation();
         setModalProps({title: '新增【'+record.cname+'】的子公司'});
-        record = {pid: record.id};
+        record = {
+          pid: record.id,
+          status: 1
+        };
         openModal(true, {
           record,
           isUpdate: true,
