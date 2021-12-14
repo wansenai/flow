@@ -95,7 +95,10 @@
       function handleCreateChild(record: Recordable, e) {
         e.stopPropagation();
         setModalProps({title: '新增【'+record.name+'】的子分类'});
-        record = {pid: record.id};
+        record = {
+          pid: record.id,
+          frontShow: 1,
+        };
         openModal(true, {
           record,
           isUpdate: true,
