@@ -139,7 +139,9 @@ public abstract class BaseResource<T> {
         if (CollectionUtils.isNotEmpty(acls)){
             List<String> moduleIds = new ArrayList<>();
             acls.forEach(acl -> {
-                if (acl.getPermission(PermissionConatant.R) != 0) moduleIds.add(acl.getModuleId());
+                if (acl.getPermission(PermissionConatant.R) != 0) {
+                    moduleIds.add(acl.getModuleId());
+                }
             });
             modules = moduleService.getModulesByIds(moduleIds);
         }
