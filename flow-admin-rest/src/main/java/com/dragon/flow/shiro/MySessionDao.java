@@ -82,8 +82,8 @@ public class MySessionDao extends CachingSessionDAO {
         if (cache != null){
             Collection<Session> cacheSessions = cache.values();
             if (CollectionUtils.isNotEmpty(cacheSessions)){
-                Integer count = shiroSessionService.count();
-                if (count.intValue() != cacheSessions.size()){
+                long count = shiroSessionService.count();
+                if (count != cacheSessions.size()){
                     List<ShiroSession> sessionList = shiroSessionService.list();
                     sessionList.forEach(shiroSession -> {
                         Session s = SerializableUtils.deserialize(shiroSession.getSession());

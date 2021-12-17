@@ -69,7 +69,7 @@ public class DictionaryServiceImpl extends ServiceImpl<IDictionaryMapper, Dictio
         LambdaQueryWrapper<DicItem> dicItemLambdaQueryWrapper = new LambdaQueryWrapper<>();
         dicItemLambdaQueryWrapper.eq(DicItem::getDelFlag, FlowConstant.DEL_FLAG_1)
                 .in(DicItem::getMainId, ids);
-        int count = dicItemService.count(dicItemLambdaQueryWrapper);
+        long count = dicItemService.count(dicItemLambdaQueryWrapper);
         if (count > 0){
             returnVo = new ReturnVo<>(ReturnCode.FAIL, "存在字典项数据，请确认");
         }

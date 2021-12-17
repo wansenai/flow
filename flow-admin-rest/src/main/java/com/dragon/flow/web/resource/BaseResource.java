@@ -160,7 +160,7 @@ public abstract class BaseResource<T> {
         String camelToUnderline = com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(checkExistVo.getField());
         userQueryWrapper.eq(camelToUnderline, checkExistVo.getFieldValue());
         userQueryWrapper.eq("del_flag",FlowConstant.DEL_FLAG_1);
-        int count = service.count(userQueryWrapper);
+        long count = service.count(userQueryWrapper);
         if (StringUtils.isNotBlank(checkExistVo.getId())){
             T entity = service.getById(checkExistVo.getId());
             try {
