@@ -24,7 +24,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("tbl_flow_comment_info")
-public class CommentInfo implements Serializable {
+public class CommentInfo extends BaseModel {
 
     @TableId(type = IdType.ASSIGN_UUID)
     protected String id;
