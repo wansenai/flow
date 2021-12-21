@@ -11,7 +11,7 @@ import com.dragon.flow.service.flowable.IBpmnModelService;
 import com.dragon.flow.service.flowable.IExtendHisprocinstService;
 import com.dragon.flow.service.flowable.IFlowProcessDiagramService;
 import com.dragon.flow.service.org.IPersonalService;
-import com.dragon.flow.utils.DurationUtils;
+import com.dragon.tools.utils.DurationUtils;
 import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
 import com.dragon.flow.vo.flowable.task.ActivityVo;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @program: flow

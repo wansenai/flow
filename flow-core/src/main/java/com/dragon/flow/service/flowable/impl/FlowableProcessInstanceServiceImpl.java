@@ -14,7 +14,7 @@ import com.dragon.flow.model.flowable.ExtendProcinst;
 import com.dragon.flow.model.org.Personal;
 import com.dragon.flow.service.flowable.*;
 import com.dragon.flow.service.org.IPersonalService;
-import com.dragon.flow.utils.DurationUtils;
+import com.dragon.tools.utils.DurationUtils;
 import com.dragon.flow.utils.ElUtils;
 import com.dragon.flow.vo.flowable.processinstance.InstanceQueryParamsVo;
 import com.dragon.flow.vo.flowable.processinstance.ProcessInstanceVo;
