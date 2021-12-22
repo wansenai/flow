@@ -18,16 +18,13 @@ public class PagerModel<T> implements Serializable {
     private static final long serialVersionUID = 4804053559968742915L;
     private long total;
     private List<T> data = new ArrayList();
-    private List<T> rows = new ArrayList();
 
     public PagerModel() {
     }
 
-    public PagerModel(long total, List<T> rows) {
+    public PagerModel(long total, List<T> data) {
         this.total = total;
-        this.rows = rows;
-        this.data = rows;
+        this.data = data;
     }
-
 
 }
