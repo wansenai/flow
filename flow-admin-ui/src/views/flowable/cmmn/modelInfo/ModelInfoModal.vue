@@ -12,6 +12,7 @@
   import { getAll } from '/@/api/base/app';
   import { useGo } from '/@/hooks/web/usePage';
   import {CheckExistParams} from "/@/api/model/baseModel";
+  import {FormValidPatternEnum} from "/@/enums/constantEnum";
 
   export default defineComponent({
     name: 'ModelInfoModal',
@@ -83,7 +84,7 @@
                   message: '编码不能为空！',
                 },
                 {
-                  pattern: new RegExp('^[0-9a-zA-Z\-_]{1,}$'),
+                  pattern: new RegExp(FormValidPatternEnum.SN),
                   type: 'string',
                   message: '请输入英文或数字！',
                 },

@@ -23,6 +23,7 @@
   import { Button, Tag } from 'ant-design-vue';
   import PersonalSelector from '/@/views/components/selector/personalSelector/index.vue';
   import {CheckExistParams} from "/@/api/model/baseModel";
+  import {FormValidPatternEnum} from "/@/enums/constantEnum";
 
   export default defineComponent({
     name: 'DeptModal',
@@ -93,7 +94,7 @@
                   message: '编码不能为空！',
                 },
                 {
-                  pattern: new RegExp('^[0-9a-zA-Z\-_]{1,}$'),
+                  pattern: new RegExp(FormValidPatternEnum.SN),
                   type: 'string',
                   message: '请输入英文或数字！',
                 },
