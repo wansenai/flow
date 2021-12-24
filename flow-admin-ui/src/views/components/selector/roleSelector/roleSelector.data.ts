@@ -2,6 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import {Tag} from "ant-design-vue";
 import {h} from 'vue'
+import {FormValidPatternEnum} from "/@/enums/constantEnum";
 
 export const columns: BasicColumn[] = [
   {
@@ -71,7 +72,7 @@ export const accountFormSchema: FormSchema[] = [
         message: '工号不能为空！',
       },
       {
-        pattern: new RegExp('^[0-9a-zA-Z\-_]{1,}$'),
+        pattern: new RegExp(FormValidPatternEnum.SN),
         type: 'string',
         message: '请输入英文或数字！',
       },
