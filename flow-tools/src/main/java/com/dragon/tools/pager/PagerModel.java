@@ -17,14 +17,14 @@ import java.util.List;
 public class PagerModel<T> implements Serializable {
     private static final long serialVersionUID = 4804053559968742915L;
     private long total;
-    private List<T> data = new ArrayList();
+    private List<T> rows = new ArrayList();
 
     public PagerModel() {
     }
 
-    public PagerModel(long total, List<T> data) {
+    public PagerModel(long total, List<T> rows) {
         this.total = total;
-        this.data = data;
+        this.rows = rows;
     }
 
 }

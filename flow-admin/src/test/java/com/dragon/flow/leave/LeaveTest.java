@@ -87,7 +87,7 @@ public class LeaveTest {
         Query query = new Query();
         PagerModel<TaskVo> pagerModel = flowableTaskService.getAppingTasksPagerModel(paramsvo, query);
         if (pagerModel != null){
-            List<TaskVo> data = pagerModel.getData();
+            List<TaskVo> data = pagerModel.getRows();
             if (CollectionUtils.isNotEmpty(data)){
                 data.forEach(taskVo -> {
                     EndVo endVo = new EndVo();
@@ -110,7 +110,7 @@ public class LeaveTest {
         Query query = new Query();
         PagerModel<TaskVo> pagerModel = flowableTaskService.getAppingTasksPagerModel(paramsvo, query);
         if (pagerModel != null){
-            List<TaskVo> data = pagerModel.getData();
+            List<TaskVo> data = pagerModel.getRows();
             if (CollectionUtils.isNotEmpty(data)){
                 data.forEach(taskVo -> {
                     CompleteTaskVo completeTaskVo = new CompleteTaskVo();
