@@ -109,8 +109,11 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
     public HighLightedNodeVo getHighLightedNodeVoByProcessInstanceId(String processInstanceId) {
         Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_HIGHLIGHTEDNODES);
         Cache.ValueWrapper valueWrapper = cache.get(processInstanceId);
-        if (valueWrapper != null) {
-            return (HighLightedNodeVo) valueWrapper.get();
+        if (valueWrapper != null && valueWrapper.get() != null ) {
+            Object o = valueWrapper.get();
+            if (o instanceof HighLightedNodeVo){
+                return (HighLightedNodeVo) o;
+            }
         }
         HighLightedNodeVo highLightedNodeVo = this.findHighLightedNodeVoByProcessInstanceId(processInstanceId);
         cache.put(processInstanceId, highLightedNodeVo);
@@ -124,8 +127,11 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
             Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_ACTIVITYS);
             String key = processInstanceId + "-" + activityId;
             Cache.ValueWrapper valueWrapper = cache.get(key);
-            if (valueWrapper != null) {
-                return (ActivityVo) valueWrapper.get();
+            if (valueWrapper != null &&  valueWrapper.get()!=null) {
+                Object o = valueWrapper.get();
+                if (o instanceof ActivityVo){
+                    return (ActivityVo) o;
+                }
             }
             List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
                     .processInstanceId(processInstanceId).taskDefinitionKey(activityId)
@@ -188,8 +194,11 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
     public List<ActivityVo> getProcessActivityVosByProcessInstanceId(String processInstanceId) {
         Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_ACTIVITYS);
         Cache.ValueWrapper valueWrapper = cache.get(processInstanceId);
-        if (valueWrapper != null) {
-            return (List<ActivityVo>) valueWrapper.get();
+        if (valueWrapper != null &&  valueWrapper.get()!=null) {
+            Object o = valueWrapper.get();
+            if (o instanceof List){
+                return (List<ActivityVo>)o;
+            }
         }
         List<ActivityVo> datas = new ArrayList<>();
         ExtendHisprocinst extendHisprocinst = extendHisprocinstService.findExtendHisprocinstByProcessInstanceId(processInstanceId);

@@ -1,5 +1,6 @@
 package com.dragon.tools.pager;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,9 +15,16 @@ import java.util.List;
  * @return
  **/
 @Data
+@Builder(toBuilder = true)
 public class PagerModel<T> implements Serializable {
     private static final long serialVersionUID = 4804053559968742915L;
+    /**
+     * 总记录数
+     */
     private long total;
+    /**
+     * 每页的查询结果集
+     */
     private List<T> rows = new ArrayList();
 
     public PagerModel() {
