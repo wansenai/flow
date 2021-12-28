@@ -101,8 +101,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
         BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
         byte[] bpmnXML = modelService.getBpmnXML(bpmnModel);
         String modelXml = new String(bpmnXML, StandardCharsets.UTF_8);
-        HighLightedNodeVo highLightedNodeVo = new HighLightedNodeVo(highLightedFlows, activeActivityIds, modelXml, modelName);
-        return highLightedNodeVo;
+        return new HighLightedNodeVo(highLightedFlows, activeActivityIds, modelXml, modelName);
     }
 
     @Override
