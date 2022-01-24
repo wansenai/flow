@@ -31,6 +31,7 @@ public class LoginResource {
         if (a != null){
             HttpSession session = request.getSession();
             a.setSessionId(session.getId());
+            a.setPwd(null);
             returnVo.setData(a);
             session.setAttribute(FlowFrontConstant.LOGIN_ACCOUNT, returnVo);
         } else {
