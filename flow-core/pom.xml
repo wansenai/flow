@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.dragon</groupId>
         <artifactId>flow-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.dragon</groupId>
     <artifactId>flow-core</artifactId>
-    <version>${flow.version}</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>com.dragon</groupId>
             <artifactId>flow-api</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${flow.version}</version>
         </dependency>
         <dependency>
             <groupId>com.dragon</groupId>
@@ -114,6 +114,14 @@
                     <groupId>org.flowable</groupId>
                     <artifactId>flowable-idm-spring-configurator</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.flowable</groupId>
+                    <artifactId>flowable-spring-boot-starter-cmmn</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.flowable</groupId>
+                    <artifactId>flowable-cmmn-spring-configurator</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <!--json解析器-->
@@ -166,11 +174,16 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-api</artifactId>
+            <version>7.6.0.Final</version>
+        </dependency>
         <!-- 自动生成代码 -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
-            <version>3.4.1</version>
+            <version>3.5.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

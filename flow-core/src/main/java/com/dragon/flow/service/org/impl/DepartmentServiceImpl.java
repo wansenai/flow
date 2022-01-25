@@ -131,7 +131,7 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
         ids.add(id);
         LambdaQueryWrapper<Department> departmentLambdaQueryWrapper = new LambdaQueryWrapper<>();
         departmentLambdaQueryWrapper.eq(Department::getPid, id).eq(Department::getDelFlag, FlowConstant.DEL_FLAG_1);
-        int count = this.count(departmentLambdaQueryWrapper);
+        long count = this.count(departmentLambdaQueryWrapper);
         if (count > 0){
             List<Department> companyList = this.list(departmentLambdaQueryWrapper);
             List<String> finalIds = ids;
@@ -159,14 +159,14 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         LambdaQueryWrapper<Personal> personalLambdaQueryWrapper = new LambdaQueryWrapper<>();
         personalLambdaQueryWrapper.in(Personal::getDeptId, ids).eq(Personal::getDelFlag, FlowConstant.DEL_FLAG_1);
-        int count = personalService.count(personalLambdaQueryWrapper);
+        long count = personalService.count(personalLambdaQueryWrapper);
         if (count > 0){
             returnVo = new ReturnVo<>(ReturnCode.FAIL, "请先移除部门相关人员!");
         } else {
             LambdaQueryWrapper<Department> departmentLambdaQueryWrapper = new LambdaQueryWrapper<>();
             departmentLambdaQueryWrapper.eq(Department::getDelFlag, FlowConstant.DEL_FLAG_1)
                     .eq(Department::getPid, ids.get(0));
-            int departmentCount = this.count(departmentLambdaQueryWrapper);
+            long departmentCount = this.count(departmentLambdaQueryWrapper);
             if (departmentCount > 0){
                 returnVo = new ReturnVo<>(ReturnCode.FAIL, "该部门还存在子部门，请确认!");
             } else {
@@ -192,12 +192,15 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
     }
 
     @Override
-    public List<OrgTreeVo> getDepartmentTree(String companyId) {
+    public List<OrgTreeVo> getDepartmentTree(String companyId,String deptName) {
         List<OrgTreeVo> orgTreeVos = new ArrayList<>();
         LambdaQueryWrapper<Department> departmentLambdaQueryWrapper = new LambdaQueryWrapper<>();
         departmentLambdaQueryWrapper.eq(Department::getDelFlag, 1);
         if (StringUtils.isNotBlank(companyId)){
             departmentLambdaQueryWrapper.eq(Department::getCompanyId, companyId);
+        }
+        if (StringUtils.isNotBlank(deptName)){
+            departmentLambdaQueryWrapper.like(Department::getName, deptName);
         }
         List<Department> departments = this.list(departmentLambdaQueryWrapper);
         if (CollectionUtils.isNotEmpty(departments)){
@@ -211,7 +214,7 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
 
     @Override
     public List<OrgTreeVo> getOrgTree() {
-        List<OrgTreeVo> orgTreeVos = companyService.getCompanyTree();
+        List<OrgTreeVo> orgTreeVos = companyService.getCompanyTree(null);
         Map<String, OrgTreeVo> companyMap = orgTreeVos.stream().collect(Collectors.toMap(OrgTreeVo::getId, orgTreeVo -> orgTreeVo));
         List<Department> departments = departmentMapper.getDepartments(new Department());
         if (CollectionUtils.isNotEmpty(departments)){

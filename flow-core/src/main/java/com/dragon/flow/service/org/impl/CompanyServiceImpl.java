@@ -111,6 +111,7 @@ public class CompanyServiceImpl extends ServiceImpl<ICompanyMapper, Company> imp
         }
     }
 
+    @Override
     public void getAllCompanyIds(String id, List<String> ids) {
         if (ids == null){
             ids = new ArrayList<>();
@@ -118,7 +119,7 @@ public class CompanyServiceImpl extends ServiceImpl<ICompanyMapper, Company> imp
         ids.add(id);
         LambdaQueryWrapper<Company> companyLambdaQueryWrapper = new LambdaQueryWrapper<>();
         companyLambdaQueryWrapper.eq(Company::getPid, id).eq(Company::getDelFlag, FlowConstant.DEL_FLAG_1);
-        int count = this.count(companyLambdaQueryWrapper);
+        long count = this.count(companyLambdaQueryWrapper);
         if (count > 0){
             List<Company> companyList = this.list(companyLambdaQueryWrapper);
             List<String> finalIds = ids;
@@ -147,14 +148,14 @@ public class CompanyServiceImpl extends ServiceImpl<ICompanyMapper, Company> imp
         LambdaQueryWrapper<Department> departmentLambdaQueryWrapper = new LambdaQueryWrapper<>();
         departmentLambdaQueryWrapper.in(Department::getCompanyId, ids)
                 .eq(Department::getDelFlag, FlowConstant.DEL_FLAG_1);
-        int count = departmentService.count(departmentLambdaQueryWrapper);
+        long count = departmentService.count(departmentLambdaQueryWrapper);
         if (count > 0){
             returnVo = new ReturnVo<>(ReturnCode.FAIL, "请先删除相关部门！");
         } else {
             LambdaQueryWrapper<Company> companyLambdaQueryWrapper = new LambdaQueryWrapper<>();
             companyLambdaQueryWrapper.eq(Company::getDelFlag, FlowConstant.DEL_FLAG_1)
                     .eq(Company::getPid, ids.get(0));
-            int companyCount = this.count(companyLambdaQueryWrapper);
+            long companyCount = this.count(companyLambdaQueryWrapper);
             if (companyCount > 0){
                 returnVo = new ReturnVo<>(ReturnCode.FAIL, "该公司还有子公司，请确认！");
             } else {
@@ -168,10 +169,13 @@ public class CompanyServiceImpl extends ServiceImpl<ICompanyMapper, Company> imp
     }
 
     @Override
-    public List<OrgTreeVo> getCompanyTree() {
+    public List<OrgTreeVo> getCompanyTree(String companyName) {
         List<OrgTreeVo> orgTreeVos = new ArrayList<>();
         LambdaQueryWrapper<Company> companyLambdaQueryWrapper = new LambdaQueryWrapper<>();
         companyLambdaQueryWrapper.eq(Company::getStatus, 1).eq(Company::getDelFlag, FlowConstant.DEL_FLAG_1);
+        if(StringUtils.isNotBlank(companyName)){
+            companyLambdaQueryWrapper.like(Company::getCname,companyName);
+        }
         List<Company> companies = this.list(companyLambdaQueryWrapper);
         if (CollectionUtils.isNotEmpty(companies)){
             companies.forEach(company -> {

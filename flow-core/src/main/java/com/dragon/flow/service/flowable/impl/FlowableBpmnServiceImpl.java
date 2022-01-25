@@ -14,6 +14,7 @@ import com.dragon.flow.service.flowable.IModelInfoService;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang.StringUtils;
 import org.flowable.bpmn.converter.BpmnXMLConverter;
@@ -27,8 +28,9 @@ import org.flowable.ui.common.service.exception.BadRequestException;
 import org.flowable.ui.common.util.XmlUtil;
 import org.flowable.ui.modeler.domain.AbstractModel;
 import org.flowable.ui.modeler.domain.Model;
-import org.flowable.ui.modeler.model.ModelKeyRepresentation;
 import org.flowable.ui.modeler.model.ModelRepresentation;
+import org.flowable.ui.modeler.service.AppDefinitionImportService;
+import org.flowable.ui.modeler.service.ConverterContext;
 import org.flowable.ui.modeler.serviceapi.ModelService;
 import org.flowable.validation.ProcessValidator;
 import org.flowable.validation.ProcessValidatorFactory;
@@ -37,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -74,6 +77,53 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
     protected DragonFlowProperties dragonFlowProperties;
     @Autowired
     private ProcessValidatorFactory processValidatorFactory;
+    @Autowired
+    private ObjectMapper objectMapper;
+    @Autowired
+    private AppDefinitionImportService appDefinitionImportService;
+
+    @Override
+    public ReturnVo<String> validateBpmnModel(String modelId, String fileName, InputStream modelStream) {
+        ReturnVo<String> returnVo = new ReturnVo(ReturnCode.SUCCESS, "OK");
+        Model processModel = modelService.getModel(modelId);
+        if (StringUtils.isBlank(fileName)) {
+            fileName = processModel.getKey() + BPMN_EXTENSION;
+        }
+        try {
+            XMLInputFactory xif = XmlUtil.createSafeXmlInputFactory();
+            InputStreamReader xmlIn = new InputStreamReader(modelStream, StandardCharsets.UTF_8);
+            XMLStreamReader xtr = xif.createXMLStreamReader(xmlIn);
+            BpmnModel bpmnModel = bpmnXMLConverter.convertToBpmnModel(xtr);
+            bpmnModel.getMainProcess().setId(processModel.getKey());
+            bpmnModel.setTargetNamespace(BaseBpmnJsonConverter.NAMESPACE);
+            if (CollectionUtils.isEmpty(bpmnModel.getProcesses())) {
+                returnVo = new ReturnVo(ReturnCode.FAIL, "No process found in definition " + fileName);
+                return returnVo;
+            }
+            if (bpmnModel.getLocationMap().size() == 0) {
+                returnVo = new ReturnVo(ReturnCode.FAIL, "No required BPMN DI information found in definition " + fileName);
+                return returnVo;
+            }
+            returnVo = this.validationErrors(bpmnModel);
+        } catch (XMLStreamException e) {
+            returnVo = new ReturnVo(ReturnCode.FAIL, "bpmn.js failed for " + fileName + ", error message " + e.getMessage());
+            return returnVo;
+        }
+        return returnVo;
+    }
+
+    private ReturnVo<String> validationErrors(BpmnModel bpmnModel) {
+        ReturnVo<String> returnVo = new ReturnVo(ReturnCode.SUCCESS, "OK");
+        ProcessValidator processValidator = processValidatorFactory.createDefaultProcessValidator();
+        List<ValidationError> validationErrors = processValidator.validate(bpmnModel);
+        if (CollectionUtils.isNotEmpty(validationErrors)) {
+            StringBuffer message = new StringBuffer();
+            validationErrors.forEach(validationError -> message.append(validationError.toString() + "\n"));
+            returnVo = new ReturnVo(ReturnCode.FAIL, message.toString());
+            return returnVo;
+        }
+        return returnVo;
+    }
 
     @Override
     public ReturnVo<String> importBpmnModel(String modelId, String fileName, InputStream modelStream, User user) {
@@ -98,15 +148,13 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
                     returnVo = new ReturnVo(ReturnCode.FAIL, "No required BPMN DI information found in definition " + fileName);
                     return returnVo;
                 }
-                ProcessValidator processValidator = processValidatorFactory.createDefaultProcessValidator();
-                List<ValidationError> validationErrors = processValidator.validate(bpmnModel);
-                if (CollectionUtils.isNotEmpty(validationErrors)) {
-                    StringBuffer message = new StringBuffer();
-                    validationErrors.forEach(validationError -> message.append(validationErrors.toString()));
-                    returnVo = new ReturnVo(ReturnCode.FAIL, message.toString());
-                    return returnVo;
-                }
-                ObjectNode modelNode = bpmnJsonConverter.convertToJson(bpmnModel);
+                ConverterContext converterContext = new ConverterContext(modelService, objectMapper);
+                List<AbstractModel> decisionTables = modelService.getModelsByModelType(AbstractModel.MODEL_TYPE_DECISION_TABLE);
+                decisionTables.forEach(abstractModel -> {
+                    Model model = (Model) abstractModel;
+                    converterContext.addDecisionTableModel(model);
+                });
+                ObjectNode modelNode = bpmnJsonConverter.convertToJson(bpmnModel, converterContext);
                 this.setProcessPropertiesToKey(modelNode, processModel.getKey());
                 AbstractModel savedModel = modelService.saveModel(modelId, processModel.getName(), processModel.getKey(),
                         processModel.getDescription(), modelNode.toString(), false,
@@ -116,14 +164,6 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
                 ModelInfo modelInfo = modelInfoService.getOne(modelInfoLambdaQueryWrapper);
                 modelInfo.setStatus(ModelFormStatusEnum.DFB.getStatus());
                 modelInfo.setExtendStatus(ModelFormStatusEnum.DFB.getStatus());
-//                if (ModelFormStatusEnum.TY.getStatus().equals(modelInfo.getStatus()) &&
-//                        ModelFormStatusEnum.TY.getStatus().equals(modelInfo.getExtendStatus())) {
-//                    modelInfo.setStatus(ModelFormStatusEnum.DFB.getStatus());
-//                    modelInfo.setExtendStatus(ModelFormStatusEnum.DFB.getStatus());
-//                } else {
-//                    modelInfo.setStatus(ModelFormStatusEnum.DFB.getStatus());
-//                    modelInfo.setExtendStatus(ModelFormStatusEnum.DFB.getStatus());
-//                }
                 modelInfoService.saveOrUpdate(modelInfo);
                 returnVo.setData(savedModel.getId());
                 return returnVo;
@@ -158,6 +198,12 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
     @Override
     public ReturnVo<String> publishBpmn(String modelId) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        Model model = modelService.getModel(modelId);
+        BpmnModel bpmnModel = modelService.getBpmnModel(model);
+        returnVo = this.validationErrors(bpmnModel);
+        if (!returnVo.isSuccess()) {
+            return returnVo;
+        }
         LambdaQueryWrapper<ModelInfo> modelInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
         modelInfoLambdaQueryWrapper.eq(ModelInfo::getModelId, modelId);
         ModelInfo modelInfo = modelInfoService.getOne(modelInfoLambdaQueryWrapper);

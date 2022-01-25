@@ -1,5 +1,6 @@
 package com.dragon.flow.vo.flowable.task;
 
+import com.dragon.flow.vo.extension.usertask.NextSequenceUserVo;
 import com.dragon.flow.vo.flowable.BaseProcessVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,4 +34,12 @@ public class CompleteTaskVo extends BaseProcessVo implements Serializable {
      */
     @ApiModelProperty(value = "任务参数")
     private Map<String, Object> variables;
+    /**
+     * 下一条线
+     */
+    private NextSequenceUserVo nextSequenceFlow;
+    /**
+     * 下一个或多个审批人
+     */
+    private List<NextSequenceUserVo> nextUsers;
 }

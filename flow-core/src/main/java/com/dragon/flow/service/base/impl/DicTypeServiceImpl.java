@@ -75,7 +75,7 @@ public class DicTypeServiceImpl extends ServiceImpl<IDicTypeMapper, DicType> imp
         LambdaQueryWrapper<DicType> dicTypeLambdaQueryWrapper = new LambdaQueryWrapper<>();
         dicTypeLambdaQueryWrapper.in(DicType::getPid, ids)
                 .eq(DicType::getDelFlag, FlowConstant.DEL_FLAG_1);
-        int count = this.count(dicTypeLambdaQueryWrapper);
+        long count = this.count(dicTypeLambdaQueryWrapper);
         if (count > 0){
             returnVo = new ReturnVo<>(ReturnCode.FAIL, "该分类还存在子分类，请确认！");
         } else {

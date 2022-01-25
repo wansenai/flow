@@ -1,5 +1,7 @@
 import '/@/design/index.less';
-import '/@/design/tailwind.css';
+import 'virtual:windi-base.css';
+import 'virtual:windi-components.css';
+import 'virtual:windi-utilities.css';
 // Register icon sprite
 import 'virtual:svg-icons-register';
 import App from './App.vue';
@@ -16,10 +18,9 @@ import 'xe-utils'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 
-// Do not introduce on-demand in local development?
-// In the local development for introduce on-demand, the number of browser requests will increase by about 20%.
-// Which may slow down the browser refresh.
-// Therefore, all are introduced in local development, and only introduced on demand in the production environment
+// Importing on demand in local development will increase the number of browser requests by around 20%.
+// This may slow down the browser refresh speed.
+// Therefore, only enable on-demand importing in production environments .
 if (import.meta.env.DEV) {
   import('ant-design-vue/dist/antd.less');
 }
@@ -43,6 +44,7 @@ async function bootstrap() {
   registerGlobComp(app);
 
   // Multilingual configuration
+  // Asynchronous case: language files may be obtained from the server side
   await setupI18n(app);
 
   // Configure routing
@@ -57,11 +59,10 @@ async function bootstrap() {
   // Configure global error handling
   setupErrorHandle(app);
 
-  // Mount when the route is ready
   // https://next.router.vuejs.org/api/#isready
-  await router.isReady();
+  // await router.isReady();
 
-  app.mount('#app', true);
+  app.mount('#app');
 }
 
-void bootstrap();
+bootstrap();

@@ -11,7 +11,7 @@ import com.dragon.flow.service.flowable.IBpmnModelService;
 import com.dragon.flow.service.flowable.IExtendHisprocinstService;
 import com.dragon.flow.service.flowable.IFlowProcessDiagramService;
 import com.dragon.flow.service.org.IPersonalService;
-import com.dragon.flow.utils.DurationUtils;
+import com.dragon.tools.utils.DurationUtils;
 import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
 import com.dragon.flow.vo.flowable.task.ActivityVo;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @program: flow
@@ -102,16 +101,18 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
         BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
         byte[] bpmnXML = modelService.getBpmnXML(bpmnModel);
         String modelXml = new String(bpmnXML, StandardCharsets.UTF_8);
-        HighLightedNodeVo highLightedNodeVo = new HighLightedNodeVo(highLightedFlows, activeActivityIds, modelXml, modelName);
-        return highLightedNodeVo;
+        return new HighLightedNodeVo(highLightedFlows, activeActivityIds, modelXml, modelName);
     }
 
     @Override
     public HighLightedNodeVo getHighLightedNodeVoByProcessInstanceId(String processInstanceId) {
         Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_HIGHLIGHTEDNODES);
         Cache.ValueWrapper valueWrapper = cache.get(processInstanceId);
-        if (valueWrapper != null) {
-            return (HighLightedNodeVo) valueWrapper.get();
+        if (valueWrapper != null && valueWrapper.get() != null ) {
+            Object o = valueWrapper.get();
+            if (o instanceof HighLightedNodeVo){
+                return (HighLightedNodeVo) o;
+            }
         }
         HighLightedNodeVo highLightedNodeVo = this.findHighLightedNodeVoByProcessInstanceId(processInstanceId);
         cache.put(processInstanceId, highLightedNodeVo);
@@ -125,8 +126,11 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
             Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_ACTIVITYS);
             String key = processInstanceId + "-" + activityId;
             Cache.ValueWrapper valueWrapper = cache.get(key);
-            if (valueWrapper != null) {
-                return (ActivityVo) valueWrapper.get();
+            if (valueWrapper != null &&  valueWrapper.get()!=null) {
+                Object o = valueWrapper.get();
+                if (o instanceof ActivityVo){
+                    return (ActivityVo) o;
+                }
             }
             List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
                     .processInstanceId(processInstanceId).taskDefinitionKey(activityId)
@@ -189,8 +193,11 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
     public List<ActivityVo> getProcessActivityVosByProcessInstanceId(String processInstanceId) {
         Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_ACTIVITYS);
         Cache.ValueWrapper valueWrapper = cache.get(processInstanceId);
-        if (valueWrapper != null) {
-            return (List<ActivityVo>) valueWrapper.get();
+        if (valueWrapper != null &&  valueWrapper.get()!=null) {
+            Object o = valueWrapper.get();
+            if (o instanceof List){
+                return (List<ActivityVo>)o;
+            }
         }
         List<ActivityVo> datas = new ArrayList<>();
         ExtendHisprocinst extendHisprocinst = extendHisprocinstService.findExtendHisprocinstByProcessInstanceId(processInstanceId);
@@ -235,7 +242,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
                 List<String> personalCodes = new ArrayList<>();
                 List<Date> createTimes = new ArrayList<>();
                 List<Date> endTimes = new ArrayList<>();
-                if (userTask.getName().equals(FlowConstant.FLOW_SUBMITTER)) {
+                if (FlowConstant.FLOW_SUBMITTER.equals(userTask.getName())) {
                     personalCodes.add(extendHisprocinst.getCurrentUserCode());
                 } else {
                     historicTaskInstances.forEach(hisTask -> {
@@ -329,7 +336,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
                 MultiInstanceLoopCharacteristics loopCharacteristics = userTask.getLoopCharacteristics();
                 if (loopCharacteristics == null) {
                     String expressionValue = null;
-                    if (userTask.getName().equals(FlowConstant.FLOW_SUBMITTER)) {
+                    if (FlowConstant.FLOW_SUBMITTER.equals(userTask.getName())) {
                         expressionValue = extendHisprocinst.getCurrentUserCode();
                     } else {
                         String processInstanceId = extendHisprocinst.getProcessInstanceId();

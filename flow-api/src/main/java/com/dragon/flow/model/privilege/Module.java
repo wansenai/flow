@@ -26,6 +26,10 @@ public class Module extends BaseModel implements Serializable {
 	// id 32
 	@TableId(type = IdType.ASSIGN_UUID)
 	private String id;
+	/**
+	 * 应用id
+	 */
+	private String appId;
 	// 名称 20
 	private String name;
 	// 链接 40

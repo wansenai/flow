@@ -10,6 +10,7 @@
   import { formSchema } from './app.data';
   import { saveOrUpdate, checkEntityExist } from '/@/api/base/app';
   import {CheckExistParams} from "/@/api/model/baseModel";
+  import {FormValidPatternEnum} from "/@/enums/constantEnum";
 
   export default defineComponent({
     name: 'AppModal',
@@ -64,7 +65,7 @@
                   message: '标识不能为空！',
                 },
                 {
-                  pattern: new RegExp('^[0-9a-zA-Z_]{1,}$'),
+                  pattern: new RegExp(FormValidPatternEnum.SN),
                   type: 'string',
                   message: '请输入英文或数字！',
                 },
@@ -80,7 +81,7 @@
         if (unref(isUpdate)) {
           setFieldsValue({
             ...formData,
-            status: formData.status === 1,
+            status: formData.status === 1 ? true : false,
           });
         }
       });

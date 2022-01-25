@@ -10,6 +10,7 @@
   import { formSchema } from './positionSeq.data';
   import { saveOrUpdate, checkEntityExist } from '/@/api/org/positionSeq';
   import {CheckExistParams} from "/@/api/model/baseModel";
+  import {FormValidPatternEnum} from "/@/enums/constantEnum";
 
   export default defineComponent({
     name: 'PositionSeqModal',
@@ -64,7 +65,7 @@
                   message: '标识不能为空！',
                 },
                 {
-                  pattern: new RegExp('^[0-9a-zA-Z_]{1,}$'),
+                  pattern: new RegExp(FormValidPatternEnum.SN),
                   type: 'string',
                   message: '请输入英文或数字！',
                 },

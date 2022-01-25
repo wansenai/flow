@@ -16,7 +16,7 @@ const genCodeRule = (formData) => {
                 message: '${item.comment}不能为空！',
               },
               {
-                pattern: new RegExp('^[0-9a-zA-Z_]{1,}$'),
+                pattern: new RegExp('^[0-9a-zA-Z\-_]{1,}$'),
                 type: 'string',
                 message: '请输入英文或数字！',
               },
@@ -55,7 +55,7 @@ export default (formData)=>{
   import { BasicForm, Rule, useForm } from '/@/components/Form';
   import { formSchema } from './${formData.lowerClassName}.data';
   import { saveOrUpdate, checkEntityExist } from '/@/api/${formData.module}/${formData.lowerClassName}';
-  import {CheckExistParams} from "/@/api/model/baseModel";
+  import { CheckExistParams } from "/@/api/model/baseModel";
 
   export default defineComponent({
     name: '${formData.className}Modal',
@@ -103,7 +103,7 @@ export default (formData)=>{
         
         if (unref(isUpdate)) {
           setFieldsValue({
-            ...data.record,
+            ...formData,
           });
         }
       });

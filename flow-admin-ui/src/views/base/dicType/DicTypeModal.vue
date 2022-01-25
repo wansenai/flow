@@ -10,6 +10,7 @@
   import { formSchema } from './dicType.data';
   import { saveOrUpdate, checkEntityExist } from '/@/api/base/dicType';
   import {CheckExistParams} from "/@/api/model/baseModel";
+  import {FormValidPatternEnum} from "/@/enums/constantEnum";
 
   export default defineComponent({
     name: 'DicTypeModal',
@@ -64,7 +65,7 @@
                   message: '编码不能为空！',
                 },
                 {
-                  pattern: new RegExp('^[0-9a-zA-Z_]{1,}$'),
+                  pattern: new RegExp(FormValidPatternEnum.SN),
                   type: 'string',
                   message: '请输入英文或数字！',
                 },

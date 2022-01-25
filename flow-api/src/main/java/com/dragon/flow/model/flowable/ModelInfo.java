@@ -42,6 +42,16 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     private String modelKey;
     /**
+     * flowable的model类型
+     * MODEL_TYPE_BPMN = 0;
+     * MODEL_TYPE_FORM = 2;
+     * MODEL_TYPE_APP = 3;
+     * MODEL_TYPE_DECISION_TABLE = 4;
+     * MODEL_TYPE_CMMN = 5;
+     * MODEL_TYPE_DECISION_SERVICE = 6;
+     */
+    private Integer modelType;
+    /**
      * 模型类型: 0 自定义流程表单 1是业务流程表单 2是任务流程表单
      */
     private Integer formType;
@@ -144,15 +154,6 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     @TableField(exist = false)
     private String processDefinitionId;
-    /**
-     * flowable的model类型
-     * MODEL_TYPE_BPMN = 0;
-     * MODEL_TYPE_FORM = 2;
-     * MODEL_TYPE_APP = 3;
-     * MODEL_TYPE_DECISION_TABLE = 4;
-     * MODEL_TYPE_CMMN = 5;
-     * MODEL_TYPE_DECISION_SERVICE = 6;
-     */
     @TableField(exist = false)
-    private Integer modelType;
+    private String modelXml;
 }

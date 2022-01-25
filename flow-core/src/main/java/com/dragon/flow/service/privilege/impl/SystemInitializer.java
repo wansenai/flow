@@ -23,7 +23,7 @@ public class SystemInitializer {
 
     @PostConstruct
     public void initialize() {
-        int count = appPrivilegeValueService.count();
+        long count = appPrivilegeValueService.count();
         if (count == 0){
             List<AppPrivilegeValue> list = new ArrayList<>();
             AppPrivilegeValue add = new AppPrivilegeValue(0, "添加", 1);

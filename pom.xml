@@ -15,10 +15,11 @@
         <module>flow-front-rest</module>
         <module>flow-log</module>
         <module>flow-dubbo</module>
+        <module>flow-springcloud</module>
     </modules>
 	<groupId>com.dragon</groupId>
 	<artifactId>flow</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<name>flow</name>
 	<description>企业数智化</description>
 	<build>
@@ -26,6 +27,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.3.4.RELEASE</version>
 			</plugin>
 		</plugins>
 	</build>

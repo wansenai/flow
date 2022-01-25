@@ -78,6 +78,12 @@ public class TaskQueryParamsVo implements Serializable {
             example = "sfsafsfasfasfhkshdfwiey"
     )
     private String processInstanceId;
+    //模型key
+    @ApiModelProperty(
+            value = "流程模型key",
+            example = "modelKey"
+    )
+    private String modelKey;
     //流程状态 1 审批中，2结束
     @ApiModelProperty(
             value = "流程状态 1 审批中，2结束",

@@ -5,15 +5,16 @@
     <parent>
         <groupId>com.dragon</groupId>
         <artifactId>flow-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>flow-dubbo</artifactId>
-    <version>${flow.version}</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <dubbo.version>3.0.2</dubbo.version>
+        <start-class>com.dragon.flow.main.FlowDubboApplication</start-class>
     </properties>
     <dependencies>
         <dependency>
@@ -91,10 +92,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.3.4.RELEASE</version>
                 <configuration>
                     <!-- 指定该Main Class为全局的唯一入口 -->
                     <!--第五步，编写程序运行额主入口信息，该信息必须位于web模块下的main方法要放到目录外层，根据约定哦，-->
-                    <mainClass>${start-class}</mainClass>
+                    <mainClass>${start-class}</mainClass>x
                 </configuration>
                 <executions>
                     <execution>

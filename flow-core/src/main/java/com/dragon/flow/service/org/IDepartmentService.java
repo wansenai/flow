@@ -66,7 +66,8 @@ public interface IDepartmentService extends IService<Department> {
     /**
      * 获取部门树
      * @param companyId 公司id
+     * @param deptName 部门名称
      * @return
      */
-    List<OrgTreeVo> getDepartmentTree(String companyId) ;
+    List<OrgTreeVo> getDepartmentTree(String companyId,String deptName) ;
 }

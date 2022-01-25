@@ -1,6 +1,7 @@
 package com.dragon.flow.juel;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.SetUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -26,8 +27,16 @@ public class FlowJuel implements Serializable {
     public String one(String applyers) {
         String applyer = "";
         if (StringUtils.isNotBlank(applyers)) {
-            String[] userCodes = applyers.split(",");
-            applyer = userCodes[0];
+            Set<String> userSet = new HashSet<>();
+            String[] userCodes = StringUtils.split(applyers, ",");
+            for (String userCode : userCodes) {
+                if (StringUtils.isNotBlank(userCode)) {
+                    userSet.add(userCode);
+                }
+            }
+            if (CollectionUtils.isNotEmpty(userSet)) {
+                applyer = userSet.iterator().next();
+            }
         }
         return applyer;
     }
@@ -42,7 +51,7 @@ public class FlowJuel implements Serializable {
     public List<String> multi(String... applyers) {
         Set<String> applyerList = new HashSet<>();
         if (applyers != null && applyers.length > 0) {
-            for(String applyer : applyers) {
+            for (String applyer : applyers) {
                 if (StringUtils.isNotBlank(applyer)) {
                     this.getApplerCodes(applyerList, applyer);
                 }
@@ -54,9 +63,11 @@ public class FlowJuel implements Serializable {
     private void getApplerCodes(Set<String> applyerList, String applyers) {
         Set<String> codes = new HashSet<>();
         if (StringUtils.isNotBlank(applyers)) {
-            String[] userCodes = applyers.split(",");
+            String[] userCodes = StringUtils.split(applyers, ",");
             for (String userCode : userCodes) {
-                codes.add(userCode);
+                if (StringUtils.isNotBlank(userCode)) {
+                    codes.add(userCode);
+                }
             }
         }
         if (CollectionUtils.isNotEmpty(codes)) {

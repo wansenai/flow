@@ -34,6 +34,7 @@
   import {CheckExistParams} from "/@/api/model/baseModel";
   import {getJobGradeTree} from "/@/api/org/jobGrade";
   import {getPositionInfoTree} from "/@/api/org/positionInfo";
+  import {FormValidPatternEnum} from "/@/enums/constantEnum";
 
   export default defineComponent({
     name: 'PersonalModal',
@@ -134,7 +135,7 @@
                   message: '工号不能为空！',
                 },
                 {
-                  pattern: new RegExp('^[0-9a-zA-Z_]{1,}$'),
+                  pattern: new RegExp(FormValidPatternEnum.SN),
                   type: 'string',
                   message: '请输入英文或数字！',
                 },

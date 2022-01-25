@@ -30,7 +30,7 @@ public class CommentInfoServiceImpl extends ServiceImpl<ICommentInfoMapper, Comm
     @Override
     public void saveComment(CommentInfo commentInfo) {
         commentInfo.setTime(new Date());
-        this.save(commentInfo);
+        this.saveOrUpdate(commentInfo);
     }
 
     @Override

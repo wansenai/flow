@@ -7,28 +7,19 @@ import com.dragon.flow.service.flowable.IFlowableBpmnService;
 import com.dragon.flow.service.flowable.IFlowableModelService;
 import com.dragon.flow.service.flowable.IModelInfoService;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
-import com.dragon.flow.web.resource.flowable.ModelInfoResource;
 import org.flowable.bpmn.converter.BpmnXMLConverter;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.UserTask;
-import org.flowable.common.engine.api.delegate.Expression;
-import org.flowable.common.engine.api.variable.VariableContainer;
-import org.flowable.common.engine.impl.el.ExpressionManager;
-import org.flowable.engine.ManagementService;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
-import org.flowable.engine.impl.persistence.entity.ExecutionEntity;
-import org.flowable.engine.impl.persistence.entity.ExecutionEntityImpl;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.ui.common.util.XmlUtil;
 import org.flowable.ui.modeler.serviceapi.ModelService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -46,7 +37,6 @@ import java.util.List;
  * @create: 2021-03-26 17:16
  **/
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = FlowAdminApplication.class)
 public class TestModel {
 

@@ -38,7 +38,7 @@ public class CategoryServiceImpl extends ServiceImpl<ICategoryMapper, Category> 
         ids.add(id);
         LambdaQueryWrapper<Category> categoryLambdaQueryWrapper = new LambdaQueryWrapper<>();
         categoryLambdaQueryWrapper.eq(Category::getPid, id).eq(Category::getDelFlag, FlowConstant.DEL_FLAG_1);
-        int count = this.count(categoryLambdaQueryWrapper);
+        long count = this.count(categoryLambdaQueryWrapper);
         if (count > 0){
             List<Category> companyList = this.list(categoryLambdaQueryWrapper);
             List<String> finalIds = ids;
@@ -90,8 +90,8 @@ public class CategoryServiceImpl extends ServiceImpl<ICategoryMapper, Category> 
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         LambdaQueryWrapper<Category> categoryLambdaQueryWrapper = new LambdaQueryWrapper<>();
         categoryLambdaQueryWrapper.eq(Category::getDelFlag, FlowConstant.DEL_FLAG_1)
-                .in(Category::getId, ids);
-        int count = this.count(categoryLambdaQueryWrapper);
+                .in(Category::getPid, ids);
+        long count = this.count(categoryLambdaQueryWrapper);
         if (count > 0){
             returnVo = new ReturnVo<>(ReturnCode.FAIL, "该分类还存在子分类，请确认！");
         } else {

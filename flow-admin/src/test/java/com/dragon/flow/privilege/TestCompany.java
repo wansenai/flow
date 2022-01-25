@@ -6,11 +6,9 @@ import com.dragon.flow.service.org.ICompanyService;
 import com.dragon.flow.service.org.IDepartmentService;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.pager.Query;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +19,6 @@ import java.util.List;
  * @author: Bruce.Liu
  * @create: 2021-04-13 23:00
  **/
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = FlowAdminApplication.class)
 public class TestCompany {
 

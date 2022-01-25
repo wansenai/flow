@@ -57,11 +57,11 @@ public class FlowableModelServiceImpl implements IFlowableModelService {
     private ModelService modelService;
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    protected CmmnXmlConverter cmmnXmlConverter;
-    @Autowired
-    protected CmmnJsonConverter cmmnJsonConverter;
+//
+//    @Autowired
+//    protected CmmnXmlConverter cmmnXmlConverter;
+//    @Autowired
+//    protected CmmnJsonConverter cmmnJsonConverter;
     @Autowired
     protected DmnXMLConverter dmnXMLConverter;
     @Autowired
@@ -184,52 +184,52 @@ public class FlowableModelServiceImpl implements IFlowableModelService {
         );
     }
 
-    @Override
-    public ModelRepresentation importCaseModel(String modelId, MultipartFile file, User user) {
-        String fileName = file.getOriginalFilename();
-        if (fileName != null && (fileName.endsWith(".cmmn") || fileName.endsWith(".cmmn.xml"))){
-            try {
-                XMLInputFactory xif = XmlUtil.createSafeXmlInputFactory();
-                InputStreamReader xmlIn = new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8);
-                XMLStreamReader xtr = xif.createXMLStreamReader(xmlIn);
-                CmmnModel cmmnModel = cmmnXmlConverter.convertToCmmnModel(xtr);
-                if (CollectionUtils.isEmpty(cmmnModel.getCases())){
-                    throw new BadRequestException("No cases found in definition " + fileName);
-                }
-
-                if (cmmnModel.getLocationMap().size() == 0){
-                    throw new BadRequestException("No CMMN DI found in definition " + fileName);
-                }
-
-                ObjectNode modelNode = cmmnJsonConverter.convertToJson(cmmnModel);
-
-                Case caseModel = cmmnModel.getPrimaryCase();
-                String name = caseModel.getId();
-                if (org.apache.commons.lang3.StringUtils.isNotEmpty(caseModel.getName())){
-                    name = caseModel.getName();
-                }
-                String description = caseModel.getDocumentation();
-                ModelRepresentation model = new ModelRepresentation();
-                model.setKey(caseModel.getId());
-                model.setName(name);
-                model.setDescription(description);
-                model.setModelType(AbstractModel.MODEL_TYPE_CMMN);
-                if (StringUtils.isNotBlank(modelId)){
-                    model.setId(modelId);
-                }
-                Model newModel = modelService.createModel(model, modelNode.toString(), user.getUserNo());
-                return new ModelRepresentation(newModel);
-
-            } catch (BadRequestException e) {
-                throw e;
-            } catch (Exception e) {
-                log.error("Import failed for {}", fileName, e);
-                throw new BadRequestException("Import failed for " + fileName + ", error message " + e.getMessage());
-            }
-        } else {
-            throw new BadRequestException("Invalid file name, only .cmmn and .cmmn.xml files are supported not " + fileName);
-        }
-    }
+//    @Override
+//    public ModelRepresentation importCaseModel(String modelId, MultipartFile file, User user) {
+//        String fileName = file.getOriginalFilename();
+//        if (fileName != null && (fileName.endsWith(".cmmn") || fileName.endsWith(".cmmn.xml"))){
+//            try {
+//                XMLInputFactory xif = XmlUtil.createSafeXmlInputFactory();
+//                InputStreamReader xmlIn = new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8);
+//                XMLStreamReader xtr = xif.createXMLStreamReader(xmlIn);
+//                CmmnModel cmmnModel = cmmnXmlConverter.convertToCmmnModel(xtr);
+//                if (CollectionUtils.isEmpty(cmmnModel.getCases())){
+//                    throw new BadRequestException("No cases found in definition " + fileName);
+//                }
+//
+//                if (cmmnModel.getLocationMap().size() == 0){
+//                    throw new BadRequestException("No CMMN DI found in definition " + fileName);
+//                }
+//
+//                ObjectNode modelNode = cmmnJsonConverter.convertToJson(cmmnModel);
+//
+//                Case caseModel = cmmnModel.getPrimaryCase();
+//                String name = caseModel.getId();
+//                if (org.apache.commons.lang3.StringUtils.isNotEmpty(caseModel.getName())){
+//                    name = caseModel.getName();
+//                }
+//                String description = caseModel.getDocumentation();
+//                ModelRepresentation model = new ModelRepresentation();
+//                model.setKey(caseModel.getId());
+//                model.setName(name);
+//                model.setDescription(description);
+//                model.setModelType(AbstractModel.MODEL_TYPE_CMMN);
+//                if (StringUtils.isNotBlank(modelId)){
+//                    model.setId(modelId);
+//                }
+//                Model newModel = modelService.createModel(model, modelNode.toString(), user.getUserNo());
+//                return new ModelRepresentation(newModel);
+//
+//            } catch (BadRequestException e) {
+//                throw e;
+//            } catch (Exception e) {
+//                log.error("Import failed for {}", fileName, e);
+//                throw new BadRequestException("Import failed for " + fileName + ", error message " + e.getMessage());
+//            }
+//        } else {
+//            throw new BadRequestException("Invalid file name, only .cmmn and .cmmn.xml files are supported not " + fileName);
+//        }
+//    }
 
     @Override
     public ModelRepresentation duplicateModel(String modelId, ModelRepresentation modelRepresentation, User user) {

@@ -10,6 +10,7 @@
   import { dictionaryItemFormSchema } from './dictionary.data';
   import { saveOrUpdateItem, checkDictItemEntityExist } from '/@/api/base/dictionary';
   import {CheckExistParams} from "/@/api/model/baseModel";
+  import {FormValidPatternEnum} from "/@/enums/constantEnum";
 
   export default defineComponent({
     name: 'DictionaryItemModal',
@@ -68,7 +69,7 @@
                   message: '名称不能为空！',
                 },
                 {
-                  pattern: new RegExp('^[0-9a-zA-Z_]{1,}$'),
+                  pattern: new RegExp(FormValidPatternEnum.SN),
                   type: 'string',
                   message: '请输入英文或数字！',
                 },

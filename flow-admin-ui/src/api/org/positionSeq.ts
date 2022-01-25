@@ -7,7 +7,7 @@ import {forEach, listToTree} from "/@/utils/helper/treeHelper";
 enum Api {
   GetPositionSeqs = '/flow/org/positionSeq/getPositionSeqs',
   SaveOrUpdate = '/flow/org/positionSeq/saveOrUpdate',
-  Delete = '/flow/org/positionSeq/delete',
+  Delete = '/flow/org/positionSeq/deleteById',
   CheckEntityExist = '/flow/org/positionSeq/checkEntityExist',
 }
 

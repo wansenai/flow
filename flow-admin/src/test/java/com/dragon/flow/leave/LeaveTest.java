@@ -18,8 +18,7 @@ import com.dragon.tools.pager.Query;
 import org.apache.commons.collections.CollectionUtils;
 import org.flowable.engine.TaskService;
 import org.flowable.task.api.Task;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -32,7 +31,6 @@ import java.util.List;
  * @author: Bruce.Liu
  * @create: 2021-05-11 13:47
  **/
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = FlowAdminApplication.class)
 public class LeaveTest {
 
@@ -89,7 +87,7 @@ public class LeaveTest {
         Query query = new Query();
         PagerModel<TaskVo> pagerModel = flowableTaskService.getAppingTasksPagerModel(paramsvo, query);
         if (pagerModel != null){
-            List<TaskVo> data = pagerModel.getData();
+            List<TaskVo> data = pagerModel.getRows();
             if (CollectionUtils.isNotEmpty(data)){
                 data.forEach(taskVo -> {
                     EndVo endVo = new EndVo();
@@ -112,7 +110,7 @@ public class LeaveTest {
         Query query = new Query();
         PagerModel<TaskVo> pagerModel = flowableTaskService.getAppingTasksPagerModel(paramsvo, query);
         if (pagerModel != null){
-            List<TaskVo> data = pagerModel.getData();
+            List<TaskVo> data = pagerModel.getRows();
             if (CollectionUtils.isNotEmpty(data)){
                 data.forEach(taskVo -> {
                     CompleteTaskVo completeTaskVo = new CompleteTaskVo();

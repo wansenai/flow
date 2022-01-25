@@ -139,7 +139,9 @@ public abstract class BaseResource<T> {
         if (CollectionUtils.isNotEmpty(acls)){
             List<String> moduleIds = new ArrayList<>();
             acls.forEach(acl -> {
-                if (acl.getPermission(PermissionConatant.R) != 0) moduleIds.add(acl.getModuleId());
+                if (acl.getPermission(PermissionConatant.R) != 0) {
+                    moduleIds.add(acl.getModuleId());
+                }
             });
             modules = moduleService.getModulesByIds(moduleIds);
         }
@@ -157,7 +159,8 @@ public abstract class BaseResource<T> {
         QueryWrapper<T> userQueryWrapper = new QueryWrapper<>();
         String camelToUnderline = com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(checkExistVo.getField());
         userQueryWrapper.eq(camelToUnderline, checkExistVo.getFieldValue());
-        int count = service.count(userQueryWrapper);
+        userQueryWrapper.eq("del_flag",FlowConstant.DEL_FLAG_1);
+        long count = service.count(userQueryWrapper);
         if (StringUtils.isNotBlank(checkExistVo.getId())){
             T entity = service.getById(checkExistVo.getId());
             try {
