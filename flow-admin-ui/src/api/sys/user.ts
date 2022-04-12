@@ -28,12 +28,12 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
     },
     {
       errorMessageMode: mode,
-    }
+    },
   );
 }
 
 /**
- * @description: getUserInfoById
+ * @description: getUserInfo
  */
 export function getUserInfoById(params: GetUserInfoByUserIdParams) {
   return defHttp.get<GetUserInfoByUserIdModel>({

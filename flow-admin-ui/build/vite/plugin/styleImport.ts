@@ -2,13 +2,13 @@
  *  Introduces component library styles on demand.
  * https://github.com/anncwb/vite-plugin-style-import
  */
-import styleImport from 'vite-plugin-style-import';
+import { createStyleImportPlugin } from 'vite-plugin-style-import';
 
-export function configStyleImportPlugin(isBuild: boolean) {
-  if (!isBuild) {
-    return [];
-  }
-  const styleImportPlugin = styleImport({
+export function configStyleImportPlugin(_isBuild: boolean) {
+  // if (!isBuild) {
+  //   return [];
+  // }
+  const styleImportPlugin = createStyleImportPlugin({
     libs: [
       {
         libraryName: 'ant-design-vue',
@@ -19,6 +19,7 @@ export function configStyleImportPlugin(isBuild: boolean) {
             'anchor-link',
             'sub-menu',
             'menu-item',
+            'menu-divider',
             'menu-item-group',
             'breadcrumb-item',
             'breadcrumb-separator',
