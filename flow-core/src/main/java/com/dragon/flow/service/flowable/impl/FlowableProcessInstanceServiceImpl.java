@@ -423,13 +423,13 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
                     listMap.forEach((k, v) -> params.getVariables().put(k, v));
                 }
             }
-            params.getVariables().put(FlowConstant.FLOW_SUBMITTER_VAR, "");
-            params.getVariables().put(FlowConstant.FLOWABLE_SKIP_EXPRESSION_ENABLED, true);
             if (StringUtils.isBlank(params.getDeptId())){
                 params.setDeptId(personal.getDeptId());
             }
             variables = params.getVariables();
         }
+        params.getVariables().put(FlowConstant.FLOW_SUBMITTER_VAR, "");
+        params.getVariables().put(FlowConstant.FLOWABLE_SKIP_EXPRESSION_ENABLED, true);
         return variables;
     }
 }
