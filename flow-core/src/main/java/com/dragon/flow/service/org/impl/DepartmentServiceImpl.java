@@ -227,8 +227,10 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
                 orgTreeVo.setLeaderName(department.getLeaderName());
                 String companyId = department.getCompanyId();
                 OrgTreeVo company = companyMap.get(companyId);
-                orgTreeVo.setCompanyId(companyId);
-                orgTreeVo.setCompanyName(company.getName());
+                if(company != null){
+                    orgTreeVo.setCompanyId(companyId);
+                    orgTreeVo.setCompanyName(company.getName());
+                }
                 orgTreeVos.add(orgTreeVo);
             });
         }
