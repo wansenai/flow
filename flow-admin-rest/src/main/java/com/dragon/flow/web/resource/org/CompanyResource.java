@@ -1,6 +1,5 @@
 package com.dragon.flow.web.resource.org;
 
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.org.Company;
 import com.dragon.flow.service.org.ICompanyService;
 import com.dragon.flow.vo.CheckExistVo;
@@ -8,7 +7,6 @@ import com.dragon.flow.vo.org.OrgTreeVo;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +30,6 @@ public class CompanyResource extends BaseResource<Company> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(companyService, checkExistVo);
@@ -42,7 +39,6 @@ public class CompanyResource extends BaseResource<Company> {
      *
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/getCompanyTree", produces = "application/json")
     public ReturnVo<List> getCompanyTree() {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -57,7 +53,6 @@ public class CompanyResource extends BaseResource<Company> {
      * @param company 查询参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getCompanies", produces = "application/json")
     public ReturnVo<List> getCompanies(@RequestBody Company company) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -72,7 +67,6 @@ public class CompanyResource extends BaseResource<Company> {
      * @param company 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody Company company) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -86,7 +80,6 @@ public class CompanyResource extends BaseResource<Company> {
      * @param ids
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
     public ReturnVo<String> delete(@RequestBody List<String> ids) {
         ReturnVo<String> returnVo = companyService.deleteByIds(ids);
@@ -99,7 +92,6 @@ public class CompanyResource extends BaseResource<Company> {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/get", produces = "application/json")
     public ReturnVo<Company> get(String id) {
         ReturnVo<Company> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

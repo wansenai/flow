@@ -1,6 +1,5 @@
 package com.dragon.flow.web.resource.flowable;
 
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.service.flowable.IFlowProcessDiagramService;
 import com.dragon.flow.service.flowable.IFlowableBpmnService;
 import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
@@ -9,7 +8,6 @@ import com.dragon.flow.vo.flowable.task.ActivityVo;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +35,6 @@ public class BpmnResource extends BaseResource {
      * @param modelInfoVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveBpmnModel", produces = "application/json")
     public ReturnVo<String> saveBpmnModel(@RequestBody ModelInfoVo modelInfoVo) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -59,7 +56,6 @@ public class BpmnResource extends BaseResource {
      * @param modelId 模型id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.PS)
     @PostMapping(value = "/publishBpmn/{modelId}", produces = "application/json")
     public ReturnVo<String> publishBpmn(@PathVariable String modelId) {
         ReturnVo<String> returnVo = flowableBpmnService.publishBpmn(modelId);
@@ -72,7 +68,6 @@ public class BpmnResource extends BaseResource {
      * @param modelId 模型id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.PS)
     @PostMapping(value = "/stopBpmn/{modelId}", produces = "application/json")
     public ReturnVo<String> stopBpmn(@PathVariable String modelId) {
         ReturnVo<String> returnVo = flowableBpmnService.stopBpmn(modelId);
@@ -85,7 +80,6 @@ public class BpmnResource extends BaseResource {
      * @param modelId 模型id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/getBpmnByModelId/{modelId}", produces = "application/json")
     public ReturnVo<ModelInfoVo> getBpmnByModelId(@PathVariable String modelId) {
         ReturnVo<ModelInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "获取数据成功！");
@@ -100,7 +94,6 @@ public class BpmnResource extends BaseResource {
      * @param modelKey 模型key
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/getBpmnByModelKey/{modelKey}", produces = "application/json")
     public ReturnVo<ModelInfoVo> getBpmnByModelKey(@PathVariable String modelKey) {
         ReturnVo<ModelInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "获取数据成功！");
@@ -115,7 +108,6 @@ public class BpmnResource extends BaseResource {
      * @param processInstanceId 流程实例id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/getHighLightedNodeVoByProcessInstanceId/{processInstanceId}", produces = "application/json")
     public ReturnVo<HighLightedNodeVo> getHighLightedNodeVoByProcessInstanceId(@PathVariable String processInstanceId) {
         ReturnVo<HighLightedNodeVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -131,7 +123,6 @@ public class BpmnResource extends BaseResource {
      * @param activityId        节点id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/getOneActivityVoByProcessInstanceIdAndActivityId/{processInstanceId}/{activityId}", produces = "application/json")
     public ReturnVo<ActivityVo> getOneActivityVoByProcessInstanceIdAndActivityId(@PathVariable String processInstanceId, @PathVariable String activityId) {
         ReturnVo<ActivityVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -146,7 +137,6 @@ public class BpmnResource extends BaseResource {
      * @param processInstanceId 流程实例id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/getProcessActivityVosByProcessInstanceId/{processInstanceId}", produces = "application/json")
     public ReturnVo<List> getProcessActivityVosByProcessInstanceId(@PathVariable String processInstanceId) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

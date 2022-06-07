@@ -2,24 +2,21 @@ package com.dragon.flow.web.resource.org;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.dragon.flow.constant.FlowConstant;
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.org.JobGrade;
-import com.dragon.flow.model.org.JobGradeType;
 import com.dragon.flow.service.org.IJobGradeService;
-import com.dragon.flow.service.org.IJobGradeTypeService;
 import com.dragon.flow.vo.CheckExistVo;
 import com.dragon.flow.vo.org.BatchJobGradeVo;
 import com.dragon.flow.vo.org.OrgTreeVo;
+import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import com.dragon.flow.web.resource.BaseResource;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -44,7 +41,6 @@ public class JobGradeResource extends BaseResource<JobGrade> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     public ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(jobGradeService, checkExistVo);
@@ -53,7 +49,6 @@ public class JobGradeResource extends BaseResource<JobGrade> {
     /**
      * @return 获取职级树
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping("/getJobGradeTree")
     public ReturnVo<List> getJobGradeTree() {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -66,7 +61,6 @@ public class JobGradeResource extends BaseResource<JobGrade> {
      * @return 职级列表json数组字符串
      * @Description: 获取所有职级
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping("/getJobGrades")
     public ReturnVo<List> getJobGrades(@RequestBody JobGrade jobGrade) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -94,7 +88,6 @@ public class JobGradeResource extends BaseResource<JobGrade> {
      * @param jobGrade 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody JobGrade jobGrade) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.FAIL, "保存失败！");
@@ -110,7 +103,6 @@ public class JobGradeResource extends BaseResource<JobGrade> {
      * @param batchJobGradeVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/batchSaveJobGradeTypeAndJobGrade", produces = "application/json")
     public ReturnVo<String> batchSaveJobGradeTypeAndJobGrade(@RequestBody BatchJobGradeVo batchJobGradeVo) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.FAIL, "保存失败！");
@@ -126,7 +118,6 @@ public class JobGradeResource extends BaseResource<JobGrade> {
      * @param ids
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
     public ReturnVo<String> delete(@RequestBody List<String> ids) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -142,7 +133,6 @@ public class JobGradeResource extends BaseResource<JobGrade> {
      * @param id id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/get", produces = "application/json")
     public ReturnVo<JobGrade> get(@RequestBody String id) {
         ReturnVo<JobGrade> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

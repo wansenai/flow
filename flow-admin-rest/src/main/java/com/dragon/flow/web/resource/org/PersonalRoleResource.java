@@ -2,7 +2,6 @@ package com.dragon.flow.web.resource.org;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.org.Personal;
 import com.dragon.flow.model.org.PersonalRole;
 import com.dragon.flow.model.org.Role;
@@ -10,7 +9,6 @@ import com.dragon.flow.service.org.IPersonalRoleService;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +36,6 @@ public class PersonalRoleResource extends BaseResource<PersonalRole> {
      * @param personalId 人员id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.PW)
     @PostMapping(value = "/allocationRoles/{personalId}", produces = "application/json")
     public ReturnVo<String> allocationRoles(@PathVariable String personalId, @RequestBody List<Role> roles) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -53,7 +50,6 @@ public class PersonalRoleResource extends BaseResource<PersonalRole> {
      * @param personals 人员列表
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.PW)
     @PostMapping(value = "/allocationPersonals/{roleId}", produces = "application/json")
     public ReturnVo<String> allocationPersonals(@PathVariable String roleId, @RequestBody List<Personal> personals) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -66,7 +62,6 @@ public class PersonalRoleResource extends BaseResource<PersonalRole> {
      * @param personalRole personalRole
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/deletePersonalRole", produces = "application/json")
     public ReturnVo<String> deletePersonalRole(@RequestBody PersonalRole personalRole) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

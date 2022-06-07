@@ -1,14 +1,12 @@
 package com.dragon.flow.web.resource.base;
 
 
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.base.Area;
 import com.dragon.flow.service.base.IAreaService;
 import com.dragon.flow.vo.CheckExistVo;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +33,6 @@ public class AreaResource extends BaseResource {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(areaService, checkExistVo);
@@ -46,7 +43,6 @@ public class AreaResource extends BaseResource {
      * @param pcode 父亲code
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/getAreasByPcode", produces = "application/json")
     public ReturnVo<List> getAreasByPcode(@RequestParam String pcode) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -61,7 +57,6 @@ public class AreaResource extends BaseResource {
      * @param area 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getAreas", produces = "application/json")
     public ReturnVo<List> getAreas(@RequestBody Area area) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -76,7 +71,6 @@ public class AreaResource extends BaseResource {
      * @param area 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody Area area) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -90,7 +84,6 @@ public class AreaResource extends BaseResource {
      * @param code
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete/{code}", produces = "application/json")
     public ReturnVo<String> delete(@PathVariable String code) {
         ReturnVo<String> returnVo = areaService.deleteByCodes(code);
@@ -103,7 +96,6 @@ public class AreaResource extends BaseResource {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/get", produces = "application/json")
     public ReturnVo<Area> get(@RequestBody String id) {
         ReturnVo<Area> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

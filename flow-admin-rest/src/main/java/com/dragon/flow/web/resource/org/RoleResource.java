@@ -1,7 +1,6 @@
 package com.dragon.flow.web.resource.org;
 
 
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.org.PersonalRole;
 import com.dragon.flow.model.org.Role;
 import com.dragon.flow.service.org.IPersonalRoleService;
@@ -14,7 +13,6 @@ import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.vo.ReturnVo;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +42,6 @@ public class RoleResource extends BaseResource<Role> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(roleService, checkExistVo);
@@ -59,7 +56,6 @@ public class RoleResource extends BaseResource<Role> {
      * @param personalRole 人员
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getPersonalsByRole/{roleId}", produces = "application/json")
     public ReturnVo<List<RolePersonalVo>> getPersonalsByRole(@PathVariable String roleId, @RequestBody PersonalRole personalRole) {
         ReturnVo<List<RolePersonalVo>> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -78,7 +74,6 @@ public class RoleResource extends BaseResource<Role> {
      * @param params 查询参数 、 分页参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getPagerModel", produces = "application/json")
     public ReturnVo<PagerModel> getPagerModel(@RequestBody ParamVo<Role> params) {
         ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -93,7 +88,6 @@ public class RoleResource extends BaseResource<Role> {
      * @param params 查询参数 、 分页参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getPagerModelByPersonalId", produces = "application/json")
     public ReturnVo<PagerModel> getPagerModel(@RequestParam String personalId, @RequestBody ParamVo<Role> params) {
         ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -108,7 +102,6 @@ public class RoleResource extends BaseResource<Role> {
      * @param role 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody Role role) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -122,7 +115,6 @@ public class RoleResource extends BaseResource<Role> {
      * @param ids
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
     public ReturnVo<String> delete(@RequestBody List<String> ids) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -136,7 +128,6 @@ public class RoleResource extends BaseResource<Role> {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/get", produces = "application/json")
     public ReturnVo<Role> get(String id) {
         ReturnVo<Role> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

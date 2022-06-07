@@ -1,6 +1,5 @@
 package com.dragon.flow.web.resource.privilege;
 
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.privilege.ACL;
 import com.dragon.flow.model.privilege.Module;
 import com.dragon.flow.service.privilege.IAclService;
@@ -8,7 +7,6 @@ import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +35,6 @@ public class AclResource extends BaseResource {
      * @throws Exception
      */
     @GetMapping("/getModuleAclsByGroupId/{groupId}")
-    @RequiresPermissions(MODULE_SN + PermissionConatant.PW)
     public ReturnVo getModuleAclsByGroupId(@PathVariable String groupId)  {
         ReturnVo returnVo = new ReturnVo(ReturnCode.SUCCESS, "成功");
         List<Module> datas = null;
@@ -58,7 +55,6 @@ public class AclResource extends BaseResource {
      * @param groupId   组id
      */
     @PostMapping("/setAclModuleList/{moduleId}/{groupId}")
-    @RequiresPermissions(MODULE_SN + PermissionConatant.PW)
     public ReturnVo setAclModuleList(@RequestBody List<Integer> positions, @PathVariable String moduleId, @PathVariable String groupId) {
         ReturnVo vo = new ReturnVo(ReturnCode.SUCCESS, "成功");
         try {
@@ -80,7 +76,6 @@ public class AclResource extends BaseResource {
      * @throws Exception
      */
     @PostMapping("/setAcl/{position}/{checked}")
-    @RequiresPermissions(MODULE_SN + PermissionConatant.PW)
     public ReturnVo setAcl(@RequestBody ACL params, @PathVariable Integer position, @PathVariable int checked) {
         ReturnVo vo = new ReturnVo(ReturnCode.SUCCESS, "成功");
         try {
@@ -103,7 +98,6 @@ public class AclResource extends BaseResource {
      * @throws Exception
      */
     @PostMapping("/setAllAcl/{checked}")
-    @RequiresPermissions(MODULE_SN + PermissionConatant.PW)
     public ReturnVo setAllAcl(@RequestBody ACL params, @PathVariable int checked) {
         ReturnVo vo = new ReturnVo(ReturnCode.SUCCESS, "成功");
         try {
@@ -124,7 +118,6 @@ public class AclResource extends BaseResource {
      * @throws Exception
      */
     @PostMapping("/setAclByModule/{checked}")
-    @RequiresPermissions(MODULE_SN + PermissionConatant.PW)
     public ReturnVo setAclByModule(@RequestBody ACL params, @PathVariable int checked) {
         ReturnVo vo = new ReturnVo(ReturnCode.SUCCESS, "成功");
         try {

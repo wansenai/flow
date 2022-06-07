@@ -1,5 +1,7 @@
 package com.dragon.flow.web.resource.privilege;
 
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.dragon.flow.constant.FlowConstant;
 import com.dragon.flow.model.privilege.ACL;
@@ -7,20 +9,20 @@ import com.dragon.flow.model.privilege.Module;
 import com.dragon.flow.model.privilege.User;
 import com.dragon.flow.service.privilege.IAclService;
 import com.dragon.flow.service.privilege.IModuleService;
+import com.dragon.flow.service.privilege.IUserService;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @program: flow
@@ -37,6 +39,8 @@ public class MainResource extends BaseResource {
     private IModuleService moduleService;
     @Autowired
     private IAclService aclService;
+    @Autowired
+    private IUserService userService;
 
     /**
      * 获取登录用户
@@ -46,14 +50,12 @@ public class MainResource extends BaseResource {
     @GetMapping(value = "/getLoginUser", produces = "application/json")
     public ReturnVo<User> getLoginInfoVo() {
         ReturnVo<User> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        Subject subject = SecurityUtils.getSubject();
-        if (subject != null){
-            Object userObj = subject.getPrincipal();
-            if (userObj != null){
-                returnVo.setData((User) userObj);
-            } else {
-                returnVo = new ReturnVo<>(ReturnCode.FAIL, "登录账号过期!");
-            }
+        Object loginId = StpUtil.getLoginId();
+        if (loginId != null){
+            User user = userService.getById(loginId.toString());
+            returnVo.setData(user);
+        }else {
+            returnVo = new ReturnVo<>(ReturnCode.FAIL, "登录账号过期!");
         }
         return returnVo;
     }
@@ -66,11 +68,11 @@ public class MainResource extends BaseResource {
     @GetMapping(value = "/getLoginModules", produces = "application/json")
     public ReturnVo<List<Module>> getLoginModules() {
         ReturnVo<List<Module>> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        Subject subject = SecurityUtils.getSubject();
-        if (subject != null){
-            Session session = subject.getSession();
+        Object loginId = StpUtil.getLoginId();
+        if (loginId != null){
+            SaSession session = StpUtil.getSessionByLoginId(loginId);
             if (session != null){
-                Object moduleObjs = session.getAttribute(FlowConstant.LOGIN_MODULES);
+                Object moduleObjs = session.get(FlowConstant.LOGIN_MODULES);
                 if (moduleObjs == null){
                     User loginUser = this.getLoginUser();
                     List<Module> modules = null;
@@ -80,12 +82,12 @@ public class MainResource extends BaseResource {
                                 .orderByAsc(Module::getOrderNo);
                         modules = moduleService.list(moduleLambdaQueryWrapper);
                     } else {
-                        Set<ACL> acls = (Set<ACL>) session.getAttribute(FlowConstant.LOGIN_USER_ACLS);
+                        Set<ACL> acls = (Set<ACL>) session.get(FlowConstant.LOGIN_USER_ACLS);
                         if (CollectionUtils.isNotEmpty(acls)){
                             modules = this.getModulesByAcls(acls);
                         }
                     }
-                    session.setAttribute(FlowConstant.LOGIN_MODULES, modules);
+                    session.set(FlowConstant.LOGIN_MODULES, modules);
                     returnVo.setData(modules);
                 } else {
                     returnVo.setData((List) moduleObjs);

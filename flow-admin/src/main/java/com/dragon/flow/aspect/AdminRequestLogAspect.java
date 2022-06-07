@@ -1,10 +1,9 @@
 package com.dragon.flow.aspect;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.dragon.flow.enm.SourceEnum;
 import com.dragon.flow.model.privilege.User;
 import com.dragon.flow.vo.log.LogVo;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +21,9 @@ public class AdminRequestLogAspect extends RequestLogAspect {
     @Override
     LogVo getSubject(HttpServletRequest request) {
         LogVo logVo = null;
-        Subject subject = SecurityUtils.getSubject();
-        if (subject != null){
-            Object userObj = subject.getPrincipal();
+        Object loginId = StpUtil.getLoginId();
+        if (loginId != null){
+            Object userObj = StpUtil.getSessionByLoginId(loginId);
             if (userObj != null){
                 logVo = new LogVo();
                 User user = (User) userObj;
