@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static com.dragon.flow.constant.FlowConstant.LOGIN_USER;
+
 /**
  * @program: flow
  * @description: 基本的资源
@@ -49,7 +51,7 @@ public abstract class BaseResource<T> {
     protected User getLoginUser() {
         Object loginId = StpUtil.getLoginId();
         SaSession session = StpUtil.getSessionByLoginId(loginId);
-        Object loginUser = session.get("loginUser");
+        Object loginUser = session.get(LOGIN_USER);
         if (loginUser != null){
             return (User) loginUser;
         }

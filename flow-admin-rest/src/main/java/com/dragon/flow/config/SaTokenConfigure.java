@@ -31,6 +31,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
         registry.addInterceptor(new SaAnnotationInterceptor())
                 .excludePathPatterns("/doLogin")
                 .excludePathPatterns("/**/login")
+                .excludePathPatterns("/idm/**")
                 .excludePathPatterns("/swagger-resources/**")
                 .excludePathPatterns("/swagger-ui.html/**")
                 .excludePathPatterns("/v2/api-docs")
@@ -43,6 +44,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                 .excludePathPatterns("/v2/api-docs")
                 .excludePathPatterns("/swagger-ui.html/**")
                 .excludePathPatterns("/webjars/**")
+                .excludePathPatterns("/idm/**")
                 .excludePathPatterns("/doLogin")
                 .excludePathPatterns("/**/login")
                 .addPathPatterns("/admin/**");

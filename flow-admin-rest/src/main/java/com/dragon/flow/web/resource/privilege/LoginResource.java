@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.dragon.flow.constant.FlowConstant.LOGIN_USER;
+
 /**
  * @program: flow
  * @description: 登录
@@ -62,7 +64,7 @@ public class LoginResource extends BaseResource {
                 User user = loginRetuenVo.getData();
                 StpUtil.login(user.getId());
                 SaSession session = StpUtil.getSessionByLoginId(user.getId());
-                session.set("loginUser", user);
+                session.set(LOGIN_USER, user);
             } else {
                 returnVo = new ReturnVo<>(ReturnCode.FAIL, loginRetuenVo.getMsg());
             }
