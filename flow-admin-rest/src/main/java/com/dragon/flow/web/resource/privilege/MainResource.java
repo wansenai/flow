@@ -51,10 +51,10 @@ public class MainResource extends BaseResource {
     public ReturnVo<User> getLoginInfoVo() {
         ReturnVo<User> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         Object loginId = StpUtil.getLoginId();
-        if (loginId != null){
+        if (loginId != null) {
             User user = userService.getById(loginId.toString());
             returnVo.setData(user);
-        }else {
+        } else {
             returnVo = new ReturnVo<>(ReturnCode.FAIL, "登录账号过期!");
         }
         return returnVo;
@@ -69,26 +69,28 @@ public class MainResource extends BaseResource {
     public ReturnVo<List<Module>> getLoginModules() {
         ReturnVo<List<Module>> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         Object loginId = StpUtil.getLoginId();
-        if (loginId != null){
+        if (loginId != null) {
             SaSession session = StpUtil.getSessionByLoginId(loginId);
-            if (session != null){
+            if (session != null) {
                 Object moduleObjs = session.get(FlowConstant.LOGIN_MODULES);
-                if (moduleObjs == null){
+                if (moduleObjs == null) {
                     User loginUser = this.getLoginUser();
                     List<Module> modules = null;
-                    if ("admin".equals(loginUser.getUsername())){
+                    if ("admin".equals(loginUser.getUsername())) {
                         LambdaQueryWrapper<Module> moduleLambdaQueryWrapper = new LambdaQueryWrapper<>();
                         moduleLambdaQueryWrapper.eq(Module::getStatus, 1).eq(Module::getDelFlag, 1)
                                 .orderByAsc(Module::getOrderNo);
                         modules = moduleService.list(moduleLambdaQueryWrapper);
                     } else {
                         Set<ACL> acls = (Set<ACL>) session.get(FlowConstant.LOGIN_USER_ACLS);
-                        if (CollectionUtils.isNotEmpty(acls)){
+                        if (CollectionUtils.isNotEmpty(acls)) {
                             modules = this.getModulesByAcls(acls);
                         }
                     }
-                    session.set(FlowConstant.LOGIN_MODULES, modules);
-                    returnVo.setData(modules);
+                    if (CollectionUtils.isNotEmpty(modules)) {
+                        session.set(FlowConstant.LOGIN_MODULES, modules);
+                        returnVo.setData(modules);
+                    }
                 } else {
                     returnVo.setData((List) moduleObjs);
                 }

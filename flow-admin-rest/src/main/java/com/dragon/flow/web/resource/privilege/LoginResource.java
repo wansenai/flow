@@ -1,8 +1,12 @@
 package com.dragon.flow.web.resource.privilege;
 
 import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import com.dragon.flow.constant.FlowConstant;
+import com.dragon.flow.model.privilege.ACL;
 import com.dragon.flow.model.privilege.User;
+import com.dragon.flow.service.privilege.IAclService;
 import com.dragon.flow.service.privilege.IUserService;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
@@ -13,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.Set;
 
 import static com.dragon.flow.constant.FlowConstant.LOGIN_USER;
 
@@ -29,6 +35,8 @@ public class LoginResource extends BaseResource {
 
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IAclService aclService;
 
     /**
      * 用户登出
@@ -65,6 +73,11 @@ public class LoginResource extends BaseResource {
                 StpUtil.login(user.getId());
                 SaSession session = StpUtil.getSessionByLoginId(user.getId());
                 session.set(LOGIN_USER, user);
+                Set<ACL> acls = aclService.getAclsByUserId(user.getId());
+                session.set(FlowConstant.LOGIN_USER_ACLS, acls);
+                SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+                String tokenValue = tokenInfo.getTokenValue();
+                returnVo.setData(tokenValue);
             } else {
                 returnVo = new ReturnVo<>(ReturnCode.FAIL, loginRetuenVo.getMsg());
             }
