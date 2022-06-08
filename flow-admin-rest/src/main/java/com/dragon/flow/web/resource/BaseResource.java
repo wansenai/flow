@@ -49,11 +49,13 @@ public abstract class BaseResource<T> {
      * @return
      */
     protected User getLoginUser() {
-        Object loginId = StpUtil.getLoginId();
-        SaSession session = StpUtil.getSessionByLoginId(loginId);
-        Object loginUser = session.get(LOGIN_USER);
-        if (loginUser != null){
-            return (User) loginUser;
+        if (StpUtil.isLogin()) {
+            Object loginId = StpUtil.getLoginId();
+            SaSession session = StpUtil.getSessionByLoginId(loginId);
+            Object userObj = session.get(LOGIN_USER);
+            if (userObj != null) {
+                return (User) userObj;
+            }
         }
         return null;
     }
@@ -61,8 +63,8 @@ public abstract class BaseResource<T> {
     /**
      * 设置公司信息
      *
-     * @param user    当前登录用户
-//     * @param subject 当前登录对象
+     * @param user 当前登录用户
+     *             //     * @param subject 当前登录对象
      * @throws Exception
      */
     public void setSessionInfo(User user, HttpServletRequest request) {
@@ -93,7 +95,7 @@ public abstract class BaseResource<T> {
 //        }
     }
 
-//    @ExceptionHandler({UnauthorizedException.class, AuthorizationException.class})
+    //    @ExceptionHandler({UnauthorizedException.class, AuthorizationException.class})
     public void authorizationException(HttpServletResponse response) {
         ReturnVo returnVo = new ReturnVo(ReturnCode.FAIL, "您无此功能权限，请联系超级管理员！");
         writeJson(returnVo, response);
@@ -112,7 +114,7 @@ public abstract class BaseResource<T> {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (out != null){
+            if (out != null) {
                 out.close();
             }
         }
@@ -126,7 +128,7 @@ public abstract class BaseResource<T> {
      */
     protected List<Module> getModulesByAcls(Set<ACL> acls) {
         List<Module> modules = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(acls)){
+        if (CollectionUtils.isNotEmpty(acls)) {
             List<String> moduleIds = new ArrayList<>();
             acls.forEach(acl -> {
                 if (acl.getPermission(PermissionConatant.R) != 0) {
@@ -149,21 +151,21 @@ public abstract class BaseResource<T> {
         QueryWrapper<T> userQueryWrapper = new QueryWrapper<>();
         String camelToUnderline = com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(checkExistVo.getField());
         userQueryWrapper.eq(camelToUnderline, checkExistVo.getFieldValue());
-        userQueryWrapper.eq("del_flag",FlowConstant.DEL_FLAG_1);
+        userQueryWrapper.eq("del_flag", FlowConstant.DEL_FLAG_1);
         long count = service.count(userQueryWrapper);
-        if (StringUtils.isNotBlank(checkExistVo.getId())){
+        if (StringUtils.isNotBlank(checkExistVo.getId())) {
             T entity = service.getById(checkExistVo.getId());
             try {
                 Object fieldValue = FieldUtils.readField(entity, checkExistVo.getField(), true);
                 String oldValue = (String) fieldValue;
-                if (!oldValue.equals(checkExistVo.getFieldValue()) && count > 0){
+                if (!oldValue.equals(checkExistVo.getFieldValue()) && count > 0) {
                     returnVo = new ReturnVo<>(ReturnCode.SUCCESS, checkExistVo.getFieldName() + EXIST_MESSAGE, false);
                 }
             } catch (IllegalAccessException e) {
                 logger.error("没有相关的字段！字段为：" + checkExistVo.getField());
             }
         } else {
-            if (count > 0){
+            if (count > 0) {
                 returnVo = new ReturnVo<>(ReturnCode.SUCCESS, checkExistVo.getFieldName() + EXIST_MESSAGE, false);
             }
         }

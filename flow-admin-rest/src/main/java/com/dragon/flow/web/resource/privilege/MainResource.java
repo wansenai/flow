@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.dragon.flow.constant.FlowConstant.LOGIN_USER;
+
 /**
  * @program: flow
  * @description: 登录主界面
@@ -39,8 +41,6 @@ public class MainResource extends BaseResource {
     private IModuleService moduleService;
     @Autowired
     private IAclService aclService;
-    @Autowired
-    private IUserService userService;
 
     /**
      * 获取登录用户
@@ -50,10 +50,8 @@ public class MainResource extends BaseResource {
     @GetMapping(value = "/getLoginUser", produces = "application/json")
     public ReturnVo<User> getLoginInfoVo() {
         ReturnVo<User> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        Object loginId = StpUtil.getLoginId();
-        if (loginId != null) {
-            User user = userService.getById(loginId.toString());
-            returnVo.setData(user);
+        if (StpUtil.isLogin()) {
+            returnVo.setData(this.getLoginUser());
         } else {
             returnVo = new ReturnVo<>(ReturnCode.FAIL, "登录账号过期!");
         }
