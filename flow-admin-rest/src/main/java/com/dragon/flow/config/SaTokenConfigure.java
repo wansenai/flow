@@ -36,10 +36,10 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                 .excludePathPatterns("/swagger-ui.html/**")
                 .excludePathPatterns("/v2/api-docs")
                 .excludePathPatterns("/webjars/**")
-                .addPathPatterns("/admin/**");
+                .addPathPatterns("/flow/**");
         // 注册路由拦截器
         registry.addInterceptor(new SaRouteInterceptor())
-                .addPathPatterns("/**")
+                .excludePathPatterns("/**")
                 .excludePathPatterns("/swagger-resources/**")
                 .excludePathPatterns("/v2/api-docs")
                 .excludePathPatterns("/swagger-ui.html/**")
@@ -47,7 +47,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                 .excludePathPatterns("/idm/**")
                 .excludePathPatterns("/doLogin")
                 .excludePathPatterns("/**/login")
-                .addPathPatterns("/admin/**");
+                .addPathPatterns("/flow/**");
     }
 
     /**
