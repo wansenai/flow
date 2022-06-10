@@ -4,8 +4,10 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.dragon.flow.constant.FlowConstant;
+import com.dragon.flow.model.org.Role;
 import com.dragon.flow.model.privilege.ACL;
 import com.dragon.flow.model.privilege.User;
+import com.dragon.flow.service.org.IRoleService;
 import com.dragon.flow.service.privilege.IAclService;
 import com.dragon.flow.service.privilege.IUserService;
 import com.dragon.flow.web.resource.BaseResource;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.List;
 import java.util.Set;
 
 import static com.dragon.flow.constant.FlowConstant.LOGIN_USER;
@@ -37,6 +40,8 @@ public class LoginResource extends BaseResource {
     private IUserService userService;
     @Autowired
     private IAclService aclService;
+    @Autowired
+    private IRoleService roleService;
 
     /**
      * 用户登出
@@ -73,6 +78,8 @@ public class LoginResource extends BaseResource {
                 StpUtil.login(user.getId());
                 SaSession session = StpUtil.getSessionByLoginId(user.getId());
                 session.set(LOGIN_USER, user);
+                List<Role> roles = roleService.getRolesByPersonalId(user.getId());
+                session.set(FlowConstant.LOGIN_ROLES, roles);
                 Set<ACL> acls = aclService.getAclsByUserId(user.getId());
                 session.set(FlowConstant.LOGIN_USER_ACLS, acls);
                 SaTokenInfo tokenInfo = StpUtil.getTokenInfo();

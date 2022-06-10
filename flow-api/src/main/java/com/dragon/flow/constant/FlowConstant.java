@@ -53,6 +53,7 @@ public class FlowConstant {
 
     //登录用户的session中的key值
     public static final String LOGIN_USER = "login_user";
+    public static final String LOGIN_ROLES = "login_roles";
     //登录用户的acl列表
     public static final String LOGIN_USER_ACLS = "login_user_acls";
     //登录用户的模块列表
