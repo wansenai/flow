@@ -53,10 +53,10 @@ rem call mvn clean deploy flow-core
 call mvn clean deploy %settings_maven_loacl%
 echo.
 echo.
-cd /d  %bast_path%\flow-dubbo
-rem call mvn clean deploy flow-dubbo
-call mvn clean deploy %settings_maven_loacl%
-echo.
+:: cd /d  %bast_path%\flow-dubbo
+:: rem call mvn clean deploy flow-dubbo
+:: call mvn clean deploy %settings_maven_loacl%
+:: echo.
 echo.
 cd /d  %bast_path%\flow-api-rest
 rem call mvn clean deploy flow-api-rest
