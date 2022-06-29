@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Title:json工具
@@ -44,7 +45,6 @@ public class FastJsonUtils {
      * @param t
      * @return
      * @Description:
-     * @author wentaoxiang 2016年9月8日 下午6:57:43
      */
     public static <T> String objectToJson(T t) {
         Assert.notNull(t, "对象不能为空!");
@@ -78,16 +78,19 @@ public class FastJsonUtils {
 
     /**
      * json转成对象
-     *
-     * @param json
-     * @param t
-     * @return
-     * @Description:
-     * @author wentaoxiang 2016年9月8日 下午6:58:00
      */
     public static <T> T jsonToObject(String json, Class<T> t) {
         Assert.notNull(json, "json字符串不能为空!");
         return JSON.parseObject(json, t);
+    }
+
+    /**
+     * json转成对象
+     */
+    public static <T> T mapToObject(Map map, Class<T> t) {
+        Assert.notNull(map, "map不能为空!");
+        String jsonString = JSON.toJSONString(map);
+        return JSON.parseObject(jsonString, t);
     }
 
 }
