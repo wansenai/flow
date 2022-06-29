@@ -54,6 +54,7 @@ public class CategoryServiceImpl extends ServiceImpl<ICategoryMapper, Category> 
         if (StringUtils.isNotBlank(category.getKeyword())){
             categoryLambdaQueryWrapper.like(Category::getName, category.getKeyword()).or().like(Category::getCode, category.getKeyword());
         }
+        // 流程分类增加是否显示的条件。
         if (category.getFrontShow() != null){
             categoryLambdaQueryWrapper.eq(Category::getFrontShow, category.getFrontShow());
         }
