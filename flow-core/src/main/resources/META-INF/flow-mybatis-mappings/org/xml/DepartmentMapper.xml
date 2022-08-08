@@ -13,6 +13,8 @@
         <result column="pid" property="pid"/>
         <result column="leader_code" property="leaderCode"/>
         <result column="leader_name" property="leaderName"/>
+        <result column="superior_code" property="superiorCode"/>
+        <result column="superior_name" property="superiorName"/>
         <result column="order_no" property="orderNo"/>
         <result column="create_time" property="createTime"/>
         <result column="creator" property="creator"/>
@@ -23,11 +25,13 @@
     <select id="getDepartments" resultMap="BaseResultMap" parameterType="com.dragon.flow.model.org.Department">
         SELECT
             t1.*, t2.cname AS company_name,
-            t3.`name` as leader_name
+            t3.`name` as leader_name,
+            t4.`name` as superior_name
         FROM
             tbl_org_department t1
         INNER JOIN tbl_org_company t2 ON t1.company_id = t2.id
         LEFT JOIN tbl_org_personal t3 ON t1.leader_code = t3.`code`
+        LEFT JOIN tbl_org_personal t4 ON t1.superior_code = t4.`code`
         where t1.del_flag = 1
         <if test="depart.keyword!=null and depart.keyword!=''">
             and  (t1.name like concat('%', #{depart.keyword}, '%') or t1.code like concat('%', #{depart.keyword}, '%'))
@@ -40,11 +44,13 @@
     <select id="getPagerModel" resultMap="BaseResultMap" parameterType="com.dragon.flow.model.org.Department">
         SELECT
             t1.*, t2.cname AS company_name,
-            t3.`name` as leader_name
+            t3.`name` as leader_name,
+            t4.`name` as superior_name
         FROM
             tbl_org_department t1
         INNER JOIN tbl_org_company t2 ON t1.company_id = t2.id
         LEFT JOIN tbl_org_personal t3 ON t1.leader_code = t3.`code`
+        LEFT JOIN tbl_org_personal t4 ON t1.superior_code = t4.`code`
         where t1.del_flag = 1
         <if test="depart.keyword!=null and depart.keyword!=''">
           and  (t1.name like concat('%', #{depart.keyword}, '%') or t1.code like concat('%', #{depart.keyword}, '%'))
