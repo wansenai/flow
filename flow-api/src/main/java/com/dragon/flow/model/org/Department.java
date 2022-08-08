@@ -40,15 +40,24 @@ public class Department extends BaseModel implements Serializable{
 	private Integer orderNo;
 	//部门领导
 	private String leaderCode;
+	//部门领导
+	@TableField(exist = false)
+	private String leaderName;
 	//父亲code
 	@TableField(exist = false)
 	private String pcode;
 	//公司的code
 	@TableField(exist = false)
 	private String companyCode;
-	//部门领导
+	/**
+	 * 分管领导工号
+	 */
+	private String superiorCode;
+	/**
+	 * 分管领导姓名
+	 */
 	@TableField(exist = false)
-	private String leaderName;
+	private String superiorName;
 	/**
 	 * 查询条件 - 【临时属性】
 	 */
