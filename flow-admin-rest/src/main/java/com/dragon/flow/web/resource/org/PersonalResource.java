@@ -117,7 +117,7 @@ public class PersonalResource extends BaseResource<Personal> {
      * @return
      */
     @GetMapping(value = "/getByCodes", produces = "application/json")
-    public ReturnVo<List<Personal>> getByCodes(List<String> codes) {
+    public ReturnVo<List<Personal>> getByCodes(@RequestBody List<String> codes) {
         ReturnVo<List<Personal>> returnVo = new ReturnVo<>(ReturnCode.FAIL, "查询异常！");
         List<Personal> personals = new ArrayList<>();
         try {
