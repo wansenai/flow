@@ -42,4 +42,8 @@ public class CompleteTaskVo extends BaseProcessVo implements Serializable {
      * 下一个或多个审批人
      */
     private List<NextSequenceUserVo> nextUsers;
+    /**
+     * 自动跳过枚举
+     */
+    private TaskSkipSetEnum taskSkipSetEnum;
 }
