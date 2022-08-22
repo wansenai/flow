@@ -13,6 +13,7 @@ import com.dragon.tools.vo.ReturnVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -106,6 +107,28 @@ public class PersonalResource extends BaseResource<Personal> {
         ReturnVo<Personal> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         Personal personal = personalService.getById(id);
         returnVo.setData(personal);
+        return returnVo;
+    }
+
+    /**
+     * 通过工号查询-多个
+     *
+     * @param codes
+     * @return
+     */
+    @GetMapping(value = "/getByCodes", produces = "application/json")
+    public ReturnVo<List<Personal>> getByCodes(@RequestBody List<String> codes) {
+        ReturnVo<List<Personal>> returnVo = new ReturnVo<>(ReturnCode.FAIL, "查询异常！");
+        List<Personal> personals = new ArrayList<>();
+        try {
+            personals = personalService.getPersonalsByCodes(codes);
+            returnVo.setCode(ReturnCode.SUCCESS);
+            returnVo.setMsg("查询数据成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("通过工号查询数据异常！" + e);
+        }
+        returnVo.setData(personals);
         return returnVo;
     }
 
