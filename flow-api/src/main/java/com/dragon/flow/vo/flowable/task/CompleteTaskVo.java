@@ -1,5 +1,6 @@
 package com.dragon.flow.vo.flowable.task;
 
+import com.dragon.flow.enm.form.TaskSkipSetEnum;
 import com.dragon.flow.vo.extension.usertask.NextSequenceUserVo;
 import com.dragon.flow.vo.flowable.BaseProcessVo;
 import io.swagger.annotations.ApiModel;
