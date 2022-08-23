@@ -5995,6 +5995,7 @@ CREATE TABLE `tbl_org_department` (
   `note` varchar(256) COLLATE utf8_bin DEFAULT NULL COMMENT '备注',
   `pid` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '父id',
   `leader_code` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '部门领导工号',
+  `superior_code` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '分管领导工号',
   `order_no` int(11) DEFAULT NULL COMMENT '排序号',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   `creator` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
