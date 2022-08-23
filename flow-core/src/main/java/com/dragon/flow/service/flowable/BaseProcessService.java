@@ -7,6 +7,7 @@ import com.dragon.flow.exception.FlowException;
 import com.dragon.flow.model.flowable.CommentInfo;
 import com.dragon.flow.model.flowable.ExtendHisprocinst;
 import com.dragon.flow.vo.flowable.BaseProcessVo;
+import com.dragon.flow.vo.flowable.task.CompleteTaskVo;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.task.api.Task;
 import org.slf4j.Logger;
@@ -56,8 +57,17 @@ public abstract class BaseProcessService {
             if (StringUtils.isBlank(baseProcessVo.getProcessInstanceId())) {
                 throw new FlowException("请传入流程实例id");
             }
-            ExtendHisprocinst extendHisprocinst = new ExtendHisprocinst(baseProcessVo.getProcessInstanceId(), baseProcessVo.getProcessStatusEnum().toString());
-            extendHisprocinstService.updateAllStatusByProcessInstanceId(extendHisprocinst);
+            Boolean skipFlag = false;
+            if (baseProcessVo instanceof CompleteTaskVo) {
+                CompleteTaskVo completeTaskVo = (CompleteTaskVo) baseProcessVo;
+                if (completeTaskVo.getTaskSkipSetEnum() != null) {
+                    skipFlag = true;
+                }
+            }
+            if (!skipFlag) {
+                ExtendHisprocinst extendHisprocinst = new ExtendHisprocinst(baseProcessVo.getProcessInstanceId(), baseProcessVo.getProcessStatusEnum().toString());
+                extendHisprocinstService.updateAllStatusByProcessInstanceId(extendHisprocinst);
+            }
         }
     }
 
