@@ -57,17 +57,8 @@ public abstract class BaseProcessService {
             if (StringUtils.isBlank(baseProcessVo.getProcessInstanceId())) {
                 throw new FlowException("请传入流程实例id");
             }
-            Boolean skipFlag = false;
-            if (baseProcessVo instanceof CompleteTaskVo) {
-                CompleteTaskVo completeTaskVo = (CompleteTaskVo) baseProcessVo;
-                if (completeTaskVo.getTaskSkipSetEnum() != null) {
-                    skipFlag = true;
-                }
-            }
-            if (!skipFlag) {
-                ExtendHisprocinst extendHisprocinst = new ExtendHisprocinst(baseProcessVo.getProcessInstanceId(), baseProcessVo.getProcessStatusEnum().toString());
-                extendHisprocinstService.updateAllStatusByProcessInstanceId(extendHisprocinst);
-            }
+            ExtendHisprocinst extendHisprocinst = new ExtendHisprocinst(baseProcessVo.getProcessInstanceId(), baseProcessVo.getProcessStatusEnum().toString());
+            extendHisprocinstService.updateAllStatusByProcessInstanceId(extendHisprocinst);
         }
     }
 

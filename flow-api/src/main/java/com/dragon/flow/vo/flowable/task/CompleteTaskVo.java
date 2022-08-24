@@ -1,6 +1,5 @@
 package com.dragon.flow.vo.flowable.task;
 
-import com.dragon.flow.enm.form.TaskSkipSetEnum;
 import com.dragon.flow.vo.extension.usertask.NextSequenceUserVo;
 import com.dragon.flow.vo.flowable.BaseProcessVo;
 import io.swagger.annotations.ApiModel;
@@ -43,8 +42,4 @@ public class CompleteTaskVo extends BaseProcessVo implements Serializable {
      * 下一个或多个审批人
      */
     private List<NextSequenceUserVo> nextUsers;
-    /**
-     * 自动跳过枚举
-     */
-    private TaskSkipSetEnum taskSkipSetEnum;
 }
