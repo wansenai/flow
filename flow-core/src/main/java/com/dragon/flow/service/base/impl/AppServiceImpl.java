@@ -27,6 +27,12 @@ import java.util.List;
  **/
 @Service
 public class AppServiceImpl extends ServiceImpl<IAppMapper, App> implements IAppService {
+    @Override
+    public App getAppBySn(String sn) {
+        LambdaQueryWrapper<App> appLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        appLambdaQueryWrapper.eq(App::getSn, sn.trim());
+        return this.getOne(appLambdaQueryWrapper);
+    }
 
     @Override
     public List<App> getAll(App app) {

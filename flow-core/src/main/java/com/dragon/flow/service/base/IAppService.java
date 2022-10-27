@@ -49,4 +49,11 @@ public interface IAppService  extends IService<App> {
      * @return
      */
     App getAppBySecretKeyAndSn(String sn,String secretKey);
+
+    /**
+     * 通过sn获取App
+     * @param sn 标识
+     * @return
+     */
+    App getAppBySn(String sn) ;
 }

@@ -81,6 +81,7 @@ public class FlowJuel implements Serializable {
      * @param str       整体的字符串
      * @param searchStr 要检索的字符串
      * @return true存在  false不存在
+     * ${fuel.exist(form.xxx,'123')}
      */
     public boolean exist(String str, String searchStr) {
         boolean flag = false;
