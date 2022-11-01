@@ -43,6 +43,6 @@ public class CommentInfoServiceImpl extends ServiceImpl<ICommentInfoMapper, Comm
                 }
             });
         }
-        return commentInfoMapper.getCommentInfosByProcessInstanceId(processInstanceId);
+        return commentInfoList;
     }
 }
