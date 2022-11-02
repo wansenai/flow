@@ -5579,6 +5579,7 @@ CREATE TABLE `tbl_flow_comment_info` (
   `process_instance_id` varchar(64) DEFAULT NULL COMMENT '流程实例id',
   `action` varchar(40) DEFAULT NULL COMMENT '动作',
   `message` varchar(800) DEFAULT NULL COMMENT '审批意见',
+  `del_flag` int(1) DEFAULT NULL COMMENT '删除标志（1未删除，0删除）',
   PRIMARY KEY (`id`),
   KEY `process_instance_id_index` (`process_instance_id`),
   KEY `personal_code_index` (`personal_code`)
@@ -5587,7 +5588,7 @@ CREATE TABLE `tbl_flow_comment_info` (
 -- ----------------------------
 -- Records of tbl_flow_comment_info
 -- ----------------------------
-INSERT INTO `tbl_flow_comment_info` VALUES ('86faea541e17743d9f0c792096b91bc7', 'TJ', '10005', '2021-09-28 11:45:35', null, 'startEvent1', null, '89560661200e11ecbaee00e04d680167', null, '提交');
+INSERT INTO `tbl_flow_comment_info` VALUES ('86faea541e17743d9f0c792096b91bc7', 'TJ', '10005', '2021-09-28 11:45:35', null, 'startEvent1', null, '89560661200e11ecbaee00e04d680167', null, '提交', 1);
 
 -- ----------------------------
 -- Table structure for tbl_flow_extend_hisprocinst
