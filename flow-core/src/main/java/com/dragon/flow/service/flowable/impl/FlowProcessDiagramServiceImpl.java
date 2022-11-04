@@ -108,9 +108,9 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
     public HighLightedNodeVo getHighLightedNodeVoByProcessInstanceId(String processInstanceId) {
         Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_HIGHLIGHTEDNODES);
         Cache.ValueWrapper valueWrapper = cache.get(processInstanceId);
-        if (valueWrapper != null && valueWrapper.get() != null ) {
+        if (valueWrapper != null && valueWrapper.get() != null) {
             Object o = valueWrapper.get();
-            if (o instanceof HighLightedNodeVo){
+            if (o instanceof HighLightedNodeVo) {
                 return (HighLightedNodeVo) o;
             }
         }
@@ -126,9 +126,9 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
             Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_ACTIVITYS);
             String key = processInstanceId + "-" + activityId;
             Cache.ValueWrapper valueWrapper = cache.get(key);
-            if (valueWrapper != null &&  valueWrapper.get()!=null) {
+            if (valueWrapper != null && valueWrapper.get() != null) {
                 Object o = valueWrapper.get();
-                if (o instanceof ActivityVo){
+                if (o instanceof ActivityVo) {
                     return (ActivityVo) o;
                 }
             }
@@ -193,10 +193,10 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
     public List<ActivityVo> getProcessActivityVosByProcessInstanceId(String processInstanceId) {
         Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_ACTIVITYS);
         Cache.ValueWrapper valueWrapper = cache.get(processInstanceId);
-        if (valueWrapper != null &&  valueWrapper.get()!=null) {
+        if (valueWrapper != null && valueWrapper.get() != null) {
             Object o = valueWrapper.get();
-            if (o instanceof List){
-                return (List<ActivityVo>)o;
+            if (o instanceof List) {
+                return (List<ActivityVo>) o;
             }
         }
         List<ActivityVo> datas = new ArrayList<>();
@@ -231,7 +231,8 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
     private ActivityVo setUserTask(List<HistoricTaskInstance> historicTaskInstances, HistoricTaskInstance historicTaskInstance, UserTask userTask, BpmnModel bpmnModel, ExtendHisprocinst extendHisprocinst) {
         ActivityVo vo = null;
         if (historicTaskInstance != null && historicTaskInstance.getEndTime() == null) {
-            vo = this.setUnStartTaskNodeInfo(userTask, bpmnModel, extendHisprocinst);
+            String assignee = historicTaskInstance.getAssignee();
+            vo = this.setUnStartTaskNodeInfo(userTask, bpmnModel, extendHisprocinst, assignee);
             List<Date> createTimes = new ArrayList<>();
             historicTaskInstances.forEach(hisTask -> createTimes.add(hisTask.getCreateTime()));
             vo.setStartDate(Collections.min(createTimes));
@@ -330,67 +331,78 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
 
     private ActivityVo setUnStartTaskNodeInfo(UserTask userTask, BpmnModel bpmnModel,
                                               ExtendHisprocinst extendHisprocinst) {
+        return this.setUnStartTaskNodeInfo(userTask, bpmnModel, extendHisprocinst, null);
+    }
+
+    private ActivityVo setUnStartTaskNodeInfo(UserTask userTask, BpmnModel bpmnModel,
+                                              ExtendHisprocinst extendHisprocinst, String assignee) {
         ActivityVo vo = this.setXYWH(userTask, bpmnModel, extendHisprocinst);
         try {
-            if (StringUtils.isNotBlank(userTask.getAssignee())) {
-                MultiInstanceLoopCharacteristics loopCharacteristics = userTask.getLoopCharacteristics();
-                if (loopCharacteristics == null) {
-                    String expressionValue = null;
-                    if (FlowConstant.FLOW_SUBMITTER.equals(userTask.getName())) {
-                        expressionValue = extendHisprocinst.getCurrentUserCode();
-                    } else {
-                        String processInstanceId = extendHisprocinst.getProcessInstanceId();
-                        expressionValue = expressionService.getStrValue(processInstanceId, userTask.getAssignee());
-                    }
-                    if (StringUtils.isNotBlank(expressionValue)) {
-                        List<Personal> personals = null;
-                        if (StringUtils.contains(expressionValue, ",")) {
-                            String[] assignees = expressionValue.split(",");
-                            List<String> as = Arrays.asList(assignees);
-                            try {
-                                if (CollectionUtils.isNotEmpty(as)) {
-                                    personals = personalService.getPersonalsByCodes(as);
-                                }
-                            } catch (Exception e) {
-                                log.error("查询知会的节点信息失败", e);
-                            }
+            if (StringUtils.isNotBlank(assignee)){
+                Personal personal = personalService.getPersonalByCode(assignee);
+                List<Personal> personals = new ArrayList<>();
+                personals.add(personal);
+                this.getApplyNames(personals, vo);
+            }else {
+                if (StringUtils.isNotBlank(userTask.getAssignee())) {
+                    MultiInstanceLoopCharacteristics loopCharacteristics = userTask.getLoopCharacteristics();
+                    if (loopCharacteristics == null) {
+                        String expressionValue = null;
+                        if (FlowConstant.FLOW_SUBMITTER.equals(userTask.getName())) {
+                            expressionValue = extendHisprocinst.getCurrentUserCode();
                         } else {
-                            personals = new ArrayList<>();
-                            Personal personal = personalService.getPersonalByCode(expressionValue);
-                            if (personal != null) {
-                                personals.add(personal);
-                            }
+                            String processInstanceId = extendHisprocinst.getProcessInstanceId();
+                            expressionValue = expressionService.getStrValue(processInstanceId, userTask.getAssignee());
                         }
-                        this.getApplyNames(personals, vo);
-                    }
-                } else {
-                    String inputDataItem = loopCharacteristics.getInputDataItem();
-                    String processInstanceId = extendHisprocinst.getProcessInstanceId();
-                    Object value = expressionService.getValue(processInstanceId, inputDataItem);
-                    List<String> userCodes = null;
-                    if (value instanceof ArrayList) {
-                        userCodes = typeConverter.convert(value, ArrayList.class);
-                    } else if (value instanceof HashSet) {
-                        HashSet hashSet = typeConverter.convert(value, HashSet.class);
-                        userCodes = new ArrayList<String>(hashSet);
-                    }
-                    if (CollectionUtils.isNotEmpty(userCodes)) {
-                        if (CollectionUtils.isNotEmpty(userCodes)) {
-                            List<Personal> personals = personalService.getPersonalsByCodes(userCodes);
+                        if (StringUtils.isNotBlank(expressionValue)) {
+                            List<Personal> personals = null;
+                            if (StringUtils.contains(expressionValue, ",")) {
+                                String[] assignees = expressionValue.split(",");
+                                List<String> as = Arrays.asList(assignees);
+                                try {
+                                    if (CollectionUtils.isNotEmpty(as)) {
+                                        personals = personalService.getPersonalsByCodes(as);
+                                    }
+                                } catch (Exception e) {
+                                    log.error("查询知会的节点信息失败", e);
+                                }
+                            } else {
+                                personals = new ArrayList<>();
+                                Personal personal = personalService.getPersonalByCode(expressionValue);
+                                if (personal != null) {
+                                    personals.add(personal);
+                                }
+                            }
                             this.getApplyNames(personals, vo);
                         }
+                    } else {
+                        String inputDataItem = loopCharacteristics.getInputDataItem();
+                        String processInstanceId = extendHisprocinst.getProcessInstanceId();
+                        Object value = expressionService.getValue(processInstanceId, inputDataItem);
+                        List<String> userCodes = null;
+                        if (value instanceof ArrayList) {
+                            userCodes = typeConverter.convert(value, ArrayList.class);
+                        } else if (value instanceof HashSet) {
+                            HashSet hashSet = typeConverter.convert(value, HashSet.class);
+                            userCodes = new ArrayList<String>(hashSet);
+                        }
+                        if (CollectionUtils.isNotEmpty(userCodes)) {
+                            if (CollectionUtils.isNotEmpty(userCodes)) {
+                                List<Personal> personals = personalService.getPersonalsByCodes(userCodes);
+                                this.getApplyNames(personals, vo);
+                            }
+                        }
                     }
-                }
-            } else {
-                List<String> candidateUsers = userTask.getCandidateUsers();
-                List<String> candidateGroups = userTask.getCandidateGroups();
-                if (CollectionUtils.isNotEmpty(candidateUsers)) {
-                    List<Personal> personals = personalService.getPersonalsByCodes(candidateUsers);
-                    this.getApplyNames(personals, vo);
-                } else if (CollectionUtils.isNotEmpty(candidateGroups)) {
-                    if (CollectionUtils.isNotEmpty(candidateGroups)) {
-                        List<Personal> personals = personalService.getPersonalsByRoleSns(candidateGroups);
+                } else {
+                    List<String> candidateUsers = userTask.getCandidateUsers();
+                    List<String> candidateGroups = userTask.getCandidateGroups();
+                    if (CollectionUtils.isNotEmpty(candidateUsers)) {
+                        List<Personal> personals = personalService.getPersonalsByCodes(candidateUsers);
                         this.getApplyNames(personals, vo);
+                    } else if (CollectionUtils.isNotEmpty(candidateGroups)) {
+                        if (CollectionUtils.isNotEmpty(candidateGroups)) {
+                            List<Personal> personals = personalService.getPersonalsByRoleSns(candidateGroups);
+                            this.getApplyNames(personals, vo);
 //                        String startUserId = extendHisprocinst.getCurrentUserCode();
 //                        Personal personal = personalService.getPersonalByCode(startUserId);
 
@@ -412,6 +424,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
 //                            this.getApplyNames(extendUsers, vo);
 //                        }
 
+                        }
                     }
                 }
             }
