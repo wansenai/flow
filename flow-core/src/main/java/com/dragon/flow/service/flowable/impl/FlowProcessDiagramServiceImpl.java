@@ -403,27 +403,6 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
                         if (CollectionUtils.isNotEmpty(candidateGroups)) {
                             List<Personal> personals = personalService.getPersonalsByRoleSns(candidateGroups);
                             this.getApplyNames(personals, vo);
-//                        String startUserId = extendHisprocinst.getCurrentUserCode();
-//                        Personal personal = personalService.getPersonalByCode(startUserId);
-
-//                        String companyId = personal.getCompanyId();
-//                        String deptId = personal.getDeptId();
-//                        List<String> codes = new ArrayList<>();
-
-//                        List<String> userIds = groupUserOrgService.getUserIdByCompanyIdAndDeptIdAndGroupIds(companyId, deptId, candidateGroups);
-//                        if (CollectionUtils.isNotEmpty(userIds)){
-//                            codes.addAll(userIds);
-//                        } else {
-//                            List<User> users = identityService.createUserQuery().memberOfGroups(candidateGroups).list();
-//                            if (CollectionUtils.isNotEmpty(users)){
-//                                users.forEach(user -> codes.add(user.getId()));
-//                            }
-//                        }
-//                        if (CollectionUtils.isNotEmpty(codes)){
-//                            List<ExtendUser> extendUsers = extendUserService.getExtendUserByCodesList(codes);
-//                            this.getApplyNames(extendUsers, vo);
-//                        }
-
                         }
                     }
                 }
