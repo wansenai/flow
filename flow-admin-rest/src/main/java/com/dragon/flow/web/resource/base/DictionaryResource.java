@@ -1,7 +1,6 @@
 package com.dragon.flow.web.resource.base;
 
 
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.base.Dictionary;
 import com.dragon.flow.service.base.IDictionaryService;
 import com.dragon.flow.vo.CheckExistVo;
@@ -10,7 +9,6 @@ import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +32,6 @@ public class DictionaryResource extends BaseResource<Dictionary> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(dictionaryService, checkExistVo);
@@ -45,7 +42,6 @@ public class DictionaryResource extends BaseResource<Dictionary> {
      * @param params 查询参数 、 分页参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getPagerModel", produces = "application/json")
     public ReturnVo<PagerModel> getPagerModel(@RequestBody ParamVo<Dictionary> params) {
         ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -60,7 +56,6 @@ public class DictionaryResource extends BaseResource<Dictionary> {
      * @param dictionary 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody Dictionary dictionary) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -74,7 +69,6 @@ public class DictionaryResource extends BaseResource<Dictionary> {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete/{id}", produces = "application/json")
     public ReturnVo<String> delete(@PathVariable String id) {
         ReturnVo<String> returnVo = dictionaryService.deleteByIds(id);
@@ -87,7 +81,6 @@ public class DictionaryResource extends BaseResource<Dictionary> {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/get", produces = "application/json")
     public ReturnVo<Dictionary> get(@RequestBody String id) {
         ReturnVo<Dictionary> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

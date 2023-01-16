@@ -3,21 +3,18 @@ package com.dragon.flow.web.resource.org;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.dragon.flow.constant.FlowConstant;
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.org.JobGradeType;
 import com.dragon.flow.service.org.IJobGradeTypeService;
 import com.dragon.flow.vo.CheckExistVo;
+import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
-import com.dragon.flow.web.resource.BaseResource;
 
 import java.util.List;
 
@@ -42,7 +39,6 @@ public class JobGradeTypeResource extends BaseResource<JobGradeType> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(jobGradeTypeService, checkExistVo);
@@ -53,7 +49,6 @@ public class JobGradeTypeResource extends BaseResource<JobGradeType> {
      * @Description: 获取所有职级分类
      */
     @PostMapping("/getJobGradeTypes")
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     public ReturnVo<List> getJobGradeTypes(@RequestBody JobGradeType jobGradeType) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         LambdaQueryWrapper<JobGradeType> jobGradeTypeLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -77,7 +72,6 @@ public class JobGradeTypeResource extends BaseResource<JobGradeType> {
      * @param jobGradeType 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody JobGradeType jobGradeType) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.FAIL, "保存失败！");
@@ -93,7 +87,6 @@ public class JobGradeTypeResource extends BaseResource<JobGradeType> {
      * @param ids
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
     public ReturnVo<String> delete(@RequestBody List<String> ids) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -109,7 +102,6 @@ public class JobGradeTypeResource extends BaseResource<JobGradeType> {
      * @param id id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/get", produces = "application/json")
     public ReturnVo<JobGradeType> get(@RequestBody String id) {
         ReturnVo<JobGradeType> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

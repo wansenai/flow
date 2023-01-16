@@ -1,7 +1,6 @@
 package com.dragon.flow.web.resource.base;
 
 
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.base.DicItem;
 import com.dragon.flow.service.base.IDicItemService;
 import com.dragon.flow.vo.CheckExistVo;
@@ -10,7 +9,6 @@ import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +34,6 @@ public class DicItemResource extends BaseResource<DicItem> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(dicItemService, checkExistVo);
@@ -47,7 +44,6 @@ public class DicItemResource extends BaseResource<DicItem> {
      * @param params 查询参数 、 分页参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getPagerModel", produces = "application/json")
     public ReturnVo<PagerModel> getPagerModel(@RequestBody ParamVo<DicItem> params) {
         ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -62,7 +58,6 @@ public class DicItemResource extends BaseResource<DicItem> {
      * @param dicItem 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getDicItems", produces = "application/json")
     public ReturnVo<List> getDicItems(@RequestBody DicItem dicItem) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -77,7 +72,6 @@ public class DicItemResource extends BaseResource<DicItem> {
      * @param dicItem 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody DicItem dicItem) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -91,7 +85,6 @@ public class DicItemResource extends BaseResource<DicItem> {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete/{id}", produces = "application/json")
     public ReturnVo<String> delete(@PathVariable String id) {
         ReturnVo<String> returnVo = dicItemService.deleteByIds(id);
@@ -104,7 +97,6 @@ public class DicItemResource extends BaseResource<DicItem> {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/get", produces = "application/json")
     public ReturnVo<DicItem> get(@RequestBody String id) {
         ReturnVo<DicItem> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

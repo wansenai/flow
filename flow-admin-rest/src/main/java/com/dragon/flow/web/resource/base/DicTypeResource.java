@@ -1,14 +1,12 @@
 package com.dragon.flow.web.resource.base;
 
 
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.base.DicType;
 import com.dragon.flow.service.base.IDicTypeService;
 import com.dragon.flow.vo.CheckExistVo;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +32,6 @@ public class DicTypeResource extends BaseResource<DicType> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(dicTypeService, checkExistVo);
@@ -45,7 +42,6 @@ public class DicTypeResource extends BaseResource<DicType> {
      * @param dicType 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getDicTypes", produces = "application/json")
     public ReturnVo<List> getDicTypes(@RequestBody DicType dicType) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -60,7 +56,6 @@ public class DicTypeResource extends BaseResource<DicType> {
      * @param dicType 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody DicType dicType) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -74,7 +69,6 @@ public class DicTypeResource extends BaseResource<DicType> {
      * @param ids
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
     public ReturnVo<String> delete(@RequestBody List<String> ids) {
         ReturnVo<String> returnVo = dicTypeService.deleteByIds(ids);
@@ -87,7 +81,6 @@ public class DicTypeResource extends BaseResource<DicType> {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/get", produces = "application/json")
     public ReturnVo<DicType> get(@RequestBody String id) {
         ReturnVo<DicType> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

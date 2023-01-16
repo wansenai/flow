@@ -2,7 +2,6 @@ package com.dragon.flow.api.rest;
 
 import com.dragon.flow.api.impl.AbstractFlowApiImpl;
 import com.dragon.flow.exception.FlowException;
-import com.dragon.flow.service.base.IAppService;
 import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.flow.vo.flowable.processinstance.EndVo;
@@ -18,9 +17,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,9 +34,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/flow")
 public class FlowApiRest extends AbstractFlowApiImpl {
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    private IAppService appService;
 
     @Override
     @ApiOperation(value = "通过modelKey获取模型对象", notes = "通过modelKey获取模型对象")

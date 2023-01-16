@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.dragon</groupId>
         <artifactId>flow-parent</artifactId>
-        <version>1.1.0-SNAPSHOT</version>
+        <version>1.1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.dragon</groupId>
     <artifactId>flow-core</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>${flow.version}</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -206,71 +206,11 @@
                 <directory>${project.basedir}/src/main/java</directory>
                 <includes>
                     <include>**/*.xml</include>
-                    <include>**/*.ftl</include>
                 </includes>
             </resource>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
             </resource>
         </resources>
-        <plugins>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <encoding>utf-8</encoding>
-                    <useDefaultDelimiters>true</useDefaultDelimiters>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                    <!-- 跳过单元测试的运行 -->
-                    <argLine>-Dfile.encoding=UTF-8</argLine>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
-    <!-- 部署远程maven仓库里面 -->
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>releases</name>
-            <url>https://repo.rdc.aliyun.com/repository/74654-release-csIaMr/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>snapshots</name>
-            <url>https://repo.rdc.aliyun.com/repository/74654-snapshot-53FgUQ/</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>

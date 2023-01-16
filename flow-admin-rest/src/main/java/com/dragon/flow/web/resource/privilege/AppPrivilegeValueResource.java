@@ -1,14 +1,12 @@
 package com.dragon.flow.web.resource.privilege;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.privilege.AppPrivilegeValue;
 import com.dragon.flow.service.privilege.IAppPrivilegeValueService;
 import com.dragon.flow.vo.CheckExistVo;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +42,6 @@ public class AppPrivilegeValueResource extends BaseResource {
      * @return
      */
     @PostMapping(value = "/getAppPrivilegeValues", produces = "application/json")
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     public ReturnVo<List> getAppPrivilegeValues() {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         LambdaQueryWrapper<AppPrivilegeValue> appPrivilegeValueLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -60,7 +57,6 @@ public class AppPrivilegeValueResource extends BaseResource {
      * @param appPrivilegeValue 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody AppPrivilegeValue appPrivilegeValue) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -74,7 +70,6 @@ public class AppPrivilegeValueResource extends BaseResource {
      * @param appIds
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
     public ReturnVo<String> delete(@RequestBody List<String> appIds) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -88,7 +83,6 @@ public class AppPrivilegeValueResource extends BaseResource {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/get", produces = "application/json")
     public ReturnVo<AppPrivilegeValue> get(String id) {
         ReturnVo<AppPrivilegeValue> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

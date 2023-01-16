@@ -1,6 +1,5 @@
 package com.dragon.flow.web.resource.privilege;
 
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.privilege.Group;
 import com.dragon.flow.model.privilege.User;
 import com.dragon.flow.service.privilege.IUserGroupService;
@@ -11,7 +10,6 @@ import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +36,6 @@ public class UserResource extends BaseResource<User> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(userService, checkExistVo);
@@ -51,7 +48,6 @@ public class UserResource extends BaseResource<User> {
      * @param userId 用户id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/allocationRoles/{userId}", produces = "application/json")
     public ReturnVo<String> allocationRoles(@PathVariable String userId, @RequestBody List<Group> groups) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -65,7 +61,6 @@ public class UserResource extends BaseResource<User> {
      * @param user 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/setPassword", produces = "application/json")
     public ReturnVo<String> setPassword(@RequestBody User user) {
         userService.setPassword(user);
@@ -79,7 +74,6 @@ public class UserResource extends BaseResource<User> {
      * @param params 查询参数 、 分页参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getPagerModel", produces = "application/json")
     public ReturnVo<PagerModel> getPagerModel(@RequestBody ParamVo<User> params) {
         ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -92,7 +86,6 @@ public class UserResource extends BaseResource<User> {
      * 获取所有用户
      * * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getAll", produces = "application/json")
     public ReturnVo<List<User>> getAll(@RequestBody User user) {
         ReturnVo<List<User>> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -107,7 +100,6 @@ public class UserResource extends BaseResource<User> {
      * @param user 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody User user) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -121,7 +113,6 @@ public class UserResource extends BaseResource<User> {
      * @param ids
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
     public ReturnVo<String> delete(@RequestBody List<String> ids) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -135,7 +126,6 @@ public class UserResource extends BaseResource<User> {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/get", produces = "application/json")
     public ReturnVo<User> get(String id) {
         ReturnVo<User> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

@@ -53,6 +53,7 @@ public class FlowConstant {
 
     //登录用户的session中的key值
     public static final String LOGIN_USER = "login_user";
+    public static final String LOGIN_ROLES = "login_roles";
     //登录用户的acl列表
     public static final String LOGIN_USER_ACLS = "login_user_acls";
     //登录用户的模块列表
@@ -68,7 +69,6 @@ public class FlowConstant {
     public static final String CACHE_START_PROCESSINSTANCE = "cache-start-processinstance";
     public static final String CACHE_ACL_PERMISSIONVALS = "cache-acl-permissionvals";
     public static final String CACHE_PROCESS_STATUS = "cache-process-status";
-
 
 
 }

@@ -21,6 +21,7 @@ import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.pager.Query;
 import com.dragon.tools.vo.ReturnVo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ import java.util.stream.Collectors;
  **/
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Department> implements IDepartmentService {
 
     @Autowired
@@ -227,9 +229,14 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
                 orgTreeVo.setLeaderName(department.getLeaderName());
                 String companyId = department.getCompanyId();
                 OrgTreeVo company = companyMap.get(companyId);
-                orgTreeVo.setCompanyId(companyId);
-                orgTreeVo.setCompanyName(company.getName());
-                orgTreeVos.add(orgTreeVo);
+                // 部门如果找不到公司，说明这个部门数据有问题。不加入组织树
+                if(company != null) {
+                    orgTreeVo.setCompanyId(companyId);
+                    orgTreeVo.setCompanyName(company.getName());
+                    orgTreeVos.add(orgTreeVo);
+                } else {
+                    log.error("{}【{}】部门找不到公司", orgTreeVo.getName(), orgTreeVo.getId());
+                }
             });
         }
         return orgTreeVos;

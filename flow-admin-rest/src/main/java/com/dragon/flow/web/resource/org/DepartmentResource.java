@@ -1,7 +1,6 @@
 package com.dragon.flow.web.resource.org;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.org.Department;
 import com.dragon.flow.service.org.IDepartmentService;
 import com.dragon.flow.vo.CheckExistVo;
@@ -11,7 +10,6 @@ import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.pager.Query;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +33,6 @@ public class DepartmentResource extends BaseResource<Department> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(departmentService, checkExistVo);
@@ -45,7 +42,6 @@ public class DepartmentResource extends BaseResource<Department> {
      *
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/getOrgTree", produces = "application/json")
     public ReturnVo<List> getOrgTree() {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -59,7 +55,6 @@ public class DepartmentResource extends BaseResource<Department> {
      *
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/getDepartmentByCompanyId/{companyId}", produces = "application/json")
     public ReturnVo<List> getDepartmentByCompanyId(@PathVariable String companyId) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -78,7 +73,6 @@ public class DepartmentResource extends BaseResource<Department> {
      * @param query      分页参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getPagerModel", produces = "application/json")
     public ReturnVo<PagerModel> getPagerModel(Department department, Query query) {
         ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -93,7 +87,6 @@ public class DepartmentResource extends BaseResource<Department> {
      * @param department 查询参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getAll", produces = "application/json")
     public ReturnVo<List<Department>> getAll(@RequestBody Department department) {
         ReturnVo<List<Department>> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -108,7 +101,6 @@ public class DepartmentResource extends BaseResource<Department> {
      * @param department 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody Department department) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -122,7 +114,6 @@ public class DepartmentResource extends BaseResource<Department> {
      * @param ids
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
     public ReturnVo<String> delete(@RequestBody List<String> ids) {
         ReturnVo<String> returnVo = departmentService.deleteByIds(ids);
@@ -135,7 +126,6 @@ public class DepartmentResource extends BaseResource<Department> {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/get", produces = "application/json")
     public ReturnVo<Department> get(String id) {
         ReturnVo<Department> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

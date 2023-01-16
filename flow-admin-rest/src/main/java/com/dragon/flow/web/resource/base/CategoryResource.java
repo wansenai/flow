@@ -1,13 +1,11 @@
 package com.dragon.flow.web.resource.base;
 
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.base.Category;
 import com.dragon.flow.service.base.ICategoryService;
 import com.dragon.flow.vo.CheckExistVo;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +29,6 @@ public class CategoryResource extends BaseResource<Category> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(categoryService, checkExistVo);
@@ -42,7 +39,6 @@ public class CategoryResource extends BaseResource<Category> {
      * @param category 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getCategories", produces = "application/json")
     public ReturnVo<List> getCategories(@RequestBody Category category) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -57,7 +53,6 @@ public class CategoryResource extends BaseResource<Category> {
      * @param category 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody Category category) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -71,7 +66,6 @@ public class CategoryResource extends BaseResource<Category> {
      * @param ids
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
     public ReturnVo<String> delete(@RequestBody List<String> ids) {
         ReturnVo<String> returnVo = categoryService.deleteByIds(ids);
@@ -84,7 +78,6 @@ public class CategoryResource extends BaseResource<Category> {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/get", produces = "application/json")
     public ReturnVo<Category> get(@RequestBody String id) {
         ReturnVo<Category> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

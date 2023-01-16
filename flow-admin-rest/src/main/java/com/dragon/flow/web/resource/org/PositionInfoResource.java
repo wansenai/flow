@@ -1,21 +1,18 @@
 package com.dragon.flow.web.resource.org;
 
 
-import com.dragon.flow.constant.PermissionConatant;
 import com.dragon.flow.model.org.PositionInfo;
 import com.dragon.flow.service.org.IPositionInfoService;
 import com.dragon.flow.vo.CheckExistVo;
 import com.dragon.flow.vo.org.BatchPositionInfoVo;
 import com.dragon.flow.vo.org.OrgTreeVo;
 import com.dragon.flow.vo.pager.ParamVo;
+import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import com.dragon.flow.web.resource.BaseResource;
 
 import java.util.List;
 
@@ -40,7 +37,6 @@ public class PositionInfoResource extends BaseResource<PositionInfo> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(positionInfoService, checkExistVo);
@@ -48,7 +44,6 @@ public class PositionInfoResource extends BaseResource<PositionInfo> {
     /**
      * @return 获取岗位树
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping("/getPositionInfoTree")
     public ReturnVo<List> getPositionInfoTree() {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -62,7 +57,6 @@ public class PositionInfoResource extends BaseResource<PositionInfo> {
      * @param params 查询参数 、 分页参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getPagerModel", produces = "application/json")
     public ReturnVo<PagerModel> getPagerModel(@RequestBody ParamVo<PositionInfo> params) {
         ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -77,7 +71,6 @@ public class PositionInfoResource extends BaseResource<PositionInfo> {
      * @param positionInfo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody PositionInfo positionInfo) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -91,7 +84,6 @@ public class PositionInfoResource extends BaseResource<PositionInfo> {
      * @param batchPositionInfoVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/batchSaveOrUpdatePositionSeqAndPosition", produces = "application/json")
     public ReturnVo<String> batchSaveOrUpdatePositionSeqAndPosition(@RequestBody BatchPositionInfoVo batchPositionInfoVo) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -106,7 +98,6 @@ public class PositionInfoResource extends BaseResource<PositionInfo> {
      * @param ids
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
     public ReturnVo<String> delete(@RequestBody List<String> ids) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -122,7 +113,6 @@ public class PositionInfoResource extends BaseResource<PositionInfo> {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @GetMapping(value = "/get", produces = "application/json")
     public ReturnVo<PositionInfo> get(String id) {
         ReturnVo<PositionInfo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

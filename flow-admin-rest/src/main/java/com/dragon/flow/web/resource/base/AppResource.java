@@ -9,7 +9,6 @@ import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.vo.ReturnVo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +32,6 @@ public class AppResource extends BaseResource<App> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(appService, checkExistVo);
@@ -42,7 +40,6 @@ public class AppResource extends BaseResource<App> {
      * @return 系统列表json数组字符串
      * @Description: 获取所有系统列表树
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping("/getApps")
     public ReturnVo<List> getApps(@RequestBody App app) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -57,7 +54,6 @@ public class AppResource extends BaseResource<App> {
      * @param params 查询参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/getPagerModel", produces = "application/json")
     public ReturnVo<PagerModel> getPagerModel(@RequestBody ParamVo<App> params) {
         ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -72,7 +68,6 @@ public class AppResource extends BaseResource<App> {
      * @param app 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody App app) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.FAIL, "保存失败！");
@@ -88,7 +83,6 @@ public class AppResource extends BaseResource<App> {
      * @param appIds
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/delete", produces = "application/json")
     public ReturnVo<String> delete(@RequestBody List<String> appIds) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -102,7 +96,6 @@ public class AppResource extends BaseResource<App> {
      * @param id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/get", produces = "application/json")
     public ReturnVo<App> get(@RequestBody String id) {
         ReturnVo<App> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -117,7 +110,6 @@ public class AppResource extends BaseResource<App> {
      * @param id 应用id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.U)
     @PostMapping(value = "/refreshSecretKey/{id}", produces = "application/json")
     public ReturnVo<String> refreshSecretKey(@PathVariable String id) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

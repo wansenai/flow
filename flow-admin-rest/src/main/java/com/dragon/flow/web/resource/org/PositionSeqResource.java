@@ -2,24 +2,19 @@ package com.dragon.flow.web.resource.org;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.dragon.flow.constant.FlowConstant;
-import com.dragon.flow.constant.PermissionConatant;
-import com.dragon.flow.model.org.JobGradeType;
 import com.dragon.flow.model.org.PositionSeq;
 import com.dragon.flow.service.org.IPositionSeqService;
 import com.dragon.flow.vo.CheckExistVo;
+import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
-import com.dragon.flow.web.resource.BaseResource;
 
 import java.util.List;
 
@@ -44,7 +39,6 @@ public class PositionSeqResource extends BaseResource<PositionSeq> {
      * @param checkExistVo 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/checkEntityExist", produces = "application/json")
     protected ReturnVo<Boolean> checkEntityExist(@RequestBody CheckExistVo checkExistVo) {
         return this.checkExist(positionSeqService, checkExistVo);
@@ -54,7 +48,6 @@ public class PositionSeqResource extends BaseResource<PositionSeq> {
      * @return 列表json数组字符串
      * @Description: 获取所有
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping("/getPositionSeqs")
     public ReturnVo<List> getPositionSeqs(@RequestBody PositionSeq positionSeq) {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -76,7 +69,6 @@ public class PositionSeqResource extends BaseResource<PositionSeq> {
      * @param positionSeq 参数
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.C)
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody PositionSeq positionSeq) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.FAIL, "保存失败！");
@@ -92,7 +84,6 @@ public class PositionSeqResource extends BaseResource<PositionSeq> {
      * @param ids
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.D)
     @PostMapping(value = "/deleteById", produces = "application/json")
     public ReturnVo<String> deleteById(@RequestBody List<String> ids) {
         ReturnVo<String> returnVo = null;
@@ -108,7 +99,6 @@ public class PositionSeqResource extends BaseResource<PositionSeq> {
      * @param id id
      * @return
      */
-    @RequiresPermissions(MODULE_SN + PermissionConatant.R)
     @PostMapping(value = "/get", produces = "application/json")
     public ReturnVo<PositionSeq> get(@RequestBody String id) {
         ReturnVo<PositionSeq> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");

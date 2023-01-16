@@ -27,7 +27,7 @@
             t2.head_img AS personal_head_img
         FROM
             tbl_flow_comment_info t1
-        INNER JOIN tbl_org_personal t2 ON t1.personal_code = t2.`code`
+        LEFT JOIN tbl_org_personal t2 ON t1.personal_code = t2.`code`
         where t1.process_instance_id=#{processInstanceId} order by time asc
     </select>
 

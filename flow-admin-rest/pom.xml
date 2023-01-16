@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.dragon</groupId>
         <artifactId>flow-parent</artifactId>
-        <version>1.1.0-SNAPSHOT</version>
+        <version>1.1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>${flow.version}</version>
     <artifactId>flow-admin-rest</artifactId>
     <dependencies>
         <!-- 流程中心的依赖包 -->
@@ -48,30 +48,14 @@
         <!-- session共享 -->
         <!-- shiro spring. -->
         <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
-            <version>${shiro.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
-            <version>${shiro.version}</version>
-        </dependency>
-        <!-- shiro ehcache -->
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-ehcache</artifactId>
-            <version>${shiro.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-quartz</artifactId>
-            <version>${shiro.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.penggle</groupId>
             <artifactId>kaptcha</artifactId>
             <version>2.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>1.30.0</version>
         </dependency>
         <!--     swagger2 接口API文档       -->
         <!--<dependency>
@@ -156,16 +140,5 @@
         </plugins>
     </build>
     <!-- 部署远程maven仓库里面 -->
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>releases</name>
-            <url>https://repo.rdc.aliyun.com/repository/74654-release-csIaMr/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>snapshots</name>
-            <url>https://repo.rdc.aliyun.com/repository/74654-snapshot-53FgUQ/</url>
-        </snapshotRepository>
-    </distributionManagement>
+
 </project>
