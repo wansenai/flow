@@ -1,7 +1,7 @@
 <template>
-  <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
+  <PageWrapper dense contentFullHeight contentClass="flex" class="p-4">
     <DictTypeTree class="w-1/5 xl:w-1/5" @select="handleDictTypeSelect" />
-    <DictionaryTable ref="dictionaryRef" @handleSelect="handleDictSelect" class="w-2/5 xl:w-2/5" />
+    <DictionaryTable ref="dictionaryRef" @handleSelect="handleDictSelect" class="w-2/5 xl:w-2/5 ml-2 mr-2" />
     <DictionaryItemTable ref="dictionaryItemRef" class="w-2/5 xl:w-2/5" />
   </PageWrapper>
 </template>
@@ -88,6 +88,8 @@
       function handleDictSelect(dictId) {
         if(dictId){
           dictionaryItemRef.value.filterByDict(dictId);
+        }else{
+          dictionaryItemRef.value.cleanTableData();
         }
       }
 

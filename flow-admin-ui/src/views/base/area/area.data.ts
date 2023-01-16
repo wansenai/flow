@@ -56,11 +56,13 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于20！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'code',
     label: '编码',
     required: true,
     component: 'Input',
+    colProps: { span: 24 },
   },
 ];

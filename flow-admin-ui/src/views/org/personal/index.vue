@@ -5,74 +5,76 @@
       <template #toolbar>
         <a-button type="primary" @click="handleCreate">新增</a-button>
       </template>
-      <template #action="{ record }">
-        <TableAction
-          :actions="[
-            {
-              tooltip: '修改',
-              icon: 'clarity:note-edit-line',
-              onClick: handleEdit.bind(null, record),
-            },
-            {
-              tooltip: '删除',
-              icon: 'ant-design:delete-outlined',
-              color: 'error',
-              popConfirm: {
-                title: '是否确认删除',
-                confirm: handleDelete.bind(null, record),
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <TableAction
+            :actions="[
+              {
+                tooltip: '修改',
+                icon: 'clarity:note-edit-line',
+                onClick: handleEdit.bind(null, record),
               },
-            },
-          ]"
-          :dropDownActions="[
-            {
-              label: '分配角色',
-              title: '分配角色',
-              icon: 'ant-design:usergroup-add',
-              onClick: handleSettingRoles.bind(null, record),
-            },
-            {
-              title: '设置领导',
-              label: '设置领导',
-              icon: 'ant-design:setting-outlined',
-              onClick: handleSettingLeader.bind(null, record),
-            },
-          ]"
-        />
-      </template>
-      <template #nameRender="{ record }">
-        <Badge>
-          <template #count>
-            <WomanOutlined v-if="record.sex===2" style="color: #f5222d; font-size: 12px;" />
-            <ManOutlined v-else style="color: #1890ff; font-size: 12px;" />
-          </template>
-          <Avatar :src="record.headImg" @click="previewImageHandle(record.headImg)">
-            <template #icon>
-              <UserOutlined />
+              {
+                tooltip: '删除',
+                icon: 'ant-design:delete-outlined',
+                color: 'error',
+                popConfirm: {
+                  title: '是否确认删除',
+                  confirm: handleDelete.bind(null, record),
+                },
+              },
+            ]"
+            :dropDownActions="[
+              {
+                label: '分配角色',
+                title: '分配角色',
+                icon: 'ant-design:usergroup-add',
+                onClick: handleSettingRoles.bind(null, record),
+              },
+              {
+                title: '设置领导',
+                label: '设置领导',
+                icon: 'ant-design:setting-outlined',
+                onClick: handleSettingLeader.bind(null, record),
+              },
+            ]"
+          />
+        </template>
+        <template v-if="column.key === 'name'">
+          <Badge>
+            <template #count>
+              <WomanOutlined v-if="record.sex===2" style="color: #f5222d; font-size: 12px;" />
+              <ManOutlined v-else style="color: #1890ff; font-size: 12px;" />
             </template>
-          </Avatar>
-        </Badge>
-        {{record.name}}
-      </template>
+            <Avatar :src="record.headImg" @click="previewImageHandle(record.headImg)">
+              <template #icon>
+                <UserOutlined />
+              </template>
+            </Avatar>
+          </Badge>
+          {{record.name}}
+        </template>
 
-      <template #rolesRender="{ record }">
-        <div class="personal-roles">
-          <Spin :spinning="deleteRoleLoading&&deleteRoleLoading[record.id]?deleteRoleLoading[record.id]:false">
-            <Space>
-              <Tag class="role-item" v-for="role in record.roles">
-                {{role.name}}
-                <Popconfirm
-                  title="确定要删除吗?"
-                  ok-text="确定"
-                  cancel-text="取消"
-                  @confirm="confirmDeleteRole(record.id, role.id)"
-                  @cancel="cancelDeleteRole"
-                >
-                  <DeleteOutlined color="error" style="color:#d9595b"/>
-                </Popconfirm>
-              </Tag>
-            </Space>
-          </Spin>
-        </div>
+        <template v-if="column.key === 'roles'">
+          <div class="personal-roles">
+            <Spin :spinning="deleteRoleLoading&&deleteRoleLoading[record.id]?deleteRoleLoading[record.id]:false">
+              <Space>
+                <Tag class="role-item" v-for="role in record.roles">
+                  {{role.name}}
+                  <Popconfirm
+                    title="确定要删除吗?"
+                    ok-text="确定"
+                    cancel-text="取消"
+                    @confirm="confirmDeleteRole(record.id, role.id)"
+                    @cancel="cancelDeleteRole"
+                  >
+                    <DeleteOutlined color="error" style="color:#d9595b"/>
+                  </Popconfirm>
+                </Tag>
+              </Space>
+            </Spin>
+          </div>
+        </template>
       </template>
     </BasicTable>
     <Image
@@ -146,7 +148,6 @@
           width: 120,
           title: '操作',
           dataIndex: 'action',
-          slots: { customRender: 'action' },
         },
         beforeFetch:(params)=>{
           let searchInfo = {};

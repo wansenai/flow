@@ -29,7 +29,6 @@ export const columns: BasicColumn[] = [
     title: '操作',
     dataIndex: 'action',
     width: 120,
-    slots: { customRender: 'action' },
   }
 ];
 export const personalColumns: BasicColumn[] = [
@@ -80,7 +79,7 @@ export const searchFormSchema: FormSchema[] = [
     colProps: {span: 6, lg:{span: 8, offset:0}, sm:{span: 14, offset: 0}, xs:{span: 16, offset: 0}},  },
 ];
 
-export const deptFormSchema: FormSchema[] = [
+export const formSchema: FormSchema[] = [
   {
     field: 'id',
     label: 'ID',
@@ -104,12 +103,14 @@ export const deptFormSchema: FormSchema[] = [
         message: '字符长度不能大于64！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'sn',
     label: '编码',
     component: 'Input',
     required: true,
+    colProps: { span: 24 },
   },
   {
     field: 'companyId',
@@ -125,6 +126,7 @@ export const deptFormSchema: FormSchema[] = [
       getPopupContainer: () => document.body,
     },
     required: true,
+    colProps: { span: 24 },
   },
   {
     field: 'orderNo',
@@ -142,5 +144,6 @@ export const deptFormSchema: FormSchema[] = [
         message: '字符长度不能大于1024！',
       },
     ],
+    colProps: { span: 24 },
   },
 ];

@@ -1,32 +1,35 @@
 <template>
-  <div class="bg-white m-4 mr-0 overflow-hidden dictionary">
-    <BasicTable @register="registerTable" @row-click="clickDictionary" @selection-change="changeDictionary" >
+  <div class="bg-white overflow-hidden dictionary">
+    <BasicTable @register="registerTable" @row-click="clickDictionary"
+                @selection-change="changeDictionary">
       <template #toolbar>
         <a-button v-if="dictTypeId!==''" type="primary" @click="handleCreate">新增</a-button>
       </template>
-      <template #action="{ record }">
-        <TableAction
-          :actions="[
-            {
-              tooltip: '修改',
-              icon: 'clarity:note-edit-line',
-              onClick: handleEdit.bind(null, record),
-            },
-            {
-              tooltip: '删除',
-              icon: 'ant-design:delete-outlined',
-              color: 'error',
-              onClick: handleDeleteStop.bind(null, record),
-              popConfirm: {
-                title: '是否确认删除',
-                confirm: handleDelete.bind(null, record),
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <TableAction
+            :actions="[
+              {
+                tooltip: '修改',
+                icon: 'clarity:note-edit-line',
+                onClick: handleEdit.bind(null, record),
               },
-            },
-          ]"
-        />
+              {
+                tooltip: '删除',
+                icon: 'ant-design:delete-outlined',
+                color: 'error',
+                onClick: handleDeleteStop.bind(null, record),
+                popConfirm: {
+                  title: '是否确认删除',
+                  confirm: handleDelete.bind(null, record),
+                },
+              },
+            ]"
+          />
+        </template>
       </template>
     </BasicTable>
-    <DictionaryModal @register="registerModal" @success="handleSuccess" />
+    <DictionaryModal @register="registerModal" @success="handleSuccess"/>
   </div>
 </template>
 <script lang="ts">
@@ -38,9 +41,10 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useModal } from '/@/components/Modal';
 
-  import { columns, searchFormSchema } from './dictionary.data';
-  const { createMessage } = useMessage();
-  import DictionaryModal from './DictionaryModal.vue';
+import {columns, searchFormSchema} from './dictionary.data';
+
+const {createMessage} = useMessage();
+import DictionaryModal from './DictionaryModal.vue';
 
   export default defineComponent({
     name: 'DictionaryTable',
@@ -72,7 +76,6 @@
           width: 80,
           title: '操作',
           dataIndex: 'action',
-          slots: { customRender: 'action' },
         },
       });
       function handleCreate() {
@@ -120,13 +123,15 @@
         reload();
       }
       function clickDictionary(e) {
-        setSelectedRowKeys(e.id);
+        setSelectedRowKeys([e.id]);
         emit('handleSelect', e.id);
       }
 
-      function changeDictionary({keys, rows}) {
+    function changeDictionary({keys, rows}) {
+      if (rows && rows.length > 0) {
         emit('handleSelect', rows[0].id);
       }
+    }
 
       return {
         registerTable,
@@ -147,12 +152,13 @@
 </script>
 
 <style lang="less">
-  .dictionary{
-    .vben-basic-table-form-container{
-      padding: 0;
-      .vben-basic-form{
-        margin-bottom: 0;
-      }
+.dictionary {
+  .vben-basic-table-form-container {
+    padding: 0;
+
+    .vben-basic-form {
+      margin-bottom: 0;
     }
   }
+}
 </style>

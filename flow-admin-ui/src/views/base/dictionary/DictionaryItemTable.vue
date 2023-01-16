@@ -1,28 +1,30 @@
 <template>
-  <div class="bg-white m-4 mr-0 overflow-hidden dictionary">
+  <div class="bg-white overflow-hidden dictionary">
     <BasicTable @register="registerTable" >
       <template #toolbar>
         <a-button v-if="dictId!==''" type="primary" @click="handleCreate">新增</a-button>
       </template>
-      <template #action="{ record }">
-        <TableAction
-          :actions="[
-            {
-              tooltip: '修改字典项',
-              icon: 'clarity:note-edit-line',
-              onClick: handleEdit.bind(null, record),
-            },
-            {
-              tooltip: '删除',
-              icon: 'ant-design:delete-outlined',
-              color: 'error',
-              popConfirm: {
-                title: '是否确认删除',
-                confirm: handleDelete.bind(null, record),
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <TableAction
+            :actions="[
+              {
+                tooltip: '修改字典项',
+                icon: 'clarity:note-edit-line',
+                onClick: handleEdit.bind(null, record),
               },
-            },
-          ]"
-        />
+              {
+                tooltip: '删除',
+                icon: 'ant-design:delete-outlined',
+                color: 'error',
+                popConfirm: {
+                  title: '是否确认删除',
+                  confirm: handleDelete.bind(null, record),
+                },
+              },
+            ]"
+          />
+        </template>
       </template>
     </BasicTable>
     <DictionaryItemModal @register="registerModal" @success="handleSuccess" />
@@ -67,7 +69,6 @@
           width: 80,
           title: '操作',
           dataIndex: 'action',
-          slots: { customRender: 'action' },
         },
       });
       function handleCreate() {
@@ -125,3 +126,15 @@
     },
   });
 </script>
+
+<style lang="less">
+.dictionary {
+  .vben-basic-table-form-container {
+    padding: 0;
+
+    .vben-basic-form {
+      margin-bottom: 0;
+    }
+  }
+}
+</style>

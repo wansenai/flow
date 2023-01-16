@@ -76,6 +76,7 @@ export const formSchema: FormSchema[] = [
         max: 80,
         message: '字符长度不能大于80！',
       }],
+    colProps: { span: 24 },
   },
   {
     field: 'code',
@@ -83,6 +84,7 @@ export const formSchema: FormSchema[] = [
     required: true,
     component: 'Input',
     show: true,
+    colProps: { span: 24 },
   },
   {
     field: 'positionSeqId',
@@ -105,6 +107,7 @@ export const formSchema: FormSchema[] = [
     required: false,
     component: 'DatePicker',
     show: true,
+    colProps: { span: 24 },
   },
   {
     field: 'orderNo',
@@ -122,6 +125,7 @@ export const formSchema: FormSchema[] = [
     componentProps:{
       checkedChildren: '启用',
       unCheckedChildren: '停用'
-    }
+    },
+    colProps: { span: 24 },
   },
 ];

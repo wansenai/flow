@@ -17,8 +17,8 @@ export const getDepts = (params?: DeptSearchParams) => {
     res.forEach(item=>{
       item.key = item.id;
       item.value = item.id;
-      item.title = item.shortName;
-      item.icon = 'bx:building-house';
+      item.title = item.name;
+      item.label = item.name;
     });
     const treeData = listToTree(res, {id: 'id', children: 'children', pid: 'pid'});
     forEach(treeData, (node) => {
@@ -37,7 +37,11 @@ export const getOrgTree = () => {
       item.key = item.id;
       item.value = item.id;
       item.title = item.shortName;
-      item.icon = 'bx:building-house';
+      if (item.sourceType == 1) {
+        item.icon = 'bx:building-house';
+      } else if (item.sourceType == 2) {
+        item.icon = 'ant-design:cluster-outlined';
+      }
     });
     const treeData = listToTree(res, {id: 'id', children: 'children', pid: 'pid'});
     forEach(treeData, (node) => {

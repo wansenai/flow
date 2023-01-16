@@ -53,7 +53,12 @@ public class AppServiceImpl extends ServiceImpl<IAppMapper, App> implements IApp
         if (StringUtils.isNotBlank(app.getKeyword())){
             appLambdaQueryWrapper.like(App::getName, app.getKeyword()).or().like(App::getSn, app.getKeyword());
         }
-        appLambdaQueryWrapper.eq(App::getStatus, 1).eq(App::getDelFlag, FlowConstant.DEL_FLAG_1).orderByAsc(App::getOrderNo);
+
+        if(app.getStatus() != null){
+            appLambdaQueryWrapper.eq(App::getStatus, app.getStatus());
+        }
+
+        appLambdaQueryWrapper.eq(App::getDelFlag, FlowConstant.DEL_FLAG_1).orderByAsc(App::getOrderNo);
         IPage<App> queryPage = new Page<>(query.getPageNum(), query.getPageSize());
         IPage<App> page = this.page(queryPage, appLambdaQueryWrapper);
         return new PagerModel<>(page.getTotal(), page.getRecords());

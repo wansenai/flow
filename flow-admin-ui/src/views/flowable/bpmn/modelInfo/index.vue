@@ -8,8 +8,10 @@
           <a-button type="primary" @click="openTab">测试打开设计器</a-button>
         </Authority>-->
       </template>
-      <template #action="{ record, column }">
-        <TableAction :actions="createActions(record, column)" />
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <TableAction :actions="createActions(record, column)" />
+        </template>
       </template>
     </BasicTable>
 
@@ -79,7 +81,6 @@
           align: 'left',
           title: '操作',
           dataIndex: 'action',
-          slots: { customRender: 'action' },
         },
       });
 

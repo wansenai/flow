@@ -10,18 +10,12 @@ export const columns: BasicColumn[] = [
     dataIndex: 'listenerType',
     width: 180,
     align: 'left',
-    slots: {
-      customRender: 'listenerTypeRender'
-    },
   },
   {
     title: '类型',
     dataIndex: 'type',
     width: 180,
     align: 'left',
-    slots: {
-      customRender: 'typeRender'
-    },
   },
   {
     title: '名称',
@@ -37,13 +31,6 @@ export const columns: BasicColumn[] = [
     title: '备注',
     dataIndex: 'remark',
     align: 'left',
-  },
-  {
-    title: '操作',
-    dataIndex: 'option',
-    width: 150,
-    align: 'left',
-    slots: { customRender: 'action' },
   },
 ];
 
@@ -63,7 +50,6 @@ export const propertiesColumns: BasicColumn[] = [
     dataIndex: 'option',
     align: 'center',
     width: 100,
-    slots: { customRender: 'action' },
   },
   {
     title: '名称',
@@ -134,6 +120,10 @@ export const formSchema: FormSchema[] = [
     label: '监听类型',
     required: true,
     component: 'RadioGroup',
+    colProps: { span: 24 },
+    componentProps: {
+      options: []
+    }
   },
   {
     field: 'type',
@@ -141,6 +131,10 @@ export const formSchema: FormSchema[] = [
     required: true,
     component: 'RadioGroup',
     defaultValue: 'class',
+    colProps: { span: 24 },
+    componentProps: {
+      options: []
+    }
   },
   {
     field: 'name',
@@ -158,6 +152,7 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于802！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'value',
@@ -175,6 +170,7 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于300！',
       },
     ],
+    colProps: { span: 24 },
   },
 
   {
@@ -187,6 +183,7 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于255！',
       },
     ],
+    colProps: { span: 24 },
   },
 
 ];
@@ -210,6 +207,7 @@ export const propertiesFormSchema: FormSchema[] = [
     required: true,
     component: 'RadioGroup',
     defaultValue: 'string',
+    colProps: { span: 24 },
   },
   {
     field: 'name',
@@ -217,6 +215,7 @@ export const propertiesFormSchema: FormSchema[] = [
     helpMessage: '监听器的属性名',
     required: true,
     component: 'Input',
+    colProps: { span: 24 },
   },
   {
     field: 'value',
@@ -235,5 +234,6 @@ export const propertiesFormSchema: FormSchema[] = [
         message: '字符长度不能大于255！',
       },
     ],
+    colProps: { span: 24 },
   },
 ];
