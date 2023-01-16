@@ -4,9 +4,12 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.dragon.flow.constant.FlowConstant;
+import com.dragon.flow.enm.privilege.SystemConfigEnum;
+import com.dragon.flow.model.base.SystemConfig;
 import com.dragon.flow.model.org.Role;
 import com.dragon.flow.model.privilege.ACL;
 import com.dragon.flow.model.privilege.User;
+import com.dragon.flow.service.base.ISystemConfigService;
 import com.dragon.flow.service.org.IRoleService;
 import com.dragon.flow.service.privilege.IAclService;
 import com.dragon.flow.service.privilege.IUserService;
@@ -22,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.dragon.flow.constant.FlowConstant.LOGIN_USER;
 
@@ -42,6 +47,8 @@ public class LoginResource extends BaseResource {
     private IAclService aclService;
     @Autowired
     private IRoleService roleService;
+    @Autowired
+    private ISystemConfigService systemConfigService;
 
     /**
      * 用户登出
@@ -92,4 +99,24 @@ public class LoginResource extends BaseResource {
         return returnVo;
     }
 
+    /**
+     * 获取系统配置
+     * @return
+     */
+    @GetMapping(value = "/getSystemSettings", produces = "application/json")
+    public ReturnVo getSystemSettings() {
+        ReturnVo vo = new ReturnVo(ReturnCode.FAIL, "获取配置失败！");
+        try {
+            List<String> snList = Stream.of(SystemConfigEnum.values())
+                    .map(SystemConfigEnum::getSn)
+                    .collect(Collectors.toList());
+            List<SystemConfig> systemConfigs = systemConfigService.getConfigBySns(snList);
+            vo.setData(systemConfigs);
+            vo.setCode(ReturnCode.SUCCESS);
+            vo.setMsg("获取配置成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return vo;
+    }
 }

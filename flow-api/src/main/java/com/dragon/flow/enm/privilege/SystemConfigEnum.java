@@ -1,6 +1,5 @@
 package com.dragon.flow.enm.privilege;
 
-
 /**
  * 系统配置枚举
  *
@@ -9,7 +8,19 @@ package com.dragon.flow.enm.privilege;
  */
 public enum SystemConfigEnum {
 
-    LOGO("logo");
+    // LOGO配置
+    LOGO("logo"),
+    // 系统图标
+    FAVICON("favicon"),
+    // 登录页背景
+    LOGIN_BG("login_bg"),
+    // 系统名称
+    SYSTEM_NAME("system_name")
+    ;
+
+    public String getSn() {
+        return sn;
+    }
 
     private String sn;
 

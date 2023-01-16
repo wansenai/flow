@@ -46,7 +46,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { computed } from 'vue';
+  import { computed, onMounted } from 'vue';
   import { AppLogo } from '/@/components/Application';
   import { AppLocalePicker, AppDarkModeToggle } from '/@/components/Application';
   import LoginForm from './LoginForm.vue';
@@ -58,11 +58,18 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useLocaleStore } from '/@/store/modules/locale';
+  import {getSystemSettings} from "/@/api/sys/user";
 
   defineProps({
     sessionTimeout: {
       type: Boolean,
     },
+  });
+
+  onMounted(()=>{
+    getSystemSettings().then(res=>{
+      // alert(JSON.stringify(res));
+    });
   });
 
   const globSetting = useGlobSetting();

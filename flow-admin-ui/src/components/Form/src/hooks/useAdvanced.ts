@@ -1,6 +1,6 @@
 import type { ColEx } from '../types';
 import type { AdvanceState } from '../types/hooks';
-import type { ComputedRef, Ref } from 'vue';
+import { ComputedRef, getCurrentInstance, Ref, shallowReactive } from 'vue';
 import type { FormProps, FormSchema } from '../types/form';
 import { computed, unref, watch } from 'vue';
 import { isBoolean, isFunction, isNumber, isObject } from '/@/utils/is';
@@ -26,6 +26,8 @@ export default function ({
   formModel,
   defaultValueRef,
 }: UseAdvancedContext) {
+  const vm = getCurrentInstance();
+
   const { realWidthRef, screenEnum, screenRef } = useBreakpoint();
 
   const getEmptySpan = computed((): number => {
@@ -111,6 +113,8 @@ export default function ({
     }
   }
 
+  const fieldsIsAdvancedMap = shallowReactive({});
+
   function updateAdvanced() {
     let itemColSum = 0;
     let realItemColSum = 0;
@@ -146,9 +150,12 @@ export default function ({
         if (isAdvanced) {
           realItemColSum = itemColSum;
         }
-        schema.isAdvanced = isAdvanced;
+        fieldsIsAdvancedMap[schema.field] = isAdvanced;
       }
     }
+
+    // 确保页面发送更新
+    vm?.proxy?.$forceUpdate();
 
     advanceState.actionSpan = (realItemColSum % BASIC_COL_LEN) + unref(getEmptySpan);
 
@@ -161,5 +168,5 @@ export default function ({
     advanceState.isAdvanced = !advanceState.isAdvanced;
   }
 
-  return { handleToggleAdvanced };
+  return { handleToggleAdvanced, fieldsIsAdvancedMap };
 }

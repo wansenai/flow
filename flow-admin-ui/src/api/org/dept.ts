@@ -14,6 +14,12 @@ enum Api {
 export const getDepts = (params?: DeptSearchParams) => {
   const result = defHttp.post<DeptInfo>({url: Api.DeptList, params});
   return Promise.resolve(result).then((res:any) => {
+    res.forEach(item=>{
+      item.key = item.id;
+      item.value = item.id;
+      item.title = item.shortName;
+      item.icon = 'bx:building-house';
+    });
     const treeData = listToTree(res, {id: 'id', children: 'children', pid: 'pid'});
     forEach(treeData, (node) => {
       if (node.children.length === 0) {
@@ -27,6 +33,12 @@ export const getDepts = (params?: DeptSearchParams) => {
 export const getOrgTree = () => {
   const result = defHttp.get<DeptInfo>({url: Api.GetOrgTree});
   return Promise.resolve(result).then((res:any) => {
+    res.forEach(item=>{
+      item.key = item.id;
+      item.value = item.id;
+      item.title = item.shortName;
+      item.icon = 'bx:building-house';
+    });
     const treeData = listToTree(res, {id: 'id', children: 'children', pid: 'pid'});
     forEach(treeData, (node) => {
       if (node.children.length === 0) {

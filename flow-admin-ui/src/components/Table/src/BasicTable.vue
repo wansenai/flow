@@ -28,6 +28,10 @@
       <template #headerCell="{ column }">
         <HeaderCell :column="column" />
       </template>
+      <!-- 增加对antdv3.x兼容 -->
+      <template #bodyCell="data">
+        <slot name="bodyCell" v-bind="data || {}"></slot>
+      </template>
       <!--      <template #[`header-${column.dataIndex}`] v-for="(column, index) in columns" :key="index">-->
       <!--        <HeaderCell :column="column" />-->
       <!--      </template>-->
@@ -71,6 +75,7 @@
   import { warn } from '/@/utils/log';
 
   export default defineComponent({
+    name:'BasicTable',
     components: {
       Table,
       BasicForm,
@@ -132,6 +137,7 @@
         getRowSelection,
         getRowSelectionRef,
         getSelectRows,
+        setSelectedRows,
         clearSelectedRowKeys,
         getSelectRowKeys,
         deleteSelectRowByKey,
@@ -249,9 +255,9 @@
           footer: unref(getFooterProps),
           ...unref(getExpandOption),
         };
-        if (slots.expandedRowRender) {
-          propsData = omit(propsData, 'scroll');
-        }
+        // if (slots.expandedRowRender) {
+        //   propsData = omit(propsData, 'scroll');
+        // }
 
         propsData = omit(propsData, ['class', 'onChange']);
         return propsData;
@@ -284,6 +290,7 @@
       const tableAction: TableActionType = {
         reload,
         getSelectRows,
+        setSelectedRows,
         clearSelectedRowKeys,
         getSelectRowKeys,
         deleteSelectRowByKey,

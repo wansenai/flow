@@ -10,7 +10,7 @@ import { checkStatus } from './checkStatus';
 import { useGlobSetting } from '/@/hooks/setting';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { RequestEnum, ResultEnum, ContentTypeEnum } from '/@/enums/httpEnum';
-import { isString } from '/@/utils/is';
+import { isString, isUnDef, isNull, isEmpty } from '/@/utils/is';
 import { getToken } from '/@/utils/auth';
 import { setObjToUrlParams, deepMerge } from '/@/utils';
 import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
@@ -18,19 +18,20 @@ import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 import { AxiosRetry } from '/@/utils/http/axios/axiosRetry';
+import axios from 'axios';
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
-const { createMessage, createErrorModal } = useMessage();
+const { createMessage, createErrorModal, createSuccessModal } = useMessage();
 
 /**
  * @description: 数据处理，方便区分多种处理方式
  */
 const transform: AxiosTransform = {
   /**
-   * @description: 处理请求数据。如果数据不是预期格式，可直接抛出错误
+   * @description: 处理响应数据。如果数据不是预期格式，可直接抛出错误
    */
-  transformRequestHook: (res: AxiosResponse<Result>, options: RequestOptions) => {
+  transformResponseHook: (res: AxiosResponse<Result>, options: RequestOptions) => {
     const { t } = useI18n();
     const { isTransformResponse, isReturnNativeResponse } = options;
     // 是否返回原生响应头 比如：需要获取响应头时使用该属性
@@ -50,12 +51,24 @@ const transform: AxiosTransform = {
       throw new Error(t('sys.api.apiRequestFailed'));
     }
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, msg } = data;
+    const { code, msg: message } = data;
+    const result = data.data;
 
     // 这里逻辑可以根据项目进行修改
     const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
     if (hasSuccess) {
-      return data.data;
+      let successMsg = message;
+
+      if (isNull(successMsg) || isUnDef(successMsg) || isEmpty(successMsg)) {
+        successMsg = t(`sys.api.operationSuccess`);
+      }
+
+      if (options.successMessageMode === 'modal') {
+        createSuccessModal({ title: t('sys.api.successTip'), content: successMsg });
+      } else if (options.successMessageMode === 'message') {
+        createMessage.success(successMsg);
+      }
+      return result;
     }
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作
@@ -69,12 +82,12 @@ const transform: AxiosTransform = {
         userStore.logout(true);
         break;
       default:
-        if (msg) {
-          timeoutMsg = msg;
+        if (message) {
+          timeoutMsg = message;
         }
     }
 
-    // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
+    // errorMessageMode='modal'的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
     if (options.errorMessageMode === 'modal') {
       createErrorModal({ title: t('sys.api.errorTip'), content: timeoutMsg });
@@ -111,7 +124,11 @@ const transform: AxiosTransform = {
     } else {
       if (!isString(params)) {
         formatDate && formatRequestDate(params);
-        if (Reflect.has(config, 'data') && config.data && Object.keys(config.data).length > 0) {
+        if (
+          Reflect.has(config, 'data') &&
+          config.data &&
+          (Object.keys(config.data).length > 0 || config.data instanceof FormData)
+        ) {
           config.data = data;
           config.params = params;
         } else {
@@ -169,6 +186,10 @@ const transform: AxiosTransform = {
     const err: string = error?.toString?.() ?? '';
     let errMessage = '';
 
+    if (axios.isCancel(error)) {
+      return Promise.reject(error);
+    }
+
     try {
       if (code === 'ECONNABORTED' && message.indexOf('timeout') !== -1) {
         errMessage = t('sys.api.apiTimeoutMessage');
@@ -204,6 +225,7 @@ const transform: AxiosTransform = {
 
 function createAxios(opt?: Partial<CreateAxiosOptions>) {
   return new VAxios(
+    // 深度合并
     deepMerge(
       {
         // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes

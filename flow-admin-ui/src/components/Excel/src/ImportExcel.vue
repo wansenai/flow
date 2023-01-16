@@ -31,6 +31,11 @@
         type: Number,
         default: 8,
       },
+      // 是否直接返回选中文件
+      isReturnFile: {
+        type: Boolean,
+        default: false,
+      },
     },
     emits: ['success', 'error'],
     setup(props, { emit }) {
@@ -137,9 +142,18 @@
        * @description: 触发选择文件管理器
        */
       function handleInputClick(e: Event) {
-        const files = e && (e.target as HTMLInputElement).files;
+        const target = e && (e.target as HTMLInputElement);
+        const files = target?.files;
         const rawFile = files && files[0]; // only setting files[0]
+
+        target.value = '';
+
         if (!rawFile) return;
+
+        if (props.isReturnFile) {
+          emit('success', rawFile);
+          return;
+        }
         upload(rawFile);
       }
 

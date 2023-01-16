@@ -14,7 +14,7 @@
   import { propTypes } from '/@/utils/propTypes';
   import { isArray, isBoolean, isFunction, isNumber, isString } from '/@/utils/is';
   import { createPlaceholderMessage } from './helper';
-  import { omit, pick, set } from 'lodash-es';
+  import { pick, set } from 'lodash-es';
   import { treeToList } from '/@/utils/helper/treeHelper';
   import { Spin } from 'ant-design-vue';
 
@@ -82,17 +82,36 @@
         if (component === 'ApiSelect') {
           apiSelectProps.cache = true;
         }
-
+        upEditDynamicDisabled(record, column, value);
         return {
           size: 'small',
           getPopupContainer: () => unref(table?.wrapRef.value) ?? document.body,
           placeholder: createPlaceholderMessage(unref(getComponent)),
           ...apiSelectProps,
-          ...omit(compProps, 'onChange'),
+          ...compProps,
           [valueField]: value,
+          disabled: unref(getDisable),
         } as any;
       });
-
+      function upEditDynamicDisabled(record, column, value) {
+        if (!record) return false;
+        const { key, dataIndex } = column;
+        if (!key && !dataIndex) return;
+        const dataKey = (dataIndex || key) as string;
+        set(record, dataKey, value);
+      }
+      const getDisable = computed(() => {
+        const { editDynamicDisabled } = props.column;
+        let disabled = false;
+        if (isBoolean(editDynamicDisabled)) {
+          disabled = editDynamicDisabled;
+        }
+        if (isFunction(editDynamicDisabled)) {
+          const { record } = props;
+          disabled = editDynamicDisabled({ record });
+        }
+        return disabled;
+      });
       const getValues = computed(() => {
         const { editValueMap } = props.column;
 
@@ -103,7 +122,7 @@
         }
 
         const component = unref(getComponent);
-        if (!component.includes('Select')) {
+        if (!component.includes('Select') && !component.includes('Radio')) {
           return value;
         }
 
@@ -134,7 +153,7 @@
       });
 
       watchEffect(() => {
-        defaultValueRef.value = props.value;
+        // defaultValueRef.value = props.value;
         currentValueRef.value = props.value;
       });
 
@@ -165,7 +184,7 @@
           currentValueRef.value = e;
         } else if (e?.target && Reflect.has(e.target, 'value')) {
           currentValueRef.value = (e as ChangeEvent).target.value;
-        } else if (isString(e) || isBoolean(e) || isNumber(e)) {
+        } else if (isString(e) || isBoolean(e) || isNumber(e) || isArray(e)) {
           currentValueRef.value = e;
         }
         const onChange = unref(getComponentProps)?.onChange;
@@ -176,10 +195,10 @@
           value: unref(currentValueRef),
           record: toRaw(props.record),
         });
-        handleSubmiRule();
+        handleSubmitRule();
       }
 
-      async function handleSubmiRule() {
+      async function handleSubmitRule() {
         const { column, record } = props;
         const { editRule } = column;
         const currentValue = unref(currentValueRef);
@@ -209,7 +228,7 @@
 
       async function handleSubmit(needEmit = true, valid = true) {
         if (valid) {
-          const isPass = await handleSubmiRule();
+          const isPass = await handleSubmitRule();
           if (!isPass) return false;
         }
 
@@ -321,7 +340,7 @@
 
       if (props.record) {
         initCbs('submitCbs', handleSubmit);
-        initCbs('validCbs', handleSubmiRule);
+        initCbs('validCbs', handleSubmitRule);
         initCbs('cancelCbs', handleCancel);
 
         if (props.column.dataIndex) {
@@ -385,9 +404,8 @@
                     column: this.column,
                     index: this.index,
                   })
-                : this.getValues
-                ? this.getValues
-                : '\u00A0'}
+                : (this.getValues ?? "\u00A0")
+                }
             </div>
             {!this.column.editRow && <FormOutlined class={`${this.prefixCls}__normal-icon`} />}
           </div>

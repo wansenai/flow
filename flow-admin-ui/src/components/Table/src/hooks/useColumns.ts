@@ -1,7 +1,7 @@
 import type { BasicColumn, BasicTableProps, CellFormat, GetColumnsParams } from '../types/table';
 import type { PaginationProps } from '../types/pagination';
 import type { ComputedRef } from 'vue';
-import { computed, Ref, ref, toRaw, unref, watch } from 'vue';
+import { computed, Ref, ref, reactive, toRaw, unref, watch } from 'vue';
 import { renderEditCell } from '../components/editable';
 import { usePermission } from '/@/hooks/web/usePermission';
 import { useI18n } from '/@/hooks/web/useI18n';
@@ -170,7 +170,7 @@ export function useColumns(
         if ((edit || editRow) && !isDefaultAction) {
           column.customRender = renderEditCell(column);
         }
-        return column;
+        return reactive(column);
       });
   });
 
@@ -213,12 +213,12 @@ export function useColumns(
     if (!isString(firstColumn) && !isArray(firstColumn)) {
       columnsRef.value = columns as BasicColumn[];
     } else {
-      const columnKeys = (columns as (string | string[])[]).map(m => m.toString());
+      const columnKeys = (columns as (string | string[])[]).map((m) => m.toString());
       const newColumns: BasicColumn[] = [];
       cacheColumns.forEach((item) => {
         newColumns.push({
           ...item,
-          defaultHidden: !columnKeys.includes(item.dataIndex?.toString() || (item.key as string))
+          defaultHidden: !columnKeys.includes(item.dataIndex?.toString() || (item.key as string)),
         });
       });
       // Sort according to another array
@@ -298,7 +298,7 @@ export function formatCell(text: string, format: CellFormat, record: Recordable,
   try {
     // date type
     const DATE_FORMAT_PREFIX = 'date|';
-    if (isString(format) && format.startsWith(DATE_FORMAT_PREFIX)) {
+    if (isString(format) && format.startsWith(DATE_FORMAT_PREFIX) && text) {
       const dateFormat = format.replace(DATE_FORMAT_PREFIX, '');
 
       if (!dateFormat) {
