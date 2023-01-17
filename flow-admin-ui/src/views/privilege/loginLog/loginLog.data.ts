@@ -78,7 +78,7 @@ export const formSchema: FormSchema[] = [
     required: false,
     component: 'Input',
     show: true,
-    
+    colProps: { span: 24 },
   },
   {
     field: 'operationId',
@@ -86,7 +86,7 @@ export const formSchema: FormSchema[] = [
     required: false,
     component: 'Input',
     show: true,
-    
+    colProps: { span: 24 },
   },
   {
     field: 'operationUsername',
@@ -103,6 +103,7 @@ export const formSchema: FormSchema[] = [
         max: 32,
         message: '字符长度不能大于32！',
       }],
+    colProps: { span: 24 },
   },
   {
     field: 'operationPerson',
@@ -110,7 +111,7 @@ export const formSchema: FormSchema[] = [
     required: false,
     component: 'Input',
     show: true,
-    
+    colProps: { span: 24 },
   },
   {
     field: 'operationContent',
@@ -118,7 +119,7 @@ export const formSchema: FormSchema[] = [
     required: false,
     component: 'Input',
     show: true,
-    
+    colProps: { span: 24 },
   },
   {
     field: 'operationTime',
@@ -126,6 +127,6 @@ export const formSchema: FormSchema[] = [
     required: true,
     component: 'DatePicker',
     show: true,
-    
+    colProps: { span: 24 },
   }
 ];

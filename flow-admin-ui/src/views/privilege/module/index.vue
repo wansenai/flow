@@ -6,40 +6,42 @@
           <a-button type="primary" @click="handleCreate"> 新增 </a-button>
         </Authority>
       </template>
-      <template #action="{ record }">
-        <TableAction
-          :actions="[
-            {
-              auth: 'Module:0',
-              tooltip: '添加子菜单',
-              icon: 'ant-design:plus-outlined',
-              onClick: handleCreateChild.bind(null, record),
-            },
-            {
-              auth: 'Module:6',
-              tooltip: '设置权限值',
-              icon: 'ant-design:setting-outlined',
-              onClick: handleEditPValue.bind(null, record),
-            },
-            {
-              auth: 'Module:2',
-              tooltip: '修改',
-              icon: 'clarity:note-edit-line',
-              onClick: handleEdit.bind(null, record),
-            },
-            {
-              auth: 'Module:3',
-              tooltip: '删除',
-              icon: 'ant-design:delete-outlined',
-              color: 'error',
-              onClick: (e)=>{e.stopPropagation();},
-              popConfirm: {
-                title: '是否确认删除',
-                confirm: handleDelete.bind(null, record),
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <TableAction
+            :actions="[
+              {
+                auth: 'Module:0',
+                tooltip: '添加子菜单',
+                icon: 'ant-design:plus-outlined',
+                onClick: handleCreateChild.bind(null, record),
               },
-            },
-          ]"
-        />
+              {
+                auth: 'Module:6',
+                tooltip: '设置权限值',
+                icon: 'ant-design:setting-outlined',
+                onClick: handleEditPValue.bind(null, record),
+              },
+              {
+                auth: 'Module:2',
+                tooltip: '修改',
+                icon: 'clarity:note-edit-line',
+                onClick: handleEdit.bind(null, record),
+              },
+              {
+                auth: 'Module:3',
+                tooltip: '删除',
+                icon: 'ant-design:delete-outlined',
+                color: 'error',
+                onClick: (e)=>{e.stopPropagation();},
+                popConfirm: {
+                  title: '是否确认删除',
+                  confirm: handleDelete.bind(null, record),
+                },
+              },
+            ]"
+          />
+        </template>
       </template>
     </BasicTable>
 
@@ -88,7 +90,6 @@
           width: 170,
           title: '操作',
           dataIndex: 'action',
-          slots: { customRender: 'action' },
         },
       });
       nextTick(()=>{

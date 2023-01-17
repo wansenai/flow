@@ -6,39 +6,41 @@
           <a-button type="primary" @click="handleCreate"> 新增</a-button>
         </Authority>
       </template>
-      <template #action="{ record }">
-        <TableAction
-          :actions="[
-            {
-              auth: this.$options.name+':'+PerEnum.AUTH,
-              tooltip: '分配权限',
-              icon: 'ant-design:safety',
-              onClick: handleAcl.bind(null, record),
-            },
-            {
-              auth: this.$options.name+':'+PerEnum.AUTH,
-              tooltip: '分配用户',
-              icon: 'ant-design:user-add',
-              onClick: handleAddUser.bind(null, record),
-            },
-            {
-              // auth: this.$options.name+':'+PerEnum.UPDATE,
-              tooltip: '修改',
-              icon: 'clarity:note-edit-line',
-              onClick: handleEdit.bind(null, record),
-            },
-            {
-              // auth: this.$options.name+':'+PerEnum.DELETE,
-              tooltip: '删除',
-              icon: 'ant-design:delete-outlined',
-              color: 'error',
-              popConfirm: {
-                title: '是否确认删除',
-                confirm: handleDelete.bind(null, record),
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <TableAction
+            :actions="[
+              {
+                auth: this.$options.name+':'+PerEnum.AUTH,
+                tooltip: '分配权限',
+                icon: 'ant-design:safety',
+                onClick: handleAcl.bind(null, record),
               },
-            },
-          ]"
-        />
+              {
+                auth: this.$options.name+':'+PerEnum.AUTH,
+                tooltip: '分配用户',
+                icon: 'ant-design:user-add',
+                onClick: handleAddUser.bind(null, record),
+              },
+              {
+                // auth: this.$options.name+':'+PerEnum.UPDATE,
+                tooltip: '修改',
+                icon: 'clarity:note-edit-line',
+                onClick: handleEdit.bind(null, record),
+              },
+              {
+                // auth: this.$options.name+':'+PerEnum.DELETE,
+                tooltip: '删除',
+                icon: 'ant-design:delete-outlined',
+                color: 'error',
+                popConfirm: {
+                  title: '是否确认删除',
+                  confirm: handleDelete.bind(null, record),
+                },
+              },
+            ]"
+          />
+        </template>
       </template>
     </BasicTable>
 
@@ -83,12 +85,10 @@
         useSearchForm: true,
         bordered: true,
         showIndexColumn: false,
-        rowSelection:false,
         actionColumn: {
           width: 160,
           title: '操作',
           dataIndex: 'action',
-          slots: {customRender: 'action'},
           fixed: false,
         },
       });

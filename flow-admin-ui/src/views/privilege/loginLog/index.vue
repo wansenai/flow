@@ -6,21 +6,23 @@
           <a-button type="danger" @click="handleDeleteAll"> 删除 </a-button>
         </Authority>
       </template>
-      <template #action="{ record }">
-        <TableAction
-          :actions="[
-            {
-              tooltip: '删除',
-              auth: this.$options.name+':'+PerEnum.DELETE,
-              icon: 'ant-design:delete-outlined',
-              color: 'error',
-              popConfirm: {
-                title: '是否确认删除',
-                confirm: handleDelete.bind(null, record),
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <TableAction
+            :actions="[
+              {
+                tooltip: '删除',
+                auth: this.$options.name+':'+PerEnum.DELETE,
+                icon: 'ant-design:delete-outlined',
+                color: 'error',
+                popConfirm: {
+                  title: '是否确认删除',
+                  confirm: handleDelete.bind(null, record),
+                },
               },
-            },
-          ]"
-        />
+            ]"
+          />
+        </template>
       </template>
     </BasicTable>
     <LoginLogModal @register="registerModal" @success="handleSuccess" />
@@ -66,7 +68,6 @@
           width: 60,
           title: '操作',
           dataIndex: 'action',
-          slots: { customRender: 'action' },
           fixed: false,
         },
       });

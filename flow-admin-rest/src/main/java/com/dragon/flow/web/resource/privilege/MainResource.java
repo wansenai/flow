@@ -14,12 +14,14 @@ import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -48,12 +50,13 @@ public class MainResource extends BaseResource {
      * @return
      */
     @GetMapping(value = "/getLoginUser", produces = "application/json")
-    public ReturnVo<User> getLoginInfoVo() {
+    public ReturnVo<User> getLoginInfoVo(HttpServletResponse response) {
         ReturnVo<User> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         if (StpUtil.isLogin()) {
             returnVo.setData(this.getLoginUser());
         } else {
             returnVo = new ReturnVo<>(ReturnCode.FAIL, "登录账号过期!");
+            response.setStatus(HttpStatus.SC_UNAUTHORIZED);
         }
         return returnVo;
     }

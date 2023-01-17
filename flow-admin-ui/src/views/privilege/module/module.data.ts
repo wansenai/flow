@@ -114,7 +114,8 @@ export const formSchema: FormSchema[] = [
     component: 'IconPicker',
     componentProps:{
       // mode: 'svg'
-    }
+    },
+    colProps: { span: 24 },
   },
   {
     field: 'name',
@@ -132,12 +133,14 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于32！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'sn',
     label: '标识',
     required: true,
     component: 'Input',
+    colProps: { span: 24 },
   },
   {
     field: 'url',
@@ -159,6 +162,7 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于128！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'component',
@@ -180,6 +184,7 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于128！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'orderNo',
@@ -195,7 +200,8 @@ export const formSchema: FormSchema[] = [
     componentProps:{
       checkedChildren: '启用',
       unCheckedChildren: '禁用'
-    }
+    },
+    colProps: { span: 24 },
   },
   {
     field: 'showStatus',
@@ -206,7 +212,8 @@ export const formSchema: FormSchema[] = [
     componentProps:{
       checkedChildren: '显示',
       unCheckedChildren: '隐藏'
-    }
+    },
+    colProps: { span: 24 },
   },
 ];
 

@@ -66,9 +66,10 @@ export default [
   {
     url: '/dragon-api/getUserInfoById',
     method: 'get',
-    response: ({ query }) => {
-      const { userId } = query;
-      const checkUser = createFakeUserList().find((item) => item.userId === userId);
+    response: (request: requestParams) => {
+      const token = getRequestToken(request);
+      if (!token) return resultError('Invalid token');
+      const checkUser = createFakeUserList().find((item) => item.token === token);
       if (!checkUser) {
         return resultError('The corresponding user information was not obtained!');
       }
