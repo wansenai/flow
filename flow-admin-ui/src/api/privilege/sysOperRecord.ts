@@ -1,6 +1,5 @@
 import {defHttp} from '/@/utils/http/axios';
-import {BasicPageSearchParams} from "/@/api/model/baseModel";
-import {LoginLogInfo, LoginLogParams, LoginLogPageListGetResultModel, LoginLogPageParams} from "./model/loginLogModel";
+import {LoginLogInfo, LoginLogPageParams} from "./model/loginLogModel";
 
 enum Api {
   PageList = '/flow/log/sysOperRecord/getPagerModel',

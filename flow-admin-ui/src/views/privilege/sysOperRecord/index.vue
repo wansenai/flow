@@ -111,7 +111,7 @@
           content: "确定要删除所选行吗？",
           onOk: async () => {
             const ids = selectedRows.map(item=>item.id);
-            await deleteByIds(ids).then(() => {
+            deleteByIds(ids).then(() => {
               reload();
             });
           }

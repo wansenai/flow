@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @program: flow
  * @description: 系统操作日志接口
@@ -36,6 +38,19 @@ public class SysOperRecordResource extends BaseResource<SysOperRecord> {
         ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         PagerModel<SysOperRecord> pm = sysOperRecordService.getPagerModelByWrapper(params.getEntity(), params.getQuery());
         returnVo.setData(pm);
+        return returnVo;
+    }
+
+    /**
+     * 删除
+     *
+     * @param ids
+     * @return
+     */
+    @PostMapping(value = "/delete", produces = "application/json")
+    public ReturnVo<String> delete(@RequestBody List<String> ids) {
+        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        sysOperRecordService.removeByIds(ids);
         return returnVo;
     }
 }
