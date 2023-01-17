@@ -1,15 +1,17 @@
 package com.dragon.flow.model.log;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @program: prodflow
@@ -33,10 +35,19 @@ public class SysOperRecord implements Serializable {
      * @see com.dragon.flow.enm.SourceEnum
      */
     private String source;
-    private LocalDateTime dateTime;
+    @JsonFormat(timezone = "GMT+8",pattern="yyyy-MM-dd HH:mm:ss")
+    private Date dateTime;
     private String ip;
     private String date;
     private Integer year;
     private Integer month;
     private Integer day;
+
+    @JsonFormat(timezone = "GMT+8",pattern="yyyy-MM-dd HH:mm:ss")
+    @TableField(exist = false)
+    private Date startTime;
+
+    @JsonFormat(timezone = "GMT+8",pattern="yyyy-MM-dd HH:mm:ss")
+    @TableField(exist = false)
+    private Date endTime;
 }

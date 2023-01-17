@@ -11,6 +11,11 @@
           <TableAction
             :actions="[
               {
+                tooltip: '详情',
+                icon: 'ant-design:file-search-outlined',
+                onClick: handleDetail.bind(null, record),
+              },
+              {
                 tooltip: '删除',
                 auth: this.$options.name+':'+PerEnum.DELETE,
                 icon: 'ant-design:delete-outlined',
@@ -18,8 +23,8 @@
                 popConfirm: {
                   title: '是否确认删除',
                   confirm: handleDelete.bind(null, record),
-                },
-              },
+                }
+              }
             ]"
           />
         </template>
@@ -32,22 +37,22 @@
   import { defineComponent } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
-  import { columns, searchFormSchema } from './loginLog.data';
-  import LoginLogModal from './LoginLogModal.vue';
-  import { getLoginLogListByPage, deleteByIds } from '/@/api/privilege/loginLog';
+  import { columns, searchFormSchema } from './sysOperRecord.data';
+  import LoginLogModal from './SysOperRecordModal.vue';
+  import { getListByPage, deleteByIds } from '/@/api/privilege/sysOperRecord';
   import {useMessage} from "/@/hooks/web/useMessage";
   import {PerEnum} from "/@/enums/perEnum";
   import {Authority} from "/@/components/Authority";
 
   export default defineComponent({
-    name: 'LoginLog',
+    name: 'SysOperRecord',
     components: { BasicTable, TableAction, LoginLogModal, Authority },
     setup() {
       const { createMessage, createConfirm } = useMessage();
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps }] = useModal();
       const [registerTable, { reload, getSelectRows }] = useTable({
         title: '列表',
-        api: getLoginLogListByPage,
+        api: getListByPage,
         columns,
         formConfig: {
           labelWidth: 120,
@@ -78,10 +83,14 @@
         });
       }
 
-      function handleEdit(record: Recordable) {
+      function handleDetail(record: Recordable) {
         openModal(true, {
           record,
           isUpdate: true,
+        });
+        setModalProps({
+          title: '查看详情',
+          width: 850
         });
       }
 
@@ -118,7 +127,7 @@
         registerTable,
         registerModal,
         handleCreate,
-        handleEdit,
+        handleDetail,
         handleDelete,
         handleDeleteAll,
         handleSuccess,
