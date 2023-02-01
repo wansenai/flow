@@ -197,11 +197,12 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
 
     @Override
     public ReturnVo<String> publishBpmn(String modelId) {
-        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.FAIL, "发布失败！");
         Model model = modelService.getModel(modelId);
         BpmnModel bpmnModel = modelService.getBpmnModel(model);
-        returnVo = this.validationErrors(bpmnModel);
-        if (!returnVo.isSuccess()) {
+        ReturnVo<String> validReturnVo = this.validationErrors(bpmnModel);
+        if (!validReturnVo.isSuccess()) {
+            returnVo.setMsg(validReturnVo.getMsg());
             return returnVo;
         }
         LambdaQueryWrapper<ModelInfo> modelInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -216,11 +217,13 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
                         .set(ModelInfo::getExtendStatus, ModelFormStatusEnum.YFB.getStatus())
                         .eq(ModelInfo::getModelId, modelId);
                 modelInfoService.update(modelInfoLambdaUpdateWrapper);
+                returnVo.setCode(ReturnCode.SUCCESS);
+                returnVo.setMsg("发布成功！");
             } else {
-                return statusReturnVo;
+                returnVo.setMsg(statusReturnVo.getMsg());
             }
         } else {
-            returnVo = new ReturnVo<>(ReturnCode.FAIL, "没有找到对应的模型，请确认!");
+            returnVo.setMsg("没有找到对应的模型，请确认!");
         }
         return returnVo;
     }
