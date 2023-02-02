@@ -1,19 +1,17 @@
 package com.dragon.flow.service.flowable.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.dragon.flow.model.flowable.FlowListener;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dragon.flow.mapper.flowable.IFlowListenerMapper;
+import com.dragon.flow.model.flowable.FlowListener;
 import com.dragon.flow.model.flowable.FlowListenerParam;
 import com.dragon.flow.service.flowable.IFlowListenerParamService;
 import com.dragon.flow.service.flowable.IFlowListenerService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.FlowList;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import java.util.List;
 
 /**
