@@ -119,7 +119,9 @@
       }
 
       function handleSuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
 
       return {

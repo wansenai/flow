@@ -265,11 +265,15 @@ export default defineComponent({
     }
 
     function handleSuccess() {
-      reload();
+      setTimeout(()=>{
+        reload();
+      }, 200);
     }
 
     function handleCloseFunc() {
-      reload();
+      setTimeout(()=>{
+        reload();
+      }, 200);
       return Promise.resolve(true);
     }
 

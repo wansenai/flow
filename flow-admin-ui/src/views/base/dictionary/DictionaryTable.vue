@@ -121,7 +121,9 @@ import DictionaryModal from './DictionaryModal.vue';
       }
 
       function handleSuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
       function clickDictionary(e) {
         setSelectedRowKeys([e.id]);

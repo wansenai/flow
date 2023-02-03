@@ -144,7 +144,9 @@
       }
 
       async function handleSuccess() {
-        await reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
         setTimeout(()=>{
           expandAll();
         }, 100)

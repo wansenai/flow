@@ -129,10 +129,14 @@
       }
 
       function handleSuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
       function handleSetAccountSuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
       function handleSetAclSuccess() {
         reload();

@@ -142,7 +142,9 @@
       }
 
       function handleSuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
       function handlePasswordSuccess() {
         reload();

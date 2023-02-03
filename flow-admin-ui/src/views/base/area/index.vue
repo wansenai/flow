@@ -34,7 +34,7 @@
         </template>
       </template>
     </BasicTable>
-    <AreaModal @register="registerModal" />
+    <AreaModal @register="registerModal" @success="handleSuccess"/>
   </div>
 </template>
 <script lang="ts">
@@ -122,7 +122,9 @@
       }
 
       function handleSuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
 
       return {

@@ -183,7 +183,9 @@ import {defineComponent, ref} from 'vue';
       }
 
       function handleSuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
 
       return {

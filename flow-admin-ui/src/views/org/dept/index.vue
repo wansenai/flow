@@ -124,7 +124,9 @@
       }
 
       function handleSuccess() {
-        reload();
+        setTimeout(()=>{
+          reloadData();
+        }, 200);
       }
 
       function handleSelect(node: any) {

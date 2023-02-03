@@ -107,7 +107,9 @@
       }
 
       function handleSuccess() {
-        handleSelect(currentTreeNode.value);
+        setTimeout(()=>{
+          handleSelect(currentTreeNode.value);
+        }, 200);
       }
 
       function handleSelect(node:any) {
