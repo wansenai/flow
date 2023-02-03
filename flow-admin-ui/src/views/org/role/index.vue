@@ -31,6 +31,7 @@
                 popConfirm: {
                   title: '是否确认删除',
                   confirm: handleDelete.bind(null, record),
+                  placement: 'left'
                 },
               },
             ]"
@@ -79,6 +80,7 @@
                     popConfirm: {
                       title: '是否确认删除',
                       confirm: handleDeletePersonal.bind(null, record),
+                      placement: 'left'
                     },
                   },
                 ]"

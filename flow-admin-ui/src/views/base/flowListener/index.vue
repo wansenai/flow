@@ -78,6 +78,7 @@
                     popConfirm: {
                       title: '是否确认删除',
                       confirm: handleDeleteProperty.bind(null, rec),
+                      placement: 'left'
                     },
                   },
                 ]"

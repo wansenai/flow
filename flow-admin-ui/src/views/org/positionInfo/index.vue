@@ -21,6 +21,7 @@
                 popConfirm: {
                   title: '是否确认删除',
                   confirm: handleDelete.bind(null, record),
+                  placement: 'left'
                 },
               },
             ]"

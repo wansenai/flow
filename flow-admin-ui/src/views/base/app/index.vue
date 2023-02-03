@@ -26,6 +26,7 @@
                 popConfirm: {
                   title: '是否确认删除',
                   confirm: handleDelete.bind(null, record),
+                  placement: 'left'
                 },
               },
             ]"
@@ -109,15 +110,21 @@
       }
 
       function handleSuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
       function handleCloseFunc() {
-        reload();
-        return Promise.resolve(true);
+        setTimeout(()=>{
+          reload();
+          return Promise.resolve(true);
+        }, 200);
       }
 
       function handleUpdateSecretKeySuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
 
       return {
