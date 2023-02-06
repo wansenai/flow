@@ -9,9 +9,6 @@ export const columns: BasicColumn[] = [
     dataIndex: 'image',
     width: 80,
     align: 'center',
-    slots: {
-      customRender: 'imageRender'
-    },
   },
   {
     title: '用户名',
@@ -97,9 +94,7 @@ export const accountFormSchema: FormSchema[] = [
     label: '用户名',
     component: 'Input',
     required: true,
-    colProps: {
-      span: 16,
-    },
+    colProps: { span: 18 },
   },
   {
     field: 'realName',
@@ -117,9 +112,7 @@ export const accountFormSchema: FormSchema[] = [
         message: '字符长度不能大于20！',
       },
     ],
-    colProps: {
-      span: 16,
-    },
+    colProps: { span: 18 },
   },
   {
     field: 'headImg',
@@ -127,7 +120,7 @@ export const accountFormSchema: FormSchema[] = [
     component: 'Input',
     slot: 'headImg',
     colProps: {
-      style: 'margin: auto;position: absolute;right: -100px;',
+      style: 'margin: auto;position: absolute;right: 0;',
       span: 10,
     },
   },
@@ -142,24 +135,28 @@ export const accountFormSchema: FormSchema[] = [
         { label: '女', value: 0 },
       ],
     },
+    colProps: { span: 18 },
   },
   {
     field: 'userNo',
     label: '工号',
     component: 'Input',
     required: true,
+    colProps: { span: 24 },
   },
   {
     label: '手机',
     field: 'mobile',
     component: 'Input',
     required: true,
+    colProps: { span: 24 },
   },
   {
     label: '邮箱',
     field: 'email',
     component: 'Input',
     required: false,
+    colProps: { span: 24 },
   },
 ];
 
@@ -194,6 +191,7 @@ export const passwordFormSchema: FormSchema[] = [
         message: '长度必需在6-32之间！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'confirmPassword',
@@ -226,6 +224,7 @@ export const passwordFormSchema: FormSchema[] = [
         },
       ];
     },
+    colProps: { span: 24 },
   },
 ]
 
@@ -242,5 +241,6 @@ export const setGroupFormSchema: FormSchema[] = [
     slot: 'groups',
     component: 'Input',
     labelWidth: 50,
+    colProps: { span: 24 },
   },
 ]

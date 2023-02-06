@@ -117,19 +117,20 @@ export function getCustomHeaderColumns(): BasicColumn[] {
     {
       title: 'ID',
       dataIndex: 'id',
+      helpMessage: 'headerHelpMessage方式1',
       width: 200,
     },
     {
       // title: '姓名',
       dataIndex: 'name',
       width: 120,
-      slots: { title: 'customTitle' },
+      // slots: { title: 'customTitle' },
     },
     {
       // title: '地址',
       dataIndex: 'address',
       width: 120,
-      slots: { title: 'customAddress' },
+      // slots: { title: 'customAddress' },
       sorter: true,
     },
 
@@ -256,7 +257,7 @@ export function getFormConfig(): Partial<FormProps> {
   };
 }
 export function getBasicData() {
-  const data: any = (() => {
+  return (() => {
     const arr: any = [];
     for (let index = 0; index < 40; index++) {
       arr.push({
@@ -271,11 +272,10 @@ export function getBasicData() {
     }
     return arr;
   })();
-  return data;
 }
 
 export function getTreeTableData() {
-  const data: any = (() => {
+  return (() => {
     const arr: any = [];
     for (let index = 0; index < 40; index++) {
       arr.push({
@@ -301,6 +301,4 @@ export function getTreeTableData() {
     }
     return arr;
   })();
-
-  return data;
 }

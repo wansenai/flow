@@ -73,14 +73,15 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     show: true,
     rules: [{
-      required: true,
-      whitespace: true,
-      message: '名称不能为空！',
-    },
+        required: true,
+        whitespace: true,
+        message: '名称不能为空！',
+      },
       {
         max: 80,
         message: '字符长度不能大于80！',
       }],
+    colProps: { span: 24 },
   },
   {
     field: 'code',
@@ -88,6 +89,7 @@ export const formSchema: FormSchema[] = [
     required: true,
     component: 'Input',
     show: true,
+    colProps: { span: 24 },
   },
   {
     field: 'typeId',

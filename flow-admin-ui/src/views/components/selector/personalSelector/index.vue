@@ -169,8 +169,8 @@
         }
       }
       .org-tree{
-        .vben-basic-tree{
-          height: 400px;
+        .scrollbar__wrap{
+          height: 365px;
         }
       }
     }

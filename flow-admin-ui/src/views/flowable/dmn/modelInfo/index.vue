@@ -127,6 +127,7 @@
             popConfirm: {
               title: '确认发布吗?',
               confirm: handlePublish.bind(null, record),
+              placement: 'left'
             },
             ifShow: status === 2,
           },
@@ -137,6 +138,7 @@
             popConfirm: {
               title: '确认停用吗?',
               confirm: handleStop.bind(null, record),
+              placement: 'left'
             },
             ifShow: status === 3 || status === 2,
           },
@@ -154,6 +156,7 @@
             popConfirm: {
               title: '是否确认删除',
               confirm: handleDelete.bind(null, record),
+              placement: 'left'
             },
           },
         ];

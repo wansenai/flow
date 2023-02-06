@@ -29,7 +29,7 @@ public class App extends BaseModel implements Serializable {
     //秘钥
     private String secretKey;
     //状态
-    private int status = 1;
+    private Integer status;
     // 系统url前缀 30
     private String url;
     // 系统首页URL

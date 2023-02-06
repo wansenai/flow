@@ -95,6 +95,7 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于64！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'shortName',
@@ -112,12 +113,14 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于64！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'code',
     label: '编码',
     required: true,
     component: 'Input',
+    colProps: { span: 24 },
   },
   {
     field: 'orderNo',
@@ -134,7 +137,8 @@ export const formSchema: FormSchema[] = [
     componentProps:{
       checkedChildren: '启用',
       unCheckedChildren: '禁用'
-    }
+    },
+    colProps: { span: 24 },
   },
   {
     field: 'descr',
@@ -147,5 +151,6 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于64！',
       },
     ],
+    colProps: { span: 24 },
   },
 ];

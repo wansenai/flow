@@ -7,7 +7,7 @@
   import { defineComponent, ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, Rule, useForm } from '/@/components/Form/index';
-  import { deptFormSchema } from './role.data';
+  import { formSchema } from './role.data';
   import { saveOrUpdate, checkEntityExist } from '/@/api/org/role';
   import { getCompanies } from '/@/api/org/company';
   import {CheckExistParams} from "/@/api/model/baseModel";
@@ -22,7 +22,7 @@
 
       const [registerForm, { setFieldsValue, updateSchema, resetFields, validate }] = useForm({
         labelWidth: 100,
-        schemas: deptFormSchema,
+        schemas: formSchema,
         showActionButtonGroup: false,
         actionColOptions: {
           span: 23,

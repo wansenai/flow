@@ -8,8 +8,7 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, Rule, useForm } from '/@/components/Form';
   import { propertiesFormSchema } from './listener.data';
-  import {checkParamEntityExist, saveOrUpdateProperties} from '/@/api/base/flowListener';
-  import {CheckExistParams} from "/@/api/model/baseModel";
+  import {saveOrUpdateProperties} from '/@/api/base/flowListener';
 
   export default defineComponent({
     name: 'ListenerPropertiesModal',
@@ -32,29 +31,6 @@
         schemas: propertiesFormSchema,
         showActionButtonGroup: false,
       });
-
-      const getBaseDynamicRules = (params: CheckExistParams)=>{
-        return [
-          {
-            trigger: 'blur',
-            validator: (_, value)=>{
-              if(value){
-                return checkParamEntityExist({id: params.id, field: params.field, fieldValue: value, fieldName:params.fieldName}).then(res=>{
-                  if(res){
-                    return Promise.resolve();
-                  }else{
-                    return Promise.reject(params.fieldName + "已存在，请修改！")
-                  }
-                }).catch((res)=>{
-                  return Promise.reject(res)
-                })
-              }else{
-                return Promise.resolve();
-              }
-            }
-          }
-        ] as Rule[];
-      }
 
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
         await resetFields();
@@ -90,8 +66,7 @@
                 {
                   max: 80,
                   message: '字符长度不能大于80！',
-                },
-                ...getBaseDynamicRules({id: unref(isUpdate)&&formData&&formData.id||"", field: 'name', fieldValue: "", fieldName:'名称'}),
+                }
               ];
             },
           }

@@ -48,12 +48,14 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于32！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'position',
     label: '位',
     required: true,
     component: 'InputNumber',
+    colProps: { span: 24 },
   },
   {
     field: 'orderNo',
@@ -71,5 +73,6 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于200！',
       },
     ],
+    colProps: { span: 24 },
   },
 ];

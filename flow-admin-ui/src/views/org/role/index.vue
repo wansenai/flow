@@ -9,32 +9,36 @@
       <template #toolbar>
         <a-button type="primary" @click="handleCreate">新增</a-button>
       </template>
-      <template #action="{ record }">
-        <TableAction
-          :actions="[
-            {
-              tooltip: '添加人员',
-              icon: 'ant-design:user-add',
-              onClick: handleAddPersonal.bind(null, record),
-            },
-            {
-              tooltip: '修改',
-              icon: 'clarity:note-edit-line',
-              onClick: handleEdit.bind(null, record),
-            },
-            {
-              tooltip: '删除',
-              icon: 'ant-design:delete-outlined',
-              color: 'error',
-              onClick: (e)=>{e.stopPropagation();},
-              popConfirm: {
-                title: '是否确认删除',
-                confirm: handleDelete.bind(null, record),
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <TableAction
+            :actions="[
+              {
+                tooltip: '添加人员',
+                icon: 'ant-design:user-add',
+                onClick: handleAddPersonal.bind(null, record),
               },
-            },
-          ]"
-        />
+              {
+                tooltip: '修改',
+                icon: 'clarity:note-edit-line',
+                onClick: handleEdit.bind(null, record),
+              },
+              {
+                tooltip: '删除',
+                icon: 'ant-design:delete-outlined',
+                color: 'error',
+                onClick: (e)=>{e.stopPropagation();},
+                popConfirm: {
+                  title: '是否确认删除',
+                  confirm: handleDelete.bind(null, record),
+                  placement: 'left'
+                },
+              },
+            ]"
+          />
+        </template>
       </template>
+
       <template #expandedRowRender="{ record, index, indent, expanded }">
         <BasicTable
           title=""
@@ -47,51 +51,51 @@
           :bordered="true"
           :pagination="false"
           actionColumn="{
-            align: 'center'
-          }"
+              align: 'center'
+            }"
           rowKey="id"
           :canResize="false"
-                    :searchInfo="{roleId: record.id}"
-                    :dataSource="rolePersonalData[record.id]"
-                    class="w-4/4 xl:w-5/5">
+          :searchInfo="{roleId: record.id}"
+          :dataSource="rolePersonalData[record.id]"
+          class="w-4/4 xl:w-5/5">
           <template #customName="{ rec }">
-            <span>
-              姓名
-              <Search
-                v-model:value="searchPersonTxt[record.id]"
-                placeholder="姓名/工号/手机"
-                style="width: 150px"
-                size="small"
-                allowClear
-                @search="(v)=>{onSearchPerson(record.id, v)}"
-              />
-            </span>
+              <span>
+                姓名
+                <Search
+                  v-model:value="searchPersonTxt[record.id]"
+                  placeholder="姓名/工号/手机"
+                  style="width: 150px"
+                  size="small"
+                  allowClear
+                  @search="(v)=>{onSearchPerson(record.id, v)}"
+                />
+              </span>
           </template>
           <template #action="{ record }">
             <TableAction
               :actions="[
-                {
-                  icon: 'ant-design:delete-outlined',
-                  color: 'error',
-                  popConfirm: {
-                    title: '是否确认删除',
-                    confirm: handleDeletePersonal.bind(null, record),
+                  {
+                    icon: 'ant-design:delete-outlined',
+                    color: 'error',
+                    popConfirm: {
+                      title: '是否确认删除',
+                      confirm: handleDeletePersonal.bind(null, record),
+                      placement: 'left'
+                    },
                   },
-                },
-              ]"
+                ]"
             />
           </template>
           <template #setManagerRange="{ record }">
             <div class="manager-range" style="text-align: right;">
               <Space size="small">
-              <Tag color="processing">中国石化</Tag>
-              <Tag color="processing">中国石化</Tag>
+                <Tag color="processing">中国石化</Tag>
+                <Tag color="processing">中国石化</Tag>
               </Space>
               <SettingOutlined class="ant-btn-link"/>
             </div>
           </template>
         </BasicTable>
-
       </template>
 
     </BasicTable>
@@ -254,7 +258,9 @@
       }
 
       function handleSuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
 
       function onSearchPerson(roleId, val) {
@@ -301,11 +307,11 @@
 </script>
 
 <style lang="less">
-  .personal{
-    .ant-table-expanded-row{
-      >td{
-        padding: 0px!important;
-      }
-    }
-  }
+  //.personal{
+  //  .ant-table-expanded-row{
+  //    >td{
+  //      padding: 0px!important;
+  //    }
+  //  }
+  //}
 </style>

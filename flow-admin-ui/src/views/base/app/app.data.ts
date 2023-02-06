@@ -50,6 +50,7 @@ export const columns: BasicColumn[] = [
     title: '排序',
     dataIndex: 'orderNo',
     width: 80,
+    align: 'right',
   },
   {
     title: '备注',
@@ -94,12 +95,14 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于32！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'sn',
     label: '标识',
     required: true,
     component: 'Input',
+    colProps: { span: 24 },
   },
   {
     field: 'url',
@@ -122,6 +125,7 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于40！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'indexUrl',
@@ -144,16 +148,19 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于128！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'image',
     label: '图标',
     required: false,
     component: 'IconPicker',
+    colProps: { span: 24 },
   },
   {
     field: 'orderNo',
     label: '排序号',
+    helpMessage:'数值越小越靠前！',
     required: false,
     component: 'InputNumber',
   },
@@ -166,7 +173,8 @@ export const formSchema: FormSchema[] = [
     componentProps:{
       checkedChildren: '启用',
       unCheckedChildren: '禁用'
-    }
+    },
+    colProps: { span: 24 },
   },
   {
     label: '备注',
@@ -178,8 +186,8 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于500！',
       },
     ],
+    colProps: { span: 24 },
   },
-
 ];
 
 export const secretKeyFormSchema: FormSchema[] = [
@@ -194,11 +202,13 @@ export const secretKeyFormSchema: FormSchema[] = [
     label: '标识',
     component: 'Input',
     slot: 'snSlot',
+    colProps: { span: 24 },
   },
   {
     label: '密钥',
     field: 'secretKey',
     component: 'InputTextArea',
     slot: 'secretKeySlot',
+    colProps: { span: 24 },
   },
 ];

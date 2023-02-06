@@ -58,8 +58,15 @@ public class DictionaryResource extends BaseResource<Dictionary> {
      */
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody Dictionary dictionary) {
-        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        dictionaryService.saveOrUpdate(dictionary, this.getLoginUser());
+        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.FAIL, "保存失败");
+        try {
+            dictionaryService.saveOrUpdate(dictionary, this.getLoginUser());
+            returnVo.setMsg("保存成功！");
+            returnVo.setCode(ReturnCode.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            returnVo.setMsg(e.getMessage());
+        }
         return returnVo;
     }
 

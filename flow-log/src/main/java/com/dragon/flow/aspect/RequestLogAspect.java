@@ -1,8 +1,9 @@
 package com.dragon.flow.aspect;
 
-import com.dragon.flow.schedule.LogQueue;
 import com.dragon.flow.model.log.SysOperRecord;
+import com.dragon.flow.schedule.LogQueue;
 import com.dragon.flow.vo.log.LogVo;
+import com.dragon.tools.common.DateUtil;
 import com.dragon.tools.common.IpUtils;
 import com.dragon.tools.utils.FastJsonUtils;
 import io.swagger.annotations.ApiOperation;
@@ -19,8 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,7 +62,8 @@ public abstract class RequestLogAspect {
         LogVo logVo = this.getSubject(request);
         if (logVo != null){
             String content = FastJsonUtils.objectToJson(operContentMap);
-            LocalDateTime localDateTime = LocalDateTime.now();
+            Date date = new Date();
+
             SysOperRecord sysOperRecord = SysOperRecord.builder()
                     .ip(IpUtils.getRemoteIP(request))
                     .userCode(logVo.getCode())
@@ -69,11 +71,11 @@ public abstract class RequestLogAspect {
                     .source(logVo.getSourceEnum().getSn())
                     .operContent(content)
                     .operType(request.getMethod())
-                    .dateTime(localDateTime)
-                    .date(localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                    .year(localDateTime.getYear())
-                    .month(localDateTime.getMonthValue())
-                    .day(localDateTime.getDayOfMonth())
+                    .dateTime(date)
+                    .date(DateUtil.format(date, "yyyy-MM-dd"))
+                    .year(Calendar.getInstance().get(Calendar.YEAR))
+                    .month(Calendar.getInstance().get(Calendar.MONTH) + 1)
+                    .day(Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
                     .build();
             logQueue.put(FastJsonUtils.objectToJson(sysOperRecord));
         }

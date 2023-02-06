@@ -1,12 +1,12 @@
 <template>
-  <div class="bg-white m-4 mr-0 overflow-hidden">
+  <div class="bg-white mr-0 overflow-hidden">
     <BasicTree
       title="数据分类"
       toolbar
       search
+      treeWrapperClassName="h-[calc(100%-35px)] overflow-auto"
       :clickRowToExpand="false"
       :treeData="treeData"
-      :replaceFields="{ key: 'id', title: 'name' }"
       @select="handleSelect"
     />
   </div>
@@ -31,7 +31,7 @@
 
       function handleSelect(keys: string, e) {
         emit('select', keys[0]);
-        console.log(keys, e);
+        // console.log(keys, e);
       }
 
       onMounted(() => {
