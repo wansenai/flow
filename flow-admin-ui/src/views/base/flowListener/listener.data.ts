@@ -2,7 +2,6 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
-import {Icon} from "/@/components/Icon";
 
 export const columns: BasicColumn[] = [
   {
@@ -96,7 +95,7 @@ export const searchFormSchema: FormSchema[] = [
     colProps: {span: 4, lg:{span: 4, offset:0}, sm:{span: 6, offset: 0}, xs:{span: 8, offset: 0}},
   },
   {
-    field: 'name',
+    field: 'keyword',
     label: '关键字',
     component: 'Input',
     componentProps: {

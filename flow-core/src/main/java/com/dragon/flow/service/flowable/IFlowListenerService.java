@@ -2,6 +2,8 @@ package com.dragon.flow.service.flowable;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dragon.flow.model.flowable.FlowListener;
+import com.dragon.tools.pager.PagerModel;
+import com.dragon.tools.pager.Query;
 
 import java.util.List;
 
@@ -26,6 +28,14 @@ public interface IFlowListenerService extends IService<FlowListener> {
      * @return
      */
     List<FlowListener> getList(FlowListener flowListener) ;
+
+    /**
+     * 分页查询监听器列表
+     * @param flowListener
+     * @param query
+     * @return
+     */
+    PagerModel<FlowListener> getPagerModel(FlowListener flowListener, Query query);
 
     void deleteById(String id) ;
 

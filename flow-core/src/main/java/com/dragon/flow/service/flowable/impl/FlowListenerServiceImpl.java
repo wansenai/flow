@@ -1,12 +1,17 @@
 package com.dragon.flow.service.flowable.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.dragon.flow.constant.FlowConstant;
 import com.dragon.flow.mapper.flowable.IFlowListenerMapper;
 import com.dragon.flow.model.flowable.FlowListener;
 import com.dragon.flow.model.flowable.FlowListenerParam;
 import com.dragon.flow.service.flowable.IFlowListenerParamService;
 import com.dragon.flow.service.flowable.IFlowListenerService;
+import com.dragon.tools.pager.PagerModel;
+import com.dragon.tools.pager.Query;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +55,28 @@ public class FlowListenerServiceImpl extends ServiceImpl<IFlowListenerMapper, Fl
             flowListenerLambdaQueryWrapper.like(FlowListener::getName, flowListener.getName());
         }
         return this.list(flowListenerLambdaQueryWrapper);
+    }
+
+    @Override
+    public PagerModel<FlowListener> getPagerModel(FlowListener flowListener, Query query) {
+        IPage<FlowListener> queryPage = new Page<>(query.getPageNum(), query.getPageSize());
+        LambdaQueryWrapper<FlowListener> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        if (StringUtils.isNotBlank(flowListener.getListenerType())) {
+            lambdaQueryWrapper.eq(FlowListener::getListenerType, flowListener.getListenerType());
+        }
+        if (StringUtils.isNotBlank(flowListener.getKeyword())) {
+            lambdaQueryWrapper
+                    .like(FlowListener::getName, flowListener.getKeyword())
+                    .or()
+                    .like(FlowListener::getValue, flowListener.getKeyword())
+                    .or()
+                    .like(FlowListener::getRemark, flowListener.getKeyword());
+        }
+        lambdaQueryWrapper.eq(FlowListener::getDelFlag, FlowConstant.DEL_FLAG_1)
+                .orderByDesc(FlowListener::getCreateTime)
+                .orderByAsc(FlowListener::getOrderNo);
+        IPage<FlowListener> page = this.page(queryPage, lambdaQueryWrapper);
+        return new PagerModel<>(page.getTotal(), page.getRecords());
     }
 
     @Override
