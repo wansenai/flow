@@ -2,6 +2,7 @@ package com.dragon.flow.model.flowable;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.dragon.tools.common.BaseModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "tbl_flow_listener")
-public class FlowListener implements Serializable {
+public class FlowListener extends BaseModel implements Serializable {
     public static final String TYPE_CLASS = "class";
     public static final String TYPE_EXPRESSION = "expression";
     public static final String TYPE_DELEGATEEXPRESSION = "delegateExpression";
@@ -37,7 +38,8 @@ public class FlowListener implements Serializable {
     private String value;
     //备注
     private String remark;
-
+    // 排序号
+    private Integer orderNo;
     @TableField(exist = false)
     private List<FlowListenerParam> flowListenerParamList;
 }
