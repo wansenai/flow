@@ -47,7 +47,7 @@ export const getListenerTypes = () => {
   return Promise.resolve(listenerTypes);
 };
 
-export const getAppListByPage = (params?: AppPageParams) => {
+export const getListByPage = (params?: AppPageParams) => {
   const query = params&&{pageNum: params.pageNum, pageSize: params.pageSize};
   let entity = params||{};
   if(entity){
