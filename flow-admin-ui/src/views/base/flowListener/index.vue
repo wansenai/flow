@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <BasicTable @register="registerTable" dense contentFullHeight class="custom-listener-table">
+  <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
+    <BasicTable @register="registerTable" class="custom-listener-table">
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增 </a-button>
       </template>
@@ -92,7 +92,7 @@
     <ListenerModal @register="registerModal" @success="handleSuccess"/>
     <ListenerPropertiesModal @register="registerPropertiesModal" @success="handleUpdateSecretKeySuccess"
                              :closeFunc="handleCloseFunc"/>
-  </div>
+  </PageWrapper>
 </template>
 <script lang="ts">
 import { defineComponent, ref, unref, onMounted } from 'vue';
@@ -100,12 +100,14 @@ import { BasicTable, useTable, TableAction } from '/@/components/Table';
 import {
   getAll,
   deleteById,
+  getListByPage,
   getExpressionTypes,
   getListenerTypes,
   getListenerParamList, deleteParamById
 } from '/@/api/base/flowListener';
 import {Tag} from "ant-design-vue";
-import { columns, searchFormSchema, propertiesColumns } from './listener.data';
+import {columns, searchFormSchema, propertiesColumns} from './listener.data';
+import {PageWrapper} from '/@/components/Page';
 import ListenerModal from './ListenerModal.vue';
 import ListenerPropertiesModal from './ListenerPropertiesModal.vue';
 
@@ -113,7 +115,7 @@ import {useModal} from '/@/components/Modal';
 
 export default defineComponent({
   name: 'FlowListener',
-  components: { Tag, BasicTable, TableAction, ListenerModal, ListenerPropertiesModal },
+  components: {PageWrapper, Tag, BasicTable, TableAction, ListenerModal, ListenerPropertiesModal },
   setup() {
     const [registerModal, {openModal, setModalProps: setListenerModalProps}] = useModal();
     const listenerPropertiesData = ref<object>({});
@@ -131,7 +133,7 @@ export default defineComponent({
 
     const [registerTable, {reload, getForm, setProps}] = useTable({
       title: '列表',
-      api: getAll,
+      api: getListByPage,
       columns,
       formConfig: {
         labelWidth: 80,
@@ -146,7 +148,6 @@ export default defineComponent({
       bordered: true,
       showIndexColumn: true,
       showTableSetting: false,
-      pagination: false,
       rowKey: 'id',
       canResize: true,
       onExpand: (expanded, record) => {
@@ -158,7 +159,6 @@ export default defineComponent({
           expandedRowKeys.value = [];
         }
       },
-      resizeHeightOffset: -50,
       actionColumn: {
         width: 150,
         title: '操作',

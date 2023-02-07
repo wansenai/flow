@@ -63,7 +63,8 @@
           field: 'value',
           label: expressionTypeMap[formData.type||'class']
         });
-        await updateSchema({
+        await updateSchema([
+          {
             field: 'name',
             dynamicRules: () => {
               return [
@@ -79,9 +80,8 @@
                 ...getBaseDynamicRules({id: unref(isUpdate)&&formData&&formData.id||"", field: 'name', fieldValue: "", fieldName:'名称'}),
               ];
             },
-          }
-        );
-        await updateSchema({
+          },
+          {
             field: 'type',
             componentProps: {
               options: expressionTypes,
@@ -92,14 +92,14 @@
                 });
               }
             }
+          },
+          {
+            field: 'listenerType',
+            componentProps: {
+              options: listenerTypes
+            }
           }
-        );
-        await updateSchema({
-          field: 'listenerType',
-          componentProps: {
-            options: listenerTypes
-          }
-        });
+        ]);
         setFieldsValue({
           ...data.record,
         });
