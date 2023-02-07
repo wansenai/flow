@@ -13,6 +13,11 @@ enum Api {
 export const getCategories = (params?: CategoryParams) => {
   const result = defHttp.post<CategoryInfo>({url: Api.GetCategories, params});
   return Promise.resolve(result).then(res => {
+    res.forEach(item=>{
+      item.key = item.id;
+      item.value = item.id;
+      item.title = item.name;
+    });
     const treeData = listToTree(res, {id: 'id', children: 'children', pid: 'pid'});
     forEach(treeData, (node) => {
       if (node.children.length === 0) {

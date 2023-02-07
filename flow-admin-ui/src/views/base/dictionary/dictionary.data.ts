@@ -48,6 +48,7 @@ export const dictionaryFormSchema: FormSchema[] = [
     required: false,
     component: 'Input',
     show: false,
+    colProps: { span: 24 },
   },
   {
     field: 'cname',
@@ -66,6 +67,7 @@ export const dictionaryFormSchema: FormSchema[] = [
         message: '字符长度不能大于60！',
       }
     ],
+    colProps: { span: 24 },
   },
   /*{
     field: 'ename',
@@ -94,11 +96,13 @@ export const dictionaryFormSchema: FormSchema[] = [
     field: 'code',
     label: '编码',
     component: 'Input',
+    colProps: { span: 24 },
   },
   {
     label: '备注',
     field: 'remark',
     component: 'InputTextArea',
+    colProps: { span: 24 },
   },
 ];
 
@@ -172,6 +176,7 @@ export const dictionaryItemFormSchema: FormSchema[] = [
         message: '字符长度不能大于60！',
       }
     ],
+    colProps: { span: 24 },
   },
   /*{
     field: 'ename',
@@ -199,6 +204,7 @@ export const dictionaryItemFormSchema: FormSchema[] = [
     field: 'code',
     label: '编码',
     component: 'Input',
+    colProps: { span: 24 },
   },
   {
     field: 'orderNo',

@@ -9,6 +9,8 @@ import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.pager.Query;
 import com.dragon.tools.vo.ReturnVo;
 
+import java.util.List;
+
 /**
  * @program: flow
  * @description: 系统配置Service
@@ -23,6 +25,14 @@ public interface ISystemConfigService extends IService<SystemConfig> {
      * @return
      */
     PagerModel<SystemConfig> getPagerModelByWrapper(SystemConfig systemConfig, Query query);
+
+    /**
+     * 通过条件获取
+     * @param configSns
+     * @return
+     */
+    List<SystemConfig> getConfigBySns(List<String> configSns);
+
     /**
      * 添加或修改
      * @param systemConfig 实体

@@ -20,7 +20,6 @@ public class OrgTreeVo implements Serializable {
     public static  final  String COMPANY_TYPE = "1";
     public static  final  String DEPT_TYPE = "2";
 
-
     private String id;
     private String pid;
     private String code;

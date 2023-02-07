@@ -2,15 +2,19 @@ package com.dragon.flow.web.resource.flowable;
 
 
 import com.dragon.flow.model.flowable.FlowListener;
-import com.dragon.flow.model.flowable.ModelInfo;
+import com.dragon.flow.model.privilege.User;
 import com.dragon.flow.service.flowable.IFlowListenerService;
 import com.dragon.flow.vo.CheckExistVo;
+import com.dragon.flow.vo.pager.ParamVo;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
+import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.vo.ReturnVo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,6 +57,20 @@ public class FlowListenerResource extends BaseResource {
     }
 
     /**
+     * 分页获取列表
+     *
+     * @param params 查询参数
+     * @return
+     */
+    @PostMapping(value = "/getPagerModel", produces = "application/json")
+    public ReturnVo<PagerModel> getPagerModel(@RequestBody ParamVo<FlowListener> params) {
+        ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        PagerModel<FlowListener> pm = flowListenerService.getPagerModel(params.getEntity(), params.getQuery());
+        returnVo.setData(pm);
+        return returnVo;
+    }
+
+    /**
      * 保存监听
      *
      * @param flowListener 参数
@@ -60,8 +78,22 @@ public class FlowListenerResource extends BaseResource {
      */
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
     public ReturnVo<String> saveOrUpdate(@RequestBody FlowListener flowListener) {
-        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        flowListenerService.saveOrUpdate(flowListener);
+        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.FAIL, "保存失败");
+        User loginUser = this.getLoginUser();
+        if(loginUser != null){
+            String userNo = loginUser.getUserNo();
+            if(StringUtils.isBlank(flowListener.getId())){
+                flowListener.setCreator(userNo);
+                flowListener.setCreateTime(new Date());
+            }
+            flowListener.setUpdateTime(new Date());
+            flowListener.setUpdator(userNo);
+            flowListenerService.saveOrUpdate(flowListener);
+            returnVo.setMsg("保存成功！");
+            returnVo.setCode(ReturnCode.SUCCESS);
+        }else{
+            returnVo.setMsg("用户未登录！");
+        }
         return returnVo;
     }
 

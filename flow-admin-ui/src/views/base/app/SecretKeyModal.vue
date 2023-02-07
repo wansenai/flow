@@ -1,5 +1,5 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit">
+  <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle">
     <BasicForm @register="registerForm" >
       <template #snSlot="{ model, field }">
         {{model[field]}}

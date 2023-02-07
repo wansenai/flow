@@ -88,7 +88,7 @@
         if (unref(isUpdate)) {
           setFieldsValue({
             ...formData,
-            frontShow: formData.frontShow === 1 ? true : false
+            frontShow: formData.frontShow === 1
           });
         }
       });

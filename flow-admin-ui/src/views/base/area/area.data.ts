@@ -9,12 +9,12 @@ export const columns: BasicColumn[] = [
   {
     title: '编码',
     dataIndex: 'code',
-    width: 100,
+    width: 300,
     align: 'left',
   },
   {
-    title: '创建时间',
-    dataIndex: 'createTime',
+    title: '修改时间',
+    dataIndex: 'updateTime',
     width: 180,
   },
 ];
@@ -56,11 +56,13 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于20！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'code',
     label: '编码',
     required: true,
     component: 'Input',
+    colProps: { span: 24 },
   },
 ];

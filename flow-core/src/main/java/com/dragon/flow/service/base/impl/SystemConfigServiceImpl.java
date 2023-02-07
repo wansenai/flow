@@ -14,10 +14,13 @@ import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.pager.Query;
 import com.dragon.tools.vo.ReturnVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @program: flow
@@ -39,6 +42,18 @@ public class SystemConfigServiceImpl extends ServiceImpl<ISystemConfigMapper, Sy
         IPage<SystemConfig> queryPage = new Page<>(query.getPageNum(), query.getPageSize());
         IPage<SystemConfig> page = this.page(queryPage, systemConfigLambdaQueryWrapper);
         return new PagerModel<>(page.getTotal(), page.getRecords());
+    }
+
+    @Override
+    public List<SystemConfig> getConfigBySns(List<String> configSns) {
+        List<SystemConfig> list = new ArrayList<>();
+        LambdaUpdateWrapper<SystemConfig> systemConfigLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        if(CollectionUtils.isNotEmpty(configSns)){
+            systemConfigLambdaUpdateWrapper.in(SystemConfig::getConfigSn, configSns);
+            systemConfigLambdaUpdateWrapper.eq(SystemConfig::getDelFlag, FlowConstant.DEL_FLAG_1);
+            list = this.list(systemConfigLambdaUpdateWrapper);
+        }
+        return list;
     }
 
     @Override

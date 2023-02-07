@@ -1,9 +1,10 @@
 import { MockMethod } from 'vite-plugin-mock';
-import { resultSuccess } from '../_util';
+import { resultSuccess, resultError } from '../_util';
+import { ResultEnum } from '../../src/enums/httpEnum';
 
 const userInfo = {
   name: 'Vben',
-  userid: '10101',
+  userid: '00000001',
   email: 'test@gmail.com',
   signature: '海纳百川，有容乃大',
   introduction: '微笑着，努力着，欣赏着',
@@ -49,6 +50,22 @@ export default [
     method: 'get',
     response: () => {
       return resultSuccess(userInfo);
+    },
+  },
+  {
+    url: '/basic-api/user/sessionTimeout',
+    method: 'post',
+    statusCode: 401,
+    response: () => {
+      return resultError();
+    },
+  },
+  {
+    url: '/basic-api/user/tokenExpired',
+    method: 'post',
+    statusCode: 200,
+    response: () => {
+      return resultError('Token Expired!', { code: ResultEnum.TIMEOUT as number });
     },
   },
 ] as MockMethod[];

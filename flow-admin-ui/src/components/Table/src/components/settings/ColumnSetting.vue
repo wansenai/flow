@@ -6,7 +6,7 @@
     <Popover
       placement="bottomLeft"
       trigger="click"
-      @visibleChange="handleVisibleChange"
+      @visible-change="handleVisibleChange"
       :overlayClassName="`${prefixCls}__cloumn-list`"
       :getPopupContainer="getPopupContainer"
     >
@@ -43,7 +43,7 @@
           <CheckboxGroup v-model:value="checkedList" @change="onChange" ref="columnListRef">
             <template v-for="item in plainOptions" :key="item.value">
               <div :class="`${prefixCls}__check-item`" v-if="!('ifShow' in item && !item.ifShow)">
-                <DragOutlined class="table-coulmn-drag-icon" />
+                <DragOutlined class="table-column-drag-icon" />
                 <Checkbox :value="item.value">
                   {{ item.label }}
                 </Checkbox>
@@ -111,19 +111,23 @@
     computed,
   } from 'vue';
   import { Tooltip, Popover, Checkbox, Divider } from 'ant-design-vue';
+  import type { CheckboxChangeEvent } from 'ant-design-vue/lib/checkbox/interface';
   import { SettingOutlined, DragOutlined } from '@ant-design/icons-vue';
   import { Icon } from '/@/components/Icon';
   import { ScrollContainer } from '/@/components/Container';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useTableContext } from '../../hooks/useTableContext';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { useSortable } from '/@/hooks/web/useSortable';
+  // import { useSortable } from '/@/hooks/web/useSortable';
   import { isFunction, isNullAndUnDef } from '/@/utils/is';
   import { getPopupContainer as getParentContainer } from '/@/utils';
-  import { omit } from 'lodash-es';
+  import { cloneDeep, omit } from 'lodash-es';
+  import Sortablejs from 'sortablejs';
+  import type Sortable from 'sortablejs';
 
   interface State {
     checkAll: boolean;
+    isInit?: boolean;
     checkedList: string[];
     defaultCheckList: string[];
   }
@@ -157,7 +161,7 @@
       let inited = false;
 
       const cachePlainOptions = ref<Options[]>([]);
-      const plainOptions = ref<Options[]>([]);
+      const plainOptions = ref<Options[] | any>([]);
 
       const plainSortOptions = ref<Options[]>([]);
 
@@ -179,10 +183,12 @@
       });
 
       watchEffect(() => {
-        const columns = table.getColumns();
-        if (columns.length) {
-          init();
-        }
+        setTimeout(() => {
+          const columns = table.getColumns();
+          if (columns.length && !state.isInit) {
+            init();
+          }
+        }, 0);
       });
 
       watchEffect(() => {
@@ -207,7 +213,7 @@
         const columns = getColumns();
 
         const checkList = table
-          .getColumns({ ignoreAction: true })
+          .getColumns({ ignoreAction: true, ignoreIndex: true })
           .map((item) => {
             if (item.defaultHidden) {
               return '';
@@ -233,11 +239,12 @@
             }
           });
         }
+        state.isInit = true;
         state.checkedList = checkList;
       }
 
       // checkAll change
-      function onCheckAllChange(e: ChangeEvent) {
+      function onCheckAllChange(e: CheckboxChangeEvent) {
         const checkList = plainOptions.value.map((item) => item.value);
         if (e.target.checked) {
           state.checkedList = checkList;
@@ -250,16 +257,15 @@
 
       const indeterminate = computed(() => {
         const len = plainOptions.value.length;
-        let checkdedLen = state.checkedList.length;
-        unref(checkIndex) && checkdedLen--;
-        return checkdedLen > 0 && checkdedLen < len;
+        let checkedLen = state.checkedList.length;
+        // unref(checkIndex) && checkedLen--;
+        return checkedLen > 0 && checkedLen < len;
       });
 
       // Trigger when check/uncheck a column
       function onChange(checkedList: string[]) {
-        const len = plainOptions.value.length;
+        const len = plainSortOptions.value.length;
         state.checkAll = checkedList.length === len;
-
         const sortList = unref(plainSortOptions).map((item) => item.value);
         checkedList.sort((prev, next) => {
           return sortList.indexOf(prev) - sortList.indexOf(next);
@@ -267,6 +273,8 @@
         setColumns(checkedList);
       }
 
+      let sortable: Sortable;
+      let sortableOrder: string[] = [];
       // reset columns
       function reset() {
         state.checkedList = [...state.defaultCheckList];
@@ -274,6 +282,7 @@
         plainOptions.value = unref(cachePlainOptions);
         plainSortOptions.value = unref(cachePlainOptions);
         setColumns(table.getCacheColumns());
+        sortable.sort(sortableOrder);
       }
 
       // Open the pop-up window for drag and drop initialization
@@ -285,15 +294,18 @@
           const el = columnListEl.$el as any;
           if (!el) return;
           // Drag and drop sort
-          const { initSortable } = useSortable(el, {
-            handle: '.table-coulmn-drag-icon ',
+          sortable = Sortablejs.create(unref(el), {
+            animation: 500,
+            delay: 400,
+            delayOnTouchOnly: true,
+            handle: '.table-column-drag-icon ',
             onEnd: (evt) => {
               const { oldIndex, newIndex } = evt;
               if (isNullAndUnDef(oldIndex) || isNullAndUnDef(newIndex) || oldIndex === newIndex) {
                 return;
               }
               // Sort column
-              const columns = getColumns();
+              const columns = cloneDeep(plainSortOptions.value);
 
               if (oldIndex > newIndex) {
                 columns.splice(newIndex, 0, columns[oldIndex]);
@@ -304,24 +316,29 @@
               }
 
               plainSortOptions.value = columns;
-              plainOptions.value = columns;
-              setColumns(columns);
+
+              setColumns(
+                columns
+                  .map((col: Options) => col.value)
+                  .filter((value: string) => state.checkedList.includes(value)),
+              );
             },
           });
-          initSortable();
+          // 记录原始order 序列
+          sortableOrder = sortable.toArray();
           inited = true;
         });
       }
 
       // Control whether the serial number column is displayed
-      function handleIndexCheckChange(e: ChangeEvent) {
+      function handleIndexCheckChange(e: CheckboxChangeEvent) {
         table.setProps({
           showIndexColumn: e.target.checked,
         });
       }
 
       // Control whether the check box is displayed
-      function handleSelectCheckChange(e: ChangeEvent) {
+      function handleSelectCheckChange(e: CheckboxChangeEvent) {
         table.setProps({
           rowSelection: e.target.checked ? defaultRowSelection : undefined,
         });
@@ -341,13 +358,13 @@
         if (isFixed && !item.width) {
           item.width = 100;
         }
-        table.setCacheColumnsByField?.(item.dataIndex, { fixed: isFixed });
+        table.setCacheColumnsByField?.(item.dataIndex as string, { fixed: isFixed });
         setColumns(columns);
       }
 
       function setColumns(columns: BasicColumn[] | string[]) {
         table.setColumns(columns);
-        const data: ColumnChangeParam[] = unref(plainOptions).map((col) => {
+        const data: ColumnChangeParam[] = unref(plainSortOptions).map((col) => {
           const visible =
             columns.findIndex(
               (c: BasicColumn | string) =>
@@ -390,7 +407,7 @@
 <style lang="less">
   @prefix-cls: ~'@{namespace}-basic-column-setting';
 
-  .table-coulmn-drag-icon {
+  .table-column-drag-icon {
     margin: 0 5px;
     cursor: move;
   }

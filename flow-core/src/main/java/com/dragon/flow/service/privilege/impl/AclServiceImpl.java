@@ -141,6 +141,7 @@ public class AclServiceImpl extends ServiceImpl<IAclMapper, ACL> implements IAcl
         //1、删除模块的权限值
         LambdaQueryWrapper<ACL> aclLambdaQueryWrapper = new LambdaQueryWrapper<>();
         aclLambdaQueryWrapper.eq(ACL::getModuleId, moduleId);
+        aclLambdaQueryWrapper.eq(ACL::getReleaseId, groupId);
         this.remove(aclLambdaQueryWrapper);
         //2、添加模块的已有权限值
         if (CollectionUtils.isNotEmpty(positions)){

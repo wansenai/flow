@@ -79,12 +79,14 @@ export const deptFormSchema: FormSchema[] = [
         message: '字符长度不能大于100！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'code',
     label: '编码',
     component: 'Input',
     required: true,
+    colProps: { span: 24 },
   },
   {
     field: 'leaderCode',
@@ -92,6 +94,7 @@ export const deptFormSchema: FormSchema[] = [
     component: 'Input',
     slot: 'settingLeader',
     required: false,
+    colProps: { span: 24 },
   },
   {
     field: 'leaderName',
@@ -113,6 +116,7 @@ export const deptFormSchema: FormSchema[] = [
       getPopupContainer: () => document.body,
     },
     required: true,
+    colProps: { span: 24 },
   },
   {
     field: 'orderNo',
@@ -130,5 +134,6 @@ export const deptFormSchema: FormSchema[] = [
         message: '字符长度不能大于256！',
       },
     ],
+    colProps: { span: 24 },
   },
 ];
