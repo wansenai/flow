@@ -82,6 +82,7 @@ export const formSchema: FormSchema[] = [
     required: false,
     component: 'Input',
     show: false,
+    colProps: { span: 24 },
   },
   {
     field: 'name',
@@ -99,12 +100,14 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于200！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'code',
     label: '编码',
     required: true,
     component: 'Input',
+    colProps: { span: 24 },
   },
   {
     field: 'shortName',
@@ -121,6 +124,7 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于200！',
       },
     ],
+    colProps: { span: 24 },
   },
   {
     field: 'companyId',
@@ -128,14 +132,10 @@ export const formSchema: FormSchema[] = [
     component: 'TreeSelect',
     componentProps: {
       treeNodeFilterProp: 'cname',
-      replaceFields: {
-        title: 'cname',
-        key: 'id',
-        value: 'id',
-      },
       getPopupContainer: () => document.body,
     },
     required: true,
+    colProps: { span: 24 },
   },
   {
     field: 'orderNo',
@@ -152,7 +152,8 @@ export const formSchema: FormSchema[] = [
     componentProps:{
       checkedChildren: '显示',
       unCheckedChildren: '隐藏'
-    }
+    },
+    colProps: { span: 24 },
   },
   {
     field: 'note',
@@ -165,5 +166,6 @@ export const formSchema: FormSchema[] = [
         message: '字符长度不能大于400！',
       },
     ],
+    colProps: { span: 24 },
   },
 ];

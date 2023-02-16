@@ -1,20 +1,26 @@
 import { defHttp } from '/@/utils/http/axios';
-import {
-  LoginParams,
-  LoginResultModel,
-  GetUserInfoByUserIdParams,
-  GetUserInfoByUserIdModel,
-  GetUserInfoModel, UserInfo,
-} from './model/userModel';
+import { LoginParams, LoginResultModel, GetUserInfoModel } from './model/userModel';
 
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
   Login = '/login',
   Logout = '/logout',
+  GetUserInfo = '/flow/main/getLoginUser',
   GetUserInfoById = '/getUserInfoById',
-  GetUserInfoByToken = '/flow/main/getLoginUser',
   GetPermissions = '/flow/main/getPermissions',
+  GetSystemSettings = '/getSystemSettings',
+}
+
+/**
+ * 获取配置信息
+ */
+export function getSystemSettings() {
+  return defHttp.get<LoginResultModel>(
+    {
+      url: Api.GetSystemSettings,
+    }
+  );
 }
 
 /**
@@ -28,27 +34,26 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
     },
     {
       errorMessageMode: mode,
-    }
-  );
+    },
+  ).then(res=>{
+    return Promise.resolve({token: res});
+  });
 }
 
 /**
- * @description: getUserInfoById
+ * @description: getUserInfo
  */
-export function getUserInfoById(params: GetUserInfoByUserIdParams) {
-  return defHttp.get<GetUserInfoByUserIdModel>({
+export function getUserInfoById(params: any) {
+  return defHttp.get({
     url: Api.GetUserInfoById,
     params,
   });
 }
 /**
- * @description: getLoginInfo
+ * @description: getUserInfo
  */
-export function getLoginInfo() {
-  return defHttp.get<UserInfo>({
-    url: Api.GetUserInfoByToken,
-    headers: {contentType:"application/json"}
-  });
+export function getUserInfo() {
+  return defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' });
 }
 
 export function getPermCode() {
@@ -57,4 +62,17 @@ export function getPermCode() {
 
 export function doLogout() {
   return defHttp.post({ url: Api.Logout });
+}
+
+export function testRetry() {
+  return defHttp.get(
+    { url: Api.TestRetry },
+    {
+      retryRequest: {
+        isOpenRetry: true,
+        count: 5,
+        waitTime: 1000,
+      },
+    },
+  );
 }

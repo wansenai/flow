@@ -5657,21 +5657,27 @@ INSERT INTO `tbl_flow_extend_procinst` VALUES ('0e45a618c601e1c4460981df4e06d670
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_flow_listener`;
 CREATE TABLE `tbl_flow_listener` (
-  `id` varchar(32) NOT NULL,
-  `name` varchar(80) DEFAULT NULL,
-  `listener_type` varchar(80) DEFAULT NULL,
-  `type` varchar(25) DEFAULT NULL,
-  `value` varchar(300) DEFAULT NULL,
-  `remark` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    `id` VARCHAR(32) NOT NULL,
+    `name` VARCHAR(80) DEFAULT NULL,
+    `listener_type` VARCHAR(80) DEFAULT NULL,
+    `type` VARCHAR(25) DEFAULT NULL,
+    `value` VARCHAR(300) DEFAULT NULL,
+    `remark` VARCHAR(255) DEFAULT NULL,
+    `create_time` TIMESTAMP NULL DEFAULT NULL COMMENT '创建时间',
+    `creator` VARCHAR(32) NULL COMMENT '创建人',
+    `update_time` TIMESTAMP NULL COMMENT '更新时间',
+    `updator` VARCHAR(32) NULL COMMENT '更新人',
+    `order_no` INT(11) NULL COMMENT '排序号',
+    `del_flag` INT(1) DEFAULT '1' COMMENT '删除标识0表示删除1表示存在',
+    PRIMARY KEY (`id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of tbl_flow_listener
 -- ----------------------------
-INSERT INTO `tbl_flow_listener` VALUES ('1418011167482535937', '测试任务监听器', 'taskListener', 'delegateExpression', '${taskListenerTest}', '测试任务监听器');
-INSERT INTO `tbl_flow_listener` VALUES ('1418011500015345666', '自动跳过执行监听', 'executionListener', 'delegateExpression', '${skipTaskListener}', null);
-INSERT INTO `tbl_flow_listener` VALUES ('1418011755431682049', '执行监听消息推送', 'executionListener', 'delegateExpression', '${sendMessageExecutionCallListener}', null);
+INSERT INTO `tbl_flow_listener` VALUES ('1418011167482535937', '测试任务监听器', 'taskListener', 'delegateExpression', '${taskListenerTest}', '测试任务监听器', NOW(), 'admin', NOW(), 'admin', 1, 1);
+INSERT INTO `tbl_flow_listener` VALUES ('1418011500015345666', '自动跳过执行监听', 'executionListener', 'delegateExpression', '${skipTaskListener}', null, NOW(), 'admin', NOW(), 'admin', 1, 1);
+INSERT INTO `tbl_flow_listener` VALUES ('1418011755431682049', '执行监听消息推送', 'executionListener', 'delegateExpression', '${sendMessageExecutionCallListener}', null, NOW(), 'admin', NOW(), 'admin', 1, 1);
 
 -- ----------------------------
 -- Table structure for tbl_flow_listener_param

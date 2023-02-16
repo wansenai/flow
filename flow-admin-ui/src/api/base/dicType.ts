@@ -13,6 +13,11 @@ enum Api {
 export const getDicTypes = (params?: GetDicParams) => {
   const result = defHttp.post<GetDicInfo>({url: Api.GetDicTypes, params});
   return Promise.resolve(result).then(res => {
+    res.forEach(item=>{
+      item.key = item.id;
+      item.value = item.id;
+      item.title = item.name;
+    });
     const treeData = listToTree(res, {id: 'id', children: 'children', pid: 'pid'});
     forEach(treeData, (node) => {
       if (node.children.length === 0) {

@@ -4,25 +4,28 @@
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增 </a-button>
       </template>
-      <template #action="{ record }">
-        <TableAction
-          :actions="[
-            {
-              tooltip: '修改',
-              icon: 'clarity:note-edit-line',
-              onClick: handleEdit.bind(null, record),
-            },
-            {
-              tooltip: '删除',
-              icon: 'ant-design:delete-outlined',
-              color: 'error',
-              popConfirm: {
-                title: '是否确认删除',
-                confirm: handleDelete.bind(null, record),
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <TableAction
+            :actions="[
+              {
+                tooltip: '修改',
+                icon: 'clarity:note-edit-line',
+                onClick: handleEdit.bind(null, record),
               },
-            },
-          ]"
-        />
+              {
+                tooltip: '删除',
+                icon: 'ant-design:delete-outlined',
+                color: 'error',
+                popConfirm: {
+                  title: '是否确认删除',
+                  confirm: handleDelete.bind(null, record),
+                  placement: 'left'
+                },
+              },
+            ]"
+          />
+        </template>
       </template>
     </BasicTable>
     <JobGradeTypeModal @register="registerModal" @success="handleSuccess" />
@@ -62,7 +65,6 @@
           width: 100,
           title: '操作',
           dataIndex: 'action',
-          slots: { customRender: 'action' },
           fixed: false,
         },
       });
@@ -87,7 +89,9 @@
       }
 
       function handleSuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
 
       return {

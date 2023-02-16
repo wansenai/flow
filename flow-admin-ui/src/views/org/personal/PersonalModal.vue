@@ -87,23 +87,10 @@
         const jobPositionInfoTreeData = await getPositionInfoTree();
         let formData = data.record;
 
-        await updateSchema([
-          {
-            field: 'jobGradeCode',
-            componentProps: {
-              treeData: jobGradeTreeData
-            },
-          },
-          {
-            field: 'positionCode',
-            componentProps: {
-              treeData: jobPositionInfoTreeData
-            },
-          },
+        await updateSchema(
           {
             field: 'companyId',
             componentProps: {
-              treeData: companyTreeData ,
               onChange: (e: string)=>{
                 updateSchema([
                   {field: 'deptId', componentProps: {treeData: []}}
@@ -124,6 +111,21 @@
                 }
               },
             }
+          }
+        );
+
+        await updateSchema([
+          {
+            field: 'jobGradeCode',
+            componentProps: {
+              treeData: jobGradeTreeData
+            },
+          },
+          {
+            field: 'positionCode',
+            componentProps: {
+              treeData: jobPositionInfoTreeData
+            },
           },
           {
             field: 'code',

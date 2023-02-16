@@ -4,34 +4,39 @@
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增 </a-button>
       </template>
-      <template #action="{ record }">
-        <TableAction
-          :actions="[
-            {
-              tooltip: '查看密钥',
-              icon: 'ant-design:key-outlined',
-              onClick: handleEditSecretKey.bind(null, record),
-            },
-            {
-              tooltip: '修改',
-              icon: 'clarity:note-edit-line',
-              onClick: handleEdit.bind(null, record),
-            },
-            {
-              tooltip: '删除',
-              icon: 'ant-design:delete-outlined',
-              color: 'error',
-              popConfirm: {
-                title: '是否确认删除',
-                confirm: handleDelete.bind(null, record),
+
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <TableAction
+            :actions="[
+              {
+                tooltip: '查看密钥',
+                icon: 'ant-design:key-outlined',
+                onClick: handleEditSecretKey.bind(null, record),
               },
-            },
-          ]"
-        />
+              {
+                tooltip: '修改',
+                icon: 'clarity:note-edit-line',
+                onClick: handleEdit.bind(null, record),
+              },
+              {
+                tooltip: '删除',
+                icon: 'ant-design:delete-outlined',
+                color: 'error',
+                popConfirm: {
+                  title: '是否确认删除',
+                  confirm: handleDelete.bind(null, record),
+                  placement: 'left'
+                },
+              },
+            ]"
+          />
+        </template>
       </template>
     </BasicTable>
-    <AppModal @register="registerModal" @success="handleSuccess" />
-    <SecretKeyModal @register="registerSecretKeyModal" @success="handleUpdateSecretKeySuccess" :closeFunc="handleCloseFunc"/>
+    <AppModal @register="registerModal" @success="handleSuccess"/>
+    <SecretKeyModal @register="registerSecretKeyModal" @success="handleUpdateSecretKeySuccess"
+                    :closeFunc="handleCloseFunc"/>
   </div>
 </template>
 <script lang="ts">
@@ -70,7 +75,6 @@
           width: 140,
           title: '操作',
           dataIndex: 'action',
-          slots: { customRender: 'action' },
         },
       });
 
@@ -106,15 +110,21 @@
       }
 
       function handleSuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
       function handleCloseFunc() {
-        reload();
-        return Promise.resolve(true);
+        setTimeout(()=>{
+          reload();
+          return Promise.resolve(true);
+        }, 200);
       }
 
       function handleUpdateSecretKeySuccess() {
-        reload();
+        setTimeout(()=>{
+          reload();
+        }, 200);
       }
 
       return {

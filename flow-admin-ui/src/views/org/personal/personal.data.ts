@@ -1,9 +1,11 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import {Tag } from "ant-design-vue";
-
+import {getJobGradeTree} from "/@/api/org/jobGrade";
+import {getPositionInfoTree} from "/@/api/org/positionInfo";
 import {h} from 'vue'
 import {formatToDate, formatToDateTime} from "/@/utils/dateUtil";
+import {getCompanies} from "/@/api/org/company";
 
 export const columns: BasicColumn[] = [
   {
@@ -11,9 +13,6 @@ export const columns: BasicColumn[] = [
     dataIndex: 'name',
     width: 120,
     align: 'left',
-    slots: {
-      customRender: 'nameRender'
-    },
   },
   {
     title: '工号',
@@ -71,9 +70,6 @@ export const columns: BasicColumn[] = [
     dataIndex: 'roles',
     width: 300,
     align: 'left',
-    slots: {
-      customRender: 'rolesRender'
-    },
   },
   {
     title: '离职日期',
@@ -149,91 +145,9 @@ export const personalFormSchema: FormSchema[] = [
     component: 'Input',
     slot: 'headImg',
     colProps: {
-      style: 'margin: auto;position: absolute;right: -100px;',
+      style: 'margin: auto;position: absolute;right: 0;',
       span: 8,
     },
-  },
-  {
-    field: 'sex',
-    label: '性别',
-    component: 'RadioButtonGroup',
-    defaultValue: 1,
-    componentProps: {
-      options: [
-        { label: '男', value: 1 },
-        { label: '女', value: 2 },
-      ],
-    },
-  },
-  {
-    field: 'jobGradeCode',
-    label: '职级',
-    component: 'TreeSelect',
-    colProps: {
-      span: 9,
-    },
-    componentProps: {
-      treeNodeFilterProp: 'showName',
-      replaceFields: {
-        title: 'showName',
-        key: 'id',
-        value: 'id',
-      },
-      getPopupContainer: () => document.body,
-    },
-  },
-  {
-    field: 'positionCode',
-    label: '岗位',
-    component: 'TreeSelect',
-    colProps: {
-      span: 9,
-    },
-    componentProps: {
-      treeNodeFilterProp: 'showName',
-      replaceFields: {
-        title: 'showName',
-        key: 'id',
-        value: 'id',
-      },
-      getPopupContainer: () => document.body,
-    },
-  },
-  {
-    field: 'companyId',
-    label: '所属公司',
-    component: 'TreeSelect',
-    colProps: {
-      span: 9,
-    },
-    componentProps: {
-      treeNodeFilterProp: 'cname',
-      replaceFields: {
-        title: 'cname',
-        key: 'id',
-        value: 'id',
-      },
-      getPopupContainer: () => document.body,
-    },
-    required: true,
-  },
-  {
-    field: 'deptId',
-    label: '所属部门',
-    component: 'TreeSelect',
-    colProps: {
-      span: 9,
-    },
-    componentProps: {
-      treeNodeFilterProp: 'name',
-      replaceFields: {
-        title: 'name',
-        key: 'id',
-        value: 'id',
-      },
-      getPopupContainer: () => document.body,
-    },
-    required: true,
   },
   {
     label: '手机',
@@ -280,6 +194,19 @@ export const personalFormSchema: FormSchema[] = [
     ],
   },
   {
+    field: 'sex',
+    label: '性别',
+    component: 'RadioButtonGroup',
+    defaultValue: 1,
+    componentProps: {
+      options: [
+        { label: '男', value: 1 },
+        { label: '女', value: 2 },
+      ],
+    },
+    colProps: { span: 9 },
+  },
+  {
     field: 'status',
     label: '在职状态',
     component: 'RadioButtonGroup',
@@ -290,6 +217,60 @@ export const personalFormSchema: FormSchema[] = [
         { label: '离职', value: 0 },
       ],
     },
+    colProps: { span: 9 },
+  },
+  {
+    field: 'jobGradeCode',
+    label: '职级',
+    component: 'ApiTreeSelect',
+    colProps: {
+      span: 12,
+    },
+    componentProps: {
+      api: getJobGradeTree,
+      treeNodeFilterProp: 'showName',
+      getPopupContainer: () => document.body,
+    },
+  },
+  {
+    field: 'positionCode',
+    label: '岗位',
+    component: 'ApiTreeSelect',
+    colProps: {
+      span: 12,
+    },
+    componentProps: {
+      api: getPositionInfoTree,
+      treeNodeFilterProp: 'showName',
+      getPopupContainer: () => document.body,
+    },
+  },
+  {
+    field: 'companyId',
+    label: '所属公司',
+    component: 'ApiTreeSelect',
+    colProps: {
+      span: 12,
+    },
+    componentProps: {
+      api: getCompanies,
+      treeNodeFilterProp: 'cname',
+      getPopupContainer: () => document.body,
+    },
+    required: true,
+  },
+  {
+    field: 'deptId',
+    label: '所属部门',
+    component: 'TreeSelect',
+    colProps: {
+      span: 12,
+    },
+    componentProps: {
+      treeNodeFilterProp: 'name',
+      getPopupContainer: () => document.body,
+    },
+    required: true,
   },
   {
     label: '地址',
@@ -301,6 +282,7 @@ export const personalFormSchema: FormSchema[] = [
         message: '字符长度不能大于400！',
       },
     ],
+    colProps: { span: 24 },
   },
   // status
 ];

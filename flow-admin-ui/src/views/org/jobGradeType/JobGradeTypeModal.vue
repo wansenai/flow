@@ -81,7 +81,7 @@
         if (unref(isUpdate)) {
           setFieldsValue({
             ...data.record,
-            status: data.record.status===1?true:false,
+            status: data.record.status===1,
           });
         }
       });

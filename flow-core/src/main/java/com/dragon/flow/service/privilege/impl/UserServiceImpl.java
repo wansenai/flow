@@ -89,7 +89,13 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements I
     @Override
     public PagerModel<User> getPagerModelByWrapper(User user, Query query) {
         //参数一是当前页，参数二是每页个数
-        QueryWrapper<User> params = new QueryWrapper<>(user);
+        LambdaQueryWrapper<User> params = new LambdaQueryWrapper<>();
+        if(StringUtils.isNotBlank(StringUtils.trim(user.getKeyword()))){
+            params.like(User::getUserNo, StringUtils.trim(user.getKeyword()))
+                    .or().like(User::getUsername, StringUtils.trim(user.getKeyword()))
+                    .or().like(User::getEmail, StringUtils.trim(user.getKeyword()))
+                    .or().like(User::getMobile, StringUtils.trim(user.getKeyword()));
+        }
         IPage<User> queryPage = new Page<>(query.getPageNum(), query.getPageSize());
         IPage<User> page = this.page(queryPage, params);
         if (CollectionUtils.isNotEmpty(page.getRecords())){
