@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.dragon</groupId>
         <artifactId>flow-parent</artifactId>
-        <version>1.1.1-SNAPSHOT</version>
+        <version>1.1.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <version>${flow.version}</version>
