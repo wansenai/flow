@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dragon.flow.mapper.IFormDataInfoMapper">
+<mapper namespace="com.dragon.flow.mapper.form.IFormDataInfoMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.dragon.flow.form.model.FormDataInfo">
+    <resultMap id="BaseResultMap" type="com.dragon.flow.model.form.FormDataInfo">
         <id column="id" property="id" />
         <result column="model_key" property="modelKey" />
         <result column="business_key" property="businessKey" />

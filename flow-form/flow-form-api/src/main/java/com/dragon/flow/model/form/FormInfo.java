@@ -1,4 +1,4 @@
-package com.dragon.flow.form.model;
+package com.dragon.flow.model.form;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
