@@ -19,7 +19,7 @@ public class FormInfo extends BaseModel implements Serializable {
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
     /**
-     * 分类id
+     * 分类编码
      */
     private String categoryCode;
 
