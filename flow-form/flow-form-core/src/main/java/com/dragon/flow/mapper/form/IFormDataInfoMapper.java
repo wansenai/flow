@@ -1,7 +1,7 @@
-package com.dragon.flow.mapper;
+package com.dragon.flow.mapper.form;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.dragon.flow.form.model.FormDataInfo;
+import com.dragon.flow.model.form.FormDataInfo;
 import org.springframework.stereotype.Repository;
 
 /**
