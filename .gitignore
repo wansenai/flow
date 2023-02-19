@@ -29,6 +29,8 @@ target/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+
+
 ### VS Code ###
 .vscode/
 
@@ -38,3 +40,4 @@ application-prod.properties
 
 ### LOG ###
 /logPath_IS_UNDEFINED
+
