@@ -23,6 +23,11 @@
             <artifactId>flow-core</artifactId>
             <version>1.1.2-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.dragon</groupId>
+            <artifactId>flow-form-api</artifactId>
+            <version>${flow.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
