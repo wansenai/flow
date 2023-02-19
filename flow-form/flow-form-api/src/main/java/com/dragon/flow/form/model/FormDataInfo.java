@@ -30,6 +30,10 @@ public class FormDataInfo extends BaseModel implements Serializable {
      */
     private String businessKey;
     /**
+     * 状态 草稿 已提交 已完成 撤回
+     */
+    private String status;
+    /**
      * 流程实例id
      */
     private String processInstanceId;
