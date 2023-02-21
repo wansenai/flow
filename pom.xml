@@ -16,7 +16,10 @@
         <module>flow-log</module>
         <module>flow-dubbo</module>
         <module>flow-springcloud</module>
-    </modules>
+        <module>flow-form</module>
+		<module>flow-form/flow-form-core</module>
+		<module>flow-form/flow-form-rest</module>
+	</modules>
 	<groupId>com.dragon</groupId>
 	<artifactId>flow</artifactId>
 	<version>1.1.0-SNAPSHOT</version>

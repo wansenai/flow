@@ -65,4 +65,7 @@ public class StartProcessInstanceVo implements Serializable {
      */
     @ApiModelProperty(value = "要走流程部门ID")
     private String deptId;
+
+    @ApiModelProperty(value = "表单数据")
+    private String formData;
 }
