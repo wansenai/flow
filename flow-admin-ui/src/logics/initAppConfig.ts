@@ -21,6 +21,7 @@ import { primaryColor } from '../../build/config/themeConfig';
 import { Persistent } from '/@/utils/cache/persistent';
 import { deepMerge } from '/@/utils';
 import { ThemeEnum } from '/@/enums/appEnum';
+import {getSystemSettings} from "/@/api/sys/user";
 
 // Initial project configuration
 export function initAppConfigStore() {
@@ -47,6 +48,8 @@ export function initAppConfigStore() {
   } catch (error) {
     console.log(error);
   }
+
+  initCustomSetting();
   appStore.setProjectConfig(projCfg);
 
   // init dark mode
@@ -80,5 +83,27 @@ export function clearObsoleteStorage() {
         item.removeItem(key);
       }
     });
+  });
+}
+
+
+function initCustomSetting(){
+  const appStore = useAppStore();
+  getSystemSettings().then(res=>{
+    setTimeout(()=>{
+
+      const customSetting = {
+        signInDesc: '开箱即用的中流程引擎',
+        signInTitle: '',
+        appIcon: '',
+        projectName: '',
+        projectLogo: ''
+      };
+
+      appStore.setProjectConfig({customSetting});
+      debugger;
+    }, 4000);
+
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', res);
   });
 }
