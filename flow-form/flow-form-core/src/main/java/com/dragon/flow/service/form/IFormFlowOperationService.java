@@ -1,6 +1,7 @@
 package com.dragon.flow.service.form;
 
 import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
+import com.dragon.tools.vo.ReturnVo;
 
 /**
  * @program: flow
@@ -9,9 +10,6 @@ import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
  * @create: 2023-02-19 14:20
  **/
 public interface IFormFlowOperationService {
-    /**
-     *
-     * @param params
-     */
-    void startFormFlow(StartProcessInstanceVo params) ;
+
+    ReturnVo<String> startFormFlow(StartProcessInstanceVo params) ;
 }

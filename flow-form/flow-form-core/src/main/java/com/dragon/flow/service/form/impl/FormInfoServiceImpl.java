@@ -12,9 +12,11 @@ import com.dragon.flow.service.form.IFormInfoService;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.pager.Query;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@Service
 public class FormInfoServiceImpl extends ServiceImpl<IFormInfoMapper, FormInfo> implements IFormInfoService {
 
     /**

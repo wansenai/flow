@@ -13,6 +13,7 @@
     <artifactId>flow-form-core</artifactId>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
@@ -29,5 +30,18 @@
             <version>${flow.version}</version>
         </dependency>
     </dependencies>
-
+    <build>
+        <finalName>flow-form-core</finalName>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
 </project>

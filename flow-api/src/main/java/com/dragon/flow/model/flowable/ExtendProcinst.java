@@ -61,5 +61,8 @@ public class ExtendProcinst extends BaseModel {
      * 租户id(系统标识)
      */
     private String tenantId;
-
+    /**
+     * 用户信息
+     */
+    private String userInfo;
 }
