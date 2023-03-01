@@ -29,4 +29,6 @@ public interface IFormDataInfoService extends IService<FormDataInfo> {
      */
     void saveOrUpdate(FormDataInfo formDataInfo, User loginUser) ;
 
+    FormDataInfo getFormDataInfoByModelKeyAndBusinessKey(String modelKey, String businessKey) ;
+    FormDataInfo getFormDataInfoByProcessInstanceId(String processInstanceId) ;
 }

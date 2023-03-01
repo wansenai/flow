@@ -16,6 +16,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-core</artifactId>
+            <version>1.30.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.dragon</groupId>
             <artifactId>flow-tools</artifactId>
             <version>${flow.version}</version>

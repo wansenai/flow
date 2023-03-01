@@ -12,10 +12,25 @@ import com.dragon.flow.service.form.IFormDataInfoService;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.pager.Query;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
-
+@Service
 public class FormDataInfoServiceImpl extends ServiceImpl<IFormDataInfoMapper, FormDataInfo> implements IFormDataInfoService {
+
+    @Override
+    public FormDataInfo getFormDataInfoByModelKeyAndBusinessKey(String modelKey, String businessKey) {
+        LambdaQueryWrapper<FormDataInfo> formDataInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        formDataInfoLambdaQueryWrapper.eq(FormDataInfo::getModelKey, modelKey).eq(FormDataInfo::getBusinessKey, businessKey);
+        return this.getOne(formDataInfoLambdaQueryWrapper);
+    }
+
+    @Override
+    public FormDataInfo getFormDataInfoByProcessInstanceId(String processInstanceId) {
+        LambdaQueryWrapper<FormDataInfo> formDataInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        formDataInfoLambdaQueryWrapper.eq(FormDataInfo::getProcessInstanceId, processInstanceId);
+        return this.getOne(formDataInfoLambdaQueryWrapper);
+    }
 
     /**
      * 通过条件分页获取自定义表单数据配置
