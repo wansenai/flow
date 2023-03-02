@@ -65,4 +65,8 @@ public class ExtendProcinst extends BaseModel {
      * 用户信息
      */
     private String userInfo;
+    /**
+     * 表单数据
+     */
+    private String formData;
 }

@@ -65,6 +65,10 @@ public class ExtendHisprocinst extends BaseModel {
      * 用户信息
      */
     private String userInfo;
+    /**
+     * 表单数据
+     */
+    private String formData;
     public ExtendHisprocinst(){}
     public ExtendHisprocinst(String processInstanceId, String processStatus) {
         this.processInstanceId = processInstanceId;
