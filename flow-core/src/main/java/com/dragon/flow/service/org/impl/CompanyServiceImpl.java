@@ -191,7 +191,7 @@ public class CompanyServiceImpl extends ServiceImpl<ICompanyMapper, Company> imp
         //参数一是当前页，参数二是每页个数
         LambdaQueryWrapper<Company> companyLambdaQueryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(company.getKeyword())){
-            companyLambdaQueryWrapper.like(Company::getCname, company.getKeyword()).or().like(Company::getCode, company.getCode());
+            companyLambdaQueryWrapper.like(Company::getCname, company.getKeyword()).or().like(Company::getCode, company.getKeyword());
         }
         if (company.getStatus() != null){
             companyLambdaQueryWrapper.eq(Company::getStatus, company.getStatus());
