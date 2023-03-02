@@ -180,6 +180,7 @@ public class CompanyServiceImpl extends ServiceImpl<ICompanyMapper, Company> imp
         if (CollectionUtils.isNotEmpty(companies)){
             companies.forEach(company -> {
                 OrgTreeVo orgTreeVo = new OrgTreeVo(company.getId(), company.getPid(), company.getCname(), company.getShortName(), OrgTreeVo.COMPANY_TYPE);
+                orgTreeVo.setCode(company.getCode());
                 orgTreeVos.add(orgTreeVo);
             });
         }
