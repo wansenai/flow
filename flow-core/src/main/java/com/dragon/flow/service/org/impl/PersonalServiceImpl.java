@@ -211,4 +211,10 @@ public class PersonalServiceImpl extends ServiceImpl<IPersonalMapper, Personal> 
         personalQueryWrapper.eq(Personal::getCode, code).eq(Personal::getDelFlag, FlowConstant.DEL_FLAG_1);
         return this.getOne(personalQueryWrapper);
     }
+    @Override
+    public Personal getUserInfoVoByThirdUserId(String thirdUserId) {
+        LambdaQueryWrapper<Personal> personalQueryWrapper = new LambdaQueryWrapper<>();
+        personalQueryWrapper.eq(Personal::getThirdUserId, thirdUserId).eq(Personal::getDelFlag, FlowConstant.DEL_FLAG_1);
+        return this.getOne(personalQueryWrapper);
+    }
 }
