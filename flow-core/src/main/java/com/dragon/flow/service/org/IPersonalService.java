@@ -96,5 +96,5 @@ public interface IPersonalService extends IService<Personal> {
      * @param thirdUserId thirdUserId
      * @return
      */
-    Personal getUserInfoVoByThirdUserId(String thirdUserId);
+    Personal getPersonalByThirdUserId(String thirdUserId);
 }
