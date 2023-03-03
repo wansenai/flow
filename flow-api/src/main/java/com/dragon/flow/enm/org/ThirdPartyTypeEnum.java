@@ -11,9 +11,9 @@ import java.util.Map;
  * @date 2023/3/3 12:22
  */
 public enum ThirdPartyTypeEnum {
-    DingTalk("DingTalk", "钉钉"),
-    FeiShu("FeiShu", "飞书"),
-    WeiXin("WeiXin", "企业微信");
+    DING_TALK("DingTalk", "钉钉"),
+    FEI_SHU("FeiShu", "飞书"),
+    WEI_XIN("WeiXin", "企业微信");
 
     private String code;
     private String message;
