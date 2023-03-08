@@ -42,7 +42,7 @@ public class CompanyServiceImpl extends ServiceImpl<ICompanyMapper, Company> imp
     public Company getCompanyByCode(String code) {
         if (StringUtils.isNotBlank(code)){
             LambdaQueryWrapper<Company> companyLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            companyLambdaQueryWrapper.eq(Company::getCode, code);
+            companyLambdaQueryWrapper.eq(Company::getCode, code).eq(Company::getDelFlag, FlowConstant.DEL_FLAG_1);
             return this.getOne(companyLambdaQueryWrapper);
         }
         return null;
