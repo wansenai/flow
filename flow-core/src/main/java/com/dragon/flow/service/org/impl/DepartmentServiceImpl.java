@@ -208,6 +208,7 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
         if (CollectionUtils.isNotEmpty(departments)){
             departments.forEach(department -> {
                 OrgTreeVo orgTreeVo = new OrgTreeVo(department.getId(), department.getPid(), department.getName(), department.getName(), "2");
+                orgTreeVo.setCode(department.getCode());
                 orgTreeVos.add(orgTreeVo);
             });
         }

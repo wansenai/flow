@@ -169,17 +169,21 @@ public class CompanyServiceImpl extends ServiceImpl<ICompanyMapper, Company> imp
     }
 
     @Override
-    public List<OrgTreeVo> getCompanyTree(String companyName) {
+    public List<OrgTreeVo> getCompanyTree(String keyword) {
         List<OrgTreeVo> orgTreeVos = new ArrayList<>();
         LambdaQueryWrapper<Company> companyLambdaQueryWrapper = new LambdaQueryWrapper<>();
         companyLambdaQueryWrapper.eq(Company::getStatus, 1).eq(Company::getDelFlag, FlowConstant.DEL_FLAG_1);
-        if(StringUtils.isNotBlank(companyName)){
-            companyLambdaQueryWrapper.like(Company::getCname,companyName);
+        if(StringUtils.isNotBlank(keyword)){
+            companyLambdaQueryWrapper.like(Company::getCname,keyword)
+                    .or().like(Company::getCode,keyword)
+                    .or().like(Company::getEname,keyword)
+                    .or().like(Company::getShortName,keyword);
         }
         List<Company> companies = this.list(companyLambdaQueryWrapper);
         if (CollectionUtils.isNotEmpty(companies)){
             companies.forEach(company -> {
                 OrgTreeVo orgTreeVo = new OrgTreeVo(company.getId(), company.getPid(), company.getCname(), company.getShortName(), OrgTreeVo.COMPANY_TYPE);
+                orgTreeVo.setCode(company.getCode());
                 orgTreeVos.add(orgTreeVo);
             });
         }
@@ -191,7 +195,7 @@ public class CompanyServiceImpl extends ServiceImpl<ICompanyMapper, Company> imp
         //参数一是当前页，参数二是每页个数
         LambdaQueryWrapper<Company> companyLambdaQueryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(company.getKeyword())){
-            companyLambdaQueryWrapper.like(Company::getCname, company.getKeyword()).or().like(Company::getCode, company.getCode());
+            companyLambdaQueryWrapper.like(Company::getCname, company.getKeyword()).or().like(Company::getCode, company.getKeyword());
         }
         if (company.getStatus() != null){
             companyLambdaQueryWrapper.eq(Company::getStatus, company.getStatus());

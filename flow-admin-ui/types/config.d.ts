@@ -59,6 +59,15 @@ export interface HeaderSetting {
   showSearch: boolean;
 }
 
+export interface CustomSetting {
+  appIcon: string;
+  loginPageBg: string;
+  projectName: string;
+  projectLogo: string;
+  signInDesc: string;
+  signInTitle: string;
+}
+
 export interface LocaleSetting {
   showPicker: boolean;
   // Current language
@@ -134,6 +143,8 @@ export interface ProjectConfig {
   closeMessageOnSwitch: boolean;
   // Whether to cancel the http request that has been sent but not responded when switching the interface.
   removeAllHttpPending: boolean;
+
+  customSetting: CustomSetting;
 }
 
 export interface GlobConfig {

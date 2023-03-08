@@ -3,6 +3,7 @@ package com.dragon.flow.service.flowable.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dragon.flow.enm.flowable.runtime.ProcessStatusEnum;
 import com.dragon.flow.mapper.flowable.IExtendProcinstMapper;
@@ -34,30 +35,32 @@ public class ExtendProcinstServiceImpl extends ServiceImpl<IExtendProcinstMapper
     @Override
     public void deleteExtendProcinstByProcessInstanceId(String processInstanceId) {
         LambdaQueryWrapper<ExtendProcinst> extendProcinstLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        extendProcinstLambdaQueryWrapper.eq(ExtendProcinst::getProcessInstanceId,processInstanceId);
+        extendProcinstLambdaQueryWrapper.eq(ExtendProcinst::getProcessInstanceId, processInstanceId);
         this.remove(extendProcinstLambdaQueryWrapper);
     }
 
     @Override
     public void saveExtendProcinstAndHis(ExtendProcinst extendProcinst) {
-        extendProcinst.setId(IdWorker.get32UUID());
+        if (StringUtils.isBlank(extendProcinst.getId())) {
+            extendProcinst.setId(IdWorker.get32UUID());
+        }
         extendProcinst.setCreateTime(new Date());
         extendProcinst.setUpdateTime(new Date());
-        this.save(extendProcinst);
+        this.saveOrUpdate(extendProcinst);
         ExtendHisprocinst extendHisprocinst = new ExtendHisprocinst();
         BeanUtils.copyProperties(extendProcinst, extendHisprocinst);
-        this.extendHisprocinstService.save(extendHisprocinst);
+        this.extendHisprocinstService.saveOrUpdate(extendHisprocinst);
     }
 
     @Override
     public void updateStatus(ProcessStatusEnum processStatus, String processInstanceId) {
         LambdaUpdateWrapper<ExtendProcinst> extendProcinstLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
         extendProcinstLambdaUpdateWrapper.set(ExtendProcinst::getProcessStatus, processStatus.getType())
-                .eq(ExtendProcinst::getProcessInstanceId,processInstanceId);
+                .eq(ExtendProcinst::getProcessInstanceId, processInstanceId);
         this.update(extendProcinstLambdaUpdateWrapper);
         LambdaUpdateWrapper<ExtendHisprocinst> extendHisprocinstLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
         extendHisprocinstLambdaUpdateWrapper.set(ExtendHisprocinst::getProcessStatus, processStatus.getType())
-                .eq(ExtendHisprocinst::getProcessInstanceId,processInstanceId);
+                .eq(ExtendHisprocinst::getProcessInstanceId, processInstanceId);
         extendHisprocinstService.update(extendHisprocinstLambdaUpdateWrapper);
     }
 

@@ -14,7 +14,7 @@ public enum CommentTypeEnum implements Serializable {
     BH("驳回"),
     CH("撤回"),
     ZC("暂存"),
-    XTZX("系统执行"),
+    XTZX("系统后台执行"),
     TJ("提交"),
     CXTJ("重新提交"),
     SPJS("审批结束"),

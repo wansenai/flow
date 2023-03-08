@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class TaskQueryParamsVo implements Serializable {
             value = "用户的工号",
             example = "00004737"
     )
+    @NotNull(message = "工号必须不为空")
     private String userCode;
     //系统标识
     @ApiModelProperty(

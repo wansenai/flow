@@ -80,6 +80,18 @@ public class Personal extends BaseModel implements Serializable {
      */
     private Date leaveDate;
     /**
+     * 三方平台
+     * @see com.dragon.flow.enm.org.ThirdPartyTypeEnum
+     * 钉钉：DingTalk
+     * 飞书：FeiShu
+     * 企业微信：WeiXin
+     */
+    private String thirdParty;
+    /**
+     * 三方用户id
+     */
+    private String thirdUserId;
+    /**
      * 钉钉的用户id
      */
     private String ddUserid;

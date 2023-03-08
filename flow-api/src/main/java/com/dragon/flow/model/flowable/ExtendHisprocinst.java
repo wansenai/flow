@@ -61,6 +61,14 @@ public class ExtendHisprocinst extends BaseModel {
      * 租户id(系统标识)
      */
     private String tenantId;
+    /**
+     * 用户信息
+     */
+    private String userInfo;
+    /**
+     * 表单数据
+     */
+    private String formData;
     public ExtendHisprocinst(){}
     public ExtendHisprocinst(String processInstanceId, String processStatus) {
         this.processInstanceId = processInstanceId;

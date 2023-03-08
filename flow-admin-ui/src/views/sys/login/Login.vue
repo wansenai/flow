@@ -22,10 +22,10 @@
               class="w-1/2 -mt-16 -enter-x"
             />
             <div class="mt-10 font-medium text-white -enter-x">
-              <span class="inline-block mt-4 text-3xl"> {{ t('sys.login.signInTitle') }}</span>
+              <span class="inline-block mt-4 text-3xl"> {{ signInTitle }}</span>
             </div>
             <div class="mt-5 font-normal text-white text-md dark:text-gray-500 -enter-x">
-              {{ t('sys.login.signInDesc') }}
+              {{ signInDesc }}
             </div>
           </div>
         </div>
@@ -58,7 +58,7 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useLocaleStore } from '/@/store/modules/locale';
-  import {getSystemSettings} from "/@/api/sys/user";
+  import { useAppStore } from '/@/store/modules/app';
 
   defineProps({
     sessionTimeout: {
@@ -66,11 +66,9 @@
     },
   });
 
-  onMounted(()=>{
-    getSystemSettings().then(res=>{
-      // alert(JSON.stringify(res));
-    });
-  });
+  const {getProjectConfig: {customSetting}} = useAppStore();
+
+  console.log(customSetting, '+++++++++++++++++++++++');
 
   const globSetting = useGlobSetting();
   const { prefixCls } = useDesign('login');
@@ -78,6 +76,9 @@
   const localeStore = useLocaleStore();
   const showLocale = localeStore.getShowPicker;
   const title = computed(() => globSetting?.title ?? '');
+  const signInDesc = computed(() => customSetting?.signInDesc ?? '');
+  const signInTitle = computed(() => customSetting?.signInTitle ?? '');
+
 </script>
 <style lang="less">
   @prefix-cls: ~'@{namespace}-login';

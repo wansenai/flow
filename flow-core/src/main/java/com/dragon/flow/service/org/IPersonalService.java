@@ -90,4 +90,11 @@ public interface IPersonalService extends IService<Personal> {
      * @param loginUser 登录用户
      */
     void saveOrUpdate(Personal personal, User loginUser);
+
+    /**
+     * 通过通过第三方用户ID获取用户对象
+     * @param thirdUserId thirdUserId
+     * @return
+     */
+    Personal getPersonalByThirdUserId(String thirdUserId);
 }

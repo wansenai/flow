@@ -1,5 +1,6 @@
 package com.dragon.flow.aspect;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.dragon.flow.model.log.SysOperRecord;
 import com.dragon.flow.schedule.LogQueue;
 import com.dragon.flow.vo.log.LogVo;
@@ -34,6 +35,7 @@ import java.util.Map;
 @Slf4j
 public abstract class RequestLogAspect {
 
+    public static final String[] PERMISSION_VALUES = new String[]{"0", "2", "3", "6", "7", "8"};
     @Autowired
     private LogQueue logQueue;
 
@@ -52,35 +54,58 @@ public abstract class RequestLogAspect {
         operContentMap.put("className", declaringTypeName);
         operContentMap.put("methodName", methodName);
         Map<String, Object> paramMap = this.getRequestParams(proceedingJoinPoint);
-
         operContentMap.putAll(paramMap);
         ApiOperation annotation = methodSignature.getMethod().getAnnotation(ApiOperation.class);
-        String value = annotation == null ? "" : annotation.value();
-        if (StringUtils.isNotBlank(value)){
-            operContentMap.put("ApiOperationValue", value);
-        }
-        LogVo logVo = this.getSubject(request);
-        if (logVo != null){
-            String content = FastJsonUtils.objectToJson(operContentMap);
-            Date date = new Date();
+        SaCheckPermission permission = methodSignature.getMethod().getAnnotation(SaCheckPermission.class);
+        if (checkAddLog(permission)) {
+            String value = annotation == null ? "" : annotation.value();
+            if (StringUtils.isNotBlank(value)) {
+                operContentMap.put("ApiOperationValue", value);
+            }
+            LogVo logVo = this.getSubject(request);
+            if (logVo != null) {
+                String content = FastJsonUtils.objectToJson(operContentMap);
+                Date date = new Date();
 
-            SysOperRecord sysOperRecord = SysOperRecord.builder()
-                    .ip(IpUtils.getRemoteIP(request))
-                    .userCode(logVo.getCode())
-                    .userName(logVo.getName())
-                    .source(logVo.getSourceEnum().getSn())
-                    .operContent(content)
-                    .operType(request.getMethod())
-                    .dateTime(date)
-                    .date(DateUtil.format(date, "yyyy-MM-dd"))
-                    .year(Calendar.getInstance().get(Calendar.YEAR))
-                    .month(Calendar.getInstance().get(Calendar.MONTH) + 1)
-                    .day(Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
-                    .build();
-            logQueue.put(FastJsonUtils.objectToJson(sysOperRecord));
+                SysOperRecord sysOperRecord = SysOperRecord.builder()
+                        .ip(IpUtils.getRemoteIP(request))
+                        .userCode(logVo.getCode())
+                        .userName(logVo.getName())
+                        .source(logVo.getSourceEnum().getSn())
+                        .operContent(content)
+                        .operType(request.getMethod())
+                        .dateTime(date)
+                        .date(DateUtil.format(date, "yyyy-MM-dd"))
+                        .year(Calendar.getInstance().get(Calendar.YEAR))
+                        .month(Calendar.getInstance().get(Calendar.MONTH) + 1)
+                        .day(Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+                        .build();
+                logQueue.put(FastJsonUtils.objectToJson(sysOperRecord));
+            }
         }
         return proceedingJoinPoint.proceed();
     }
+
+    private boolean checkAddLog(SaCheckPermission permission) {
+        if (permission != null) {
+            String[] permissionValues = permission.value();
+            if (permissionValues != null && permissionValues.length > 0) {
+                for (String v : permissionValues) {
+                    if (v != null) {
+                        String[] split = v.split("-");
+                        if (split.length == 2) {
+                            String pv = split[1];
+                            if (StringUtils.startsWithAny(pv, PERMISSION_VALUES)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     abstract LogVo getSubject(HttpServletRequest request);
 
     /**
@@ -98,11 +123,11 @@ public abstract class RequestLogAspect {
         for (int i = 0; i < paramNames.length; i++) {
             Object value = paramValues[i];
             //如果是文件对象
-            if (value instanceof MultipartFile){
+            if (value instanceof MultipartFile) {
                 MultipartFile file = (MultipartFile) value;
                 value = file.getOriginalFilename();  //获取文件名
                 requestParams.put(paramNames[i], value);
-            } else if (value instanceof HttpServletRequest || value instanceof HttpServletResponse){
+            } else if (value instanceof HttpServletRequest || value instanceof HttpServletResponse) {
                 continue;
             } else {
                 requestParams.put(paramNames[i], value);
