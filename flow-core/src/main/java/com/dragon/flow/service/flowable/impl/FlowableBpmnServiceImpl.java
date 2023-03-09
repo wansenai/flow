@@ -79,8 +79,6 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
     private ProcessValidatorFactory processValidatorFactory;
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private AppDefinitionImportService appDefinitionImportService;
 
     @Override
     public ReturnVo<String> validateBpmnModel(String modelId, String fileName, InputStream modelStream) {
