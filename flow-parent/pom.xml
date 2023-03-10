@@ -11,20 +11,20 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>flow-parent</artifactId>
     <groupId>com.dragon</groupId>
-    <version>1.1.2-SNAPSHOT</version>
+    <version>7.0.0.M1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>flow-parent</name>
     <description>企业数智化</description>
     <properties>
         <java.version>1.8</java.version>
-        <flowable.version>6.8.0</flowable.version>
+        <flowable.version>7.0.0.M1</flowable.version>
         <mybatis-plus-boot-starter.version>3.5.2</mybatis-plus-boot-starter.version>
         <mysql-connector-java.version>8.0.23</mysql-connector-java.version>
         <druid-spring-boot-starter.version>1.2.5</druid-spring-boot-starter.version>
         <shiro.version>1.7.0</shiro.version>
         <lombok.version>1.18.18</lombok.version>
         <fastjson.version>1.2.68</fastjson.version>
-        <flow.version>1.1.2-SNAPSHOT</flow.version>
+        <flow.version>7.0.0.M1-SNAPSHOT</flow.version>
         <spring.boot.version>2.7.6</spring.boot.version>
     </properties>
     <!-- 部署远程maven仓库里面 -->
