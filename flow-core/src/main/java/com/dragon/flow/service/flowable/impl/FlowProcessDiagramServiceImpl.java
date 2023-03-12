@@ -10,10 +10,11 @@ import com.dragon.flow.model.org.Personal;
 import com.dragon.flow.service.flowable.IBpmnModelService;
 import com.dragon.flow.service.flowable.IExtendHisprocinstService;
 import com.dragon.flow.service.flowable.IFlowProcessDiagramService;
+import com.dragon.flow.service.flowable.IModelInfoService;
 import com.dragon.flow.service.org.IPersonalService;
-import com.dragon.tools.utils.DurationUtils;
 import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
 import com.dragon.flow.vo.flowable.task.ActivityVo;
+import com.dragon.tools.utils.DurationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -27,7 +28,6 @@ import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.impl.bpmn.behavior.SequentialMultiInstanceBehavior;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.history.HistoricTaskInstance;
-import org.flowable.ui.modeler.serviceapi.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -66,7 +66,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
     @Autowired
     private RepositoryService repositoryService;
     @Autowired
-    private ModelService modelService;
+    private IModelInfoService modelInfoService;
 
     @Override
     public HighLightedNodeVo createCacheHighLightedNodeVoByProcessInstanceId(String processInstanceId) {
@@ -99,7 +99,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
             modelName = processInstance.getName();
         }
         BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
-        byte[] bpmnXML = modelService.getBpmnXML(bpmnModel);
+        byte[] bpmnXML = modelInfoService.getBpmnXML(bpmnModel);
         String modelXml = new String(bpmnXML, StandardCharsets.UTF_8);
         return new HighLightedNodeVo(highLightedFlows, activeActivityIds, modelXml, modelName);
     }
@@ -338,12 +338,12 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
                                               ExtendHisprocinst extendHisprocinst, String assignee) {
         ActivityVo vo = this.setXYWH(userTask, bpmnModel, extendHisprocinst);
         try {
-            if (StringUtils.isNotBlank(assignee)){
+            if (StringUtils.isNotBlank(assignee)) {
                 Personal personal = personalService.getPersonalByCode(assignee);
                 List<Personal> personals = new ArrayList<>();
                 personals.add(personal);
                 this.getApplyNames(personals, vo);
-            }else {
+            } else {
                 if (StringUtils.isNotBlank(userTask.getAssignee())) {
                     MultiInstanceLoopCharacteristics loopCharacteristics = userTask.getLoopCharacteristics();
                     if (loopCharacteristics == null) {

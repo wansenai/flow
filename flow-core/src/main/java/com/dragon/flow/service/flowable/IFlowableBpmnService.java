@@ -5,10 +5,6 @@ import com.dragon.flow.model.privilege.User;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.tools.vo.ReturnVo;
 import org.flowable.engine.repository.Deployment;
-import org.flowable.ui.modeler.domain.Model;
-import org.flowable.ui.modeler.model.ModelRepresentation;
-
-import java.io.InputStream;
 
 /**
  * @program: flow
@@ -20,23 +16,23 @@ public interface IFlowableBpmnService {
     /**
      * 验证流程图
      *
-     * @param modelId     模型ID
+     * @param id     模型ID
      * @param fileName    文件名称
-     * @param modelStream 模型文件流
+     * @param modelXml 模型文件流
      * @return
      */
-    ReturnVo<String> validateBpmnModel(String modelId, String fileName, InputStream modelStream);
+    ReturnVo<String> validateBpmnModel(String id, String fileName, String modelXml);
 
     /**
      * 导入bpmn模型
      *
-     * @param modelId     模型ID
-     * @param fileName    文件名称
-     * @param modelStream 模型文件流
-     * @param user        登录用户
+     * @param modelId  模型ID
+     * @param fileName 文件名称
+     * @param modelXml 模型文件XML
+     * @param user     登录用户
      * @return
      */
-    ReturnVo<String> importBpmnModel(String modelId, String fileName, InputStream modelStream, User user);
+    ReturnVo<String> importBpmnModel(String modelId, String fileName, String modelXml, User user);
 
     /**
      * 发布流程
@@ -60,15 +56,15 @@ public interface IFlowableBpmnService {
      * @param modelInfo 参数
      * @return
      */
-    ReturnVo<Model> createInitBpmn(ModelInfo modelInfo, User user);
+    ReturnVo<ModelInfo> createInitBpmn(ModelInfo modelInfo, User user);
 
     /**
      * 加载bpmn的xml文件
      *
-     * @param modelId 流程模型id
+     * @param id d
      * @return
      */
-    ModelInfoVo loadBpmnXmlByModelId(String modelId);
+    ModelInfoVo loadBpmnXmlById(String id);
 
     ModelInfoVo loadBpmnXmlByModelKey(String modelKey);
 

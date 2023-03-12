@@ -15,8 +15,6 @@ import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.Execution;
-import org.flowable.ui.common.util.XmlUtil;
-import org.flowable.ui.modeler.serviceapi.ModelService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,8 +38,6 @@ import java.util.List;
 @SpringBootTest(classes = FlowAdminApplication.class)
 public class TestModel {
 
-    @Autowired
-    private ModelService modelService;
     @Autowired
     private IFlowableModelService flowableModelService;
     @Autowired
@@ -81,7 +77,7 @@ public class TestModel {
          */
 
         InputStream inputStream = new FileInputStream("D://test002.bpmn");
-        XMLInputFactory xif = XmlUtil.createSafeXmlInputFactory();
+        XMLInputFactory xif = XMLInputFactory.newInstance();
         InputStreamReader xmlIn = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         XMLStreamReader xtr = xif.createXMLStreamReader(xmlIn);
         BpmnModel bpmnModel = bpmnXMLConverter.convertToBpmnModel(xtr);

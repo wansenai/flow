@@ -68,7 +68,7 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
     public ReturnVo<Boolean> validateBpmnModel(@RequestBody ModelInfoVo modelInfoVo) {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(modelInfoVo.getModelXml().getBytes());
         ReturnVo<String> validateBpmnModelReturnVo = flowableBpmnService.validateBpmnModel(modelInfoVo.getModelId(),
-                modelInfoVo.getFileName(), byteArrayInputStream);
+                modelInfoVo.getFileName(), modelInfoVo.getModelXml());
         ReturnVo<Boolean> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, validateBpmnModelReturnVo.getMsg());
         if (validateBpmnModelReturnVo.isSuccess()) {
             returnVo.setData(true);
@@ -81,9 +81,8 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
     @PostMapping(value = "/saveBpmnModel", produces = "application/json")
     public ReturnVo<String> saveBpmnModel(@RequestBody ModelInfoVo modelInfoVo) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(modelInfoVo.getModelXml().getBytes());
         ReturnVo<String> representationReturnVo = flowableBpmnService.importBpmnModel(modelInfoVo.getModelId(),
-                modelInfoVo.getFileName(), byteArrayInputStream, this.getLoginUser());
+                modelInfoVo.getFileName(), modelInfoVo.getModelXml(), this.getLoginUser());
         if (!representationReturnVo.isSuccess()) {
             returnVo = new ReturnVo<>(ReturnCode.FAIL, representationReturnVo.getMsg());
             return returnVo;
@@ -101,10 +100,10 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
         return returnVo;
     }
 
-    @GetMapping(value = "/getBpmnByModelId/{modelId}", produces = "application/json")
-    public ReturnVo<ModelInfoVo> getBpmnByModelId(@PathVariable String modelId) {
+    @GetMapping(value = "/getBpmnById/{id}", produces = "application/json")
+    public ReturnVo<ModelInfoVo> getBpmnByModelId(@PathVariable String id) {
         ReturnVo<ModelInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "获取数据成功！");
-        ModelInfoVo modelInfoVo = flowableBpmnService.loadBpmnXmlByModelId(modelId);
+        ModelInfoVo modelInfoVo = flowableBpmnService.loadBpmnXmlById(id);
         returnVo.setData(modelInfoVo);
         return returnVo;
     }

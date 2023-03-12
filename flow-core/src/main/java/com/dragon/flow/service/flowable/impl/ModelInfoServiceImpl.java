@@ -19,13 +19,19 @@ import com.dragon.tools.pager.Query;
 import com.dragon.tools.vo.ReturnVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.flowable.ui.modeler.domain.AbstractModel;
-import org.flowable.ui.modeler.domain.Model;
-import org.flowable.ui.modeler.serviceapi.ModelService;
+import org.flowable.bpmn.converter.BpmnXMLConverter;
+import org.flowable.bpmn.model.BpmnModel;
+import org.flowable.bpmn.model.Process;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,9 +53,53 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
     @Autowired
     private IFlowableBpmnService flowableBpmnService;
     @Autowired
-    private ModelService modelService;
-    @Autowired
     private ICategoryService categoryService;
+    @Autowired
+    private BpmnXMLConverter bpmnXMLConverter;
+
+    @Override
+    public byte[] getBpmnXML(BpmnModel bpmnModel) {
+        for (Process process : bpmnModel.getProcesses()) {
+            if (StringUtils.isNotEmpty(process.getId())) {
+                char firstCharacter = process.getId().charAt(0);
+                // no digit is allowed as first character
+                if (Character.isDigit(firstCharacter)) {
+                    process.setId("a" + process.getId());
+                }
+            }
+        }
+        byte[] xmlBytes = bpmnXMLConverter.convertToXML(bpmnModel);
+        return xmlBytes;
+    }
+
+    @Override
+    public BpmnModel getBpmnModelByXml(String modelXml) {
+        BpmnModel bpmnModel = null;
+        try {
+            XMLInputFactory xif = XMLInputFactory.newInstance();
+            InputStreamReader xmlIn = new InputStreamReader(new ByteArrayInputStream(modelXml.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
+            XMLStreamReader xtr = xif.createXMLStreamReader(xmlIn);
+            bpmnModel = bpmnXMLConverter.convertToBpmnModel(xtr);
+        }catch (XMLStreamException e){
+            log.error("转化xml失败", e);
+        }
+        return bpmnModel;
+    }
+
+    @Override
+    public BpmnModel getBpmnModelById(String id) {
+        ModelInfo modelInfo = this.getById(id);
+        BpmnModel bpmnModel = getBpmnModelByXml(modelInfo.getModelXml());
+        return bpmnModel;
+    }
+
+    @Override
+    public Boolean isKeyAlreadyExists(String modelKey) {
+        LambdaQueryWrapper<ModelInfo> modelInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        modelInfoLambdaQueryWrapper.eq(ModelInfo::getModelKey, modelKey);
+        long count = this.count(modelInfoLambdaQueryWrapper);
+        return count > 0;
+    }
 
     @Override
     public ReturnVo<String> deleteById(List<String> ids) {
@@ -60,8 +110,6 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
             if (modelInfo.getStatus().equals(ModelFormStatusEnum.CG.getStatus())
                     && modelInfo.getExtendStatus().equals(ModelFormStatusEnum.CG.getStatus())) {
                 this.removeById(id);
-                String modelId = modelInfo.getModelId();
-                modelService.deleteModel(modelId);
             } else {
                 returnVo = new ReturnVo<>(ReturnCode.FAIL, "模型不是草稿状态，请勿删除！");
             }
@@ -122,11 +170,7 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
     public ModelInfo saveOrUpdateModelInfo(ModelInfo modelInfo, User user, boolean flag) {
         if (StringUtils.isBlank(modelInfo.getId())) {
             if (flag) {
-                ReturnVo<Model> returnVo = flowableBpmnService.createInitBpmn(modelInfo, user);
-                if (returnVo.isSuccess()) {
-                    Model model = returnVo.getData();
-                    modelInfo.setModelId(model.getId());
-                }
+                flowableBpmnService.createInitBpmn(modelInfo, user);
             }
             Date date = new Date();
             modelInfo.setCreateTime(date);

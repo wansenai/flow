@@ -7,6 +7,7 @@ import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.pager.Query;
 import com.dragon.tools.vo.ReturnVo;
+import org.flowable.bpmn.model.BpmnModel;
 
 import java.util.List;
 
@@ -19,6 +20,21 @@ import java.util.List;
  * @since 2021-04-20
  */
 public interface IModelInfoService extends IService<ModelInfo> {
+
+    byte[] getBpmnXML(BpmnModel bpmnModel);
+    /**
+     * 通过id获取bpmnModel
+     * @param id
+     * @return
+     */
+    BpmnModel getBpmnModelById(String id) ;
+
+    /**
+     * xml转化为bpmnModel
+     * @param modelXml xml文件
+     * @return
+     */
+    BpmnModel getBpmnModelByXml(String modelXml);
 
     /**
      * 分页查询模型分页列表
@@ -59,4 +75,11 @@ public interface IModelInfoService extends IService<ModelInfo> {
      * @param ids ids
      */
     ReturnVo<String> deleteById(List<String> ids);
+
+    /**
+     * 判断key是否重复
+     * @param modelKey
+     * @return
+     */
+    Boolean isKeyAlreadyExists(String modelKey) ;
 }

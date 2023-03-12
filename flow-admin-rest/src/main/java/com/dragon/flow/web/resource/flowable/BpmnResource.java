@@ -38,9 +38,8 @@ public class BpmnResource extends BaseResource {
     @PostMapping(value = "/saveBpmnModel", produces = "application/json")
     public ReturnVo<String> saveBpmnModel(@RequestBody ModelInfoVo modelInfoVo) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(modelInfoVo.getModelXml().getBytes());
         ReturnVo<String> representationReturnVo = flowableBpmnService.importBpmnModel(modelInfoVo.getModelId(),
-                modelInfoVo.getFileName(), byteArrayInputStream, this.getLoginUser());
+                modelInfoVo.getFileName(), modelInfoVo.getModelXml(), this.getLoginUser());
         if (!representationReturnVo.isSuccess()){
             returnVo = new ReturnVo<>(ReturnCode.FAIL, representationReturnVo.getMsg());
             return returnVo;
@@ -77,13 +76,13 @@ public class BpmnResource extends BaseResource {
     /**
      * 获取
      *
-     * @param modelId 模型id
+     * @param id id
      * @return
      */
-    @GetMapping(value = "/getBpmnByModelId/{modelId}", produces = "application/json")
-    public ReturnVo<ModelInfoVo> getBpmnByModelId(@PathVariable String modelId) {
+    @GetMapping(value = "/getBpmnById/{id}", produces = "application/json")
+    public ReturnVo<ModelInfoVo> getBpmnByModelId(@PathVariable String id) {
         ReturnVo<ModelInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "获取数据成功！");
-        ModelInfoVo modelInfoVo = flowableBpmnService.loadBpmnXmlByModelId(modelId);
+        ModelInfoVo modelInfoVo = flowableBpmnService.loadBpmnXmlById(id);
         returnVo.setData(modelInfoVo);
         return returnVo;
     }

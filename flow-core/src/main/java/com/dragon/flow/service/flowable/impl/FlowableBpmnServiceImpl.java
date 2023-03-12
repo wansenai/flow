@@ -14,37 +14,28 @@ import com.dragon.flow.service.flowable.IModelInfoService;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.flowable.bpmn.converter.BpmnXMLConverter;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.editor.language.json.converter.BaseBpmnJsonConverter;
-import org.flowable.editor.language.json.converter.CustomBpmnJsonConverter;
 import org.flowable.editor.language.json.converter.util.CollectionUtils;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.repository.Deployment;
-import org.flowable.ui.common.service.exception.BadRequestException;
-import org.flowable.ui.common.util.XmlUtil;
-import org.flowable.ui.modeler.domain.AbstractModel;
-import org.flowable.ui.modeler.domain.Model;
-import org.flowable.ui.modeler.model.ModelRepresentation;
-import org.flowable.ui.modeler.service.AppDefinitionImportService;
-import org.flowable.ui.modeler.service.ConverterContext;
-import org.flowable.ui.modeler.serviceapi.ModelService;
 import org.flowable.validation.ProcessValidator;
 import org.flowable.validation.ProcessValidatorFactory;
 import org.flowable.validation.ValidationError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,6 +44,7 @@ import java.util.List;
  * @author: Bruce.Liu
  * @create: 2021-04-22 14:52
  **/
+@Slf4j
 @Service
 public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
 
@@ -61,52 +53,38 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
 
     @Autowired
     private IModelInfoService modelInfoService;
-    @Autowired
-    private ModelService modelService;
-    @Autowired
+    @Resource
     private RepositoryService repositoryService;
     @Autowired
     private IFlowableProcessDefinitionMapper flowableProcessDefinitionMapper;
     @Autowired
     private IFlowableModelService flowableModelService;
     @Autowired
-    protected CustomBpmnJsonConverter bpmnJsonConverter;
-    @Autowired
     protected BpmnXMLConverter bpmnXMLConverter;
     @Autowired
     protected DragonFlowProperties dragonFlowProperties;
     @Autowired
     private ProcessValidatorFactory processValidatorFactory;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Override
-    public ReturnVo<String> validateBpmnModel(String modelId, String fileName, InputStream modelStream) {
+    public ReturnVo<String> validateBpmnModel(String id, String fileName, String modelXml) {
         ReturnVo<String> returnVo = new ReturnVo(ReturnCode.SUCCESS, "OK");
-        Model processModel = modelService.getModel(modelId);
+        ModelInfo processModel = modelInfoService.getById(id);
         if (StringUtils.isBlank(fileName)) {
-            fileName = processModel.getKey() + BPMN_EXTENSION;
+            fileName = processModel.getModelKey() + BPMN_EXTENSION;
         }
-        try {
-            XMLInputFactory xif = XmlUtil.createSafeXmlInputFactory();
-            InputStreamReader xmlIn = new InputStreamReader(modelStream, StandardCharsets.UTF_8);
-            XMLStreamReader xtr = xif.createXMLStreamReader(xmlIn);
-            BpmnModel bpmnModel = bpmnXMLConverter.convertToBpmnModel(xtr);
-            bpmnModel.getMainProcess().setId(processModel.getKey());
-            bpmnModel.setTargetNamespace(BaseBpmnJsonConverter.NAMESPACE);
-            if (CollectionUtils.isEmpty(bpmnModel.getProcesses())) {
-                returnVo = new ReturnVo(ReturnCode.FAIL, "No process found in definition " + fileName);
-                return returnVo;
-            }
-            if (bpmnModel.getLocationMap().size() == 0) {
-                returnVo = new ReturnVo(ReturnCode.FAIL, "No required BPMN DI information found in definition " + fileName);
-                return returnVo;
-            }
-            returnVo = this.validationErrors(bpmnModel);
-        } catch (XMLStreamException e) {
-            returnVo = new ReturnVo(ReturnCode.FAIL, "bpmn.js failed for " + fileName + ", error message " + e.getMessage());
+        BpmnModel bpmnModel = modelInfoService.getBpmnModelByXml(modelXml);
+        bpmnModel.getMainProcess().setId(processModel.getModelKey());
+        bpmnModel.setTargetNamespace(BaseBpmnJsonConverter.NAMESPACE);
+        if (CollectionUtils.isEmpty(bpmnModel.getProcesses())) {
+            returnVo = new ReturnVo(ReturnCode.FAIL, "No process found in definition " + fileName);
             return returnVo;
         }
+        if (bpmnModel.getLocationMap().size() == 0) {
+            returnVo = new ReturnVo(ReturnCode.FAIL, "No required BPMN DI information found in definition " + fileName);
+            return returnVo;
+        }
+        returnVo = this.validationErrors(bpmnModel);
         return returnVo;
     }
 
@@ -124,19 +102,18 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
     }
 
     @Override
-    public ReturnVo<String> importBpmnModel(String modelId, String fileName, InputStream modelStream, User user) {
+    public ReturnVo<String> importBpmnModel(String modelId, String fileName, String modelXml, User user) {
         ReturnVo<String> returnVo = new ReturnVo(ReturnCode.SUCCESS, "OK");
-        Model processModel = modelService.getModel(modelId);
+        LambdaQueryWrapper<ModelInfo> modelInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        modelInfoLambdaQueryWrapper.eq(ModelInfo::getModelId, modelId);
+        ModelInfo modelInfo = modelInfoService.getOne(modelInfoLambdaQueryWrapper);
         if (StringUtils.isBlank(fileName)) {
-            fileName = processModel.getKey() + BPMN_EXTENSION;
+            fileName = modelInfo.getModelKey() + BPMN_EXTENSION;
         }
         if (fileName != null && (fileName.endsWith(BPMN_EXTENSION) || fileName.endsWith(BPMN20_XML_EXTENSION))) {
             try {
-                XMLInputFactory xif = XmlUtil.createSafeXmlInputFactory();
-                InputStreamReader xmlIn = new InputStreamReader(modelStream, StandardCharsets.UTF_8);
-                XMLStreamReader xtr = xif.createXMLStreamReader(xmlIn);
-                BpmnModel bpmnModel = bpmnXMLConverter.convertToBpmnModel(xtr);
-                bpmnModel.getMainProcess().setId(processModel.getKey());
+                BpmnModel bpmnModel = modelInfoService.getBpmnModelByXml(modelXml);
+                bpmnModel.getMainProcess().setId(modelInfo.getModelKey());
                 bpmnModel.setTargetNamespace(BaseBpmnJsonConverter.NAMESPACE);
                 if (CollectionUtils.isEmpty(bpmnModel.getProcesses())) {
                     returnVo = new ReturnVo(ReturnCode.FAIL, "No process found in definition " + fileName);
@@ -146,27 +123,12 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
                     returnVo = new ReturnVo(ReturnCode.FAIL, "No required BPMN DI information found in definition " + fileName);
                     return returnVo;
                 }
-                ConverterContext converterContext = new ConverterContext(modelService, objectMapper);
-                List<AbstractModel> decisionTables = modelService.getModelsByModelType(AbstractModel.MODEL_TYPE_DECISION_TABLE);
-                decisionTables.forEach(abstractModel -> {
-                    Model model = (Model) abstractModel;
-                    converterContext.addDecisionTableModel(model);
-                });
-                ObjectNode modelNode = bpmnJsonConverter.convertToJson(bpmnModel, converterContext);
-                this.setProcessPropertiesToKey(modelNode, processModel.getKey());
-                AbstractModel savedModel = modelService.saveModel(modelId, processModel.getName(), processModel.getKey(),
-                        processModel.getDescription(), modelNode.toString(), false,
-                        null, user.getUserNo());
-                LambdaQueryWrapper<ModelInfo> modelInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
-                modelInfoLambdaQueryWrapper.eq(ModelInfo::getModelId, savedModel.getId());
-                ModelInfo modelInfo = modelInfoService.getOne(modelInfoLambdaQueryWrapper);
+                modelInfo.setModelXml(modelXml);
                 modelInfo.setStatus(ModelFormStatusEnum.DFB.getStatus());
                 modelInfo.setExtendStatus(ModelFormStatusEnum.DFB.getStatus());
                 modelInfoService.saveOrUpdate(modelInfo);
-                returnVo.setData(savedModel.getId());
+                returnVo.setData(modelInfo.getId());
                 return returnVo;
-            } catch (BadRequestException e) {
-                throw e;
             } catch (Exception e) {
                 returnVo = new ReturnVo(ReturnCode.FAIL, "bpmn.js failed for " + fileName + ", error message " + e.getMessage());
                 return returnVo;
@@ -196,59 +158,62 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
     @Override
     public ReturnVo<String> publishBpmn(String modelId) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.FAIL, "发布失败！");
-        Model model = modelService.getModel(modelId);
-        BpmnModel bpmnModel = modelService.getBpmnModel(model);
-        ReturnVo<String> validReturnVo = this.validationErrors(bpmnModel);
-        if (!validReturnVo.isSuccess()) {
-            returnVo.setMsg(validReturnVo.getMsg());
-            return returnVo;
-        }
-        LambdaQueryWrapper<ModelInfo> modelInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        modelInfoLambdaQueryWrapper.eq(ModelInfo::getModelId, modelId);
-        ModelInfo modelInfo = modelInfoService.getOne(modelInfoLambdaQueryWrapper);
-        if (modelInfo != null) {
-            ReturnVo<String> statusReturnVo = ModelFormStatusEnum.checkActive(modelInfo.getStatus(), modelInfo.getExtendStatus());
-            if (statusReturnVo.isSuccess()) {
-                this.deployBpmn(modelInfo);
-                LambdaUpdateWrapper<ModelInfo> modelInfoLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
-                modelInfoLambdaUpdateWrapper.set(ModelInfo::getStatus, ModelFormStatusEnum.YFB.getStatus())
-                        .set(ModelInfo::getExtendStatus, ModelFormStatusEnum.YFB.getStatus())
-                        .eq(ModelInfo::getModelId, modelId);
-                modelInfoService.update(modelInfoLambdaUpdateWrapper);
-                returnVo.setCode(ReturnCode.SUCCESS);
-                returnVo.setMsg("发布成功！");
-            } else {
-                returnVo.setMsg(statusReturnVo.getMsg());
+        try {
+            LambdaQueryWrapper<ModelInfo> modelInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            modelInfoLambdaQueryWrapper.eq(ModelInfo::getModelId, modelId);
+            ModelInfo modelInfo = modelInfoService.getOne(modelInfoLambdaQueryWrapper);
+            XMLInputFactory xif = XMLInputFactory.newInstance();
+            InputStreamReader xmlIn = new InputStreamReader(new ByteArrayInputStream(modelInfo.getModelXml().getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
+            XMLStreamReader xtr = xif.createXMLStreamReader(xmlIn);
+            BpmnModel bpmnModel = bpmnXMLConverter.convertToBpmnModel(xtr);
+            ReturnVo<String> validReturnVo = this.validationErrors(bpmnModel);
+            if (!validReturnVo.isSuccess()) {
+                returnVo.setMsg(validReturnVo.getMsg());
+                return returnVo;
             }
-        } else {
+
+            if (modelInfo != null) {
+                ReturnVo<String> statusReturnVo = ModelFormStatusEnum.checkActive(modelInfo.getStatus(), modelInfo.getExtendStatus());
+                if (statusReturnVo.isSuccess()) {
+                    this.deployBpmn(modelInfo);
+                    LambdaUpdateWrapper<ModelInfo> modelInfoLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+                    modelInfoLambdaUpdateWrapper.set(ModelInfo::getStatus, ModelFormStatusEnum.YFB.getStatus())
+                            .set(ModelInfo::getExtendStatus, ModelFormStatusEnum.YFB.getStatus())
+                            .eq(ModelInfo::getModelId, modelId);
+                    modelInfoService.update(modelInfoLambdaUpdateWrapper);
+                    returnVo.setCode(ReturnCode.SUCCESS);
+                    returnVo.setMsg("发布成功！");
+                } else {
+                    returnVo.setMsg(statusReturnVo.getMsg());
+                }
+            } else {
+                returnVo.setMsg("没有找到对应的模型，请确认!");
+            }
+        } catch (XMLStreamException e) {
+            log.error("转化xml失败", e);
             returnVo.setMsg("没有找到对应的模型，请确认!");
         }
         return returnVo;
     }
 
     @Override
-    public ReturnVo<Model> createInitBpmn(ModelInfo modelInfo, User user) {
-        ModelRepresentation modelRepresentation = new ModelRepresentation();
-        modelRepresentation.setModelType(AbstractModel.MODEL_TYPE_BPMN);
-        modelRepresentation.setKey(modelInfo.getModelKey());
-        modelRepresentation.setName(modelInfo.getName());
-        modelRepresentation.setTenantId(modelInfo.getAppSn());
-        modelRepresentation.setLastUpdated(new Date());
-        ReturnVo<Model> returnVo = flowableModelService.createModel(modelRepresentation, user);
+    public ReturnVo<ModelInfo> createInitBpmn(ModelInfo modelInfo, User user) {
+        modelInfo.setModelType(ModelInfo.MODEL_TYPE_BPMN);
+        ReturnVo<ModelInfo> returnVo = flowableModelService.createModel(modelInfo, user);
         return returnVo;
     }
 
     @Override
     public ReturnVo<Deployment> deployBpmn(ModelInfo modelInfo) {
         ReturnVo<Deployment> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        Model model = modelService.getModel(modelInfo.getModelId());
-        BpmnModel bpmnModel = modelService.getBpmnModel(model);
+        ModelInfo model = modelInfoService.getById(modelInfo.getId());
+        BpmnModel bpmnModel = modelInfoService.getBpmnModelByXml(model.getModelXml());
         Deployment deploy = repositoryService.createDeployment()
                 .name(model.getName())
-                .key(model.getKey())
+                .key(model.getModelKey())
                 .category(modelInfo.getCategoryCode())
-                .tenantId(model.getTenantId())
-                .addBpmnModel(model.getKey() + BPMN_EXTENSION, bpmnModel)
+                .tenantId(model.getAppSn())
+                .addBpmnModel(model.getModelKey() + BPMN_EXTENSION, bpmnModel)
                 .deploy();
         FlowableProcessDefinition flowableProcessDefinition = new FlowableProcessDefinition();
         flowableProcessDefinition.setCategory(modelInfo.getCategoryCode());
@@ -260,16 +225,13 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
     }
 
     @Override
-    public ModelInfoVo loadBpmnXmlByModelId(String modelId) {
-        Model model = modelService.getModel(modelId);
-        byte[] bpmnXML = modelService.getBpmnXML(model);
-        String streamStr = new String(bpmnXML);
+    public ModelInfoVo loadBpmnXmlById(String id) {
+        ModelInfo model = modelInfoService.getById(id);
         ModelInfoVo modelInfoVo = new ModelInfoVo();
-        modelInfoVo.setModelId(modelId);
         modelInfoVo.setModelName(model.getName());
-        modelInfoVo.setModelKey(model.getKey());
+        modelInfoVo.setModelKey(model.getModelKey());
         modelInfoVo.setFileName(model.getName());
-        modelInfoVo.setModelXml(streamStr);
+        modelInfoVo.setModelXml(model.getModelXml());
         return modelInfoVo;
     }
 
@@ -278,7 +240,7 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
         if (StringUtils.isNotBlank(modelKey)) {
             ModelInfo info = modelInfoService.getModelInfoByModelKey(modelKey);
             if (info != null) {
-                return this.loadBpmnXmlByModelId(info.getModelId());
+                return this.loadBpmnXmlById(info.getId());
             }
         }
         return null;

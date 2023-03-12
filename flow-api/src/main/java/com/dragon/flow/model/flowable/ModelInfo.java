@@ -24,6 +24,13 @@ public class ModelInfo extends BaseModel implements Serializable {
     private static final long serialVersionUID = -974572277155384236L;
     public static final int CUSTOM_MODEL_TYPE = 0;
     public static final int BIZ_MODEL_TYPE = 1;
+
+    public static final int MODEL_TYPE_BPMN = 0;
+    public static final int MODEL_TYPE_FORM = 2;
+    public static final int MODEL_TYPE_APP = 3;
+    public static final int MODEL_TYPE_DECISION_TABLE = 4;
+    public static final int MODEL_TYPE_CMMN = 5;
+    public static final int MODEL_TYPE_DECISION_SERVICE = 6;
     /**
      * 主键
      */
@@ -146,6 +153,10 @@ public class ModelInfo extends BaseModel implements Serializable {
      * 排序
      */
     private Integer orderNo;
+    /**
+     * 模型的xml文件刘 longtext
+     */
+    private String modelXml;
 
     @TableField(exist = false)
     private List<String> categoryCodes;
@@ -154,6 +165,4 @@ public class ModelInfo extends BaseModel implements Serializable {
      */
     @TableField(exist = false)
     private String processDefinitionId;
-    @TableField(exist = false)
-    private String modelXml;
 }

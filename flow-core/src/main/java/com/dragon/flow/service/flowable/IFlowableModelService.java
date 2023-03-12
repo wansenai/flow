@@ -1,10 +1,8 @@
 package com.dragon.flow.service.flowable;
 
+import com.dragon.flow.model.flowable.ModelInfo;
 import com.dragon.flow.model.privilege.User;
 import com.dragon.tools.vo.ReturnVo;
-import org.flowable.ui.modeler.domain.Model;
-import org.flowable.ui.modeler.model.ModelRepresentation;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @program: flow
@@ -17,11 +15,11 @@ public interface IFlowableModelService {
     /**
      * 创建模型初始化
      *
-     * @param modelRepresentation 参数
-     * @param user                创建人
+     * @param modelInfo 参数
+     * @param user      创建人
      * @return
      */
-    ReturnVo<Model> createModel(ModelRepresentation modelRepresentation, User user);
+    ReturnVo<ModelInfo> createModel(ModelInfo modelInfo, User user);
 
     /**
      * 导入cmmn模型
@@ -41,14 +39,14 @@ public interface IFlowableModelService {
      * @param user    user
      * @return
      */
-    ModelRepresentation importDecisionServiceModel(String modelId, MultipartFile file, User user);
+//    ModelRepresentation importDecisionServiceModel(String modelId, MultipartFile file, User user);
 
     /**
      * 拷贝流程
      *
-     * @param modelId             模型id
-     * @param modelRepresentation 参数
+     * @param id             模型id
+     * @param modelInfo 参数
      * @return
      */
-    ModelRepresentation duplicateModel(String modelId, ModelRepresentation modelRepresentation, User user);
+    ModelInfo duplicateModel(String id, ModelInfo modelInfo, User user);
 }
