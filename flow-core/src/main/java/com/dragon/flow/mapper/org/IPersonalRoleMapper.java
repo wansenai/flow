@@ -1,9 +1,8 @@
 package com.dragon.flow.mapper.org;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.dragon.flow.model.org.Personal;
 import com.dragon.flow.model.org.PersonalRole;
-import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -15,6 +14,7 @@ import java.util.List;
  * @author bruce.liu
  * @since 2021-04-12
  */
+@Repository
 public interface IPersonalRoleMapper extends BaseMapper<PersonalRole> {
 
     List<PersonalRole> getAllByQuery(PersonalRole personalRole) ;

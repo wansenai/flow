@@ -53,4 +53,18 @@
         WHERE
             t2.personal_id = #{personalId}
     </select>
+
+    <select id="getRolesByPersonalIdList" resultType="com.dragon.flow.model.org.Role">
+        SELECT
+            t1.*,
+            t2.personal_id AS personalId
+        FROM
+            tbl_org_role t1
+        INNER JOIN tbl_org_personal_role t2 ON t1.id = t2.role_id
+        WHERE
+            t2.personal_id in
+            <foreach collection="personalIdList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
 </mapper>

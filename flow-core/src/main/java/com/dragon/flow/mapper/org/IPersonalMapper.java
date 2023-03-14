@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.dragon.flow.model.org.Personal;
 import com.dragon.flow.model.org.Role;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * @author bruce.liu
  * @since 2021-04-12
  */
+@Repository
 public interface IPersonalMapper extends BaseMapper<Personal> {
     List<Personal> getPersonalsByRoleSns(@Param("roleSns") List<String> roleSns) ;
     List<Personal> getPersonalsByRoleId(@Param("roleId") String roleId) ;

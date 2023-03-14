@@ -29,5 +29,12 @@ public interface IRoleMapper extends BaseMapper<Role> {
      * @param personalId 人员id
      * @return
      */
-    List<Role> getRolesByPersonalId(@Param("personalId") String personalId) ;
+    List<Role> getRolesByPersonalId(@Param("personalId") String personalId);
+
+    /**
+     * 通过人员id获取人员的角色列表
+     * @param personalIdList 人员id
+     * @return
+     */
+    List<Role> getRolesByPersonalIdList(@Param("personalIdList") List<String> personalIdList);
 }
