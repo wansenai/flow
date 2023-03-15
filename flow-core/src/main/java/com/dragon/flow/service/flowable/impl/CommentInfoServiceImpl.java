@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,13 +36,18 @@ public class CommentInfoServiceImpl extends ServiceImpl<ICommentInfoMapper, Comm
 
     @Override
     public List<CommentInfo> getCommentInfosByProcessInstanceId(String processInstanceId) {
-        List<CommentInfo> commentInfoList = commentInfoMapper.getCommentInfosByProcessInstanceId(processInstanceId);
-        if (CollectionUtils.isNotEmpty(commentInfoList)) {
-            commentInfoList.forEach(commentInfo -> {
-                if (StringUtils.isNotBlank(commentInfo.getType())){
-                    commentInfo.setTypeName(CommentTypeEnum.getEnumMsgByType(commentInfo.getType()));
+        List<CommentInfo> commentInfos = commentInfoMapper.getCommentInfosByProcessInstanceId(processInstanceId);
+        List<CommentInfo> commentInfoList = new ArrayList<>();
+
+        if (CollectionUtils.isNotEmpty(commentInfos)) {
+            for (CommentInfo commentInfo : commentInfos) {
+                commentInfo.setTypeName(CommentTypeEnum.getEnumMsgByType(commentInfo.getType()));
+                commentInfoList.add(commentInfo);
+                if (CommentTypeEnum.LCZZ.name().equals(commentInfo.getType())
+                        || CommentTypeEnum.SPJS.name().equals(commentInfo.getType())) {
+                    break;
                 }
-            });
+            }
         }
         return commentInfoList;
     }
