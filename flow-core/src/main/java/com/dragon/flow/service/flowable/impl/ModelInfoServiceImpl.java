@@ -19,6 +19,8 @@ import com.dragon.tools.pager.Query;
 import com.dragon.tools.vo.ReturnVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.flowable.engine.RepositoryService;
+import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.ui.modeler.domain.AbstractModel;
 import org.flowable.ui.modeler.domain.Model;
 import org.flowable.ui.modeler.serviceapi.ModelService;
@@ -50,6 +52,25 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
     private ModelService modelService;
     @Autowired
     private ICategoryService categoryService;
+    @Autowired
+    private RepositoryService repositoryService;
+
+    @Override
+    public ModelInfo getByModelId(String modelId) {
+        LambdaQueryWrapper<ModelInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ModelInfo::getModelId, modelId);
+        ModelInfo modelInfo = this.getOne(queryWrapper);
+        if (modelInfo != null) {
+            ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey(modelInfo.getModelKey()).latestVersion().singleResult();
+            Integer version = 0;
+            if (processDefinition != null) {
+                version = processDefinition.getVersion();
+            }
+            modelInfo.setVersion(version);
+        }
+
+        return null;
+    }
 
     @Override
     public ReturnVo<String> deleteById(List<String> ids) {

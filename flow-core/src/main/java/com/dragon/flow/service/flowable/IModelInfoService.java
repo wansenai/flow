@@ -19,7 +19,7 @@ import java.util.List;
  * @since 2021-04-20
  */
 public interface IModelInfoService extends IService<ModelInfo> {
-
+    ModelInfo getByModelId(String modelId) ;
     /**
      * 分页查询模型分页列表
      *

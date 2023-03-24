@@ -31,7 +31,6 @@ public class ModelInfoResource extends BaseResource<ModelInfo> {
 
     @Autowired
     private IModelInfoService modelInfoService;
-
     /**
      * 判断字段是否存在
      *
@@ -114,9 +113,7 @@ public class ModelInfoResource extends BaseResource<ModelInfo> {
     @GetMapping(value = "/getByModelId/{modelId}", produces = "application/json")
     public ReturnVo<ModelInfo> getByModelId(@PathVariable String modelId) {
         ReturnVo<ModelInfo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
-        LambdaQueryWrapper<ModelInfo> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ModelInfo::getModelId, modelId);
-        ModelInfo modelInfo = modelInfoService.getOne(queryWrapper);
+        ModelInfo modelInfo = modelInfoService.getByModelId(modelId);
         ModelFormStatusEnum minStatus = ModelFormStatusEnum.getMinStatus(modelInfo.getStatus(), modelInfo.getExtendStatus());
         if (minStatus != null) {
             modelInfo.setStatusName(minStatus.getMsg());

@@ -156,4 +156,6 @@ public class ModelInfo extends BaseModel implements Serializable {
     private String processDefinitionId;
     @TableField(exist = false)
     private String modelXml;
+    @TableField(exist = false)
+    private Integer version;
 }
