@@ -155,8 +155,12 @@ public class PersonalServiceImpl extends ServiceImpl<IPersonalMapper, Personal> 
         IPage<Personal> page = this.personalMapper.getPagerModel(queryPage, personal);
         List<Personal> list = page.getRecords();
         if (showRoles && CollectionUtils.isNotEmpty(list)){
+            List<String> personalIdList = list.stream().map(Personal::getId).collect(Collectors.toList());
+            // 获取当前页的所有角色
+            List<Role> rolesByPersonalList = roleService.getRolesByPersonalIdList(personalIdList);
+            Map<String, List<Role>> personalRolesMap = rolesByPersonalList.stream().collect(Collectors.groupingBy(Role::getPersonalId));
             list.forEach(p -> {
-                List<Role> roles = roleService.getRolesByPersonalId(p.getId());
+                List<Role> roles = personalRolesMap.get(p.getId());
                 if (CollectionUtils.isNotEmpty(roles)){
                     p.setRoles(roles);
                 }

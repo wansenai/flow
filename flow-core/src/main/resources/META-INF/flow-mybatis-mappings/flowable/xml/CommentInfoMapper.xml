@@ -30,7 +30,7 @@
         LEFT JOIN tbl_org_personal t2
             ON t1.personal_code = t2.`code`
         WHERE t1.process_instance_id=#{processInstanceId}
-        ORDER BY t1.time ASC, FIELD(t1.type, 'LCZZ', 'SPJS') ASC
+        ORDER BY t1.time ASC, FIELD(t1.type, 'LCZZ', 'SPJS') ASC, t1.id DESC
     </select>
 
 </mapper>

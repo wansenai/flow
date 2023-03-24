@@ -26,6 +26,14 @@ public interface IRoleService extends IService<Role> {
     List<Role> getRolesByPersonalId(String personalId);
 
     /**
+     * 通过人员id获取人员的角色列表
+     *
+     * @param personalIdList 人员idList
+     * @return
+     */
+    List<Role> getRolesByPersonalIdList(List<String> personalIdList);
+
+    /**
      * 通过标识获取角色
      * @param sn 标识
      * @return

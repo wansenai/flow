@@ -66,6 +66,14 @@ public class RoleServiceImpl extends ServiceImpl<IRoleMapper, Role> implements I
     }
 
     @Override
+    public List<Role> getRolesByPersonalIdList(List<String> personalIdList) {
+        if(CollectionUtils.isNotEmpty(personalIdList)){
+            return roleMapper.getRolesByPersonalIdList(personalIdList);
+        }
+        return null;
+    }
+
+    @Override
     public void saveOrUpdate(Role role, User loginUser) {
         Date date = new Date();
         if (StringUtils.isNotBlank(role.getId())){
