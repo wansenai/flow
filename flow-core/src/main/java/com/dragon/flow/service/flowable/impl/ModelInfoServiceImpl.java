@@ -68,8 +68,7 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
             }
             modelInfo.setVersion(version);
         }
-
-        return null;
+        return modelInfo;
     }
 
     @Override
