@@ -53,9 +53,9 @@
     },
     setup() {
       const go = useGo();
-      const [registerModal, { openModal }] = useModal();
+      const [registerModal, { openModal, setModalProps: setFlowFormModalProps }] = useModal();
       // const [registerRoleModal, { openModal: openRoleSelector, setModalProps }] = useModal();
-      const [registerBpmnPreviewModal, { openModal: openBpmnPreviewModal, setModalProps: ssetBpmnPreviewProps }] = useModal();
+      const [registerBpmnPreviewModal, { openModal: openBpmnPreviewModal, setModalProps: setBpmnPreviewProps }] = useModal();
 
       const currentModelInfo = ref<Recordable>({});
       const currentCategory = ref<Recordable>({});
@@ -104,7 +104,9 @@
         openModal(true, {
           record:{categoryCode: unref(currentCategory).code},
           isUpdate: true,
+          
         });
+
       }
 
       function createActions(record: Recordable, column: BasicColumn): ActionItem[] {
@@ -164,7 +166,7 @@
           modelKey: record.modelKey,
           isUpdate: true,
         });
-        ssetBpmnPreviewProps({
+        setBpmnPreviewProps({
           title: `预览-${record.name}`,
           bodyStyle: {padding: '0px', margin: '0px'},
           width: 900, height: 400,
@@ -172,10 +174,24 @@
           cancelText: '关闭'
         });
       }
+
       function handleEdit(record: Recordable) {
         openModal(true, {
           record,
           isUpdate: true,
+        });
+        setFlowFormModalProps({
+          maskClosable: false,
+          footer: null,
+          width: '100%',
+          wrapClassName: 'xxxxxxxxxxx',
+          canFullscreen: false,
+          defaultFullscreen: true,
+          useWrapper: true,
+          wrapperProps: {
+            modalHeaderHeight: 30
+          }
+
         });
       }
       function openTab() {
@@ -240,10 +256,12 @@
   });
 </script>
 
+
 <style lang="less" scoped>
   .modelInfo-roles{
     >span{
       margin-right: 4px;
     }
   }
+
 </style>

@@ -101,7 +101,7 @@ function initCustomSetting(){
       };
 
       appStore.setProjectConfig({customSetting});
-      debugger;
+      // debugger;
     }, 4000);
 
     console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', res);

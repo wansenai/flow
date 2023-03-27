@@ -8,14 +8,18 @@ var CustomForm = {
     if('false' == isDev){
       BasePath = '';
     }
-    if(!this.modelKey){
+
+    loadCustomFormInfo({formJson: '{}'});
+    /*if(!this.modelKey){
       console.warn('modelKey不能为空！');
       vueObj.$message({
         showClose: true,
         message: 'modelKey不能为空！',
         type: 'error'
       });
-    }
+    }*/
+
+
   },
 
 // 异步保存数据！ formstatus（1草稿；2流程发起）
@@ -58,9 +62,9 @@ function getCustomFormData(formStatus){
  * 父页面调用此方法给表单赋值
  * @param data
  */
-function loadCustomFormData(data) {
-  const { formInfo, formDatas = {}, taskFormInfoVos, isEdit } = data;
-  const jsonData = JSON.parse(formInfo.formJson);
+function loadCustomFormInfo(data) {
+  const { formJson } = data;
+  const jsonData = JSON.parse(formJson);
 
   vueObj = new Vue({
     el: '#app',
@@ -72,8 +76,7 @@ function loadCustomFormData(data) {
       },
       dynamicData: {
 
-      },
-      formEdit: isEdit
+      }
     },
     edit: false,
     methods: {
@@ -83,5 +86,5 @@ function loadCustomFormData(data) {
     }
   });
 
-  vueObj.$refs.generateForm.setData(formDatas);
+  // vueObj.$refs.generateForm.setData(formDatas);
 }
