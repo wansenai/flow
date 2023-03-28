@@ -56,4 +56,11 @@ public class FormInfoServiceImpl extends ServiceImpl<IFormInfoMapper, FormInfo> 
         this.saveOrUpdate(formInfo);
     }
 
+    @Override
+    public FormInfo getModelInfoByCode(String code) {
+        LambdaQueryWrapper<FormInfo> formInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        formInfoLambdaQueryWrapper.eq(FormInfo::getCode, code);
+        return this.getOne(formInfoLambdaQueryWrapper);
+    }
+
 }

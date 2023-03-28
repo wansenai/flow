@@ -29,5 +29,11 @@ public interface IFormInfoService extends IService<FormInfo> {
      */
     void saveOrUpdate(FormInfo formInfo, User loginUser) ;
 
+    /**
+     * 通过表单标识获取数据
+     * @param code  表单标识，modelKey
+     */
+    FormInfo getModelInfoByCode(String code) ;
+
 
 }
