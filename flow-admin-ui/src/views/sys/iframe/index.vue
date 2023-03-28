@@ -12,7 +12,7 @@
 </template>
 <script lang="ts" setup>
   import type { CSSProperties } from 'vue';
-  import { ref, unref, computed } from 'vue';
+  import { ref, unref, computed, defineExpose } from 'vue';
   import { Spin } from 'ant-design-vue';
   import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
   import { propTypes } from '/@/utils/propTypes';
@@ -54,6 +54,8 @@
     loading.value = false;
     calcHeight();
   }
+
+  defineExpose({ frameRef })
 </script>
 <style lang="less" scoped>
   @prefix-cls: ~'@{namespace}-iframe-page';

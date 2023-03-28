@@ -15,14 +15,24 @@
     .making-form-container .el-container .el-header{
       display: flex;
     }
+
+    .making-form-container .el-container .el-header .btn-submit{
+      margin-left: 50px;
+    }
     .action-container{
       display: flex;
+      flex: auto;
+      flex-wrap: nowrap;
+      align-items: center;
+    }
+    .action-container .el-button{
+
     }
 
-    .action-container .left{
-      flex: 1;
+    .action-container div{
+      margin-right: 8px;
     }
-    .action-container .right{
+    .action-container .left{
       flex: 1;
     }
 
@@ -38,29 +48,25 @@
     <template #action>
       <div class="action-container">
         <div class="left">
-          <el-input  placeholder="表单名称" size="medium"></el-input>
+          <el-input v-model="modelName" placeholder="表单名称" size="medium"></el-input>
         </div>
         <div>
-          <el-input placeholder="表单标识" size="medium"></el-input>
-        </div>
-        <div class="right">
-          <el-button type="text" icon="el-icon-document-checked">保存</el-button>
+          <el-input v-model="modelKey" placeholder="表单标识" size="medium"></el-input>
         </div>
       </div>
 
+      <el-button class="btn-submit" @click="handleSubmit" type="text" icon="el-icon-document-checked">保存</el-button>
     </template>
   </fm-making-form>
 </div>
 <script src="../libs/vue2.x/vue.js"></script>
+<script src="../libs/http/axios.min.js"></script>
 <script src="../libs/vue2.x/elementui/index.js"></script>
 <script src="./dist/FormMaking.umd.min.js"></script>
 <script src="./dist/editor/Editor.umd.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="./js/utils.js"></script>
+<script src="./js/api.js"></script>
 <script src="./js/custom.js"></script>
-<!--<script src="../js/libs/jquery-3.4.1.min.js"></script>
-<script src="../js/modules/form/custom-form.js"></script>
-<script src="../js/modules/base.js"></script>-->
 
 <script>
   let vueObj = new Vue();

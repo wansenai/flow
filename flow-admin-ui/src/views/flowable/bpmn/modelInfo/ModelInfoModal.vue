@@ -16,18 +16,19 @@
       </div>
     </template>
     <div v-show="activityKey === 'formDesigner'" class="designer-container form">
-      <FramePage :frameSrc="formDesignerUrl" />
+      <FramePage ref="formDesignerRef" :frameSrc="formDesignerUrl" />
     </div>
     <div v-show="activityKey === 'flowDesigner'" class="designer-container flow">
       <FramePage :frameSrc="flowDesignerUrl" />
     </div>
     <div v-show="activityKey === 'baseSetting'" class="designer-container setting">
       <BasicForm @register="registerForm" />
+      <Button @click="handleSubmit" type="primary">保存</Button>
     </div>
   </BasicModal>
 </template>
 <script lang="ts">
-  import { defineComponent, ref, computed, unref } from 'vue';
+import {defineComponent, ref, computed, unref, nextTick} from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, Rule, useForm } from '/@/components/Form/index';
   import { modelInfoFormSchema } from './modelInfo.data';
@@ -35,24 +36,34 @@
   import { getAll } from '/@/api/base/app';
   import { useGo } from '/@/hooks/web/usePage';
   import {CheckExistParams} from "/@/api/model/baseModel";
-  import {Radio} from "ant-design-vue"
+  import {Radio, Button} from "ant-design-vue"
   import FramePage from '/@/views/sys/iframe/index.vue';
+import {getFormInfoById, getFormInfoByModelKey, saveFormInfo} from "/@/api/form/formInfo";
+import { useMessage } from '/@/hooks/web/useMessage';
+
+const { createMessage } = useMessage();
 
   export default defineComponent({
     name: 'ModelInfoModal',
-    components: { FramePage, BasicModal, BasicForm, Radio, RadioGroup: Radio.Group, RadioButton: Radio.Button },
+    components: { FramePage, Button, BasicModal, BasicForm, Radio, RadioGroup: Radio.Group, RadioButton: Radio.Button },
     emits: ['success', 'register'],
     setup(_, { emit }) {
       const isUpdate = ref(true);
+      const formBaseInfo = ref({});
       const activityKey = ref<string>("formDesigner");
       const go = useGo();
       const flowDesignerUrl = ref<string>('');
       const formDesignerUrl = ref<string>('');
+      const formDesignerRef = ref<HTMLElement>();
 
       const [registerForm, { setFieldsValue, updateSchema, resetFields, validate }] = useForm({
         labelWidth: 100,
         schemas: modelInfoFormSchema,
-        showActionButtonGroup: false,
+        showActionButtonGroup: true,
+        showResetButton: false,
+        submitButtonOptions: {
+          text: '保存'
+        },
         actionColOptions: {
           span: 23,
         },
@@ -81,6 +92,25 @@
         ] as Rule[];
       }
 
+      window['submitFormInfo']=(data)=>{
+        console.log(data);
+        const saveData = {
+          id: unref(formBaseInfo)?.id,
+          code: data.modelKey,
+          name: data.modelName,
+          title: data.modelName,
+          formJson: data.formJson,
+        };
+
+        saveFormInfo(saveData).then(res=>{
+          const {data: {msg, success}} = res;
+          console.log(res);
+          debugger;
+          formBaseInfo.value = {id: res.id, modelKey: res.code, modelName: res.name, formJson: res.formJson}
+          createMessage.success(msg);
+        });
+      };
+
       const [registerModal, { setModalProps, changeLoading, closeModal }] = useModalInner(async (data) => {
         resetFields();
         setModalProps({ confirmLoading: false });
@@ -89,12 +119,36 @@
         let appList = null;
         activityKey.value = "formDesigner";
         const modelId = '';
+        const {modelKey, name} = data.record;
 
         const isDev = import.meta.env.DEV;
         flowDesignerUrl.value = isDev ? ('/flow-bpmn-front/index.html/#/bpmn/designer?modelId=' + modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
         formDesignerUrl.value = isDev ? ('/form-making/custom.html?isDev=true&modelKey=' + modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
 
+        debugger;
+        formBaseInfo.value = {
+          modelKey, modelName: name,
+          formJson: {}
+        };
 
+        if(modelKey){
+          const formInfo = await getFormInfoByModelKey(modelKey);
+          if(formInfo){
+            formBaseInfo.value = {id: formInfo.id, modelKey: formInfo.code, modelName: formInfo.name, formJson: formInfo.formJson};
+            console.log(formInfo);
+          }
+        }
+
+        nextTick(()=>{
+          setTimeout(()=>{
+            const iframe = unref(unref(formDesignerRef).frameRef)
+            if(iframe){
+              iframe.onload = function(){
+                iframe.contentWindow.CustomForm.loadFormInfo(unref(formBaseInfo));
+              }
+            }
+          }, 0);
+        })
         try{
           appList = await getAll();
         }finally {
@@ -146,10 +200,16 @@
           setModalProps({ confirmLoading: true });
           const values = await validate();
           const result = await saveOrUpdate(values);
-          go("/flowable/bpmn/designer?modelId=" + result.modelId);
 
-          closeModal();
-          emit('success');
+          const {data: {msg, success}} = result;
+
+          createMessage.success(msg);
+
+
+          // go("/flowable/bpmn/designer?modelId=" + result.modelId);
+
+          // closeModal();
+          // emit('success');
         } finally {
           changeLoading(false);
           setModalProps({ confirmLoading: false });
@@ -159,8 +219,11 @@
       return { registerModal,
         registerForm,
         flowDesignerUrl,
+        formDesignerRef,
         formDesignerUrl,
-        getTitle, activityKey, handleSubmit };
+        getTitle, activityKey,
+        handleSubmit
+      };
     },
   });
 </script>
@@ -191,16 +254,19 @@
   .flow-form-title{
     display: flex;
     flex-wrap: nowrap;
+    align-items: center;
     .title{
-      flex-grow: 1;
-      flex: auto;
+      flex: 1;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
     .ctrl{
       flex-basis: 400px;
       text-align: center;
     }
     .close{
-      flex: auto;
+      flex: 1;
     }
   }
 
@@ -209,7 +275,6 @@
   .designer-container{
     width: 100%;
     height: 100%;
-    border: 1px solid red;
     overflow: auto;
   }
 

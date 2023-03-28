@@ -38,11 +38,12 @@ public class FormInfoResource extends BaseResource<FormInfo> {
      * @return
      */
     @PostMapping(value = "/saveOrUpdate", produces = "application/json")
-    public ReturnVo<String> saveOrUpdate(@RequestBody FormInfo formInfo) {
-        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.FAIL, "保存失败！");
+    public ReturnVo<FormInfo> saveOrUpdate(@RequestBody FormInfo formInfo) {
+        ReturnVo<FormInfo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "保存失败！");
         formInfoService.saveOrUpdate(formInfo);
         returnVo.setCode(ReturnCode.SUCCESS);
         returnVo.setMsg("保存成功");
+        returnVo.setData(formInfo);
         return returnVo;
     }
 
@@ -51,8 +52,8 @@ public class FormInfoResource extends BaseResource<FormInfo> {
      * @param modelKey 表单标识，modelKey
      * @return FormInfo
      */
-    @GetMapping(value = "/getModelInfoByModelKey", produces = "application/json")
-    public ReturnVo<FormInfo> getModelInfoByModelKey(@RequestParam String modelKey) {
+    @GetMapping(value = "/getFormInfoByModelKey", produces = "application/json")
+    public ReturnVo<FormInfo> getFormInfoByModelKey(@RequestParam String modelKey) {
         ReturnVo<FormInfo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "查询数据失败！");
         FormInfo modelInfo = formInfoService.getModelInfoByCode(modelKey);
         returnVo.setCode(ReturnCode.SUCCESS);
@@ -66,8 +67,8 @@ public class FormInfoResource extends BaseResource<FormInfo> {
      * @param id 表单Id
      * @return FormInfo
      */
-    @GetMapping(value = "/getModelInfoById", produces = "application/json")
-    public ReturnVo<FormInfo> getModelInfoById(@RequestParam String id) {
+    @GetMapping(value = "/getFormInfoById", produces = "application/json")
+    public ReturnVo<FormInfo> getFormInfoById(@RequestParam String id) {
         ReturnVo<FormInfo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "查询数据失败！");
         FormInfo modelInfo = formInfoService.getById(id);
         returnVo.setCode(ReturnCode.SUCCESS);

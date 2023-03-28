@@ -9,9 +9,12 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
+/**
+ * @author admin
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "tbl_form_info")
+@TableName(value = "tbl_form_form_info")
 public class FormInfo extends BaseModel implements Serializable {
     /**
      * 主键

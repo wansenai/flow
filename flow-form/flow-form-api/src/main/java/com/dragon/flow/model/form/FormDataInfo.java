@@ -17,7 +17,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "tbl_form_datainfo")
+@TableName(value = "tbl_form_form_data_info")
 public class FormDataInfo extends BaseModel implements Serializable {
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
@@ -29,10 +29,6 @@ public class FormDataInfo extends BaseModel implements Serializable {
      * 业务单据id
      */
     private String businessKey;
-    /**
-     * 状态 草稿 已提交 已完成 撤回
-     */
-    private String status;
     /**
      * 流程实例id
      */

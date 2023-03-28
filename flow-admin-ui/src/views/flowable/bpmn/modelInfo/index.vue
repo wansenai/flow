@@ -4,9 +4,6 @@
     <BasicTable @register="registerTable" class="w-3/4 xl:w-4/5">
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增 </a-button>
-        <!--<Authority value="ModelInfo:4">
-          <a-button type="primary" @click="openTab">测试打开设计器</a-button>
-        </Authority>-->
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
@@ -106,6 +103,14 @@
           isUpdate: true,
           
         });
+        setFlowFormModalProps({
+          maskClosable: false,
+          footer: null,
+          width: '100%',
+          canFullscreen: false,
+          defaultFullscreen: true,
+          useWrapper: true,
+        });
 
       }
 
@@ -184,18 +189,10 @@
           maskClosable: false,
           footer: null,
           width: '100%',
-          wrapClassName: 'xxxxxxxxxxx',
           canFullscreen: false,
           defaultFullscreen: true,
           useWrapper: true,
-          wrapperProps: {
-            modalHeaderHeight: 30
-          }
-
         });
-      }
-      function openTab() {
-        go("/flowable/bpmn/designer?modelId=XXXXXXXXXXXXXXXXXXXXXXXX");
       }
 
       function handleDelete(record: Recordable) {
@@ -249,7 +246,6 @@
         cancelDeleteRole,
         handleDelete,
         handleSuccess,
-        openTab,
         handleSelect,
       };
     },

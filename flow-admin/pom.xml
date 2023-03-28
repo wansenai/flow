@@ -23,6 +23,12 @@
             <artifactId>flow-admin-rest</artifactId>
             <version>${flow.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.dragon</groupId>
+            <artifactId>flow-form-rest</artifactId>
+            <version>${flow.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.dragon</groupId>
             <artifactId>flow-api-rest</artifactId>
