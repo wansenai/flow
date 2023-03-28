@@ -23,7 +23,7 @@
         <druid-spring-boot-starter.version>1.2.5</druid-spring-boot-starter.version>
         <shiro.version>1.7.0</shiro.version>
         <lombok.version>1.18.18</lombok.version>
-        <fastjson.version>1.2.68</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <flow.version>1.1.2-SNAPSHOT</flow.version>
         <spring.boot.version>2.7.6</spring.boot.version>
     </properties>
