@@ -14,18 +14,6 @@ var CustomForm = {
         console.log('=====================>>>>>>>>>>>>', res);
       });
     }
-
-    // loadCustomFormInfo({formJson: '{}'});
-    /*if(!this.modelKey){
-      console.warn('modelKey不能为空！');
-      vueObj.$message({
-        showClose: true,
-        message: 'modelKey不能为空！',
-        type: 'error'
-      });
-    }*/
-
-
   },
 
   // 异步保存数据！ formstatus（1草稿；2流程发起）
@@ -111,7 +99,6 @@ var CustomForm = {
         }
       });
     }else{
-      // vueObj.$refs.makingform.getJSON(jsonData)
       vueObj.jsonData = jsonData;
       vueObj.modelKey = modelKey;
       vueObj.modelName = modelName;

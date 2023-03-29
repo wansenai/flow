@@ -4,12 +4,13 @@
       <div class="flow-form-title">
         <div class="title">
           创建流程 - {{activityKey}}
+          {{flowBaseInfo}}
         </div>
         <div class="ctrl">
           <RadioGroup v-model:value="activityKey" buttonStyle="solid">
             <RadioButton value="formDesigner"> 表单设计 </RadioButton>
-            <RadioButton value="flowDesigner"> 流程设计 </RadioButton>
-            <RadioButton value="baseSetting"> 扩展设置 </RadioButton>
+            <RadioButton :disabled="!flowBaseInfo.id" value="flowDesigner"> 流程设计 </RadioButton>
+            <RadioButton :disabled="!flowBaseInfo.id" value="baseSetting"> 扩展设置 </RadioButton>
           </RadioGroup>
         </div>
         <div class="close"></div>
@@ -19,7 +20,7 @@
       <FramePage ref="formDesignerRef" :frameSrc="formDesignerUrl" />
     </div>
     <div v-show="activityKey === 'flowDesigner'" class="designer-container flow">
-      <FramePage :frameSrc="flowDesignerUrl" />
+      <FramePage ref="flowDesignerRef" :frameSrc="flowDesignerUrl" />
     </div>
     <div v-show="activityKey === 'baseSetting'" class="designer-container setting">
       <BasicForm @register="registerForm" />
@@ -32,7 +33,7 @@ import {defineComponent, ref, computed, unref, nextTick} from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, Rule, useForm } from '/@/components/Form/index';
   import { modelInfoFormSchema } from './modelInfo.data';
-  import { saveOrUpdate, checkEntityExist } from '/@/api/flowable/bpmn/modelInfo';
+  import { saveFlowInfo, checkEntityExist } from '/@/api/flowable/bpmn/modelInfo';
   import { getAll } from '/@/api/base/app';
   import { useGo } from '/@/hooks/web/usePage';
   import {CheckExistParams} from "/@/api/model/baseModel";
@@ -50,11 +51,14 @@ const { createMessage } = useMessage();
     setup(_, { emit }) {
       const isUpdate = ref(true);
       const formBaseInfo = ref({});
+      const flowBaseInfo = ref({});
       const activityKey = ref<string>("formDesigner");
       const go = useGo();
       const flowDesignerUrl = ref<string>('');
       const formDesignerUrl = ref<string>('');
       const formDesignerRef = ref<HTMLElement>();
+      const flowDesignerRef = ref<HTMLElement>();
+      const isDev = import.meta.env.DEV;
 
       const [registerForm, { setFieldsValue, updateSchema, resetFields, validate }] = useForm({
         labelWidth: 100,
@@ -92,7 +96,28 @@ const { createMessage } = useMessage();
         ] as Rule[];
       }
 
+      function saveCallback(resFlow, resForm){
+        console.log(resFlow, resForm);
+        const {data: {success: flowResSuccess, msg: flowResMsg, data: flowDataData}} = resFlow;
+        const {data: {success:formResSuccess, msg: formResMsg, data: formDataData} } = resForm;
+        if(flowResMsg && formResSuccess){
+          createMessage.success(formResMsg);
+          flowBaseInfo.value = flowDataData;
+          formBaseInfo.value = {id: formDataData.id, modelKey: formDataData.code, modelName: formDataData.name, formJson: formDataData.formJson}
+          debugger;
+          flowDesignerUrl.value = isDev ? ('/flow-bpmn-front/index.html/#/bpmn/designer?modelId=' + unref(flowBaseInfo).modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + unref(flowBaseInfo).modelId);
+          const iframe = unref(unref(flowDesignerRef).frameRef)
+
+          setTimeout(()=>{
+            debugger;
+            iframe.contentWindow.location.reload(true);
+          });
+        }else{
+          createMessage.error(!flowResSuccess?flowResMsg: formResMsg);
+        }
+      }
       window['submitFormInfo']=(data)=>{
+        const {id: modelInfoId, categoryCode} = unref(flowBaseInfo);
         console.log(data);
         const saveData = {
           id: unref(formBaseInfo)?.id,
@@ -100,15 +125,27 @@ const { createMessage } = useMessage();
           name: data.modelName,
           title: data.modelName,
           formJson: data.formJson,
+          categoryCode: categoryCode
         };
 
+
+        const flowInfo = {
+          id: modelInfoId,
+          modelKey: data.modelKey,
+          name: data.modelName,
+          categoryCode: categoryCode,
+        };
+
+        Promise.all([saveFlowInfo(flowInfo), saveFormInfo(saveData)]).then(([resFlow, resForm])=>{
+          saveCallback(resFlow, resForm);
+        });
+
+        return;
         saveFormInfo(saveData).then(res=>{
           const {data: {msg, success}} = res;
-          console.log(res);
-          debugger;
-          formBaseInfo.value = {id: res.id, modelKey: res.code, modelName: res.name, formJson: res.formJson}
           createMessage.success(msg);
         });
+
       };
 
       const [registerModal, { setModalProps, changeLoading, closeModal }] = useModalInner(async (data) => {
@@ -118,16 +155,18 @@ const { createMessage } = useMessage();
         changeLoading(true);
         let appList = null;
         activityKey.value = "formDesigner";
-        const modelId = '';
-        const {modelKey, name} = data.record;
+        const {modelKey, name, categoryCode, modelId} = data.record;
+        flowBaseInfo.value = data.record;
 
-        const isDev = import.meta.env.DEV;
-        flowDesignerUrl.value = isDev ? ('/flow-bpmn-front/index.html/#/bpmn/designer?modelId=' + modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
         formDesignerUrl.value = isDev ? ('/form-making/custom.html?isDev=true&modelKey=' + modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
+        if(modelId){
+          flowDesignerUrl.value = isDev ? ('/flow-bpmn-front/index.html/#/bpmn/designer?modelId=' + modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
+        }
 
         formBaseInfo.value = {
           modelKey, modelName: name,
-          formJson: ''
+          formJson: '',
+          categoryCode: categoryCode
         };
 
         if(modelKey){
@@ -202,7 +241,7 @@ const { createMessage } = useMessage();
         try {
           setModalProps({ confirmLoading: true });
           const values = await validate();
-          const result = await saveOrUpdate(values);
+          const result = await saveFlowInfo(values);
 
           const {data: {msg, success}} = result;
 
@@ -217,9 +256,11 @@ const { createMessage } = useMessage();
       return { registerModal,
         registerForm,
         flowDesignerUrl,
-        formDesignerRef,
         formDesignerUrl,
+        flowDesignerRef,
+        formDesignerRef,
         getTitle, activityKey,
+        flowBaseInfo,
         handleSubmit
       };
     },
