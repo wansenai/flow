@@ -15,7 +15,7 @@ var CustomForm = {
       });
     }
 
-    loadCustomFormInfo({formJson: '{}'});
+    // loadCustomFormInfo({formJson: '{}'});
     /*if(!this.modelKey){
       console.warn('modelKey不能为空！');
       vueObj.$message({
@@ -38,7 +38,6 @@ var CustomForm = {
   },
 
   submit: function(){
-    debugger;
     // 数据验证
     if(!vueObj.modelKey){
       console.warn('modelKey不能为空！');
@@ -58,11 +57,7 @@ var CustomForm = {
       });
       return;
     }
-
-    debugger;
     const formJson = vueObj.$refs.makingform.getJSON();
-
-    console.log(vueObj.$refs.generateForm);
 
     const formInfo = {
       formJson: JSON.stringify(formJson),
@@ -79,24 +74,48 @@ var CustomForm = {
    */
   loadFormInfo: function(data) {
     const { formJson, modelKey, modelName } = data;
-    debugger;
-    const jsonData = JSON.parse(formJson);
-
-    vueObj = new Vue({
-      el: '#app',
-      data: {
-        jsonData: jsonData,
-        editData: {},
-        modelKey: modelKey,
-        modelName: modelName,
-      },
-      edit: false,
-      methods: {
-        handleSubmit () {
-          CustomForm.submit();
+    const jsonData = formJson?JSON.parse(formJson):null;
+    if(!vueObj.$el){
+      vueObj = new Vue({
+        el: '#app',
+        data: {
+          jsonData: jsonData,
+          editData: {},
+          modelKey: modelKey,
+          modelName: modelName,
+        },
+        edit: false,
+        methods: {
+          handleSubmit () {
+            CustomForm.submit();
+          }
+        },
+        mounted() {
+          this.$refs.makingform.clear();
+          if(jsonData){
+            this.$refs.makingform.setJSON(jsonData)
+          }
+        },
+        watch: {
+          'jsonData': {
+            handler(newVal, oldVal) {
+              console.log(JSON.stringify(newVal));
+              this.$refs.makingform.clear();
+              if(newVal){
+                this.$refs.makingform.setJSON(newVal)
+              }
+            },
+            deep: true,
+            immediate: true
+          }
         }
-      }
-    });
+      });
+    }else{
+      // vueObj.$refs.makingform.getJSON(jsonData)
+      vueObj.jsonData = jsonData;
+      vueObj.modelKey = modelKey;
+      vueObj.modelName = modelName;
+    }
   }
 };
 

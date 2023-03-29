@@ -3,7 +3,7 @@
     <template #title>
       <div class="flow-form-title">
         <div class="title">
-          标题 - {{activityKey}}
+          创建流程 - {{activityKey}}
         </div>
         <div class="ctrl">
           <RadioGroup v-model:value="activityKey" buttonStyle="solid">
@@ -125,10 +125,9 @@ const { createMessage } = useMessage();
         flowDesignerUrl.value = isDev ? ('/flow-bpmn-front/index.html/#/bpmn/designer?modelId=' + modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
         formDesignerUrl.value = isDev ? ('/form-making/custom.html?isDev=true&modelKey=' + modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
 
-        debugger;
         formBaseInfo.value = {
           modelKey, modelName: name,
-          formJson: {}
+          formJson: ''
         };
 
         if(modelKey){
@@ -143,6 +142,10 @@ const { createMessage } = useMessage();
           setTimeout(()=>{
             const iframe = unref(unref(formDesignerRef).frameRef)
             if(iframe){
+
+              if(iframe.contentWindow?.vueObj){
+                iframe.contentWindow.CustomForm.loadFormInfo(unref(formBaseInfo));
+              }
               iframe.onload = function(){
                 iframe.contentWindow.CustomForm.loadFormInfo(unref(formBaseInfo));
               }
@@ -205,11 +208,6 @@ const { createMessage } = useMessage();
 
           createMessage.success(msg);
 
-
-          // go("/flowable/bpmn/designer?modelId=" + result.modelId);
-
-          // closeModal();
-          // emit('success');
         } finally {
           changeLoading(false);
           setModalProps({ confirmLoading: false });
