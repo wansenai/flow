@@ -12,7 +12,7 @@
       </template>
     </BasicTable>
 
-    <ModelInfoModal @register="registerModal" @success="handleSuccess" />
+    <ModelInfoModal @register="registerModal" @success="handleSuccess" @visible-change="handleModelInfoVisibleChange" />
     <BpmnPreviewModal @register="registerBpmnPreviewModal" @success="handleSuccess" />
 
   </PageWrapper>
@@ -233,6 +233,16 @@
         reload({ searchInfo });
       }
 
+      function handleModelInfoVisibleChange(visible) {
+        if(!visible){
+          currentCategory.value = node;
+          let searchInfo = {categoryCode: node?node.code:''};
+          setTimeout(()=>{
+            reload({ searchInfo });
+          }, 200);
+        }
+      }
+
       return {
         loadingRef,
         registerTable,
@@ -247,6 +257,7 @@
         handleDelete,
         handleSuccess,
         handleSelect,
+        handleModelInfoVisibleChange,
       };
     },
   });
