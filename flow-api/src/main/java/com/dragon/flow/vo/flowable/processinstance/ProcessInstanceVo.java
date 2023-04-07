@@ -47,6 +47,10 @@ public class ProcessInstanceVo implements Serializable {
      */
     private Integer processDefinitionType;
     /**
+     * 表单类型
+     */
+    private Integer formType;
+    /**
      * 流程定义的版本号
      */
     private Integer processDefinitionVersion;
