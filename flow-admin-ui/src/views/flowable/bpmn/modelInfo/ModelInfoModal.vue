@@ -253,7 +253,8 @@ const { createMessage } = useMessage();
         }
       }
 
-      return { registerModal,
+      return {
+        registerModal,
         registerForm,
         flowDesignerUrl,
         formDesignerUrl,

@@ -8,7 +8,7 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { modelInfoFormSchema } from './modelInfo.data';
-  import { saveOrUpdate } from '/@/api/flowable/bpmn/modelInfo';
+  // import { saveOrUpdate } from '/@/api/flowable/bpmn/modelInfo';
   import { getAll } from '/@/api/base/app';
 
   export default defineComponent({
@@ -52,7 +52,7 @@
         try {
           setModalProps({confirmLoading: true});
           const values = await validate();
-          await saveOrUpdate(values);
+          // await saveOrUpdate(values);
           closeModal();
           emit('success');
         } finally {

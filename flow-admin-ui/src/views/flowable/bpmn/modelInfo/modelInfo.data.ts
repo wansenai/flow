@@ -91,14 +91,14 @@ export const modelInfoFormSchema: FormSchema[] = [
     component: 'Input',
     show: false,
   },
-  {
+/*  {
     field: 'categoryCode',
     label: 'ID',
     required: false,
     component: 'Input',
     show: false,
-  },
-  {
+  },*/
+  /*{
     field: 'name',
     label: '名称',
     component: 'Input',
@@ -122,7 +122,7 @@ export const modelInfoFormSchema: FormSchema[] = [
     component: 'Input',
     required: true,
     colProps: { span: 24 },
-  },
+  },*/
   {
     field: 'appSn',
     label: '所属系统',
