@@ -1,1 +1,0 @@
-import{aw as t}from"./index.1bc1d740.js";var e;(e||(e={})).OPTIONS_LIST="/select/getDemoOptions";const s=s=>t.get({url:e.OPTIONS_LIST,params:s});var a;(a||(a={})).TREE_OPTIONS_LIST="/tree/getDemoOptions";const o=e=>t.get({url:a.TREE_OPTIONS_LIST,params:e});export{s as o,o as t};

@@ -1,1 +1,0 @@
-import{bt as o,ag as d,T as a}from"./vendor.7bee64cc.js";function m(s,i=150,n){let e=()=>{s()};e=a(e,i);const t=()=>{n&&n.immediate&&e(),window.addEventListener("resize",e)},r=()=>{window.removeEventListener("resize",e)};return o(()=>{t()}),d(()=>{r()}),[t,r]}export{m as u};
