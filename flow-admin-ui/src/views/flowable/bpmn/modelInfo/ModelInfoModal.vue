@@ -1,10 +1,10 @@
 <template>
-  <BasicModal wrapClassName="form-flow-designer" v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit">
+  <BasicModal wrapClassName="form-flow-designer" v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit" @cancel="handleCloseModal">
     <template #title>
       <div class="flow-form-title">
         <div class="title">
-          创建流程 - {{activityKey}}
-          {{flowBaseInfo}}
+          {{isUpdate?'编辑流程':'创建流程'}}
+          {{flowBaseInfo.name}}
         </div>
         <div class="ctrl">
           <RadioGroup v-model:value="activityKey" buttonStyle="solid">
@@ -13,7 +13,9 @@
             <RadioButton :disabled="!flowBaseInfo.id" value="baseSetting"> 扩展设置 </RadioButton>
           </RadioGroup>
         </div>
-        <div class="close"></div>
+        <div class="close">
+
+        </div>
       </div>
     </template>
     <div v-show="activityKey === 'formDesigner'" class="designer-container form">
@@ -23,53 +25,62 @@
       <FramePage ref="flowDesignerRef" :frameSrc="flowDesignerUrl" />
     </div>
     <div v-show="activityKey === 'baseSetting'" class="designer-container setting">
-      <BasicForm @register="registerForm" />
-      <Button @click="handleSubmit" type="primary">保存</Button>
+      <div style="width: 800px; margin: auto;">
+        <BasicForm @register="registerForm" />
+        <div class="mt-4 text-center">
+          <Button @click="handleSubmit" type="primary">保存</Button>
+        </div>
+      </div>
+
     </div>
   </BasicModal>
 </template>
 <script lang="ts">
-import {defineComponent, ref, computed, unref, nextTick} from 'vue';
+  import {defineComponent, ref, computed, unref, nextTick, watch} from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, Rule, useForm } from '/@/components/Form/index';
   import { modelInfoFormSchema } from './modelInfo.data';
-  import { saveFlowInfo, checkEntityExist } from '/@/api/flowable/bpmn/modelInfo';
+  import {saveFlowInfo, checkEntityExist, getByModelId} from '/@/api/flowable/bpmn/modelInfo';
   import { getAll } from '/@/api/base/app';
-  import { useGo } from '/@/hooks/web/usePage';
   import {CheckExistParams} from "/@/api/model/baseModel";
   import {Radio, Button} from "ant-design-vue"
+  import { CloseOutlined } from '@ant-design/icons-vue';
   import FramePage from '/@/views/sys/iframe/index.vue';
-import {getFormInfoById, getFormInfoByModelKey, saveFormInfo} from "/@/api/form/formInfo";
-import { useMessage } from '/@/hooks/web/useMessage';
+  import {getFormInfoByModelKey, saveFormInfo} from "/@/api/form/formInfo";
+  import { useMessage } from '/@/hooks/web/useMessage';
 
-const { createMessage } = useMessage();
+  const { createMessage } = useMessage();
 
   export default defineComponent({
     name: 'ModelInfoModal',
-    components: { FramePage, Button, BasicModal, BasicForm, Radio, RadioGroup: Radio.Group, RadioButton: Radio.Button },
+    components: {
+      FramePage, Button, CloseOutlined,
+      BasicModal, BasicForm, Radio, RadioGroup: Radio.Group,
+      RadioButton: Radio.Button
+    },
     emits: ['success', 'register'],
     setup(_, { emit }) {
-      const isUpdate = ref(true);
+      const isUpdate = ref(false);
       const formBaseInfo = ref({});
       const flowBaseInfo = ref({});
       const activityKey = ref<string>("formDesigner");
-      const go = useGo();
       const flowDesignerUrl = ref<string>('');
       const formDesignerUrl = ref<string>('');
       const formDesignerRef = ref<HTMLElement>();
       const flowDesignerRef = ref<HTMLElement>();
       const isDev = import.meta.env.DEV;
+      const haveShowFlowDesigner = ref(false);
 
       const [registerForm, { setFieldsValue, updateSchema, resetFields, validate }] = useForm({
         labelWidth: 100,
         schemas: modelInfoFormSchema,
-        showActionButtonGroup: true,
+        showActionButtonGroup: false,
         showResetButton: false,
         submitButtonOptions: {
           text: '保存'
         },
         actionColOptions: {
-          span: 23,
+          span: 14,
         },
       });
 
@@ -97,25 +108,17 @@ const { createMessage } = useMessage();
       }
 
       function saveCallback(resFlow, resForm){
-        console.log(resFlow, resForm);
         const {data: {success: flowResSuccess, msg: flowResMsg, data: flowDataData}} = resFlow;
         const {data: {success:formResSuccess, msg: formResMsg, data: formDataData} } = resForm;
         if(flowResMsg && formResSuccess){
-          createMessage.success(formResMsg);
+          createMessage.success({content: formResMsg, style: {marginTop: '10vh'}});
           flowBaseInfo.value = flowDataData;
           formBaseInfo.value = {id: formDataData.id, modelKey: formDataData.code, modelName: formDataData.name, formJson: formDataData.formJson}
-          debugger;
-          flowDesignerUrl.value = isDev ? ('/flow-bpmn-front/index.html/#/bpmn/designer?modelId=' + unref(flowBaseInfo).modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + unref(flowBaseInfo).modelId);
-          const iframe = unref(unref(flowDesignerRef).frameRef)
-
-          setTimeout(()=>{
-            debugger;
-            iframe.contentWindow.location.reload(true);
-          });
-        }else{
+        } else {
           createMessage.error(!flowResSuccess?flowResMsg: formResMsg);
         }
       }
+
       window['submitFormInfo']=(data)=>{
         const {id: modelInfoId, categoryCode} = unref(flowBaseInfo);
         console.log(data);
@@ -128,7 +131,6 @@ const { createMessage } = useMessage();
           categoryCode: categoryCode
         };
 
-
         const flowInfo = {
           id: modelInfoId,
           modelKey: data.modelKey,
@@ -139,17 +141,11 @@ const { createMessage } = useMessage();
         Promise.all([saveFlowInfo(flowInfo), saveFormInfo(saveData)]).then(([resFlow, resForm])=>{
           saveCallback(resFlow, resForm);
         });
-
-        return;
-        saveFormInfo(saveData).then(res=>{
-          const {data: {msg, success}} = res;
-          createMessage.success(msg);
-        });
-
       };
 
       const [registerModal, { setModalProps, changeLoading, closeModal }] = useModalInner(async (data) => {
         resetFields();
+        haveShowFlowDesigner.value = false;
         setModalProps({ confirmLoading: false });
         isUpdate.value = !!data?.isUpdate;
         changeLoading(true);
@@ -157,11 +153,7 @@ const { createMessage } = useMessage();
         activityKey.value = "formDesigner";
         const {modelKey, name, categoryCode, modelId} = data.record;
         flowBaseInfo.value = data.record;
-
         formDesignerUrl.value = isDev ? ('/form-making/custom.html?isDev=true&modelKey=' + modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
-        if(modelId){
-          flowDesignerUrl.value = isDev ? ('/flow-bpmn-front/index.html/#/bpmn/designer?modelId=' + modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
-        }
 
         formBaseInfo.value = {
           modelKey, modelName: name,
@@ -173,7 +165,6 @@ const { createMessage } = useMessage();
           const formInfo = await getFormInfoByModelKey(modelKey);
           if(formInfo){
             formBaseInfo.value = {id: formInfo.id, modelKey: formInfo.code, modelName: formInfo.name, formJson: formInfo.formJson};
-            console.log(formInfo);
           }
         }
 
@@ -228,15 +219,44 @@ const { createMessage } = useMessage();
           }
         ]);
 
-        if (unref(isUpdate)) {
-          setFieldsValue({
-            ...data.record,
-          });
-        }
+        setFieldsValue({
+          ...data.record,
+        });
       });
 
       const getTitle = computed(() => (!unref(isUpdate) ? '新增' : '编辑'));
 
+      function handleCloseModal() {
+        closeModal();
+      }
+
+      watch(activityKey, (newVal, oldVal)=>{
+        const { modelId } = flowBaseInfo.value;
+        if(newVal === 'flowDesigner'){
+          if(!haveShowFlowDesigner.value){
+            changeLoading(true);
+            flowDesignerUrl.value = isDev ? ('/flow-bpmn-front/index.html/#/bpmn/designer?modelId=' + modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
+            const iframe = unref(unref(flowDesignerRef).frameRef)
+            setTimeout(()=>{
+              iframe.contentWindow.location.reload(true);
+              changeLoading(false);
+            }, 100);
+          }
+          haveShowFlowDesigner.value = true;
+        } else if(newVal === 'baseSetting'){
+          getByModelId(modelId).then(res=>{
+            if(res.version > 0){
+              updateSchema({
+                field: 'appSn',
+                componentProps: {
+                  disabled: true,
+                },
+                helpMessage: '已发布的流程不允许修改所属系统！'
+              });
+            }
+          });
+        }
+      })
       async function handleSubmit() {
         try {
           setModalProps({ confirmLoading: true });
@@ -262,6 +282,8 @@ const { createMessage } = useMessage();
         formDesignerRef,
         getTitle, activityKey,
         flowBaseInfo,
+        isUpdate,
+        handleCloseModal,
         handleSubmit
       };
     },
@@ -280,6 +302,7 @@ const { createMessage } = useMessage();
       .ant-modal-header{
         padding-top: 10px;
         padding-bottom: 8px;
+        cursor: default!important;
       }
       .ant-modal-body{
         .scrollbar__view{
@@ -307,6 +330,10 @@ const { createMessage } = useMessage();
     }
     .close{
       flex: 1;
+      text-align: right;
+      .anticon-close{
+        cursor: pointer;
+      }
     }
   }
 

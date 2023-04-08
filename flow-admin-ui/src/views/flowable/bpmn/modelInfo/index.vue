@@ -56,6 +56,7 @@
 
       const currentModelInfo = ref<Recordable>({});
       const currentCategory = ref<Recordable>({});
+      const currentCategoryCode = ref<Recordable>(null);
       const loadingRef = ref(false);
 
       const [registerTable, { getForm, reload }] = useTable({
@@ -100,7 +101,7 @@
         }
         openModal(true, {
           record:{categoryCode: unref(currentCategory).code},
-          isUpdate: true,
+          isUpdate: false,
           
         });
         setFlowFormModalProps({
@@ -108,6 +109,7 @@
           footer: null,
           width: '100%',
           canFullscreen: false,
+          destroyOnClose: true,
           defaultFullscreen: true,
           useWrapper: true,
         });
@@ -181,6 +183,7 @@
       }
 
       function handleEdit(record: Recordable) {
+        //currentCategoryCode.value = record.categoryCode;
         openModal(true, {
           record,
           isUpdate: true,
@@ -189,9 +192,9 @@
           maskClosable: false,
           footer: null,
           width: '100%',
+          destroyOnClose: true,
           canFullscreen: false,
           defaultFullscreen: true,
-          useWrapper: true,
         });
       }
 
@@ -229,17 +232,21 @@
 
       function handleSelect(node:any) {
         currentCategory.value = node;
+        currentCategoryCode.value = node.code;
         let searchInfo = {categoryCode: node?node.code:''};
         reload({ searchInfo });
       }
 
       function handleModelInfoVisibleChange(visible) {
         if(!visible){
-          currentCategory.value = node;
-          let searchInfo = {categoryCode: node?node.code:''};
-          setTimeout(()=>{
-            reload({ searchInfo });
-          }, 200);
+          try {
+            let searchInfo = {categoryCode: currentCategoryCode.value||''};
+            setTimeout(()=>{
+              reload({ searchInfo });
+            }, 200);
+          }catch (e){
+
+          }
         }
       }
 
