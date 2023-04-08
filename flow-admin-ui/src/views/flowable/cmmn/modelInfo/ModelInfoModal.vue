@@ -8,7 +8,7 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, Rule, useForm } from '/@/components/Form/index';
   import { modelInfoFormSchema } from './modelInfo.data';
-  import { saveOrUpdate, checkEntityExist } from '/@/api/flowable/bpmn/modelInfo';
+  import { checkEntityExist } from '/@/api/flowable/bpmn/modelInfo';
   import { getAll } from '/@/api/base/app';
   import { useGo } from '/@/hooks/web/usePage';
   import {CheckExistParams} from "/@/api/model/baseModel";
@@ -111,8 +111,8 @@
         try {
           setModalProps({ confirmLoading: true });
           const values = await validate();
-          const result = await saveOrUpdate(values);
-          go("/flowable/bpmn/designer?modelId=" + result.modelId);
+          // const result = await saveOrUpdate(values);
+          // go("/flowable/bpmn/designer?modelId=" + result.modelId);
 
           closeModal();
           emit('success');
