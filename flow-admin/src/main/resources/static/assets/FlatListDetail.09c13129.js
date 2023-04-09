@@ -1,1 +1,0 @@
-import{az as e,a as t,i as a,j as n}from"./index.e61ad282.js";const o=t({});function r(s,c,u,i,p,l){return a(),n("div",null,"\u5E73\u7EA7\u8BE6\u60C5\u9875")}var f=e(o,[["render",r]]);export{f as default};

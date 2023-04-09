@@ -87,10 +87,14 @@ var CustomForm = {
         watch: {
           'jsonData': {
             handler(newVal, oldVal) {
-              console.log(JSON.stringify(newVal));
-              this.$refs.makingform.clear();
               if(newVal){
-                this.$refs.makingform.setJSON(newVal)
+                console.log(JSON.stringify(newVal));
+                setTimeout(()=>{
+                  this.$refs.makingform.clear();
+                  if (newVal) {
+                    this.$refs.makingform.setJSON(newVal)
+                  }
+                }, 200);
               }
             },
             deep: true,
