@@ -7,21 +7,20 @@ import com.baomidou.kisso.annotation.Login;
 import com.baomidou.kisso.common.RsaKeyHelper;
 import com.baomidou.kisso.enums.TokenOrigin;
 import com.baomidou.kisso.security.token.SSOToken;
-import com.dragon.flow.api.IFlowApi;
 import com.dragon.flow.api.impl.AbstractFlowApiImpl;
 import com.dragon.flow.constant.FlowConstant;
 import com.dragon.flow.exception.FlowException;
 import com.dragon.flow.model.base.App;
-import com.dragon.flow.model.flowable.CommentInfo;
+import com.dragon.flow.model.flowable.ModelInfo;
 import com.dragon.flow.service.base.IAppService;
-import com.dragon.flow.service.flowable.*;
 import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
-import com.dragon.flow.vo.flowable.processinstance.InstanceQueryParamsVo;
-import com.dragon.flow.vo.flowable.processinstance.ProcessInstanceVo;
 import com.dragon.flow.vo.flowable.processinstance.EndVo;
+import com.dragon.flow.vo.flowable.processinstance.InstanceQueryParamsVo;
 import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
-import com.dragon.flow.vo.flowable.task.*;
+import com.dragon.flow.vo.flowable.task.ActivityVo;
+import com.dragon.flow.vo.flowable.task.CompleteTaskVo;
+import com.dragon.flow.vo.flowable.task.TaskQueryParamsVo;
 import com.dragon.flow.vo.pager.ParamVo;
 import com.dragon.flow.vo.token.AuthTokenVo;
 import com.dragon.tools.common.ReturnCode;
@@ -34,12 +33,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.flowable.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,6 +60,14 @@ public class FlowApiRest extends AbstractFlowApiImpl {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private IAppService appService;
+
+    @Override
+    @ApiOperation(value = "根据条件分页获取流程模板", notes = "根据条件分页获取流程模板")
+    @ApiImplicitParam(name = "params", value = "分页查询参数", required = true, dataType = "ParamVo")
+    @PostMapping(value = "/getModelInfoVoByPagerModel", produces = "application/json")
+    public ReturnVo<PagerModel> getModelInfoVoByPagerModel(ParamVo<ModelInfo> params) {
+        return super.getModelInfoVoByPagerModel(params);
+    }
 
     /**
      * 通过对接的应用的标识和秘钥获取token
@@ -211,5 +220,13 @@ public class FlowApiRest extends AbstractFlowApiImpl {
     @PostMapping(value = "/getApps", produces = "application/json")
     public ReturnVo<List> getApps() {
         return super.getApps();
+    }
+
+    @Override
+    @ApiOperation(value = "获取所有流程分类", notes = "获取所有流程分类")
+    @ApiImplicitParam(name = "getCategories", value = "getCategories")
+    @PostMapping(value = "/getCategories", produces = "application/json")
+    public ReturnVo<List> getCategories() {
+        return super.getCategories();
     }
 }

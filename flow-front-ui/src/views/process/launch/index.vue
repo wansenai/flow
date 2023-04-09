@@ -9,12 +9,9 @@
       title="流程分类"
       :clickRowToExpand="true"
       :treeData="treeData"
-      :replaceFields="{ key: 'id', title: 'name' }"
       @select="handleSelect"
       class="w-1/4 xl:w-1/5 mt-2"
       ref="categoryTree"
-      :expandedKeys="['jituan', 'common']"
-      :selectedKeys="['common']"
     />
 
     <!--    <BasicTable class="w-3/4 xl:w-4/5" @register="registerTimeTable" />-->
@@ -67,6 +64,7 @@
 
   import { searchFormSchema, cardList } from './data';
   import ProcessHeader from '/@/views/process/components/ProcessHeader.vue';
+  import {getCategories, getModelInfoVoByPagerModel} from "/@/api/process/process";
 
   export default defineComponent({
     components: {
@@ -95,29 +93,22 @@
       const treeData = ref([]);
       const categoryTree = ref();
 
-      treeData.value.push({
-        id: 'common', name: '通用流程',
-        children: [
-          {id: 'hr', name: 'HR通用流程'},
-          {id: 'finance', name: '发文流程'},
-          {id: 'fawu', name: '监管部流程'},
-          {id: 'gongguan', name: '工管流程'},
-        ],
-      });
-      treeData.value.push({
-        id: 'jituan', name: '集团总部',
-        children: [{
-          id: 'gongdi', name: '工地流程',
-        }]
-      });
+      fetch();
 
       async function fetch() {
         // treeLoading.value = true;
-        // getCategories().then(res => {
-        //   treeData.value = (res as unknown) as TreeItem[];
-        // }).finally(()=>{
-        //   treeLoading.value = false;
-        // });
+        getCategories().then(res => {
+          debugger;
+          treeData.value = (res as unknown) as TreeItem[];
+        }).finally(()=>{
+          // treeLoading.value = false;
+        });
+      }
+
+      function handleSelect() {
+        getModelInfoVoByPagerModel({}).then(res=>{
+          debugger;
+        });
       }
 
       return {
@@ -126,6 +117,7 @@
         prefixCls: 'list-basic',
         list: cardList,
         categoryTree,
+        handleSelect,
         pagination: {
           show: true,
           pageSize: 3,

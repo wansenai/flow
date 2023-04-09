@@ -18,6 +18,11 @@
             <version>${flow.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.dragon</groupId>
+            <artifactId>flow-form-core</artifactId>
+            <version>${flow.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>

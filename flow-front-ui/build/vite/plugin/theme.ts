@@ -2,7 +2,7 @@
  * Vite plugin for website theme color switching
  * https://github.com/anncwb/vite-plugin-theme
  */
-import type { Plugin } from 'vite';
+import type { PluginOption } from 'vite';
 import path from 'path';
 import {
   viteThemePlugin,
@@ -14,7 +14,7 @@ import {
 import { getThemeColors, generateColors } from '../../config/themeConfig';
 import { generateModifyVars } from '../../generate/generateModifyVars';
 
-export function configThemePlugin(isBuild: boolean): Plugin[] {
+export function configThemePlugin(isBuild: boolean): PluginOption[] {
   const colors = generateColors({
     mixDarken,
     mixLighten,
@@ -66,7 +66,7 @@ export function configThemePlugin(isBuild: boolean): Plugin[] {
         'border-color-base': '#303030',
         // 'border-color-split': '#30363d',
         'item-active-bg': '#111b26',
-        'app-content-background': 'rgb(255 255 255 / 4%)',
+        'app-content-background': '#1e1e1e',
         'tree-node-selected-bg': '#11263c',
 
         'alert-success-border-color': '#274916',
@@ -85,5 +85,5 @@ export function configThemePlugin(isBuild: boolean): Plugin[] {
     }),
   ];
 
-  return plugin as unknown as Plugin[];
+  return plugin as unknown as PluginOption[];
 }

@@ -7,6 +7,11 @@ import {
 
 import { ErrorMessageMode } from '/@/utils/http/axios/types';
 import {BasicPageSearchParams} from "/@/api/model/baseModel";
+import {forEach, listToTree} from "/@/utils/helper/treeHelper";
+import {
+  ModelInfoListGetResultModel,
+  ModelInfoPageParams
+} from "../../../../flow-admin-ui/src/api/flowable/bpmn/model/modelInfoModel";
 
 enum Api {
   FindMyProcessinstancesPagerModel = '/front/flow/findMyProcessinstancesPagerModel',
@@ -22,7 +27,11 @@ enum Api {
   GetHighLightedNodeVoByProcessInstanceId = '/front/flow/getHighLightedNodeVoByProcessInstanceId',
   // /loadBpmnXmlByModelKey/{modelKey}
   LoadBpmnXmlByModelKey = '/front/flow/loadBpmnXmlByModelKey',
+  GetFormInfoByModelKey = '/front/flow/getFormInfoByModelKey',
   GetAppingTaskCont = '/front/flow/getAppingTaskCont',
+  GetCategories = '/front/flow/getCategories',
+  GetModelInfoVoByPagerModel = '/front/flow/getModelInfoVoByPagerModel',
+
 }
 
 // 审批
@@ -42,6 +51,10 @@ export function stopProcess(params: BaseProcessVo) {
 // 加载XML
 export function loadBpmnXmlByModelKey(params: any) {
   return defHttp.get({ url: Api.LoadBpmnXmlByModelKey + '/' + params.modelKey, params:{} });
+}
+// 加载表单结构
+export function getFormInfoByModelKey(params: any) {
+  return defHttp.get({ url: Api.GetFormInfoByModelKey + '/' + params.modelKey, params:{} });
 }
 
 // 获取审批记录
@@ -119,3 +132,33 @@ export function getApplyedTasksPagerModel(params: ProcessParams) {
   const queryParam = {query, entity} as BasicPageSearchParams<ProcessParams>;
   return defHttp.post<ProcessInstanceResultModel>({ url: Api.GetApplyedTasksPagerModel, params: queryParam });
 }
+
+export const getModelInfoVoByPagerModel = (params) =>{
+  const query = params&&{pageNum: params.pageNum, pageSize: params.pageSize};
+  let entity = params||{};
+  if(entity){
+    delete entity['pageNum'];
+    delete entity['pageSize'];
+  }
+  const queryParam = {query, entity};
+  return defHttp.post({ url: Api.GetModelInfoVoByPagerModel,  params: queryParam });
+}
+
+export const getCategories = () => {
+  const result = defHttp.get({url: Api.GetCategories});
+  return Promise.resolve(result).then(res => {
+    res.forEach(item=>{
+      item.key = item.code;
+      item.value = item.code;
+      item.title = item.name;
+      item.label = item.name;
+    });
+    const treeData = listToTree(res, {id: 'id', children: 'children', pid: 'pid'});
+    forEach(treeData, (node) => {
+      if (node.children.length === 0) {
+        delete node.children;
+      }
+    }, {id: 'id', children: 'children', pid: 'pid'});
+    return treeData;
+  });
+};

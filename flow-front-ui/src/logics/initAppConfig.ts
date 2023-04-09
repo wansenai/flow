@@ -21,6 +21,7 @@ import { primaryColor } from '../../build/config/themeConfig';
 import { Persistent } from '/@/utils/cache/persistent';
 import { deepMerge } from '/@/utils';
 import { ThemeEnum } from '/@/enums/appEnum';
+import {getSystemSettings} from "/@/api/sys/user";
 
 // Initial project configuration
 export function initAppConfigStore() {

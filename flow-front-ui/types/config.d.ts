@@ -16,6 +16,7 @@ export interface MenuSetting {
   bgColor: string;
   fixed: boolean;
   collapsed: boolean;
+  siderHidden: boolean;
   canDrag: boolean;
   show: boolean;
   hidden: boolean;
@@ -56,6 +57,15 @@ export interface HeaderSetting {
   // Show message center button
   showNotice: boolean;
   showSearch: boolean;
+}
+
+export interface CustomSetting {
+  appIcon: string;
+  loginPageBg: string;
+  projectName: string;
+  projectLogo: string;
+  signInDesc: string;
+  signInTitle: string;
 }
 
 export interface LocaleSetting {
@@ -133,6 +143,8 @@ export interface ProjectConfig {
   closeMessageOnSwitch: boolean;
   // Whether to cancel the http request that has been sent but not responded when switching the interface.
   removeAllHttpPending: boolean;
+
+  customSetting: CustomSetting;
 }
 
 export interface GlobConfig {

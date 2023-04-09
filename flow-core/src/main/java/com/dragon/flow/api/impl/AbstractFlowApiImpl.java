@@ -3,8 +3,11 @@ package com.dragon.flow.api.impl;
 import com.dragon.flow.api.IFlowApi;
 import com.dragon.flow.exception.FlowException;
 import com.dragon.flow.model.base.App;
+import com.dragon.flow.model.base.Category;
 import com.dragon.flow.model.flowable.CommentInfo;
+import com.dragon.flow.model.flowable.ModelInfo;
 import com.dragon.flow.service.base.IAppService;
+import com.dragon.flow.service.base.ICategoryService;
 import com.dragon.flow.service.flowable.*;
 import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
@@ -44,11 +47,24 @@ public abstract class AbstractFlowApiImpl implements IFlowApi {
     private IFlowableBpmnService flowableBpmnService;
     @Autowired
     private IAppService appService;
+    @Autowired
+    private ICategoryService categoryService;
+    @Autowired
+    private IModelInfoService modelInfoService;
+
     @Override
     public ReturnVo<ModelInfoVo> loadBpmnXmlByModelKey(String modelKey) {
         ReturnVo<ModelInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         ModelInfoVo modelInfoVo = flowableBpmnService.loadBpmnXmlByModelKey(modelKey);
         returnVo.setData(modelInfoVo);
+        return returnVo;
+    }
+
+    @Override
+    public ReturnVo<PagerModel> getModelInfoVoByPagerModel(ParamVo<ModelInfo> params){
+        ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        PagerModel<ModelInfo> pm = modelInfoService.getPagerModel(params.getEntity(), params.getQuery());
+        returnVo.setData(pm);
         return returnVo;
     }
 
@@ -136,6 +152,15 @@ public abstract class AbstractFlowApiImpl implements IFlowApi {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         List<App> apps = appService.list();
         returnVo.setData(apps);
+        return returnVo;
+    }
+
+    @Override
+    public ReturnVo<List> getCategories() {
+        ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        Category category = new Category();
+        List<Category> categories = categoryService.getCategories(category);
+        returnVo.setData(categories);
         return returnVo;
     }
 }

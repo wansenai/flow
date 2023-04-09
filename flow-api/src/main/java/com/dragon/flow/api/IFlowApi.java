@@ -1,6 +1,7 @@
 package com.dragon.flow.api;
 
 import com.dragon.flow.exception.FlowException;
+import com.dragon.flow.model.flowable.ModelInfo;
 import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.flow.vo.flowable.processinstance.InstanceQueryParamsVo;
@@ -29,6 +30,13 @@ public interface IFlowApi {
      * @return
      */
     ReturnVo<ModelInfoVo> loadBpmnXmlByModelKey(String modelKey);
+
+    /**
+     * 通过modelKey获取模型对象
+     *
+     * @param params 参数
+     */
+    ReturnVo<PagerModel> getModelInfoVoByPagerModel(ParamVo<ModelInfo> params);
 
     /**
      * 过流程实例id获取节点的信息
@@ -99,10 +107,23 @@ public interface IFlowApi {
      * @return
      */
     ReturnVo<HighLightedNodeVo> getHighLightedNodeVoByProcessInstanceId(String processInstanceId);
+
+    /**
+     * 获取待办数量
+     * @param params
+     * @return
+     */
     ReturnVo<Long> getAppingTaskCont(TaskQueryParamsVo params);
+
     /**
      * 获取所有的apps
      * @return
      */
     ReturnVo<List> getApps();
+
+    /**
+     * 获取所有流程分类
+     * @return
+     */
+    ReturnVo<List> getCategories();
 }

@@ -63,7 +63,7 @@ public class ModelInfoResource extends BaseResource<ModelInfo> {
      */
     @PostMapping(value = "/saveOrUpdateModelInfo", produces = "application/json")
     public ReturnVo<ModelInfo> saveOrUpdateModelInfo(@RequestBody ModelInfo modelInfo) {
-        ReturnVo<ModelInfo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        ReturnVo<ModelInfo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "保存成功！");
         if (StringUtils.isBlank(modelInfo.getId())) {
             ModelInfo mi = modelInfoService.getModelInfoByModelKey(modelInfo.getModelKey());
             if (mi != null) {
