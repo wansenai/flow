@@ -92,6 +92,10 @@ public class Personal extends BaseModel implements Serializable {
      */
     private String thirdUserId;
     /**
+     * 三方用户的unionId
+     */
+    private String thirdUnionId;
+    /**
      * 钉钉的用户id
      */
     private String ddUserid;
