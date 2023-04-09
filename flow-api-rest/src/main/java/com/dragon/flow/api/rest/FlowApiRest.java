@@ -65,7 +65,7 @@ public class FlowApiRest extends AbstractFlowApiImpl {
     @ApiOperation(value = "根据条件分页获取流程模板", notes = "根据条件分页获取流程模板")
     @ApiImplicitParam(name = "params", value = "分页查询参数", required = true, dataType = "ParamVo")
     @PostMapping(value = "/getModelInfoVoByPagerModel", produces = "application/json")
-    public ReturnVo<PagerModel> getModelInfoVoByPagerModel(ParamVo<ModelInfo> params) {
+    public ReturnVo<PagerModel> getModelInfoVoByPagerModel(@RequestBody ParamVo<ModelInfo> params) {
         return super.getModelInfoVoByPagerModel(params);
     }
 

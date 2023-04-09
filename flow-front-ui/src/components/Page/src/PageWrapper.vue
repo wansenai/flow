@@ -169,7 +169,7 @@
     position: relative;
 
     .@{prefix-cls}-content {
-      margin: 16px;
+      margin: 0px;
     }
 
     .ant-page-header {

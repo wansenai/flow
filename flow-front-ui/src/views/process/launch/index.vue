@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="流程中心"  contentClass="flex" contentBackground class="!mt-4">
+  <PageWrapper title="流程中心"  contentClass="flex p-4" contentBackground class="!mt-4">
 
     <template #footer>
       <process-header current="launch"/>
@@ -24,26 +24,22 @@
       />
 
       <a-list :pagination="pagination">
-        <template v-for="item in list" :key="item.id">
+        <template v-for="item in modelInfoList" :key="item.id">
           <a-list-item class="list">
             <a-list-item-meta>
               <template #title>
                 <router-link :to="`/process/launch/${item.modelKey}`">
-                  <span>{{ item.title }}</span>
-                  <div class="extra" v-if="item.extra">
-                    {{ item.extra }}
+                  <span>{{ item.name }}</span>
+                  <div class="extra" v-if="item.categoryName">
+                    {{ item.categoryName }}
                   </div>
                 </router-link>
               </template>
-              <template #description>
+<!--              <template #description>
                 <div class="description">
                   {{ item.description }}
                 </div>
-               <!-- <div class="info">
-                  <div><span>Owner</span>{{ item.author }}</div>
-                  <div><span>开始时间</span>{{ item.datetime }}</div>
-                </div>-->
-              </template>
+              </template>-->
             </a-list-item-meta>
           </a-list-item>
         </template>
@@ -91,6 +87,7 @@
     },
     setup() {
       const treeData = ref([]);
+      const modelInfoList = ref([]);
       const categoryTree = ref();
 
       fetch();
@@ -105,9 +102,11 @@
         });
       }
 
-      function handleSelect() {
-        getModelInfoVoByPagerModel({}).then(res=>{
+      function handleSelect(nodes) {
+        const code = nodes[0];
+        getModelInfoVoByPagerModel({categoryCode: code}).then(res=>{
           debugger;
+          modelInfoList.value = res.rows;
         });
       }
 
@@ -116,6 +115,7 @@
         searchFormSchema,
         prefixCls: 'list-basic',
         list: cardList,
+        modelInfoList,
         categoryTree,
         handleSelect,
         pagination: {
