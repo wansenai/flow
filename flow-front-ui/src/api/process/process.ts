@@ -5,13 +5,8 @@ import {
   AppInfo, BaseProcessVo,
 } from './model/processModel';
 
-import { ErrorMessageMode } from '/@/utils/http/axios/types';
 import {BasicPageSearchParams} from "/@/api/model/baseModel";
 import {forEach, listToTree} from "/@/utils/helper/treeHelper";
-import {
-  ModelInfoListGetResultModel,
-  ModelInfoPageParams
-} from "../../../../flow-admin-ui/src/api/flowable/bpmn/model/modelInfoModel";
 
 enum Api {
   FindMyProcessinstancesPagerModel = '/front/flow/findMyProcessinstancesPagerModel',
@@ -31,6 +26,7 @@ enum Api {
   GetAppingTaskCont = '/front/flow/getAppingTaskCont',
   GetCategories = '/front/flow/getCategories',
   GetModelInfoVoByPagerModel = '/front/flow/getModelInfoVoByPagerModel',
+  StartFormFlow = '/front/flow//startFormFlow',
 
 }
 
@@ -48,10 +44,17 @@ export function getAppingTaskCont(params: BaseProcessVo) {
 export function stopProcess(params: BaseProcessVo) {
   return defHttp.post({ url: Api.StopProcess, params });
 }
+
+// 启动流程
+export function startFormFlow(params: BaseProcessVo) {
+  return defHttp.post({ url: Api.StartFormFlow, params });
+}
+
 // 加载XML
 export function loadBpmnXmlByModelKey(params: any) {
   return defHttp.get({ url: Api.LoadBpmnXmlByModelKey + '/' + params.modelKey, params:{} });
 }
+
 // 加载表单结构
 export function getFormInfoByModelKey(params: any) {
   return defHttp.get({ url: Api.GetFormInfoByModelKey + '/' + params.modelKey, params:{} });
@@ -66,6 +69,7 @@ export function getCommentInfosByProcessInstanceId(params: any) {
 export function getHighLightedNodeVoByProcessInstanceId(params: any) {
   return defHttp.get({ url: Api.GetHighLightedNodeVoByProcessInstanceId + '/' + params.procInstId, params:{} });
 }
+
 // 获取高亮
 export function getOneActivityVoByProcessInstanceIdAndActivityId(params: any) {
   return defHttp.get({ url: Api.GetOneActivityVoByProcessInstanceIdAndActivityId + '/' + params.procInstId + '/' + params.elementId, params:{} });

@@ -11,22 +11,26 @@
 
     <div class="m-1 desc-wrap process">
       <BasicTable @register="registerLaunchedTable" >
-        <template #nameRender="{ record }">
-          <router-link :to="`/process/view/${record.processDefinitionKey}?taskId=${record.taskId||''}&procInstId=${record.processInstanceId}&businessKey=${record.businessKey}`"> {{record.formName}} </router-link>
-        </template>
-        <template #currentAssigneesRender="{ record }">
-          <Popover v-if="record.currentAssignees && record.currentAssignees.length > 0" v-for="item in record.currentAssignees"  :title="item.type==='user'?'人员信息':'角色信息'">
-            <template v-if="item.type === 'user'" #content>
-              <div>姓名：{{item.name}}</div>
-              <div>工号：{{item.code}}</div>
-              <div>手机：{{item.mobile}}</div>
-            </template>
-            <template v-else #content>
-              <div>名称：{{item.name}}</div>
-              <div>标识：{{item.code}}</div>
-            </template>
-            <Tag color="warning">{{item.name}}</Tag>
-          </Popover>
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'formName'">
+            <router-link :to="`/process/view/${record.processDefinitionKey}?taskId=${record.taskId||''}&procInstId=${record.processInstanceId}&businessKey=${record.businessKey}`"> {{record.formName}} </router-link>
+          </template>
+
+          <template v-if="column.key === 'currentAssignees'">
+            <Popover v-if="record.currentAssignees && record.currentAssignees.length > 0" v-for="item in record.currentAssignees"  :title="item.type==='user'?'人员信息':'角色信息'">
+              <template v-if="item.type === 'user'" #content>
+                <div>姓名：{{item.name}}</div>
+                <div>工号：{{item.code}}</div>
+                <div>手机：{{item.mobile}}</div>
+              </template>
+              <template v-else #content>
+                <div>名称：{{item.name}}</div>
+                <div>标识：{{item.code}}</div>
+              </template>
+              <Tag color="warning">{{item.name}}</Tag>
+            </Popover>
+          </template>
+
         </template>
       </BasicTable>
     </div>

@@ -17,9 +17,6 @@ export const searchFormSchema: FormSchema[] = [
     field: 'dateRange',
     label: '时间范围',
     component: 'RangePicker',
-    componentProps: {
-      placeholder: '选择时间',
-    },
     labelWidth: 80,
     colProps: {span: 6, lg:{span: 6, offset:0}, sm:{span: 10, offset: 0}, xs:{span: 16, offset: 0}},
   },
@@ -44,9 +41,6 @@ export const haveDownTableSchema: BasicColumn[] = [
     title: '流程标题',
     dataIndex: 'formName',
     align: 'left',
-    slots: {
-      customRender: 'nameRender'
-    },
   },
   {
     title: '提交人',

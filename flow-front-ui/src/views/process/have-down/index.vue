@@ -11,8 +11,10 @@
 
     <div class="m-1 desc-wrap process">
       <BasicTable @register="registerHaveDownTable" >
-        <template #nameRender="{ record }">
-          <router-link :to="`/process/view/${record.processDefinitionKey}?taskId=${record.taskId}&procInstId=${record.processInstanceId}&businessKey=${record.businessKey}`"> {{record.formName}} </router-link>
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'formName'">
+            <router-link :to="`/process/view/${record.processDefinitionKey}?taskId=${record.taskId}&procInstId=${record.processInstanceId}&businessKey=${record.businessKey}`"> {{record.formName}} </router-link>
+          </template>
         </template>
       </BasicTable>
     </div>

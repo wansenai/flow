@@ -1,16 +1,17 @@
 package com.dragon.flow.web.resource.flow;
 
 import com.dragon.flow.constant.FlowFrontConstant;
+import com.dragon.flow.model.user.Account;
+import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
+import com.dragon.flow.vo.pager.ParamVo;
 import com.dragon.flow.web.resource.BaseResource;
+import com.dragon.tools.common.UUIDGenerator;
 import com.dragon.tools.vo.ReturnVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,4 +39,17 @@ public class FormResource extends BaseResource {
         return returnVo;
     }
 
+    @PostMapping(value = "/startFormFlow", produces = "application/json")
+    public ReturnVo startFormFlow(HttpServletRequest request, @RequestBody StartProcessInstanceVo startProcessInstanceVo) {
+        Account loginAccount = this.getLoginAccount(request);
+        startProcessInstanceVo.setCurrentUserCode(loginAccount.getCode());
+        startProcessInstanceVo.setCreator(loginAccount.getCode());
+        startProcessInstanceVo.setAppSn("flow");
+        startProcessInstanceVo.setBusinessKey(UUIDGenerator.generate());
+        String url = this.getApiUrl(FlowFrontConstant.STARTFORMFLOW_URL);
+        HttpHeaders headers = this.createHttpHeaders(request);
+        HttpEntity<StartProcessInstanceVo> httpEntity = new HttpEntity<>(startProcessInstanceVo, headers);
+        ReturnVo returnVo = restTemplate.postForObject(url, httpEntity, ReturnVo.class);
+        return returnVo;
+    }
 }

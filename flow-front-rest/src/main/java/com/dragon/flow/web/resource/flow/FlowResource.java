@@ -3,6 +3,7 @@ package com.dragon.flow.web.resource.flow;
 import com.dragon.flow.constant.FlowFrontConstant;
 import com.dragon.flow.enm.flowable.runtime.CommentTypeEnum;
 import com.dragon.flow.enm.flowable.runtime.ProcessStatusEnum;
+import com.dragon.flow.enm.form.ModelFormStatusEnum;
 import com.dragon.flow.exception.FlowException;
 import com.dragon.flow.model.flowable.ModelInfo;
 import com.dragon.flow.model.user.Account;
@@ -75,6 +76,7 @@ public class FlowResource extends BaseResource {
 
     @PostMapping(value = "/getModelInfoVoByPagerModel", produces = "application/json")
     public ReturnVo getModelInfoVoByPagerModel(HttpServletRequest request, @RequestBody ParamVo<ModelInfo> paramVo) {
+        paramVo.getEntity().setStatus(ModelFormStatusEnum.YFB.getStatus());
         return this.applyPost(request, paramVo, FlowFrontConstant.GET_GETMODELINFOVOBYPAGERMODEL_URL);
     }
 

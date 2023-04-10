@@ -62,8 +62,9 @@
       function init() {
         nextTick(() => {
           const iframe = unref(frameRef);
+          debugger;
           if (!iframe) return;
-
+debugger;
           const _frame = iframe as any;
           if (_frame.attachEvent) {
             _frame.attachEvent('onload', () => {
@@ -77,7 +78,7 @@
         });
       }
       onMounted(() => {
-        loading.value = true;
+        // loading.value = true;
         init();
       });
 
