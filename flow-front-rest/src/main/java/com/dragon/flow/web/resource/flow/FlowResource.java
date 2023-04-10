@@ -176,6 +176,15 @@ public class FlowResource extends BaseResource {
         return returnVo;
     }
 
+    @GetMapping(value = "/getModelInfoByModelKey/{modelKey}", produces = "application/json")
+    public ReturnVo getModelInfoByModelKey(HttpServletRequest request, @PathVariable String modelKey) {
+        HttpHeaders headers = this.createHttpHeaders(request);
+        HttpEntity httpEntity = new HttpEntity<>(headers);
+        String url = this.getApiUrl(FlowFrontConstant.GET_GETMODELINFOBYMODELKEY_URL) + "?modelKey=" + modelKey;
+        ReturnVo returnVo = restTemplate.postForObject(url, httpEntity, ReturnVo.class, modelKey);
+        return returnVo;
+    }
+
     @GetMapping(value = "/getApps", produces = "application/json")
     public ReturnVo getApps(HttpServletRequest request) {
         HttpHeaders headers = this.createHttpHeaders(request);

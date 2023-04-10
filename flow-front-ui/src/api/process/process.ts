@@ -23,6 +23,7 @@ enum Api {
   // /loadBpmnXmlByModelKey/{modelKey}
   LoadBpmnXmlByModelKey = '/front/flow/loadBpmnXmlByModelKey',
   GetFormInfoByModelKey = '/front/flow/getFormInfoByModelKey',
+  GetModelInfoByModelKey = '/front/flow/getModelInfoByModelKey',
   GetAppingTaskCont = '/front/flow/getAppingTaskCont',
   GetCategories = '/front/flow/getCategories',
   GetModelInfoVoByPagerModel = '/front/flow/getModelInfoVoByPagerModel',
@@ -58,6 +59,11 @@ export function loadBpmnXmlByModelKey(params: any) {
 // 加载表单结构
 export function getFormInfoByModelKey(params: any) {
   return defHttp.get({ url: Api.GetFormInfoByModelKey + '/' + params.modelKey, params:{} });
+}
+
+// 加载流程基本信息
+export function getModelInfoByModelKey(params: any) {
+  return defHttp.get({ url: Api.GetModelInfoByModelKey + '/' + params.modelKey, params:{} });
 }
 
 // 获取审批记录

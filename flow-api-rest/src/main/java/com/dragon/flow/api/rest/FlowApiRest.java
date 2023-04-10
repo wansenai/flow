@@ -132,6 +132,14 @@ public class FlowApiRest extends AbstractFlowApiImpl {
     }
 
     @Override
+    @ApiOperation(value = "通过modelKey获取模型对象", notes = "通过modelKey获取模型对象")
+    @ApiImplicitParam(name = "modelKey", dataType = "String", required = true, value = "模型Key", defaultValue = "test_leave")
+    @PostMapping(value = "/getModelInfoByModelKey", produces = "application/json")
+    public ReturnVo<ModelInfo> getModelInfoByModelKey(String modelKey) {
+        return super.getModelInfoByModelKey(modelKey);
+    }
+
+    @Override
     @ApiOperation(value = "查询节点信息", notes = "查询节点信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "processInstanceId", dataType = "String", required = true, value = "流程实例id", defaultValue = "018273249827498324"),

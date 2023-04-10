@@ -1,7 +1,10 @@
 package com.dragon.flow.web.resource.flow;
 
+import com.alibaba.fastjson.JSONObject;
 import com.dragon.flow.constant.FlowFrontConstant;
+import com.dragon.flow.model.flowable.ModelInfo;
 import com.dragon.flow.model.user.Account;
+import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
 import com.dragon.flow.vo.pager.ParamVo;
 import com.dragon.flow.web.resource.BaseResource;
@@ -29,6 +32,8 @@ public class FormResource extends BaseResource {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private FlowResource flowResource;
 
     @GetMapping(value = "/getFormInfoByModelKey/{modelKey}", produces = "application/json")
     public ReturnVo getFormInfoByModelKey(HttpServletRequest request, @PathVariable String modelKey) {
@@ -44,7 +49,14 @@ public class FormResource extends BaseResource {
         Account loginAccount = this.getLoginAccount(request);
         startProcessInstanceVo.setCurrentUserCode(loginAccount.getCode());
         startProcessInstanceVo.setCreator(loginAccount.getCode());
-        startProcessInstanceVo.setAppSn("flow");
+
+        ReturnVo modelInfoReturnVo = flowResource.getModelInfoByModelKey(request, startProcessInstanceVo.getProcessDefinitionKey());
+        if(modelInfoReturnVo.isSuccess()){
+            ModelInfo modelInfo = JSONObject.parseObject(JSONObject.toJSON(modelInfoReturnVo.getData()).toString(), ModelInfo.class);
+
+            startProcessInstanceVo.setFormName(loginAccount.getName() + "发起的" + modelInfo.getName());
+            startProcessInstanceVo.setAppSn(modelInfo.getAppSn());
+        }
         startProcessInstanceVo.setBusinessKey(UUIDGenerator.generate());
         String url = this.getApiUrl(FlowFrontConstant.STARTFORMFLOW_URL);
         HttpHeaders headers = this.createHttpHeaders(request);

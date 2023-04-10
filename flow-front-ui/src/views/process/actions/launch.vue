@@ -100,17 +100,16 @@
                 formData: JSON.stringify(formData),
                 processDefinitionKey: modelKey,
               });
-
               debugger;
 
+              createMessage.success("提交成功！");
+              go("/process/launched");
+              debugger;
             }catch (e){
 
             }
           }
         }
-        await unref(processFormRef).doSubmit();
-        createMessage.success("提交成功！");
-        go("/process/launched");
       }
 
       return {

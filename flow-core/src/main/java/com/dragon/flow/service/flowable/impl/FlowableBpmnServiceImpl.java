@@ -270,6 +270,7 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
         modelInfoVo.setModelKey(model.getKey());
         modelInfoVo.setFileName(model.getName());
         modelInfoVo.setModelXml(streamStr);
+        modelInfoVo.setAppSn(model.getTenantId());
         return modelInfoVo;
     }
 

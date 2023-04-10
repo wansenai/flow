@@ -22,6 +22,7 @@ public class FlowFrontConstant {
     public static final String STOPPROCESS_URL = "/api/flow/stopProcess";
     public static final String GET_HIGHLIGHTEDNODEVO_BYPROCESSINSTANCEID_URL = "/api/flow/getHighLightedNodeVoByProcessInstanceId";
     public static final String GET_LOAD_BPMNXML_BYMODELKEY_URL = "/api/flow/loadBpmnXmlByModelKey";
+    public static final String GET_GETMODELINFOBYMODELKEY_URL = "/api/flow/getModelInfoByModelKey";
     public static final String GET_FORMINFO_BYMODELKEY_URL = "/api/flow/getFormInfoByModelKey";
     public static final String STARTFORMFLOW_URL = "/api/flow/startFormFlow";
     public static final String GET_APPS_URL = "/api/flow/getApps";

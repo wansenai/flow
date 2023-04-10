@@ -61,6 +61,14 @@ public abstract class AbstractFlowApiImpl implements IFlowApi {
     }
 
     @Override
+    public ReturnVo<ModelInfo> getModelInfoByModelKey(String modelKey) {
+        ReturnVo<ModelInfo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        ModelInfo modelInfo = modelInfoService.getModelInfoByModelKey(modelKey);
+        returnVo.setData(modelInfo);
+        return returnVo;
+    }
+
+    @Override
     public ReturnVo<PagerModel> getModelInfoVoByPagerModel(ParamVo<ModelInfo> params){
         ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         PagerModel<ModelInfo> pm = modelInfoService.getPagerModel(params.getEntity(), params.getQuery());

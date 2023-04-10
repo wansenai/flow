@@ -34,6 +34,14 @@ public interface IFlowApi {
     /**
      * 通过modelKey获取模型对象
      *
+     * @param modelKey 参数
+     * @return
+     */
+    ReturnVo<ModelInfo> getModelInfoByModelKey(String modelKey);
+
+    /**
+     * 通过modelKey获取模型对象
+     *
      * @param params 参数
      */
     ReturnVo<PagerModel> getModelInfoVoByPagerModel(ParamVo<ModelInfo> params);
