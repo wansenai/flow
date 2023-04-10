@@ -1,8 +1,11 @@
 package com.dragon.flow.api.impl;
 
 import com.dragon.flow.api.IFormApi;
+import com.dragon.flow.model.form.FormDataInfo;
 import com.dragon.flow.model.form.FormInfo;
+import com.dragon.flow.service.form.IFormFlowOperationService;
 import com.dragon.flow.service.form.IFormInfoService;
+import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +18,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class AbstractFormApiImpl implements IFormApi {
     @Autowired
     private IFormInfoService formInfoService;
+    @Autowired
+    private IFormFlowOperationService formFlowOperationService;
     @Override
     public ReturnVo<FormInfo> getFormInfoByModelKey(String modelKey) {
         ReturnVo<FormInfo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         FormInfo formInfo = formInfoService.getModelInfoByCode(modelKey);
         returnVo.setData(formInfo);
+        return returnVo;
+    }
+    @Override
+    public ReturnVo<String> startFormFlow(StartProcessInstanceVo startProcessInstanceVo) {
+        ReturnVo<String> returnVo = formFlowOperationService.startFormFlow(startProcessInstanceVo);
         return returnVo;
     }
 }

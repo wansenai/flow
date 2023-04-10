@@ -35,11 +35,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>com.dragon</groupId>
             <artifactId>flow-api</artifactId>
-            <version>1.1.2-SNAPSHOT</version>
-        </dependency>-->
+            <version>${flow.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

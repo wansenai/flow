@@ -1,6 +1,8 @@
 package com.dragon.flow.api;
 
+import com.dragon.flow.model.form.FormDataInfo;
 import com.dragon.flow.model.form.FormInfo;
+import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
 import com.dragon.tools.vo.ReturnVo;
 
 /**
@@ -17,5 +19,16 @@ public interface IFormApi {
      * @return
      */
     ReturnVo<FormInfo> getFormInfoByModelKey(String modelKey);
+
+    /**
+     * 发起流程
+     *
+     * @param formDataInfo 参数
+     * @return
+     */
+    ReturnVo<String> startFormFlow(StartProcessInstanceVo startProcessInstanceVo) ;
+
+
+
 
 }
