@@ -1,5 +1,3 @@
-import { RoleEnum } from '/@/enums/roleEnum';
-
 export {};
 
 declare module 'vue-router' {

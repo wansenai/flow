@@ -153,7 +153,7 @@
         activityKey.value = "formDesigner";
         const {modelKey, name, categoryCode, modelId} = data.record;
         flowBaseInfo.value = data.record;
-        formDesignerUrl.value = isDev ? ('/form-making/custom.html?isDev=true&modelKey=' + modelId) : ('/flow-bpmn/index.html/#/bpmn/designer?modelId=' + modelId);
+        formDesignerUrl.value = '/form-making/custom.html?isDev=true&modelKey=' + modelId;
 
         formBaseInfo.value = {
           modelKey, modelName: name,

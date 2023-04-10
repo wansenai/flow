@@ -1,5 +1,4 @@
 export type ErrorMessageMode = 'none' | 'modal' | 'message' | undefined;
-export type SuccessMessageMode = ErrorMessageMode;
 
 export interface RequestOptions {
   // Splicing request parameters to url
@@ -19,8 +18,6 @@ export interface RequestOptions {
   urlPrefix?: string;
   // Error message prompt type
   errorMessageMode?: ErrorMessageMode;
-  // Success message prompt type
-  successMessageMode?: SuccessMessageMode;
   // Whether to add a timestamp
   joinTime?: boolean;
   ignoreCancelToken?: boolean;
