@@ -172,7 +172,6 @@
           setTimeout(()=>{
             const iframe = unref(unref(formDesignerRef).frameRef)
             if(iframe){
-
               if(iframe.contentWindow?.vueObj){
                 iframe.contentWindow.CustomForm.loadFormInfo(unref(formBaseInfo));
               }

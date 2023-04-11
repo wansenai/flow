@@ -1,21 +1,4 @@
 var CustomForm = {
-  init: function () {
-    this.modelKey = FORM_UTILS.getQueryString('modelKey');
-    this.id = FORM_UTILS.getQueryString('id');
-    this.procInstId = FORM_UTILS.getQueryString('procInstId');
-
-    const isDev = FORM_UTILS.getQueryString('isDev');
-    if('false' == isDev){
-      BasePath = '';
-    }
-
-    if(this.id){
-      getModelInfoById(this.id).then(res=>{
-        console.log('=====================>>>>>>>>>>>>', res);
-      });
-    }
-  },
-
   // 异步保存数据！ formstatus（1草稿；2流程发起）
   genSaveData: function(dt, formStatus){
     var formData = {defaultFormDataVo: {code: this.bizId}, makFormDataVo: dt};

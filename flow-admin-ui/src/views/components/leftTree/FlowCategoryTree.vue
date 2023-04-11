@@ -6,7 +6,6 @@
       search
       :clickRowToExpand="false"
       :treeData="treeData"
-      :replaceFields="{ key: 'id', title: 'name' }"
       @select="handleSelect"
       ref="basicTreeRef"
     />
