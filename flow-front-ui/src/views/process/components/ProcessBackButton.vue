@@ -1,13 +1,14 @@
 <template>
-  <Button @click="doBack" type="link" title="返回">
-    <template #icon>
-      <LeftOutlined />
-    </template>
-  </Button>
+  <Tooltip >
+    <template #title>返回</template>
+    <a @click="doBack" href="javascript: void(0);">
+      <LeftOutlined/>
+    </a>
+  </Tooltip>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { Button } from 'ant-design-vue';
+  import { Tooltip } from 'ant-design-vue';
   import { LeftOutlined } from '@ant-design/icons-vue';
 
   import { useGo } from '/@/hooks/web/usePage';
@@ -15,7 +16,7 @@
   export default defineComponent({
     name: 'ActionButtons',
     components: {
-      Button,
+      Tooltip,
       LeftOutlined
     },
     setup(_, {emit}) {

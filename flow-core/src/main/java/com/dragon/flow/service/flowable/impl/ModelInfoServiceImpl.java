@@ -163,6 +163,11 @@ public class ModelInfoServiceImpl extends ServiceImpl<IModelInfoMapper, ModelInf
             modelInfo.setExtendStatus(ModelFormStatusEnum.DFB.getStatus());
         }
         this.saveOrUpdate(modelInfo);
+        Model model = modelService.getModel(modelInfo.getModelId());
+        if (StringUtils.isBlank(model.getTenantId()) || StringUtils.isNotBlank(modelInfo.getAppSn())) {
+            model.setTenantId(modelInfo.getAppSn());
+            modelService.saveModel(model);
+        }
         return modelInfo;
     }
 

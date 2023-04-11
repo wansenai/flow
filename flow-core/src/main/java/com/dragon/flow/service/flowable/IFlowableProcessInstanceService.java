@@ -3,6 +3,7 @@ package com.dragon.flow.service.flowable;
 import com.dragon.flow.model.org.Personal;
 import com.dragon.flow.vo.flowable.processinstance.InstanceQueryParamsVo;
 import com.dragon.flow.vo.flowable.processinstance.ProcessInstanceVo;
+import com.dragon.flow.vo.flowable.processinstance.StartorBaseInfoVo;
 import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
 import com.dragon.flow.vo.flowable.processinstance.EndVo;
 import com.dragon.tools.pager.PagerModel;
@@ -33,6 +34,8 @@ public interface IFlowableProcessInstanceService {
      * @return
      */
     Map<String, Object> getStartVariables(StartProcessInstanceVo params, Personal personal);
+
+    StartorBaseInfoVo getStartorBaseInfoVoByProcessInstanceId(String processInstanceId);
 
     /**
      * 查询我的流程列表

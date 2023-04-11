@@ -1,5 +1,6 @@
 package com.dragon.flow.service.flowable.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,9 +12,11 @@ import com.dragon.flow.mapper.flowable.IFlowableProcessInstanceMapper;
 import com.dragon.flow.model.flowable.CommentInfo;
 import com.dragon.flow.model.flowable.ExtendHisprocinst;
 import com.dragon.flow.model.flowable.ExtendProcinst;
+import com.dragon.flow.model.flowable.ModelInfo;
 import com.dragon.flow.model.org.Personal;
 import com.dragon.flow.service.flowable.*;
 import com.dragon.flow.service.org.IPersonalService;
+import com.dragon.flow.vo.flowable.processinstance.StartorBaseInfoVo;
 import com.dragon.tools.utils.DurationUtils;
 import com.dragon.flow.utils.ElUtils;
 import com.dragon.flow.vo.flowable.processinstance.InstanceQueryParamsVo;
@@ -83,6 +86,8 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
     private IFlowableProcessInstanceMapper flowableProcessInstanceMapper;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private IModelInfoService modelInfoService;
     @Autowired
     private CacheManager cacheManager;
 
@@ -216,52 +221,57 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
         if (StringUtils.isNotBlank(params.getProcessDefinitionKey())
                 && StringUtils.isNotBlank(params.getBusinessKey())
                 && StringUtils.isNotBlank(params.getAppSn())){
-            ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey(params.getProcessDefinitionKey())
-                    .latestVersion().singleResult();
-            if (processDefinition != null && processDefinition.isSuspended()){
-                returnVo = new ReturnVo<>(ReturnCode.FAIL, "此流程已经挂起,请联系系统管理员!");
-                return returnVo;
-            }
-            String creator = params.getCreator();
-            if (StringUtils.isBlank(creator) && StringUtils.isNotBlank(params.getCurrentUserCode())){
-                creator = params.getCurrentUserCode();
-                params.setCreator(creator);
-            }
-            if (StringUtils.isNotBlank(creator) && StringUtils.isBlank(params.getCurrentUserCode())){
-                params.setCurrentUserCode(params.getCreator());
-            }
-            Personal personal = personalService.getPersonalByCode(params.getCurrentUserCode());
-            if (personal == null){
-                returnVo = new ReturnVo<>(ReturnCode.FAIL, "工号为：" + params.getCurrentUserCode() + "的当前发起人用户匹配不到，请确认!");
-                return returnVo;
-            } else {
-                if (StringUtils.isBlank(params.getDeptId())){
-                    params.setDeptId(personal.getDeptId());
+            try {
+                ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey(params.getProcessDefinitionKey())
+                        .latestVersion().singleResult();
+                if (processDefinition != null && processDefinition.isSuspended()){
+                    returnVo = new ReturnVo<>(ReturnCode.FAIL, "此流程已经挂起,请联系系统管理员!");
+                    return returnVo;
                 }
+                String creator = params.getCreator();
+                if (StringUtils.isBlank(creator) && StringUtils.isNotBlank(params.getCurrentUserCode())){
+                    creator = params.getCurrentUserCode();
+                    params.setCreator(creator);
+                }
+                if (StringUtils.isNotBlank(creator) && StringUtils.isBlank(params.getCurrentUserCode())){
+                    params.setCurrentUserCode(params.getCreator());
+                }
+                Personal personal = personalService.getPersonalByCode(params.getCurrentUserCode());
+                if (personal == null){
+                    returnVo = new ReturnVo<>(ReturnCode.FAIL, "工号为：" + params.getCurrentUserCode() + "的当前发起人用户匹配不到，请确认!");
+                    return returnVo;
+                } else {
+                    if (StringUtils.isBlank(params.getDeptId())){
+                        params.setDeptId(personal.getDeptId());
+                    }
+                }
+                this.getStartVariables(params, personal);
+                returnVo = this.checkProcessInstance(params);
+                if (!returnVo.isSuccess()){
+                    return returnVo;
+                }
+                identityService.setAuthenticatedUserId(creator);
+                ProcessInstance processInstance = runtimeService.createProcessInstanceBuilder()
+                        .processDefinitionKey(params.getProcessDefinitionKey().trim())
+                        .name(params.getFormName().trim())
+                        .businessKey(params.getBusinessKey().trim())
+                        .variables(params.getVariables())
+                        .tenantId(params.getAppSn().trim())
+                        .start();
+                this.createExtendProcinst(params, processInstance, creator);
+                CommentInfo commentInfo = new CommentInfo(CommentTypeEnum.TJ.name(), creator, processInstance.getProcessInstanceId(), CommentTypeEnum.TJ.getName());
+                BpmnModel bpmnModel = bpmnModelService.getBpmnModelByProcessDefId(processInstance.getProcessDefinitionId());
+                StartEvent start = bpmnModelService.findStartFlowElement(bpmnModel.getMainProcess());
+                if (start != null){
+                    commentInfo.setActivityId(start.getId());
+                    commentInfo.setActivityName(start.getName());
+                }
+                this.addFlowCommentInfo(commentInfo);
+                returnVo.setData(processInstance);
+            } catch (Exception e) {
+                e.printStackTrace();
+                new ReturnVo<>(ReturnCode.FAIL, "发起流程失败，原因：" + e.getMessage());
             }
-            this.getStartVariables(params, personal);
-            returnVo = this.checkProcessInstance(params);
-            if (!returnVo.isSuccess()){
-                return returnVo;
-            }
-            identityService.setAuthenticatedUserId(creator);
-            ProcessInstance processInstance = runtimeService.createProcessInstanceBuilder()
-                    .processDefinitionKey(params.getProcessDefinitionKey().trim())
-                    .name(params.getFormName().trim())
-                    .businessKey(params.getBusinessKey().trim())
-                    .variables(params.getVariables())
-                    .tenantId(params.getAppSn().trim())
-                    .start();
-            this.createExtendProcinst(params, processInstance, creator);
-            CommentInfo commentInfo = new CommentInfo(CommentTypeEnum.TJ.name(), creator, processInstance.getProcessInstanceId(), CommentTypeEnum.TJ.getName());
-            BpmnModel bpmnModel = bpmnModelService.getBpmnModelByProcessDefId(processInstance.getProcessDefinitionId());
-            StartEvent start = bpmnModelService.findStartFlowElement(bpmnModel.getMainProcess());
-            if (start != null){
-                commentInfo.setActivityId(start.getId());
-                commentInfo.setActivityName(start.getName());
-            }
-            this.addFlowCommentInfo(commentInfo);
-            returnVo.setData(processInstance);
         } else {
             returnVo = new ReturnVo<>(ReturnCode.FAIL, " Parameters should not be null");
         }
@@ -431,5 +441,26 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
         params.getVariables().put(FlowConstant.FLOW_SUBMITTER_VAR, "");
         params.getVariables().put(FlowConstant.FLOWABLE_SKIP_EXPRESSION_ENABLED, true);
         return variables;
+    }
+
+    @Override
+    public StartorBaseInfoVo getStartorBaseInfoVoByProcessInstanceId(String processInstanceId) {
+        StartorBaseInfoVo data = new StartorBaseInfoVo();
+        ExtendHisprocinst extendHisprocinst = extendHisprocinstService.findExtendHisprocinstByProcessInstanceId(processInstanceId);
+        if (extendHisprocinst != null) {
+            data.setProcessInstanceId(processInstanceId);
+            data.setBusinessKey(extendHisprocinst.getBusinessKey());
+            data.setFormName(extendHisprocinst.getProcessName());
+            data.setModelKey(extendHisprocinst.getModelKey());
+            ModelInfo modelInfo = modelInfoService.getModelInfoByModelKey(extendHisprocinst.getModelKey());
+            data.setModelName(modelInfo.getName());
+            if (StringUtils.isNotBlank(extendHisprocinst.getUserInfo())) {
+                data.setStarterInfo(JSON.parseObject(extendHisprocinst.getUserInfo()));
+            }
+            data.setCreateTime(extendHisprocinst.getCreateTime());
+        } else {
+            log.warn("数据异常：未查到流程实例【{}】的流程扩展信息！", processInstanceId);
+        }
+        return data;
     }
 }

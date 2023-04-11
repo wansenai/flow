@@ -131,6 +131,16 @@ public class FlowResource extends BaseResource {
         return returnVo;
     }
 
+    @GetMapping(value = "/getStartorBaseInfoVoByProcessInstanceId/{processInstanceId}", produces = "application/json")
+    public ReturnVo getStartorBaseInfoVoByProcessInstanceId(HttpServletRequest request, @PathVariable String processInstanceId) {
+        HttpHeaders headers = this.createHttpHeaders(request);
+        HttpEntity httpEntity = new HttpEntity<>(headers);
+        String url = this.getApiUrl(FlowFrontConstant.GET_GETSTARTORBASEINFOVOBYPROCESSINSTANCEID_URL)
+                + "?processInstanceId=" + processInstanceId;
+        ReturnVo returnVo = restTemplate.postForObject(url, httpEntity, ReturnVo.class, processInstanceId);
+        return returnVo;
+    }
+
     @PostMapping(value = "/complete", produces = "application/json")
     public ReturnVo complete(HttpServletRequest request, @RequestBody CompleteTaskVo completeTaskVo) throws FlowException {
         HttpHeaders headers = this.createHttpHeaders(request);

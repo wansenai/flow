@@ -1,8 +1,8 @@
 <template>
-  <PageWrapper contentBackground class="!mt-4">
+  <PageWrapper class="!mt-4 process-container" :loading="true" >
     <template #title>
       <ProcessBackButton/>
-      发起流程
+      {{ modelBaseInfo.name || '-' }}
       <BaseActionButtons />
     </template>
     <template #extra>
@@ -10,115 +10,85 @@
     </template>
 
     <template #footer>
-
+      <div class="pb-2">
+        <Space>
+          <span>
+            流程BP：<Tag>张三</Tag>
+          </span>
+          <span>
+          归属部门：<Tag>李四</Tag>
+          </span>
+        </Space>
+      </div>
     </template>
 
-    <div class="m-1 desc-wrap">
-<!--      <component :is="currentView" ref="processFormRef"></component>-->
-      <FramePage ref="formRenderFrameRef" :frameSrc="formUrl" />
+    <div class="desc-wrap">
+      <FormContainer ref="formContainerRef"/>
     </div>
   </PageWrapper>
 </template>
 <script lang="ts">
   import { defineComponent, ref, unref, nextTick } from 'vue';
   import { PageWrapper } from '/@/components/Page';
-  import { Divider, Card, Empty, Descriptions} from 'ant-design-vue';
   import { useRouter } from 'vue-router';
-
-  import ProcessForm from '../../process-form';
-
   import ActionButtons from '/@/views/process/components/ActionButtons.vue';
+  import FormContainer from '/@/views/process/components/FormContainer.vue';
   import BaseActionButtons from '/@/views/process/components/BaseActionButtons.vue';
   import ProcessBackButton from '/@/views/process/components/ProcessBackButton.vue';
-  import FramePage from '/@/views/components/iframe/index.vue';
 
   import ProcessHeader from '/@/views/process/components/ProcessHeader.vue';
   import { useGo } from '/@/hooks/web/usePage';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import {getEnv} from "../../../../../flow-admin-ui/src/utils/env";
-  import {getFormInfoByModelKey, startFormFlow} from "/@/api/process/process";
+  import { getModelInfoByModelKey, startFormFlow} from "/@/api/process/process";
 
   export default defineComponent({
     components: {
       ProcessHeader,
       PageWrapper,
-      [Divider.name]: Divider,
-      [Card.name]: Card,
-      AEmpty: Empty, FramePage,
-      [Descriptions.name]: Descriptions,
-      [Descriptions.Item.name]: Descriptions.Item,
+      FormContainer,
       ActionButtons,
       BaseActionButtons,
       ProcessBackButton,
-      ...ProcessForm
     },
     setup() {
-      const currentView = ref<string>("");
-      const processFormRef = ref<HTMLElement | null>(null);
-      const formRenderFrameRef = ref();
-      const formBaseInfo = ref({});
-
+      const formContainerRef = ref();
+      const modelBaseInfo = ref({});
       const { createMessage } = useMessage();
       const go = useGo();
-      const formUrl = ref<string>('');
-      const isDev = getEnv()==='development';
       const { currentRoute } = useRouter();
       const { params: { modelKey } } = unref(currentRoute);
-      currentView.value = modelKey;
 
-      nextTick(()=>{
-        formUrl.value = ('/form-making/custom.html#/?modelKey=' + modelKey + '&formType=custom');
-        loadFormInfo();
+      getModelInfoByModelKey({modelKey}).then(res=>{
+        modelBaseInfo.value = res;
       });
 
-      function loadFormInfo(){
-        getFormInfoByModelKey({modelKey}).then(res=>{
-          setTimeout(()=>{
-            const iframe = unref(unref(formRenderFrameRef).frameRef)
-            if(iframe){
-              if(iframe.contentWindow?.vueObj){
-                iframe.contentWindow.CustomForm.loadFormInfo({formJson: res.formJson, editData: null});
-              }
-              iframe.onload = function(){
-                iframe.contentWindow.CustomForm.loadFormInfo({formJson: res.formJson, editData: null});
-              }
-            }
-          }, 0);
-        });
-      }
-
       async function doLaunch() {
-        // 获取表单数据
-        const iframe = unref(unref(formRenderFrameRef).frameRef)
-        if(iframe){
-          if(iframe.contentWindow?.vueObj){
-            try{
-              const formData = await iframe.contentWindow.CustomForm.geFormData(true);
 
-              debugger;
-              const startResult = await startFormFlow({
-                formData: JSON.stringify(formData),
-                processDefinitionKey: modelKey,
-              });
-              debugger;
+        const formData = await unref(formContainerRef).getFormData(true);
+        const startResult = await startFormFlow({
+          formData: JSON.stringify(formData),
+          processDefinitionKey: modelKey,
+        });
 
-              createMessage.success("提交成功！");
-              go("/process/launched");
-              debugger;
-            }catch (e){
-
-            }
-          }
-        }
+        createMessage.success("提交成功！");
+        go("/process/launched");
+        debugger;
       }
 
       return {
-        formUrl,
-        currentView,
-        processFormRef,
-        formRenderFrameRef,
+        modelBaseInfo,
+        formContainerRef,
         doLaunch
       };
     },
   });
 </script>
+<style lang="less">
+  .process-container{
+    .ant-page-header{
+      .ant-page-header-footer{
+        margin-top: 0!important;
+      }
+    }
+  }
+</style>

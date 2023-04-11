@@ -17,6 +17,7 @@ import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.flow.vo.flowable.processinstance.EndVo;
 import com.dragon.flow.vo.flowable.processinstance.InstanceQueryParamsVo;
+import com.dragon.flow.vo.flowable.processinstance.StartorBaseInfoVo;
 import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
 import com.dragon.flow.vo.flowable.task.ActivityVo;
 import com.dragon.flow.vo.flowable.task.CompleteTaskVo;
@@ -137,6 +138,14 @@ public class FlowApiRest extends AbstractFlowApiImpl {
     @PostMapping(value = "/getModelInfoByModelKey", produces = "application/json")
     public ReturnVo<ModelInfo> getModelInfoByModelKey(String modelKey) {
         return super.getModelInfoByModelKey(modelKey);
+    }
+
+    @Override
+    @ApiOperation(value = "通过流程实例ID获取流程发起者的基本信息", notes = "通过流程实例ID获取流程发起者的基本信息")
+    @ApiImplicitParam(name = "processInstanceId", dataType = "String", required = true, value = "流程实例ID", defaultValue = "xxx")
+    @PostMapping(value = "/getStartorBaseInfoVoByProcessInstanceId", produces = "application/json")
+    public ReturnVo<StartorBaseInfoVo> getStartorBaseInfoVoByProcessInstanceId(String processInstanceId){
+        return super.getStartorBaseInfoVoByProcessInstanceId(processInstanceId);
     }
 
     @Override

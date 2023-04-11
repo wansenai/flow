@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="流程中心"  contentClass="flex p-4" contentBackground class="!mt-4">
+  <PageWrapper title="流程中心" contentClass="flex" class="!mt-4 process-list-container" :loading="true">
 
     <template #footer>
       <process-header current="launch"/>
@@ -7,23 +7,24 @@
 
     <BasicTree
       title="流程分类"
-      :clickRowToExpand="true"
       :treeData="treeData"
+      treeWrapperClassName="h-[calc(100%-35px)] overflow-auto"
       @select="handleSelect"
       class="w-1/4 xl:w-1/5 mt-2"
-      ref="categoryTree"
+      ref="categoryTreeRef"
     />
 
     <!--    <BasicTable class="w-3/4 xl:w-4/5" @register="registerTimeTable" />-->
-    <div class="w-3/4 xl:w-4/5 !mt-4" :class="`${prefixCls}__content`">
+    <div class="w-3/4 xl:w-4/5 !mt-2" :class="`${prefixCls}__content`">
       <BasicForm
+        class="!mt-2"
         :class="`${prefixCls}__header-form`"
         :labelWidth="100"
         :schemas="searchFormSchema"
         :showActionButtonGroup="false"
       />
 
-      <a-list :pagination="pagination">
+      <a-list :pagination="pagination" :loading="modelListLoading">
         <template v-for="item in modelInfoList" :key="item.id">
           <a-list-item class="list">
             <a-list-item-meta>
@@ -35,11 +36,6 @@
                   </div>
                 </router-link>
               </template>
-<!--              <template #description>
-                <div class="description">
-                  {{ item.description }}
-                </div>
-              </template>-->
             </a-list-item-meta>
           </a-list-item>
         </template>
@@ -49,14 +45,14 @@
   </PageWrapper>
 </template>
 <script lang="ts">
-  import { defineComponent, ref, onMounted, nextTick } from 'vue';
-  import { BasicTable, useTable } from '/@/components/Table';
+  import { defineComponent, ref, unref, onMounted, nextTick } from 'vue';
+  import { BasicTable } from '/@/components/Table';
   import { BasicForm } from '/@/components/Form/index';
 
   import { BasicTree, TreeItem } from '/@/components/Tree';
 
   import { PageWrapper } from '/@/components/Page';
-  import { Divider, Card, Empty, Descriptions, Steps, Tabs, List, Row, Col, Progress } from 'ant-design-vue';
+  import { List, Row, Col, Progress } from 'ant-design-vue';
 
   import { searchFormSchema, cardList } from './data';
   import ProcessHeader from '/@/views/process/components/ProcessHeader.vue';
@@ -75,38 +71,33 @@
       BasicTree,
       BasicTable,
       ProcessHeader,
-      [Divider.name]: Divider,
-      [Card.name]: Card,
-      AEmpty: Empty,
-      [Descriptions.name]: Descriptions,
-      [Descriptions.Item.name]: Descriptions.Item,
-      [Steps.name]: Steps,
-      [Steps.Step.name]: Steps.Step,
-      [Tabs.name]: Tabs,
-      [Tabs.TabPane.name]: Tabs.TabPane,
     },
     setup() {
       const treeData = ref([]);
       const modelInfoList = ref([]);
-      const categoryTree = ref();
+      const categoryTreeRef = ref(null);
+      const modelListLoading = ref(false);
 
-      fetch();
+      onMounted(()=>{
+        fetch();
+      })
 
       async function fetch() {
-        // treeLoading.value = true;
         getCategories().then(res => {
-          debugger;
           treeData.value = (res as unknown) as TreeItem[];
-        }).finally(()=>{
-          // treeLoading.value = false;
+          nextTick(()=>{
+            unref(categoryTreeRef)?.filterByLevel(1);
+          })
         });
       }
 
       function handleSelect(nodes) {
+        modelListLoading.value = true;
+        modelInfoList.value = [];
         const code = nodes[0];
         getModelInfoVoByPagerModel({categoryCode: code}).then(res=>{
-          debugger;
           modelInfoList.value = res.rows;
+          modelListLoading.value = false;
         });
       }
 
@@ -114,19 +105,29 @@
         treeData,
         searchFormSchema,
         prefixCls: 'list-basic',
+        modelListLoading,
         list: cardList,
         modelInfoList,
-        categoryTree,
+        categoryTreeRef,
         handleSelect,
         pagination: {
+          change: (page, pageSize)=>{
+            console.log(page, pageSize);
+          },
           show: true,
-          pageSize: 3,
+          pageSize: 15,
         },
       };
     },
   });
 </script>
-
+<style lang="less">
+.process-list-container{
+  .vben-basic-table-form-container{
+    padding: 0!important;
+  }
+}
+</style>
 
 <style lang="less" scoped>
   .list-basic {

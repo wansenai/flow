@@ -1,6 +1,7 @@
 package com.dragon.flow.api.rest;
 
 import com.dragon.flow.api.impl.AbstractFormApiImpl;
+import com.dragon.flow.model.form.FormDataInfo;
 import com.dragon.flow.model.form.FormInfo;
 import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
 import com.dragon.tools.vo.ReturnVo;
@@ -41,6 +42,14 @@ public class FormApiRest extends AbstractFormApiImpl {
     @PostMapping(value = "/startFormFlow", produces = "application/json")
     public ReturnVo<String> startFormFlow(@RequestBody StartProcessInstanceVo startProcessInstanceVo) {
         return super.startFormFlow(startProcessInstanceVo);
+    }
+
+    @Override
+    @ApiOperation(value = "通过流程实例Id获取表单数据", notes = "通过流程实例Id获取表单数据")
+    @ApiImplicitParam(name = "procInstId", dataType = "String", required = true, value = "流程实例ID", defaultValue = "xxxx")
+    @PostMapping(value = "/getFormDataInfoByProcessInstanceId", produces = "application/json")
+    public ReturnVo<FormDataInfo> getFormDataInfoByProcessInstanceId(String procInstId) {
+        return super.getFormDataInfoByProcessInstanceId(procInstId);
     }
 
 }

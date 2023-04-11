@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="流程中心" contentBackground class="!mt-4">
+  <PageWrapper title="流程中心" class="!mt-4 process-list-container">
 
     <template #extra>
       <launch-button />
@@ -9,7 +9,7 @@
       <process-header current="todo"/>
     </template>
 
-    <div class="m-1 desc-wrap process">
+    <div class="mt-2 desc-wrap process">
       <BasicTable @register="registerTodoTable" >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'formName'">
@@ -24,7 +24,7 @@
   import { defineComponent } from 'vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { PageWrapper } from '/@/components/Page';
-  import { Divider, Card, Empty, Descriptions, Steps, Tabs } from 'ant-design-vue';
+  import { Tabs, Tag, Popover } from 'ant-design-vue';
 
   import { todoTableSchema, searchFormSchema } from './data';
   import ProcessHeader from '/@/views/process/components/ProcessHeader.vue';
@@ -37,13 +37,6 @@
       ProcessHeader,
       LaunchButton,
       PageWrapper,
-      [Divider.name]: Divider,
-      [Card.name]: Card,
-      AEmpty: Empty,
-      [Descriptions.name]: Descriptions,
-      [Descriptions.Item.name]: Descriptions.Item,
-      [Steps.name]: Steps,
-      [Steps.Step.name]: Steps.Step,
       [Tabs.name]: Tabs,
       [Tabs.TabPane.name]: Tabs.TabPane,
     },
@@ -82,6 +75,11 @@
   });
 </script>
 <style lang="less">
+.process-list-container{
+  .vben-basic-table-form-container{
+    padding: 0!important;
+  }
+}
   .process{
     .vben-basic-table-form-container{
       .ant-form{

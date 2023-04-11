@@ -27,7 +27,9 @@ enum Api {
   GetAppingTaskCont = '/front/flow/getAppingTaskCont',
   GetCategories = '/front/flow/getCategories',
   GetModelInfoVoByPagerModel = '/front/flow/getModelInfoVoByPagerModel',
-  StartFormFlow = '/front/flow//startFormFlow',
+  StartFormFlow = '/front/flow/startFormFlow',
+  GetFormDataInfoByProcessInstanceId = '/front/flow/getFormDataInfoByProcessInstanceId',
+  GetStartorBaseInfoVoByProcessInstanceId = '/front/flow/getStartorBaseInfoVoByProcessInstanceId',
 
 }
 
@@ -59,6 +61,16 @@ export function loadBpmnXmlByModelKey(params: any) {
 // 加载表单结构
 export function getFormInfoByModelKey(params: any) {
   return defHttp.get({ url: Api.GetFormInfoByModelKey + '/' + params.modelKey, params:{} });
+}
+
+// 通过流程实例ID获取表单数据
+export function getFormDataInfoByProcessInstanceId(params: any) {
+  return defHttp.get({ url: Api.GetFormDataInfoByProcessInstanceId + '/' + params.procInstId });
+}
+
+// 通过流程实例ID获取发起者基本信息-用于显示表单头部基本信息
+export function getStartorBaseInfoVoByProcessInstanceId(params: any) {
+  return defHttp.get({ url: Api.GetStartorBaseInfoVoByProcessInstanceId + '/' + params.procInstId });
 }
 
 // 加载流程基本信息

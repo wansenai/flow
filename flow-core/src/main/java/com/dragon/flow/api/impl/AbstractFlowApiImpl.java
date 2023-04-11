@@ -14,6 +14,7 @@ import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.flow.vo.flowable.processinstance.EndVo;
 import com.dragon.flow.vo.flowable.processinstance.InstanceQueryParamsVo;
 import com.dragon.flow.vo.flowable.processinstance.ProcessInstanceVo;
+import com.dragon.flow.vo.flowable.processinstance.StartorBaseInfoVo;
 import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
 import com.dragon.flow.vo.flowable.task.ActivityVo;
 import com.dragon.flow.vo.flowable.task.CompleteTaskVo;
@@ -73,6 +74,14 @@ public abstract class AbstractFlowApiImpl implements IFlowApi {
         ReturnVo<PagerModel> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         PagerModel<ModelInfo> pm = modelInfoService.getPagerModel(params.getEntity(), params.getQuery());
         returnVo.setData(pm);
+        return returnVo;
+    }
+
+    @Override
+    public ReturnVo<StartorBaseInfoVo> getStartorBaseInfoVoByProcessInstanceId(String processInstanceId){
+        ReturnVo<StartorBaseInfoVo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
+        StartorBaseInfoVo startorBaseInfoVo = flowableProcessInstanceService.getStartorBaseInfoVoByProcessInstanceId(processInstanceId);
+        returnVo.setData(startorBaseInfoVo);
         return returnVo;
     }
 

@@ -3,6 +3,7 @@ package com.dragon.flow.api.impl;
 import com.dragon.flow.api.IFormApi;
 import com.dragon.flow.model.form.FormDataInfo;
 import com.dragon.flow.model.form.FormInfo;
+import com.dragon.flow.service.form.IFormDataInfoService;
 import com.dragon.flow.service.form.IFormFlowOperationService;
 import com.dragon.flow.service.form.IFormInfoService;
 import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
@@ -19,7 +20,10 @@ public abstract class AbstractFormApiImpl implements IFormApi {
     @Autowired
     private IFormInfoService formInfoService;
     @Autowired
+    private IFormDataInfoService formDataInfoService;
+    @Autowired
     private IFormFlowOperationService formFlowOperationService;
+
     @Override
     public ReturnVo<FormInfo> getFormInfoByModelKey(String modelKey) {
         ReturnVo<FormInfo> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
@@ -27,9 +31,25 @@ public abstract class AbstractFormApiImpl implements IFormApi {
         returnVo.setData(formInfo);
         return returnVo;
     }
+
     @Override
     public ReturnVo<String> startFormFlow(StartProcessInstanceVo startProcessInstanceVo) {
         ReturnVo<String> returnVo = formFlowOperationService.startFormFlow(startProcessInstanceVo);
+        return returnVo;
+    }
+
+    @Override
+    public ReturnVo<FormDataInfo> getFormDataInfoByProcessInstanceId(String procInstId) {
+        ReturnVo<FormDataInfo> returnVo = new ReturnVo<>(ReturnCode.FAIL, "获取表单数据失败！");
+        try {
+            FormDataInfo formDataInfo = formDataInfoService.getFormDataInfoByProcessInstanceId(procInstId);
+            returnVo.setMsg("获取表单数据成功！");
+            returnVo.setCode(ReturnCode.SUCCESS);
+            returnVo.setData(formDataInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            returnVo.setMsg("获取表单数据异常！原因：" + e.getMessage());
+        }
         return returnVo;
     }
 }

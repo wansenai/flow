@@ -5,6 +5,7 @@ import com.dragon.flow.model.flowable.ModelInfo;
 import com.dragon.flow.vo.flowable.model.HighLightedNodeVo;
 import com.dragon.flow.vo.flowable.model.ModelInfoVo;
 import com.dragon.flow.vo.flowable.processinstance.InstanceQueryParamsVo;
+import com.dragon.flow.vo.flowable.processinstance.StartorBaseInfoVo;
 import com.dragon.flow.vo.flowable.runtime.StartProcessInstanceVo;
 import com.dragon.flow.vo.flowable.task.ActivityVo;
 import com.dragon.flow.vo.flowable.task.CompleteTaskVo;
@@ -38,6 +39,13 @@ public interface IFlowApi {
      * @return
      */
     ReturnVo<ModelInfo> getModelInfoByModelKey(String modelKey);
+
+    /**
+     * 通过流程实例id获取头部信息
+     * @param processInstanceId 流程实例id
+     * @return
+     */
+    ReturnVo<StartorBaseInfoVo> getStartorBaseInfoVoByProcessInstanceId(String processInstanceId);
 
     /**
      * 通过modelKey获取模型对象

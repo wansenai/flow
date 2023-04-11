@@ -44,6 +44,15 @@ public class FormResource extends BaseResource {
         return returnVo;
     }
 
+    @GetMapping(value = "/getFormDataInfoByProcessInstanceId/{procInstId}", produces = "application/json")
+    public ReturnVo getFormDataInfoByProcessInstanceId(HttpServletRequest request, @PathVariable String procInstId) {
+        HttpHeaders headers = this.createHttpHeaders(request);
+        HttpEntity httpEntity = new HttpEntity<>(headers);
+        String url = this.getApiUrl(FlowFrontConstant.GET_GETFORMDATAINFOBYPROCESSINSTANCEID_URL) + "?procInstId=" + procInstId;
+        ReturnVo returnVo = restTemplate.postForObject(url, httpEntity, ReturnVo.class, procInstId);
+        return returnVo;
+    }
+
     @PostMapping(value = "/startFormFlow", produces = "application/json")
     public ReturnVo startFormFlow(HttpServletRequest request, @RequestBody StartProcessInstanceVo startProcessInstanceVo) {
         Account loginAccount = this.getLoginAccount(request);
@@ -51,7 +60,7 @@ public class FormResource extends BaseResource {
         startProcessInstanceVo.setCreator(loginAccount.getCode());
 
         ReturnVo modelInfoReturnVo = flowResource.getModelInfoByModelKey(request, startProcessInstanceVo.getProcessDefinitionKey());
-        if(modelInfoReturnVo.isSuccess()){
+        if (modelInfoReturnVo.isSuccess()) {
             ModelInfo modelInfo = JSONObject.parseObject(JSONObject.toJSON(modelInfoReturnVo.getData()).toString(), ModelInfo.class);
 
             startProcessInstanceVo.setFormName(loginAccount.getName() + "发起的" + modelInfo.getName());

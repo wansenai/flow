@@ -20,11 +20,6 @@ var CustomForm = {
           }
         },
         mounted() {
-          debugger;
-          // this.$refs.makingform.refresh();
-          if(editData){
-            this.$refs.generateform.setData(jsonData)
-          }
         }
       });
     }else{
@@ -35,6 +30,15 @@ var CustomForm = {
   // 获取表单数据
   geFormData: function(isValidate ){
     return vueObj.$refs.generateform.getData(isValidate);
+  },
+
+  // 设置表单数据
+  setFormData: function(formData, isEdit) {
+    vueObj.editData = formData;
+    vueObj.edit = isEdit;
+    setTimeout(()=>{
+      vueObj.$refs.generateform.$refs.generateForm._props.disabled = !isEdit
+    }, 100);
   }
 };
 
