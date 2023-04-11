@@ -47,7 +47,7 @@
             and t4.creator=#{params.userCode}
         </if>
         <if test="params.appSn!=null and params.appSn!=''">
-            AND t1.TENANT_ID_=#{params.systemSn}
+            AND t1.TENANT_ID_=#{params.appSn}
         </if>
         <if test="params.keyword!=null and params.keyword!=''">
             AND t1.NAME_ LIKE CONCAT('%',#{params.keyword},'%')
