@@ -103,7 +103,7 @@
       const {path,  params: { modelKey }, query: { procInstId } } = unref(currentRoute);
 
       nextTick(()=>{
-        formUrl.value = ('/form-making/custom.html#/?modelKey=' + modelKey + '&formType=custom');
+        formUrl.value = ('/form-making/index.html#/?modelKey=' + modelKey + '&formType=custom');
         loadFormInfo();
       });
 
