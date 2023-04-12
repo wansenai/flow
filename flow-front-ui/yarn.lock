@@ -1340,9 +1340,9 @@
   integrity sha512-WJzw+3iicrF/tbjbxxRinSgy5FHdJoz/egTqwi3xCDkNRJPq482RX1iyaWrjNuY2vMNSPkQMuqHvZDXgA+WnwQ==
 
 "@iconify/json@^2.1.30":
-  version "2.2.48"
-  resolved "https://registry.npmmirror.com/@iconify/json/-/json-2.2.48.tgz#3d087f8c9adcef3249fc29543cffdd15f74a22a7"
-  integrity sha512-UIx3Gja7Gdqs0ACvDIVhBUKCxOupMBsVcLwRDhIXskRxA/MZs7zNyoQM560ZHpQBcp2DklzvavjYro5tlifsIQ==
+  version "2.2.49"
+  resolved "https://registry.npmmirror.com/@iconify/json/-/json-2.2.49.tgz#fe0ec6f8ba2bb32be1d811c98286544b9ffae613"
+  integrity sha512-s0KqXftC4jgxqXvihQWHadxX8tHe3HHdARgd32Y3otWEhGMBl/ZkneBvYFlYKkh1LEAKDJXkkV35U3nCDnBmBA==
   dependencies:
     "@iconify/types" "*"
     pathe "^1.0.0"
@@ -2932,9 +2932,9 @@ camunda-bpmn-moddle@^5.1.2:
     min-dash "^3.5.2"
 
 caniuse-lite@^1.0.30001449, caniuse-lite@^1.0.30001464:
-  version "1.0.30001477"
-  resolved "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001477.tgz#a2ffb2276258233034bbb869d4558b02658a511e"
-  integrity sha512-lZim4iUHhGcy5p+Ri/G7m84hJwncj+Kz7S5aD4hoQfslKZJgt0tHc/hafVbqHC5bbhHb+mrW2JOUHkI5KH7toQ==
+  version "1.0.30001478"
+  resolved "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001478.tgz#0ef8a1cf8b16be47a0f9fc4ecfc952232724b32a"
+  integrity sha512-gMhDyXGItTHipJj2ApIvR+iVB5hd0KP3svMWWXDvZOmjzJJassGLMfxRkQCSYgGd2gtdL/ReeiyvMSFD1Ss6Mw==
 
 capital-case@^1.0.4:
   version "1.0.4"
@@ -4096,9 +4096,9 @@ ejs@^3.1.6:
     jake "^10.8.5"
 
 electron-to-chromium@^1.4.284:
-  version "1.4.357"
-  resolved "https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.357.tgz#ad02bab69e696e9a122788da4460c86166a98a01"
-  integrity sha512-UTkCbNTAcGXABmEnQrGcW4m3cG6fcyBfD4KDF0iyEAlbrGZiY9dmslyDAGOD1Kr5biN2F743Y30aRCOtau35Vw==
+  version "1.4.359"
+  resolved "https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.359.tgz#5c4d13cb08032469fcd6bd36457915caa211356b"
+  integrity sha512-OoVcngKCIuNXtZnsYoqlCvr0Cf3NIPzDIgwUfI9bdTFjXCrr79lI0kwQstLPZ7WhCezLlGksZk/BFAzoXC7GDw==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
