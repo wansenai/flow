@@ -8,7 +8,6 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { modelInfoFormSchema } from './modelInfo.data';
-  // import { saveOrUpdate } from '/@/api/flowable/bpmn/modelInfo';
   import { getAll } from '/@/api/base/app';
 
   export default defineComponent({

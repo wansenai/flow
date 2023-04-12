@@ -3,7 +3,7 @@
     <template #title>
       <div class="flow-form-title">
         <div class="title">
-          {{isUpdate?'编辑流程':'创建流程'}}
+          {{isUpdate?'编辑流程':'创建流程'}}-
           {{flowBaseInfo.name}}
         </div>
         <div class="ctrl">
@@ -153,7 +153,7 @@
         activityKey.value = "formDesigner";
         const {modelKey, name, categoryCode, modelId} = data.record;
         flowBaseInfo.value = data.record;
-        formDesignerUrl.value = '/form-making/custom.html?isDev=true&modelKey=' + modelId;
+        formDesignerUrl.value = '/form-making/index.html?isDev=true&modelKey=' + modelId;
 
         formBaseInfo.value = {
           modelKey, modelName: name,
