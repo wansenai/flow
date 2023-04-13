@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
+import java.util.Date;
+
 /**
  * @program: flow
  * @description: 抽象的流程服务
@@ -51,6 +53,10 @@ public abstract class BaseProcessService {
         commentInfo.setTaskId(baseProcessVo.getTaskId());
         commentInfo.setActivityId(baseProcessVo.getActivityId());
         commentInfo.setActivityName(baseProcessVo.getActivityName());
+        commentInfo.setCreator(baseProcessVo.getUserCode());
+        commentInfo.setUpdator(baseProcessVo.getUserCode());
+        commentInfo.setCreateTime(new Date());
+        commentInfo.setUpdateTime(new Date());
         commentInfoService.saveComment(commentInfo);
         //2.修改流程实例的状态,
         if (baseProcessVo.getCommentTypeEnum() != null && !baseProcessVo.getCommentTypeEnum().equals(CommentTypeEnum.YY)) {
