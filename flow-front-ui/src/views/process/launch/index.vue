@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="流程中心" contentClass="flex" class="!mt-4 process-list-container" :loading="true">
+  <PageWrapper title="流程中心" contentClass="flex" class="!mt-4 process-list-container" >
 
     <template #footer>
       <process-header current="launch"/>
@@ -14,7 +14,6 @@
       ref="categoryTreeRef"
     />
 
-    <!--    <BasicTable class="w-3/4 xl:w-4/5" @register="registerTimeTable" />-->
     <div class="w-3/4 xl:w-4/5 !mt-2" :class="`${prefixCls}__content`">
       <BasicForm
         class="!mt-2"

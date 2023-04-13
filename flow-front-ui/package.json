@@ -68,10 +68,9 @@
     "vue-router": "^4.0.14",
     "vue-types": "^4.1.1",
     "xlsx": "^0.18.5",
-    "vxe-table": "^4.0.15",
-    "vxe-table-plugin-antd": "^3.0.3",
     "xe-utils": "^3.2.1",
     "bpmn-js": "^8.6.0",
+    "diagram-js": "^8.2.0",
     "camunda-bpmn-moddle": "^5.1.2"
   },
   "devDependencies": {

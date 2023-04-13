@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper class="!mt-4 process-container" :loading="true" >
+  <PageWrapper class="!mt-4 process-container" contentClass="flex" >
     <template #title>
       <ProcessBackButton/>
       {{ modelBaseInfo.name || '-' }}
@@ -35,11 +35,13 @@
   import FormContainer from '/@/views/process/components/FormContainer.vue';
   import BaseActionButtons from '/@/views/process/components/BaseActionButtons.vue';
   import ProcessBackButton from '/@/views/process/components/ProcessBackButton.vue';
+  import { Space, Tag } from 'ant-design-vue';
 
   import ProcessHeader from '/@/views/process/components/ProcessHeader.vue';
   import { useGo } from '/@/hooks/web/usePage';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { getModelInfoByModelKey, startFormFlow} from "/@/api/process/process";
+  import { Loading, useLoading } from '/@/components/Loading';
 
   export default defineComponent({
     components: {
@@ -49,6 +51,7 @@
       ActionButtons,
       BaseActionButtons,
       ProcessBackButton,
+      Space, Tag, Loading
     },
     setup() {
       const formContainerRef = ref();
@@ -57,22 +60,32 @@
       const go = useGo();
       const { currentRoute } = useRouter();
       const { params: { modelKey } } = unref(currentRoute);
+      const [openFullLoading, closeFullLoading] = useLoading({
+        tip: '提交中...',
+      });
 
       getModelInfoByModelKey({modelKey}).then(res=>{
         modelBaseInfo.value = res;
       });
 
       async function doLaunch() {
-
+        openFullLoading();
         const formData = await unref(formContainerRef).getFormData(true);
         const startResult = await startFormFlow({
           formData: JSON.stringify(formData),
           processDefinitionKey: modelKey,
         });
-
-        createMessage.success("提交成功！");
-        go("/process/launched");
-        debugger;
+        const {data} = startResult;
+        if(data.success){
+          createMessage.success(data.msg);
+          setTimeout(()=>{
+            closeFullLoading();
+            go("/process/launched");
+          }, 500);
+        }else{
+          closeFullLoading();
+          createMessage.error(data.msg);
+        }
       }
 
       return {

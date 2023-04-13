@@ -3863,10 +3863,30 @@ diagram-js@^7.8.2:
     path-intersection "^2.2.1"
     tiny-svg "^2.2.2"
 
+diagram-js@^8.2.0:
+  version "8.9.0"
+  resolved "https://registry.npmmirror.com/diagram-js/-/diagram-js-8.9.0.tgz#851e8bda1a97d0e2995a3c853691cd4261a1777b"
+  integrity sha512-577bUEbkwZ7id4SCXcD2qrlKoRPXry2SDSPt5T6tEOjwKrTllKr5d1HZoJzGws4VMQq5fmY51Gce1iFT9S4Dlw==
+  dependencies:
+    css.escape "^1.5.1"
+    didi "^8.0.1"
+    hammerjs "^2.0.1"
+    inherits-browser "0.0.1"
+    min-dash "^3.5.2"
+    min-dom "^3.2.0"
+    object-refs "^0.3.0"
+    path-intersection "^2.2.1"
+    tiny-svg "^2.2.2"
+
 didi@^5.2.1:
   version "5.2.1"
   resolved "https://registry.npmmirror.com/didi/-/didi-5.2.1.tgz#1a0b1336be8baa0b068a72036eedd9fb94135bff"
   integrity sha512-IKNnajUlD4lWMy/Q9Emkk7H1qnzREgY4UyE3IhmOi/9IKua0JYtYldk928bOdt1yNxN8EiOy1sqtSozEYsmjCg==
+
+didi@^8.0.1:
+  version "8.0.2"
+  resolved "https://registry.npmmirror.com/didi/-/didi-8.0.2.tgz#edb3cbfddc4b87f58b6804fe07eb7a072636ee88"
+  integrity sha512-Wpq46GzfER5kVkqFCJtHTXsdlqh6SRPA60jTrKECQ1cl84/ALpQJrqAFlEXpue+Lxi7/6xzFIxC5V3UsS/x9aA==
 
 diff-match-patch@^1.0.5:
   version "1.0.5"
@@ -5740,6 +5760,11 @@ inflight@^1.0.4:
     once "^1.3.0"
     wrappy "1"
 
+inherits-browser@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.npmmirror.com/inherits-browser/-/inherits-browser-0.0.1.tgz#e85be69ebe554cc9840ec816ef3596a4316645ec"
+  integrity sha512-kaDA3DkCdCpvrKIo/1T/3yVn+qpFUHLjYtSHmTYewb+QfjfaQy6FGQ7LwBu7st0tG9UvYad/XAlqQmdIh6CICw==
+
 inherits@2, inherits@^2.0.1, inherits@^2.0.3, inherits@^2.0.4, inherits@~2.0.3:
   version "2.0.4"
   resolved "https://registry.npmmirror.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
@@ -6871,7 +6896,7 @@ min-dash@^3.0.0, min-dash@^3.5.2, min-dash@^3.8.1:
   resolved "https://registry.npmmirror.com/min-dash/-/min-dash-3.8.1.tgz#09a8bd8a041d65eec4732042cde9cb24a6e84b0d"
   integrity sha512-evumdlmIlg9mbRVPbC4F5FuRhNmcMS5pvuBUbqb1G9v09Ro0ImPEgz5n3khir83lFok1inKqVDjnKEg3GpDxQg==
 
-min-dom@^3.1.3:
+min-dom@^3.1.3, min-dom@^3.2.0:
   version "3.2.1"
   resolved "https://registry.npmmirror.com/min-dom/-/min-dom-3.2.1.tgz#c272a814397d8bfe97edd12670e7ac34123c043f"
   integrity sha512-v6YCmnDzxk4rRJntWTUiwggLupPw/8ZSRqUq0PDaBwVZEO/wYzCH4SKVBV+KkEvf3u0XaWHly5JEosPtqRATZA==
@@ -9785,16 +9810,6 @@ vue@^3.2.45:
     "@vue/runtime-dom" "3.2.47"
     "@vue/server-renderer" "3.2.47"
     "@vue/shared" "3.2.47"
-
-vxe-table-plugin-antd@^3.0.3:
-  version "3.0.6"
-  resolved "https://registry.npmmirror.com/vxe-table-plugin-antd/-/vxe-table-plugin-antd-3.0.6.tgz#48d24ef85a602593772be95d23a0fb11a950af08"
-  integrity sha512-ooeHUrE9R4mSlliaro5vq54BJki7xnYWUXRgfSnkN9w97n3HJK8RoCzWWAdxO2YqLTo8peMeaAcIVLYY6wyHuQ==
-
-vxe-table@^4.0.15:
-  version "4.3.11"
-  resolved "https://registry.npmmirror.com/vxe-table/-/vxe-table-4.3.11.tgz#65d22a20a05285f77ad2ba3dfc8e204ccb892e44"
-  integrity sha512-n2OXuUaKurVxxhRz0b1DojLdvtYwKkidRAqI9oGDw2IQ0y2IPs2Oq+lX2V6ar3glFdjjkS3BqnDBAk0elt6e0Q==
 
 warning@^4.0.0:
   version "4.0.3"

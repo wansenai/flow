@@ -9,7 +9,6 @@ import com.dragon.flow.model.privilege.Module;
 import com.dragon.flow.model.privilege.User;
 import com.dragon.flow.service.privilege.IAclService;
 import com.dragon.flow.service.privilege.IModuleService;
-import com.dragon.flow.service.privilege.IUserService;
 import com.dragon.flow.web.resource.BaseResource;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.vo.ReturnVo;
@@ -25,8 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.dragon.flow.constant.FlowConstant.LOGIN_USER;
 
 /**
  * @program: flow

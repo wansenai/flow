@@ -50,7 +50,7 @@ export function stopProcess(params: BaseProcessVo) {
 
 // 启动流程
 export function startFormFlow(params: BaseProcessVo) {
-  return defHttp.post({ url: Api.StartFormFlow, params });
+  return defHttp.post({ url: Api.StartFormFlow, params }, {isReturnNativeResponse: true});
 }
 
 // 加载XML

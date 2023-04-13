@@ -3,7 +3,6 @@ import type { App, Plugin } from 'vue';
 
 import { unref } from 'vue';
 import { isObject } from '/@/utils/is';
-import { cloneDeep } from 'lodash-es';
 
 export const noop = () => {};
 
@@ -36,11 +35,10 @@ export function setObjToUrlParams(baseUrl: string, obj: any): string {
 // 深度合并
 export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
   let key: string;
-  const res: any = cloneDeep(src)
   for (key in target) {
-    res[key] = isObject(res[key]) ? deepMerge(res[key], target[key]) : (res[key] = target[key]);
+    src[key] = isObject(src[key]) ? deepMerge(src[key], target[key]) : (src[key] = target[key]);
   }
-  return res;
+  return src;
 }
 
 export function openWindow(
@@ -92,3 +90,35 @@ export const withInstall = <T>(component: T, alias?: string) => {
   };
   return component as T & Plugin;
 };
+
+/**
+ * 格式化文件大小
+ * @param {*} value
+ */
+export const formatFileSize = (size) => {
+  let value = Number(size);
+  if (size && !isNaN(value)) {
+    const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB', 'BB'];
+    let index = 0;
+    let k = value;
+    if (value >= 1024) {
+      while (k > 1024) {
+        k = k / 1024;
+        index++;
+      }
+    }
+    return `${(k).toFixed(2)}${units[index]}`;
+  }
+  return '-';
+}
+
+/**
+ * 根据Value格式化为带有换行、空格格式的HTML代码
+ * @param strValue {String} 需要转换的值
+ * @return  {String}转换后的HTML代码
+ * @example
+ * getFormatCode("测\r\n\s试")  =>  “测<br/>&nbsp试”
+ */
+export const getFormatCode = (strValue) =>{
+  return strValue.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
+}

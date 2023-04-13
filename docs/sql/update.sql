@@ -17,3 +17,11 @@ ALTER TABLE  `tbl_flow_extend_procinst`
 ALTER TABLE `tbl_flow_extend_hisprocinst`
     ADD COLUMN `user_info` json NULL COMMENT '发起人的信息' AFTER `current_user_code`,
 ADD COLUMN `form_data` json NULL COMMENT '表单数据' AFTER `user_info`;
+
+
+
+ALTER TABLE `tbl_flow_comment_info` ADD COLUMN `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间' AFTER `message`;
+ALTER TABLE `tbl_flow_comment_info` ADD COLUMN `creator` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人' AFTER `create_time`;
+ALTER TABLE `tbl_flow_comment_info` ADD COLUMN `update_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间' AFTER `creator`;
+ALTER TABLE `tbl_flow_comment_info` ADD COLUMN `updator` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '修改人' AFTER `update_time`;
+ALTER TABLE `tbl_flow_comment_info` MODIFY COLUMN `del_flag` int(1) NULL DEFAULT NULL COMMENT '删除标识（0已删除；1未删除）' AFTER `updator`;
