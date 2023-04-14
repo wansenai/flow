@@ -114,14 +114,14 @@
           createMessage.success({content: formResMsg, style: {marginTop: '10vh'}});
           flowBaseInfo.value = flowDataData;
           formBaseInfo.value = {id: formDataData.id, modelKey: formDataData.code, modelName: formDataData.name, formJson: formDataData.formJson}
+          setFieldsValue({id: flowDataData.id});
         } else {
-          createMessage.error(!flowResSuccess?flowResMsg: formResMsg);
+          createMessage.error({content: !flowResSuccess?flowResMsg: formResMsg, style: {marginTop: '10vh'}});
         }
       }
 
       window['submitFormInfo']=(data)=>{
         const {id: modelInfoId, categoryCode} = unref(flowBaseInfo);
-        console.log(data);
         const saveData = {
           id: unref(formBaseInfo)?.id,
           code: data.modelKey,
@@ -263,8 +263,15 @@
           const result = await saveFlowInfo(values);
 
           const {data: {msg, success}} = result;
-
-          createMessage.success(msg);
+          if(success){
+            createMessage.success({content: msg, style: {marginTop: '10vh'}});
+            updateSchema({
+              field: 'appSn',
+              componentProps: {disabled: true}
+            });
+          } else {
+            createMessage.error({content: msg, style: {marginTop: '10vh'}});
+          }
 
         } finally {
           changeLoading(false);

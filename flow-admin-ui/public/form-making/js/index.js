@@ -1,42 +1,50 @@
 var CustomForm = {
-  // 异步保存数据！ formstatus（1草稿；2流程发起）
-  genSaveData: function(dt, formStatus){
-    var formData = {defaultFormDataVo: {code: this.bizId}, makFormDataVo: dt};
-    // formDraftStatus: 1草稿；2已发起流程
-    const data = {dataJson: JSON.stringify(formData), formDraftStatus: formStatus, modelKey: this.modelKey};
-
-    return data;
-  },
 
   submit: function(){
+    const loading = vueObj.$loading({
+      lock: true,
+      text: '正在保存...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.1)'
+    });
+    debugger;
     // 数据验证
-    if(!vueObj.modelKey){
-      console.warn('modelKey不能为空！');
+    try {
+      vueObj.$refs.formBaseInfoRef.validate(valid => {
+        if (valid) {
+          const formJson = vueObj.$refs.makingform.getJSON();
+          if (!formJson.list || formJson.list.length <= 0) {
+            vueObj.$message({
+              showClose: true,
+              message: '请添加字段！',
+              type: 'warning',
+              offset: 40,
+              duration: 1000
+            });
+            loading.close();
+            return;
+          }
+          const formInfo = {
+            formJson: JSON.stringify(formJson),
+            ...vueObj.baseInfo
+          }
+          window.parent.submitFormInfo(formInfo);
+          vueObj.modelKeyDisabled = true;
+          loading.close();
+        } else {
+          loading.close();
+        }
+      });
+    } catch (e) {
+      console.error(e);
       vueObj.$message({
         showClose: true,
-        message: 'modelKey不能为空！',
+        message: '保存异常！',
+        offset: 40,
         type: 'error'
       });
-      return;
+      loading.close();
     }
-    if(!vueObj.modelName){
-      console.warn('modelKey不能为空！');
-      vueObj.$message({
-        showClose: true,
-        message: 'modelKey不能为空！',
-        type: 'error'
-      });
-      return;
-    }
-    const formJson = vueObj.$refs.makingform.getJSON();
-
-    const formInfo = {
-      formJson: JSON.stringify(formJson),
-      modelKey: vueObj.modelKey,
-      modelName: vueObj.modelName
-    }
-
-    window.parent.submitFormInfo(formInfo);
   },
 
   /**
@@ -54,6 +62,20 @@ var CustomForm = {
           editData: {},
           modelKey: modelKey,
           modelName: modelName,
+          modelKeyDisabled: !!modelKey,
+          baseInfo: {modelName: modelName, modelKey: modelKey},
+          formBaseInfoRules: {
+            modelName: [
+              {required: true, message: '请输入表单名称', trigger: 'blur'},
+              {min: 1, max: 64, message: '长度在 1 到 64 个字符', trigger: 'blur'},
+              { pattern: "^[^\\s]*$", message: '不允许输入空格符号' }
+            ],
+            modelKey: [
+              {required: true, message: '请输入表单标识', trigger: 'blur'},
+              {min: 1, max: 32, message: '长度在 1 到 32 个字符', trigger: 'blur'},
+              {pattern: '^[a-zA-Z_]{1,}[0-9a-zA-Z_]{1,}$', message: '请输入英文或数字且以英文或下划线开头！'}
+            ],
+          }
         },
         edit: false,
         methods: {
@@ -71,7 +93,6 @@ var CustomForm = {
           'jsonData': {
             handler(newVal, oldVal) {
               if(newVal){
-                console.log(JSON.stringify(newVal));
                 setTimeout(()=>{
                   this.$refs.makingform.clear();
                   if (newVal) {
@@ -87,6 +108,7 @@ var CustomForm = {
       });
     }else{
       vueObj.jsonData = jsonData;
+      vueObj.baseInfo = {modelName, modelKey}
       vueObj.modelKey = modelKey;
       vueObj.modelName = modelName;
     }
