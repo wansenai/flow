@@ -15,7 +15,7 @@
         <div class="font-bold">表单内容</div>
       </template>
       <div style="min-height: 300px;" >
-        <FramePage ref="formRenderFrameRef" :frameSrc="formUrl" />
+        <FramePage ref="formRenderFrameRef" :frameSrc="formUrl" @onLoad="handleOnLoad" />
       </div>
     </CollapseContainer>
   </div>
@@ -36,7 +36,7 @@
   } from "/@/api/process/process";
 
   const flowBaseInfoSchema = [
-    {
+    /*{
       field: 'name',
       label: '提交人',
     },
@@ -51,7 +51,7 @@
     {
       field: 'mobile',
       label: '手机号',
-    },
+    },*/
     {
       field: 'createTime',
       label: '提交时间',
@@ -104,7 +104,7 @@
 
       nextTick(()=>{
         formUrl.value = ('/form-making/index.html#/?modelKey=' + modelKey + '&formType=custom');
-        loadFormInfo();
+        // loadFormInfo();
       });
 
       function setStartorBaseInfo(startorBaseInfo){
@@ -113,23 +113,24 @@
         });
       }
 
+      function handleOnLoad(){
+        loadFormInfo();
+        unref(formRenderFrameRef).hideIframeLoading();
+      }
+
       function loadFormInfo(){
         getFormInfoByModelKey({modelKey}).then(res=>{
           setTimeout(()=>{
-            const iframe = unref(unref(formRenderFrameRef).frameRef)
+            const iframe = unref(unref(formRenderFrameRef).frameRef);
             if(iframe){
               if(iframe.contentWindow?.vueObj){
                 iframe.contentWindow.CustomForm.loadFormInfo({formJson: res.formJson, editData: null});
               }
-              iframe.onload = function(){
-                iframe.contentWindow.CustomForm.loadFormInfo({formJson: res.formJson, editData: null});
-                if(procInstId){
-                  getFormDataInfoByProcessInstanceId({procInstId}).then(result => {
-                    iframe.contentWindow.CustomForm.setFormData(JSON.parse(result.formData), false);
-                  });
-                }
+              if(procInstId){
+                getFormDataInfoByProcessInstanceId({procInstId}).then(result => {
+                  iframe.contentWindow.CustomForm.setFormData(JSON.parse(result.formData), false);
+                });
               }
-
             }
           }, 0);
         });
@@ -180,6 +181,7 @@
         getFormData,
         setFormData,
         triggerEvent,
+        handleOnLoad,
         generateFormRef,
         formRenderFrameRef,
         jsonData,

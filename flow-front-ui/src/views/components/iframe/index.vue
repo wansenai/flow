@@ -1,37 +1,34 @@
 <template>
-  <div :class="prefixCls" :style="getWrapStyle">
+  <div :class="prefixCls" >
     <Spin wrapperClassName="custom-spin-container" :spinning="loading" size="large" :style="getWrapStyle">
       <iframe :src="frameSrc" :class="`${prefixCls}__main`" ref="frameRef"></iframe>
     </Spin>
   </div>
 </template>
 <script lang="ts">
-  import type { CSSProperties } from 'vue';
-  import { defineComponent, ref, unref, onMounted, nextTick, computed } from 'vue';
+  import { defineComponent, CSSProperties, ref, unref, onMounted, nextTick, computed } from 'vue';
   import { Spin } from 'ant-design-vue';
-
-  import { getViewportOffset } from '/@/utils/domUtils';
-
-  import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
-
   import { propTypes } from '/@/utils/propTypes';
   import { useDesign } from '/@/hooks/web/useDesign';
 
+  const defaultHeight = 200;
+
   export default defineComponent({
-    name: 'IFrame',
+    name: 'ProcessFormIFrame',
     components: { Spin },
     props: {
       frameSrc: propTypes.string.def(''),
+      onLoad: {
+        type: Function,
+        default: ()=>{}
+      }
     },
-    setup() {
+    setup(_, {emit}) {
       const loading = ref(false);
-      const topRef = ref(50);
       const heightRef = ref(window.innerHeight);
       const frameRef = ref<HTMLFrameElement | null>(null);
-
       const { prefixCls } = useDesign('iframe-page');
-      useWindowSizeFn(calcHeight, 150, { immediate: true });
-
+      const calclHeightInterval = ref(null);
       const getWrapStyle = computed(
         (): CSSProperties => {
           return {
@@ -45,17 +42,31 @@
         if (!iframe) {
           return;
         }
-        let { top } = getViewportOffset(iframe);
-        top += 20;
-        topRef.value = top;
-        heightRef.value = window.innerHeight - top;
-        const clientHeight = document.documentElement.clientHeight - top;
-        iframe.style.height = `100%`;
+        const scrollHeight = iframe.contentWindow.document.querySelector('.making-form-container').scrollHeight
+        iframe.style.height = `${scrollHeight + 50}px`;
+      }
+
+      function autoCalcHeight(){
+        calclHeightInterval.value = setInterval(()=>{
+          calcHeight();
+          try{
+            const ev = document.createEvent('Event');
+            ev.initEvent('resize', true, true);
+            window.dispatchEvent(ev);
+          }catch (e) {
+            console.warn('此浏览器不支持触发resize事件，触发resize事件失败！');
+          }
+
+        }, 500)
       }
 
       function hideLoading() {
         loading.value = false;
         calcHeight();
+        if(unref(calclHeightInterval)){
+          clearInterval(unref(calclHeightInterval))
+        }
+        autoCalcHeight();
       }
 
       function init() {
@@ -70,21 +81,24 @@
             });
           } else {
             iframe.onload = () => {
-              hideLoading();
+              emit('onLoad');
             };
           }
         });
       }
       onMounted(() => {
-        // loading.value = true;
+        loading.value = true;
         init();
       });
-
+      function hideIframeLoading(){
+        hideLoading();
+      }
       return {
         getWrapStyle,
         loading,
         frameRef,
         prefixCls,
+        hideIframeLoading
       };
     },
   });
@@ -108,6 +122,7 @@
         width: 100%;
         height: 100%;
         padding: 10px;
+        background: red;
       }
     }
 

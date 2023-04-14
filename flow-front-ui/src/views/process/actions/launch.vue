@@ -70,21 +70,25 @@
 
       async function doLaunch() {
         openFullLoading();
-        const formData = await unref(formContainerRef).getFormData(true);
-        const startResult = await startFormFlow({
-          formData: JSON.stringify(formData),
-          processDefinitionKey: modelKey,
-        });
-        const {data} = startResult;
-        if(data.success){
-          createMessage.success(data.msg);
-          setTimeout(()=>{
+        try {
+          const formData = await unref(formContainerRef).getFormData(true);
+          const startResult = await startFormFlow({
+            formData: JSON.stringify(formData),
+            processDefinitionKey: modelKey,
+          });
+          const {data} = startResult;
+          if (data.success) {
+            createMessage.success(data.msg);
+            setTimeout(() => {
+              closeFullLoading();
+              go("/process/launched");
+            }, 500);
+          } else {
             closeFullLoading();
-            go("/process/launched");
-          }, 500);
-        }else{
+            createMessage.error(data.msg);
+          }
+        } catch (e) {
           closeFullLoading();
-          createMessage.error(data.msg);
         }
       }
 
