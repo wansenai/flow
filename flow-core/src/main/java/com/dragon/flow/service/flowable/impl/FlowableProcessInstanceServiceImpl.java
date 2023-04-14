@@ -270,7 +270,7 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
                 returnVo.setData(processInstance);
             } catch (Exception e) {
                 e.printStackTrace();
-                new ReturnVo<>(ReturnCode.FAIL, "发起流程失败，原因：" + e.getMessage());
+                returnVo = new ReturnVo<>(ReturnCode.FAIL, "发起流程失败，原因：" + e.getMessage());
             }
         } else {
             returnVo = new ReturnVo<>(ReturnCode.FAIL, " Parameters should not be null");
