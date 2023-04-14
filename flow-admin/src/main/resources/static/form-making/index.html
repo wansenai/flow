@@ -47,12 +47,24 @@
     ref="makingform">
     <template #action>
       <div class="action-container">
-        <div class="left">
-          <el-input v-model="modelName" placeholder="表单名称" size="medium"></el-input>
+        <el-form ref="formBaseInfoRef"
+                 :rules="formBaseInfoRules"
+                 label-width="0" size="medium"
+                 :inline="true" :model="baseInfo"
+                 class="form-base-info">
+          <el-form-item prop="modelName" style="width: 60%">
+            <el-input style="width: 100%" v-model="baseInfo.modelName" placeholder="表单名称"></el-input>
+          </el-form-item>
+          <el-form-item prop="modelKey" style="width: 40%">
+            <el-input style="width: 100%" :disabled="modelKeyDisabled" v-model="baseInfo.modelKey" placeholder="表单标识"></el-input>
+          </el-form-item>
+        </el-form>
+<!--        <div class="left">
+          <el-input ref="modelNameRef" v-model="modelName" placeholder="表单名称" size="medium"></el-input>
         </div>
         <div>
-          <el-input v-model="modelKey" placeholder="表单标识" size="medium"></el-input>
-        </div>
+          <el-input @input="" ref="modelKeyRef" v-model="modelKey" placeholder="表单标识" size="medium"></el-input>
+        </div>-->
       </div>
 
       <el-button class="btn-submit" @click="handleSubmit" type="text" icon="el-icon-document-checked">保存</el-button>
@@ -70,6 +82,47 @@
   // CustomForm.init();
 </script>
 <style>
+  .form-base-info{
+    display: flex;
+    margin-top: 11px;
+    width: 100%;
+  }
+  .form-base-info .el-form-item{
+    margin-bottom: 0;
+  }
+  .form-base-info .el-form-item .el-form-item__content{
+    width: 100%;
+  }
+  .el-form-item:hover .el-form-item__error{
+    display: block;
+  }
+  .form-base-info .el-form-item__error{
+    display: none;
+    border: 1px solid #fe6c6f;
+    background: #fff6f7;
+    z-index: 99;
+    width: fit-content;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    text-align: left;
+    padding: 10px;
+    margin-top: 5px;
+  }
+  .form-base-info .el-form-item__error::before {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    box-shadow: 6px 6px 3px -5px #fe6c6f, 9px 6px 9px -9px #fe6c6f;
+    -webkit-transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    -moz-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    -o-transform: rotate(135deg);
+  }
+
   #app{
     margin: auto;
     padding: 20px;
