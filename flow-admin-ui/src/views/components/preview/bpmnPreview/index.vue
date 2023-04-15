@@ -314,7 +314,7 @@
       }
     }
   }
-  .bjs-powered-by {
+  .bjs-powered-by, .bjs-breadcrumbs {
     display: none;
   }
   .flowMsgPopover{
