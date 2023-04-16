@@ -107,19 +107,6 @@
         ] as Rule[];
       }
 
-      function saveCallback(resFlow, resForm){
-        const {data: {success: flowResSuccess, msg: flowResMsg, data: flowDataData}} = resFlow;
-        const {data: {success:formResSuccess, msg: formResMsg, data: formDataData} } = resForm;
-        if(flowResMsg && formResSuccess){
-          createMessage.success({content: formResMsg, style: {marginTop: '10vh'}});
-          flowBaseInfo.value = flowDataData;
-          formBaseInfo.value = {id: formDataData.id, modelKey: formDataData.code, modelName: formDataData.name, formJson: formDataData.formJson}
-          setFieldsValue({id: flowDataData.id});
-        } else {
-          createMessage.error({content: !flowResSuccess?flowResMsg: formResMsg, style: {marginTop: '10vh'}});
-        }
-      }
-
       window['submitFormInfo']=(data)=>{
         const {id: modelInfoId, categoryCode} = unref(flowBaseInfo);
         const saveData = {
@@ -137,9 +124,23 @@
           name: data.modelName,
           categoryCode: categoryCode,
         };
-
-        Promise.all([saveFlowInfo(flowInfo), saveFormInfo(saveData)]).then(([resFlow, resForm])=>{
-          saveCallback(resFlow, resForm);
+        saveFlowInfo(flowInfo).then(resFlow=>{
+          const {data: {success: flowResSuccess, msg: flowResMsg, data: flowDataData}} = resFlow;
+          if(flowResSuccess){
+            saveFormInfo(saveData).then(resForm => {
+              const {data: {success: formResSuccess, msg: formResMsg, data: formDataData} } = resForm;
+              if(formResSuccess){
+                createMessage.success({content: formResMsg, style: {marginTop: '10vh'}});
+                flowBaseInfo.value = flowDataData;
+                formBaseInfo.value = {id: formDataData.id, modelKey: formDataData.code, modelName: formDataData.name, formJson: formDataData.formJson}
+                setFieldsValue({id: flowDataData.id});
+              }else{
+                createMessage.error({content: formResMsg, style: {marginTop: '10vh'}});
+              }
+            })
+          } else {
+            createMessage.error({content: flowResMsg, style: {marginTop: '10vh'}});
+          }
         });
       };
 

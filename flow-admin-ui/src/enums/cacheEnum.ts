@@ -1,5 +1,5 @@
 // token key
-export const TOKEN_KEY = 'DRAGON_SESSION_ID';
+export const TOKEN_KEY = 'flowtoken';
 
 export const LOCALE_KEY = 'LOCALE__';
 

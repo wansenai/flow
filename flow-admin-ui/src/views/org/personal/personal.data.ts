@@ -146,7 +146,7 @@ export const personalFormSchema: FormSchema[] = [
     slot: 'headImg',
     colProps: {
       style: 'margin: auto;position: absolute;right: 0;',
-      span: 8,
+      span: 4,
     },
   },
   {
