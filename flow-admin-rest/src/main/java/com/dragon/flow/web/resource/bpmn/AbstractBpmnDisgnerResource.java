@@ -7,6 +7,7 @@ import com.dragon.flow.model.org.Company;
 import com.dragon.flow.model.org.Personal;
 import com.dragon.flow.model.org.PersonalRole;
 import com.dragon.flow.model.org.Role;
+import com.dragon.flow.model.privilege.User;
 import com.dragon.flow.service.base.ICategoryService;
 import com.dragon.flow.service.flowable.IFlowListenerService;
 import com.dragon.flow.service.flowable.IFlowProcessDiagramService;
@@ -82,14 +83,20 @@ public abstract class AbstractBpmnDisgnerResource extends BaseResource {
     public ReturnVo<String> saveBpmnModel(@RequestBody ModelInfoVo modelInfoVo) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(modelInfoVo.getModelXml().getBytes());
-        ReturnVo<String> representationReturnVo = flowableBpmnService.importBpmnModel(modelInfoVo.getModelId(),
-                modelInfoVo.getFileName(), byteArrayInputStream, this.getLoginUser());
-        if (!representationReturnVo.isSuccess()) {
-            returnVo = new ReturnVo<>(ReturnCode.FAIL, representationReturnVo.getMsg());
-            return returnVo;
-        } else {
-            returnVo.setData(representationReturnVo.getData());
+        User loginUser = this.getLoginUser();
+        if (loginUser!=null){
+            ReturnVo<String> representationReturnVo = flowableBpmnService.importBpmnModel(modelInfoVo.getModelId(),
+                    modelInfoVo.getFileName(), byteArrayInputStream, loginUser);
+            if (!representationReturnVo.isSuccess()) {
+                returnVo = new ReturnVo<>(ReturnCode.FAIL, representationReturnVo.getMsg());
+                return returnVo;
+            } else {
+                returnVo.setData(representationReturnVo.getData());
+            }
+        }else {
+            returnVo = new ReturnVo<>(ReturnCode.FAIL, "请登录！");
         }
+
         return returnVo;
     }
 
