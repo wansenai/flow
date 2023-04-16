@@ -73,6 +73,9 @@
             <if test="modelInfo.modelType!=null">
                 and t2.model_type=#{modelInfo.modelType}
             </if>
+            <if test="modelInfo.companyId != null">
+                and JSON_CONTAINS(t1.apply_companies,JSON_OBJECT('id', #{modelInfo.companyId}))
+            </if>
             <choose>
                 <when test="modelInfo.categoryCodes!=null and modelInfo.categoryCodes.size() &gt; 0">
                     and t1.`category_code` in

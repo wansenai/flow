@@ -158,4 +158,8 @@ public class ModelInfo extends BaseModel implements Serializable {
     private String modelXml;
     @TableField(exist = false)
     private Integer version;
+    //传入参数公司id
+    @TableField(exist = false)
+    private String  companyId;
+
 }
