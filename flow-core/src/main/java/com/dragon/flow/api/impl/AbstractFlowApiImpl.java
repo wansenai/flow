@@ -21,6 +21,7 @@ import com.dragon.flow.vo.flowable.task.CompleteTaskVo;
 import com.dragon.flow.vo.flowable.task.TaskQueryParamsVo;
 import com.dragon.flow.vo.flowable.task.TaskVo;
 import com.dragon.flow.vo.pager.ParamVo;
+import com.dragon.tools.common.BaseCommonConstant;
 import com.dragon.tools.common.ReturnCode;
 import com.dragon.tools.pager.PagerModel;
 import com.dragon.tools.vo.ReturnVo;
@@ -176,6 +177,7 @@ public abstract class AbstractFlowApiImpl implements IFlowApi {
     public ReturnVo<List> getCategories() {
         ReturnVo<List> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         Category category = new Category();
+        category.setFrontShow(BaseCommonConstant.YES);
         List<Category> categories = categoryService.getCategories(category);
         returnVo.setData(categories);
         return returnVo;
