@@ -98,15 +98,15 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
         endVo.setProcessStatusEnum(ProcessStatusEnum.ZZ);
         TaskEntity task = (TaskEntity) taskService.createTaskQuery().taskId(endVo.getTaskId()).singleResult();
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(endVo.getProcessInstanceId()).singleResult();
-        if (processInstance != null){
+        if (processInstance != null) {
             ProcessInstance subPprocessInstance = runtimeService.createProcessInstanceQuery().superProcessInstanceId(endVo.getProcessInstanceId()).singleResult();
             List<EndEvent> disActivitys = null;
-            if (subPprocessInstance != null){
+            if (subPprocessInstance != null) {
                 disActivitys = bpmnModelService.findEndFlowElement(subPprocessInstance.getProcessDefinitionId());
             } else {
                 disActivitys = bpmnModelService.findEndFlowElement(processInstance.getProcessDefinitionId());
             }
-            if (CollectionUtils.isNotEmpty(disActivitys)){
+            if (CollectionUtils.isNotEmpty(disActivitys)) {
                 String distFilwElementId = disActivitys.get(0).getId();
                 List<String> executionIds = new ArrayList<>();
                 endVo.setActivityId(task.getTaskDefinitionKey());
@@ -115,7 +115,7 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
                 if (bpmnModelService.checkActivitySubprocessByActivityId(task.getProcessDefinitionId(),
                         distFilwElementId)
                         && bpmnModelService.checkActivitySubprocessByActivityId(task.getProcessDefinitionId(),
-                        task.getTaskDefinitionKey())){
+                        task.getTaskDefinitionKey())) {
                     Execution executionTask = runtimeService.createExecutionQuery().executionId(task.getExecutionId()).singleResult();
                     String parentId = executionTask.getParentId();
                     List<Execution> executions = runtimeService.createExecutionQuery().parentId(parentId).list();
@@ -154,29 +154,29 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
     }
 
     private void setMyProcessinstances(List<ProcessInstanceVo> processInstanceVos) {
-        if (CollectionUtils.isNotEmpty(processInstanceVos)){
+        if (CollectionUtils.isNotEmpty(processInstanceVos)) {
             processInstanceVos.forEach(processInstanceVo -> {
                 processInstanceVo.setProcessStatusName(ProcessStatusEnum.getEnumMsgByType(processInstanceVo.getProcessStatus()));
                 Date startTime = processInstanceVo.getStartTime();
                 Date endTime = processInstanceVo.getEndTime();
-                if (processInstanceVo.getEndTime() == null){
+                if (processInstanceVo.getEndTime() == null) {
                     List<Task> list = taskService.createTaskQuery().processInstanceId(processInstanceVo.getProcessInstanceId()).list();
                     List<String> userCodes = new ArrayList<>();
                     List<String> roleSns = new ArrayList<>();
-                    if (CollectionUtils.isNotEmpty(list)){
+                    if (CollectionUtils.isNotEmpty(list)) {
                         list.forEach(task -> {
-                            if (StringUtils.isNotBlank(task.getAssignee())){
+                            if (StringUtils.isNotBlank(task.getAssignee())) {
                                 userCodes.add(task.getAssignee());
                             }
                             List<IdentityLink> identityLinksForTask = taskService.getIdentityLinksForTask(task.getId());
-                            if (CollectionUtils.isNotEmpty(identityLinksForTask)){
+                            if (CollectionUtils.isNotEmpty(identityLinksForTask)) {
                                 identityLinksForTask.forEach(identityLink -> {
                                     String userCode = identityLink.getUserId();
                                     String roleSn = identityLink.getGroupId();
-                                    if (StringUtils.isNotBlank(userCode)){
+                                    if (StringUtils.isNotBlank(userCode)) {
                                         userCodes.add(userCode);
                                     }
-                                    if (StringUtils.isNotBlank(roleSn)){
+                                    if (StringUtils.isNotBlank(roleSn)) {
                                         roleSns.add(roleSn);
                                     }
                                 });
@@ -184,16 +184,16 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
                         });
                     }
                     List<Personal> personals = new ArrayList<>();
-                    if (CollectionUtils.isNotEmpty(userCodes)){
+                    if (CollectionUtils.isNotEmpty(userCodes)) {
                         List<Personal> ps = personalService.getPersonalsByCodes(userCodes);
                         personals.addAll(ps);
                     }
-                    if (CollectionUtils.isNotEmpty(roleSns)){
+                    if (CollectionUtils.isNotEmpty(roleSns)) {
                         List<Personal> rs = personalService.getPersonalsByRoleSns(roleSns);
                         personals.addAll(rs);
                     }
                     List<ApproverVo> approverVoList = new ArrayList<>();
-                    if (CollectionUtils.isNotEmpty(personals)){
+                    if (CollectionUtils.isNotEmpty(personals)) {
                         personals.forEach(personal ->
                                 approverVoList.add(new ApproverVo(ApproverVo.USER, personal.getCode(), personal.getName(), personal.getMobile()))
                         );
@@ -212,7 +212,7 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
         ReturnVo<ProcessInstance> returnVo = null;
         Cache cache = cacheManager.getCache(FlowConstant.CACHE_START_PROCESSINSTANCE);
         String key = FastJsonUtils.objectToJson(params);
-        if (cache.get(key) != null){
+        if (cache.get(key) != null) {
             returnVo = new ReturnVo<>(ReturnCode.FAIL, "请勿重复提交流程!");
             return returnVo;
         } else {
@@ -220,34 +220,34 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
         }
         if (StringUtils.isNotBlank(params.getProcessDefinitionKey())
                 && StringUtils.isNotBlank(params.getBusinessKey())
-                && StringUtils.isNotBlank(params.getAppSn())){
+                && StringUtils.isNotBlank(params.getAppSn())) {
             try {
                 ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey(params.getProcessDefinitionKey())
                         .latestVersion().singleResult();
-                if (processDefinition != null && processDefinition.isSuspended()){
+                if (processDefinition != null && processDefinition.isSuspended()) {
                     returnVo = new ReturnVo<>(ReturnCode.FAIL, "此流程已经挂起,请联系系统管理员!");
                     return returnVo;
                 }
                 String creator = params.getCreator();
-                if (StringUtils.isBlank(creator) && StringUtils.isNotBlank(params.getCurrentUserCode())){
+                if (StringUtils.isBlank(creator) && StringUtils.isNotBlank(params.getCurrentUserCode())) {
                     creator = params.getCurrentUserCode();
                     params.setCreator(creator);
                 }
-                if (StringUtils.isNotBlank(creator) && StringUtils.isBlank(params.getCurrentUserCode())){
+                if (StringUtils.isNotBlank(creator) && StringUtils.isBlank(params.getCurrentUserCode())) {
                     params.setCurrentUserCode(params.getCreator());
                 }
                 Personal personal = personalService.getPersonalByCode(params.getCurrentUserCode());
-                if (personal == null){
+                if (personal == null) {
                     returnVo = new ReturnVo<>(ReturnCode.FAIL, "工号为：" + params.getCurrentUserCode() + "的当前发起人用户匹配不到，请确认!");
                     return returnVo;
                 } else {
-                    if (StringUtils.isBlank(params.getDeptId())){
+                    if (StringUtils.isBlank(params.getDeptId())) {
                         params.setDeptId(personal.getDeptId());
                     }
                 }
                 this.getStartVariables(params, personal);
                 returnVo = this.checkProcessInstance(params);
-                if (!returnVo.isSuccess()){
+                if (!returnVo.isSuccess()) {
                     return returnVo;
                 }
                 identityService.setAuthenticatedUserId(creator);
@@ -262,7 +262,7 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
                 CommentInfo commentInfo = new CommentInfo(CommentTypeEnum.TJ.name(), creator, processInstance.getProcessInstanceId(), CommentTypeEnum.TJ.getName());
                 BpmnModel bpmnModel = bpmnModelService.getBpmnModelByProcessDefId(processInstance.getProcessDefinitionId());
                 StartEvent start = bpmnModelService.findStartFlowElement(bpmnModel.getMainProcess());
-                if (start != null){
+                if (start != null) {
                     commentInfo.setActivityId(start.getId());
                     commentInfo.setActivityName(start.getName());
                 }
@@ -301,7 +301,7 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
         extendProcinst.setCreator(creator);
         String processStatus = extendProcinst.getProcessStatus();
         HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstance.getProcessInstanceId()).singleResult();
-        if (historicProcessInstance.getEndTime() != null){
+        if (historicProcessInstance.getEndTime() != null) {
             extendProcinst.setProcessStatus(ProcessStatusEnum.BJ.toString());
             extendProcinst.setProcessName(params.getFormName());
             extendProcinst.setBusinessKey(params.getBusinessKey());
@@ -331,7 +331,7 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
     private ReturnVo<ProcessInstance> checkProcessInstance(StartProcessInstanceVo params) {
         ReturnVo<ProcessInstance> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         ProcessDefinition lastProcessDefinition = repositoryService.createProcessDefinitionQuery().latestVersion().processDefinitionKey(StringUtils.trim(params.getProcessDefinitionKey())).singleResult();
-        if (lastProcessDefinition == null){
+        if (lastProcessDefinition == null) {
             returnVo.setMsg("【" + params.getProcessDefinitionKey() + "】流程定义未找到！");
             returnVo.setCode(ReturnCode.FAIL);
             log.error("【" + params.getProcessDefinitionKey() + "】流程定义未找到！");
@@ -339,27 +339,27 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
         }
         List<UserTask> datas = bpmnModelService.findUserTasksByProcessDefId(lastProcessDefinition.getId());
         List<UserTask> userTasks = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(datas)){
+        if (CollectionUtils.isNotEmpty(datas)) {
             userTasks = datas.stream().filter(userTask -> StringUtils.indexOf(userTask.getAssignee(), "${") != -1).collect(Collectors.toList());
         }
         List<String> elexps = new ArrayList<>();
         userTasks.forEach(userTask -> {
-            if (userTask.getLoopCharacteristics()!=null){
+            if (userTask.getLoopCharacteristics() != null) {
                 String inputDataItem = userTask.getLoopCharacteristics().getInputDataItem();
-                if (StringUtils.isNotBlank(inputDataItem)){
+                if (StringUtils.isNotBlank(inputDataItem)) {
                     elexps.add(inputDataItem);
                 }
-            }else {
+            } else {
                 elexps.add(userTask.getAssignee());
             }
-            
+
         });
         Map<String, Object> variables = params.getVariables();
         Map<String, String> keys = new HashMap<>();
         variables.forEach((k, v) -> {
-            if (v instanceof String){
+            if (v instanceof String) {
                 keys.put(k, k);
-            } else if (v instanceof ObjectNode){
+            } else if (v instanceof ObjectNode) {
                 ObjectNode node = (ObjectNode) v;
                 Iterator<String> nodeKeys = node.fieldNames();
                 while (nodeKeys.hasNext()) {
@@ -368,17 +368,17 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
                     String tempNodeKey = k + "." + nodeKey;
                     keys.put(tempNodeKey, enumMsg);
                 }
-            }else if (v instanceof Collection){
+            } else if (v instanceof Collection) {
                 keys.put(k, k);
             }
         });
         for (String assigneeEl : elexps) {
-            if (StringUtils.isNotBlank(assigneeEl)){
+            if (StringUtils.isNotBlank(assigneeEl)) {
                 String assignee = ElUtils.getOriginalValue(assigneeEl);
-                if (!keys.containsKey(assignee)){
+                if (!keys.containsKey(assignee)) {
                     String code = ElUtils.getSpotValue(assignee);
                     String enumMsg = StartVariableEnum.getEnumMsgByCode(code);
-                    if (StringUtils.isNotBlank(enumMsg)){
+                    if (StringUtils.isNotBlank(enumMsg)) {
                         returnVo = new ReturnVo<>(ReturnCode.FAIL, enumMsg + "的参数没有设置，请联系管理员!");
                     }
                     break;
@@ -391,49 +391,55 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
     @Override
     public Map<String, Object> getStartVariables(StartProcessInstanceVo params, Personal personal) {
         Map<String, Object> variables = null;
-        if (params.getVariables() == null){
+        if (params.getVariables() == null) {
             variables = new HashMap<>();
             params.setVariables(variables);
         } else {
             Map<String, Object> formMap = params.getVariables();
-            if (!formMap.containsKey(StartVariableEnum.FORM.getCode())){
-                ObjectNode formNode = objectMapper.createObjectNode();
+            if (!formMap.containsKey(StartVariableEnum.FORM.getCode())) {
                 Map<String, Object> listMap = new HashMap<>();
-                if (MapUtils.isNotEmpty(formMap)){
-                    formMap.forEach((k, v) -> {
-                        if (v instanceof java.util.List){
-                            String key = StartVariableEnum.FORM.getCode() + "_" + k;
-                            listMap.put(key, v);
-                        } else if (v instanceof java.lang.String){
-                            formNode.put(k, String.valueOf(v));
-                        } else if (v instanceof Integer){
-                            formNode.put(k, Integer.valueOf(v + ""));
-                        } else if (v instanceof Float){
-                            formNode.put(k, Float.valueOf(v + ""));
-                        } else if (v instanceof Double){
-                            formNode.put(k, Double.valueOf(v + ""));
-                        } else if (v instanceof Long){
-                            formNode.put(k, Long.valueOf(v + ""));
-                        } else if (v instanceof BigDecimal){
-                            formNode.put(k, new BigDecimal(v + ""));
-                        } else {
-                            String s = String.valueOf(v);
-                            if (s.startsWith("0")){
-                                formNode.put(k, s);
-                            } else {
-                                formNode.putPOJO(k, v);
-                            }
+                if (StringUtils.isNotBlank(params.getFormData())) {
+                    try {
+                        ObjectNode formNode = objectMapper.valueToTree(params.getFormData());
+                        formMap = new HashMap<>();
+                        params.setVariables(formMap);
+                        params.getVariables().put(StartVariableEnum.FORM.getCode(), formNode);
+                        if (MapUtils.isNotEmpty(listMap)) {
+                            listMap.forEach((k, v) -> params.getVariables().put(k, v));
                         }
-                    });
+                    } catch (IllegalArgumentException e) {
+                        log.error("转化json出错", e);
+                    }
                 }
-                formMap = new HashMap<>();
-                params.setVariables(formMap);
-                params.getVariables().put(StartVariableEnum.FORM.getCode(), formNode);
-                if (MapUtils.isNotEmpty(listMap)){
-                    listMap.forEach((k, v) -> params.getVariables().put(k, v));
-                }
+//                    formMap.forEach((k, v) -> {
+//                        if (v instanceof java.util.List){
+//                            String key = StartVariableEnum.FORM.getCode() + "_" + k;
+//                            listMap.put(key, v);
+//                        } else if (v instanceof java.lang.String){
+//                            formNode.put(k, String.valueOf(v));
+//                        } else if (v instanceof Integer){
+//                            formNode.put(k, Integer.valueOf(v + ""));
+//                        } else if (v instanceof Float){
+//                            formNode.put(k, Float.valueOf(v + ""));
+//                        } else if (v instanceof Double){
+//                            formNode.put(k, Double.valueOf(v + ""));
+//                        } else if (v instanceof Long){
+//                            formNode.put(k, Long.valueOf(v + ""));
+//                        } else if (v instanceof BigDecimal){
+//                            formNode.put(k, new BigDecimal(v + ""));
+//                        } else {
+//                            String s = String.valueOf(v);
+//                            if (s.startsWith("0")){
+//                                formNode.put(k, s);
+//                            } else {
+//                                formNode.putPOJO(k, v);
+//                            }
+//                        }
+//                    });
+//                }
+
             }
-            if (StringUtils.isBlank(params.getDeptId())){
+            if (StringUtils.isBlank(params.getDeptId())) {
                 params.setDeptId(personal.getDeptId());
             }
             variables = params.getVariables();
