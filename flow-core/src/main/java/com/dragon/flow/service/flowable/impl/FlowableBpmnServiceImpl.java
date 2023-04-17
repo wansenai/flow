@@ -198,6 +198,10 @@ public class FlowableBpmnServiceImpl implements IFlowableBpmnService {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.FAIL, "发布失败！");
         Model model = modelService.getModel(modelId);
         BpmnModel bpmnModel = modelService.getBpmnModel(model);
+        if(StringUtils.isBlank(model.getTenantId())){
+            returnVo.setMsg("发布失败，请设置流程所属系统！");
+            return returnVo;
+        }
         ReturnVo<String> validReturnVo = this.validationErrors(bpmnModel);
         if (!validReturnVo.isSuccess()) {
             returnVo.setMsg(validReturnVo.getMsg());
