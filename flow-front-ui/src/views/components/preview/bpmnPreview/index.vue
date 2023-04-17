@@ -325,7 +325,11 @@
   .highlight-line g.djs-visual >:nth-child(1) {
     stroke: rgba(0, 190, 0, 1) !important;
   }
-
+  @keyframes dynamicNode {
+    to {
+      stroke-dashoffset: 100%;
+    }
+  }
   @-webkit-keyframes dynamicNode {
     to {
       stroke-dashoffset: 100%;
@@ -333,6 +337,7 @@
   }
   .highlight{
     .djs-visual{
+      animation: dynamicNode 18S linear infinite;
       -webkit-animation: dynamicNode 18S linear infinite;
       -webkit-animation-fill-mode: forwards;
     }
