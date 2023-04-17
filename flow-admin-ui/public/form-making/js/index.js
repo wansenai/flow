@@ -14,7 +14,6 @@ var CustomForm = {
               offset: 40,
               duration: 1000
             });
-            loading.close();
             return;
           }
           const formInfo = {
