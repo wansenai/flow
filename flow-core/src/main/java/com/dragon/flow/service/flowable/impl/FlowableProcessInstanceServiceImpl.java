@@ -405,32 +405,6 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
                     log.error("转化json出错", e);
                 }
             }
-//                    formMap.forEach((k, v) -> {
-//                        if (v instanceof java.util.List){
-//                            String key = StartVariableEnum.FORM.getCode() + "_" + k;
-//                            listMap.put(key, v);
-//                        } else if (v instanceof java.lang.String){
-//                            formNode.put(k, String.valueOf(v));
-//                        } else if (v instanceof Integer){
-//                            formNode.put(k, Integer.valueOf(v + ""));
-//                        } else if (v instanceof Float){
-//                            formNode.put(k, Float.valueOf(v + ""));
-//                        } else if (v instanceof Double){
-//                            formNode.put(k, Double.valueOf(v + ""));
-//                        } else if (v instanceof Long){
-//                            formNode.put(k, Long.valueOf(v + ""));
-//                        } else if (v instanceof BigDecimal){
-//                            formNode.put(k, new BigDecimal(v + ""));
-//                        } else {
-//                            String s = String.valueOf(v);
-//                            if (s.startsWith("0")){
-//                                formNode.put(k, s);
-//                            } else {
-//                                formNode.putPOJO(k, v);
-//                            }
-//                        }
-//                    });
-//                }
         }
         if (StringUtils.isBlank(params.getDeptId())) {
             params.setDeptId(personal.getDeptId());
