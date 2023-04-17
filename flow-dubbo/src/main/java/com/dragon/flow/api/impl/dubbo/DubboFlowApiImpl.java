@@ -84,4 +84,9 @@ public class DubboFlowApiImpl extends AbstractFlowApiImpl {
     public ReturnVo<List> getApps() {
         return super.getApps();
     }
+
+    @Override
+    public ReturnVo<List> getCategories() {
+        return super.getApps();
+    }
 }

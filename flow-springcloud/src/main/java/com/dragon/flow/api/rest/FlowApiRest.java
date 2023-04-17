@@ -133,4 +133,12 @@ public class FlowApiRest extends AbstractFlowApiImpl {
     public ReturnVo<List> getApps() {
         return super.getApps();
     }
+
+    @Override
+    @ApiOperation(value = "获取所有流程分类", notes = "获取所有流程分类")
+    @ApiImplicitParam(name = "getCategories", value = "getCategories")
+    @PostMapping(value = "/getCategories", produces = "application/json")
+    public ReturnVo<List> getCategories() {
+        return super.getCategories();
+    }
 }
