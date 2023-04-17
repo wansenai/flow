@@ -39,9 +39,11 @@
           isUpdate: true,
         });
         setBpmnPreviewProps({
-          bodyStyle: {padding: '0px', margin: '0px'},
-          width: 900, height: 400,
-          showOkBtn: false, showCancelBtn: true,
+          width: 900, minHeight: 400,
+          wrapperFooterOffset: 20,
+          useWrapper: false,
+          title: '查看 - 图预览',
+          showOkBtn: false,
           cancelText: '关闭'
         });
       }
