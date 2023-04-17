@@ -17,7 +17,17 @@
                 {{item.message||'无'}}<br/>
               </template>
               <template #title>
-                <span class="font-bold">{{item.activityName}}</span> {{item.time}}
+                <Row>
+                  <Col span="14">
+                    <Space>
+                      <Tag>{{item.personalName}}</Tag>
+                      <span class="font-bold">{{item.activityName}}</span>
+                    </Space>
+                  </Col>
+                  <Col span="10" class="text-right">
+                    {{item.time}}
+                  </Col>
+                </Row>
               </template>
               <template #avatar>
                 <Avatar >
@@ -34,7 +44,7 @@
 <script lang="ts">
   import { defineComponent, ref, unref, onMounted } from 'vue';
   import { ApartmentOutlined, ClockCircleOutlined } from '@ant-design/icons-vue';
-  import { Button, Timeline, List, Avatar } from 'ant-design-vue';
+  import { Button, Timeline, List, Avatar, Space, Tag, Row, Col } from 'ant-design-vue';
   import { useRouter } from 'vue-router';
   import { CollapseContainer } from '/@/components/Container/index';
 
@@ -45,7 +55,7 @@
   export default defineComponent({
     name: 'ApprovalHistory',
     components: {
-      Button,
+      Button, Tag, Row, Col, Space,
       ApartmentOutlined,
       FlowDiagramModal,
       BpmnPreviewModal,
