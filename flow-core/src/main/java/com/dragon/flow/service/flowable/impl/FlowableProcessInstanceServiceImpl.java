@@ -394,23 +394,17 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
         if (params.getVariables() == null) {
             variables = new HashMap<>();
             params.setVariables(variables);
-        } else {
-            Map<String, Object> formMap = params.getVariables();
-            if (!formMap.containsKey(StartVariableEnum.FORM.getCode())) {
-                Map<String, Object> listMap = new HashMap<>();
-                if (StringUtils.isNotBlank(params.getFormData())) {
-                    try {
-                        ObjectNode formNode = objectMapper.valueToTree(params.getFormData());
-                        formMap = new HashMap<>();
-                        params.setVariables(formMap);
-                        params.getVariables().put(StartVariableEnum.FORM.getCode(), formNode);
-                        if (MapUtils.isNotEmpty(listMap)) {
-                            listMap.forEach((k, v) -> params.getVariables().put(k, v));
-                        }
-                    } catch (IllegalArgumentException e) {
-                        log.error("转化json出错", e);
-                    }
+        }
+        Map<String, Object> formMap = params.getVariables();
+        if (!formMap.containsKey(StartVariableEnum.FORM.getCode())) {
+            if (StringUtils.isNotBlank(params.getFormData())) {
+                try {
+                    ObjectNode formNode = (ObjectNode) objectMapper.readTree(params.getFormData());
+                    params.getVariables().put(StartVariableEnum.FORM.getCode(), formNode);
+                } catch (Exception e) {
+                    log.error("转化json出错", e);
                 }
+            }
 //                    formMap.forEach((k, v) -> {
 //                        if (v instanceof java.util.List){
 //                            String key = StartVariableEnum.FORM.getCode() + "_" + k;
@@ -437,13 +431,11 @@ public class FlowableProcessInstanceServiceImpl extends BaseProcessService imple
 //                        }
 //                    });
 //                }
-
-            }
-            if (StringUtils.isBlank(params.getDeptId())) {
-                params.setDeptId(personal.getDeptId());
-            }
-            variables = params.getVariables();
         }
+        if (StringUtils.isBlank(params.getDeptId())) {
+            params.setDeptId(personal.getDeptId());
+        }
+        variables = params.getVariables();
         params.getVariables().put(FlowConstant.FLOW_SUBMITTER_VAR, "");
         params.getVariables().put(FlowConstant.FLOWABLE_SKIP_EXPRESSION_ENABLED, true);
         return variables;
