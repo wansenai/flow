@@ -90,7 +90,7 @@ var CustomForm = {
           }
         },
         watch: {
-          'jsonData': {
+          /*'jsonData': {
             handler(newVal, oldVal) {
               if(newVal){
                 setTimeout(()=>{
@@ -103,7 +103,7 @@ var CustomForm = {
             },
             deep: true,
             immediate: true
-          }
+          }*/
         }
       });
     }else{
