@@ -1,13 +1,6 @@
 var CustomForm = {
 
   submit: function(){
-    const loading = vueObj.$loading({
-      lock: true,
-      text: '正在保存...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.1)'
-    });
-    debugger;
     // 数据验证
     try {
       vueObj.$refs.formBaseInfoRef.validate(valid => {
@@ -28,11 +21,17 @@ var CustomForm = {
             formJson: JSON.stringify(formJson),
             ...vueObj.baseInfo
           }
+          const loading = vueObj.$loading({
+            lock: true,
+            text: '正在保存...',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.1)'
+          });
           window.parent.submitFormInfo(formInfo);
           vueObj.modelKeyDisabled = true;
-          loading.close();
-        } else {
-          loading.close();
+          setTimeout(()=>{
+            loading.close();
+          }, 500);
         }
       });
     } catch (e) {
@@ -43,7 +42,6 @@ var CustomForm = {
         offset: 40,
         type: 'error'
       });
-      loading.close();
     }
   },
 
