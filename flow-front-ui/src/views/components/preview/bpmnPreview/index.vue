@@ -139,7 +139,7 @@ export default defineComponent({
           changeLoading(false);
         });
       }else{
-        getBpmnByModelKey({modelKey}).then(res=>{
+        loadBpmnXmlByModelKey({modelKey}).then(res=>{
           modelName.value = res.modelName||'';
           if(bpmnViewer){
             importXml(res.modelXml);
