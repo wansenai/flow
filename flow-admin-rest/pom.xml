@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <version>${flow.version}</version>
     <artifactId>flow-admin-rest</artifactId>
+    <packaging>jar</packaging>
     <dependencies>
         <!-- 流程中心的依赖包 -->
         <dependency>

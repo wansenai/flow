@@ -9,7 +9,6 @@
         <relativePath></relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.dragon</groupId>
     <version>${flow.version}</version>
     <packaging>jar</packaging>
     <artifactId>flow-extension</artifactId>

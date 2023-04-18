@@ -9,9 +9,9 @@
         <relativePath></relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.dragon</groupId>
     <artifactId>flow-form-api</artifactId>
     <version>${flow.version}</version>
+    <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
