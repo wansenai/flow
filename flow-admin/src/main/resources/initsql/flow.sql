@@ -1866,6 +1866,7 @@ CREATE TABLE `tbl_base_app`  (
   `update_time` timestamp(0) NULL DEFAULT NULL COMMENT '更新时间',
   `updator` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '更新人',
   `del_flag` int(11) NULL DEFAULT 1 COMMENT '删除标识0：删除1：存在',
+  `platform_enabled` int(11) NULL DEFAULT 0 COMMENT '推送标识0：不推送1：推送',
   `order_no` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `sn_unique_index`(`sn`) USING BTREE

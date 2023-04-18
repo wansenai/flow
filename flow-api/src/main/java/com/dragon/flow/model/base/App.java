@@ -40,4 +40,6 @@ public class App extends BaseModel implements Serializable {
     private String note;
     // 排序号
     private Integer orderNo;
+    //是否推送第三方平台 0 不推送  1  推送
+    private Integer platformEnabled = 0;
 }
