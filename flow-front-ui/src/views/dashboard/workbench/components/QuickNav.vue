@@ -3,7 +3,7 @@
     <Row type="flex" justify="space-around" align="middle">
       <Col :span="4" v-for="item in items" :key="item" style="text-align: center">
         <Badge :count="badgeCounts[item.sn]||0" :offset="[-20, 0]">
-          <router-link v-if="item.url" :to="item.url?item.url:''" :target="item.url?'_blank':''">
+          <router-link v-if="item.url" :to="item.url?item.url:''" >
             <div class="flex flex-col items-center action-item">
               <Icon :icon="item.icon" :color="item.color" size="30" />
               <span class="text-md mt-2">{{ item.title }}</span>
