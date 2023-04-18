@@ -1,19 +1,19 @@
 <template>
 
-  <a-tabs :default-active-key="current" @change="changeRouter">
+  <Tabs :default-active-key="current" @change="changeRouter">
 
-    <a-tab-pane key="todo" >
+    <TabPane key="todo" >
       <template #tab>
         <Badge :count="todoCount" :offset="[15, -2]" size="default">
           <span style="font-size: 16px;">待办</span>
         </Badge>
       </template>
-    </a-tab-pane>
+    </TabPane>
 
-    <a-tab-pane key="have-down" tab="已办" />
-    <a-tab-pane key="launched" tab="已发" />
-    <a-tab-pane key="launch" tab="发起" />
-  </a-tabs>
+    <TabPane key="have-down" tab="已办" />
+    <TabPane key="launched" tab="已发" />
+    <TabPane key="launch" tab="发起" />
+  </Tabs>
 
 </template>
 <script lang="ts">
@@ -22,6 +22,8 @@
   import { useGo } from '/@/hooks/web/usePage';
   import { Badge } from 'ant-design-vue';
   import {getAppingTaskCont} from "/@/api/process/process";
+
+  const TabPane = Tabs.TabPane;
 
   export default defineComponent({
     props: {
@@ -32,8 +34,8 @@
     },
     name: 'ProcessHeader',
     components: {
-      [Tabs.name]: Tabs,
-      [Tabs.TabPane.name]: Tabs.TabPane,
+      Tabs,
+      TabPane,
       Badge,
     },
     setup(props) {
