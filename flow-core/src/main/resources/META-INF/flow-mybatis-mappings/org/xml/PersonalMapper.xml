@@ -23,6 +23,7 @@
         <result column="fax" property="fax"/>
         <result column="third_party" property="thirdParty"/>
         <result column="third_user_id" property="thirdUserId"/>
+        <result column="third_union_id" property="thirdUnionId"/>
         <result column="dd_userid" property="ddUserid"/>
         <result column="job_grade_code" property="jobGradeCode"/>
         <result column="position_code" property="positionCode"/>
