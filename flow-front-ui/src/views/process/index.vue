@@ -32,15 +32,12 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, unref } from 'vue';
-import { BasicTable, useTable } from '/@/components/Table';
 import { PageWrapper } from '/@/components/Page';
 import { Tabs, Tag, Popover } from 'ant-design-vue';
 import { Badge } from 'ant-design-vue';
 
-import { todoTableSchema, searchFormSchema } from './todo/data';
 import ProcessHeader from '/@/views/process/components/ProcessHeader.vue';
 import LaunchButton from '/@/views/process/components/LaunchButton.vue';
-import { getAppingTasksPagerModel, getApps } from "/@/api/process/process";
 import {getAppingTaskCont} from "/@/api/process/process";
 import { useRouter } from 'vue-router';
 import Todo from './todo/index.vue';
@@ -56,7 +53,6 @@ export default defineComponent({
     Launched,
     HaveDown,
     Launch,
-    BasicTable,
     ProcessHeader,
     LaunchButton,
     PageWrapper,
@@ -71,23 +67,6 @@ export default defineComponent({
     const { params:{ currentKey } } = unref(currentRoute);
     currentTabKey.value = currentKey;
 
-    const [registerTodoTable, { getForm }] = useTable({
-      api: getAppingTasksPagerModel,
-      title: '',
-      columns: todoTableSchema,
-      formConfig: {
-        labelWidth: 120,
-        schemas: searchFormSchema,
-        showAdvancedButton: false,
-        showResetButton: false,
-        autoSubmitOnEnter: true,
-      },
-      useSearchForm: true,
-      pagination: true,
-      showIndexColumn: true,
-      canResize: false,
-    });
-
     function handleChangeProcessTabs(e){
       currentTabKey.value = e;
       history.replaceState('', '', '#/process/' + e)
@@ -97,18 +76,9 @@ export default defineComponent({
       todoCount.value = res;
     });
 
-    getApps().then(res=>{
-      const {updateSchema} = getForm();
-      updateSchema({
-        field: 'appSn',
-        componentProps: { options: res },
-      })
-    })
-
     return {
       currentTabKey,
       todoCount,
-      registerTodoTable,
       handleChangeProcessTabs,
     };
   },
