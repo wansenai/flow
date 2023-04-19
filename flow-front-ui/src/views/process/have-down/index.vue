@@ -1,24 +1,13 @@
 <template>
-  <PageWrapper title="流程中心" class="!mt-4 process-list-container">
-
-    <template #extra>
-      <launch-button />
-    </template>
-
-    <template #footer>
-      <process-header current="have-down"/>
-    </template>
-
-    <div class="mt-2 desc-wrap process">
-      <BasicTable @register="registerHaveDownTable" >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'formName'">
-            <router-link :to="`/process/view/${record.processDefinitionKey}?taskId=${record.taskId}&procInstId=${record.processInstanceId}&businessKey=${record.businessKey}`"> {{record.formName}} </router-link>
-          </template>
+  <div class="desc-wrap process">
+    <BasicTable @register="registerHaveDownTable" >
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'formName'">
+          <router-link :to="`/process/view/${record.processDefinitionKey}?taskId=${record.taskId}&procInstId=${record.processInstanceId}&businessKey=${record.businessKey}`"> {{record.formName}} </router-link>
         </template>
-      </BasicTable>
-    </div>
-  </PageWrapper>
+      </template>
+    </BasicTable>
+  </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
