@@ -26,11 +26,14 @@ var CustomForm = {
             spinner: 'el-icon-loading',
             background: 'rgba(0, 0, 0, 0.1)'
           });
-          window.parent.submitFormInfo(formInfo);
-          vueObj.modelKeyDisabled = true;
-          setTimeout(()=>{
+          window.parent.submitFormInfo(formInfo).then(res=>{
+            vueObj.modelKeyDisabled = true;
+            setTimeout(()=>{
+              loading.close();
+            }, 500);
+          }).catch(e=>{
             loading.close();
-          }, 500);
+          });
         }
       });
     } catch (e) {
