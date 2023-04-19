@@ -1,1 +1,0 @@
-import{al as t,X as r}from"./index.f3cc7ad7.js";function o(a){var e=t();return r(function(){e.value=a()},{flush:"sync"}),e}export{o as e};
