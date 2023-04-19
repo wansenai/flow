@@ -47,6 +47,18 @@ export const columns: BasicColumn[] = [
     },
   },
   {
+    title: '是否推送第三方平台',
+    dataIndex: 'platformEnabled',
+    width: 120,
+    customRender: ({ record }) => {
+      const status = record.status;
+      const enable = ~~status === 0;
+      const color = enable ? 'green' : 'blue';
+      const text = enable ? '不推送' : '推送';
+      return h(Tag, { color: color }, () => text);
+    },
+  },
+  {
     title: '排序',
     dataIndex: 'orderNo',
     width: 80,
@@ -173,6 +185,18 @@ export const formSchema: FormSchema[] = [
     componentProps:{
       checkedChildren: '启用',
       unCheckedChildren: '禁用'
+    },
+    colProps: { span: 24 },
+  },
+  {
+    field: 'platformEnabled',
+    label: '是否推送第三方平台',
+    required: false,
+    component: 'Switch',
+    defaultValue: true,
+    componentProps:{
+      checkedChildren: '不推送',
+      unCheckedChildren: '推送'
     },
     colProps: { span: 24 },
   },
