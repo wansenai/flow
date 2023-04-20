@@ -151,43 +151,14 @@ const secondRoute = [
 
     children: [
       {
-        path: 'todo',
-        name: 'Todo',
-        component: '/process/todo/index',
+        path: ':currentKey',
+        name: 'ProcessList',
+        component: '/process/index',
         meta: {
-          title: '待办',
+          title: '流程列表',
           hideMenu: true,
         },
       },
-      {
-        path: 'have-down',
-        name: 'HaveDown',
-        component: '/process/have-down/index',
-        meta: {
-          title: '已办',
-          hideMenu: true,
-        },
-      },
-      {
-        path: 'launched',
-        name: 'Launched',
-        component: '/process/launched/index',
-        meta: {
-          title: '已发',
-          hideMenu: true,
-        },
-      },
-      {
-        path: 'launch',
-        name: 'Launch',
-        component: '/process/launch/index',
-        meta: {
-          title: '发起',
-          hideMenu: true,
-        },
-      },
-
-
 
       {
         path: 'approve/:modelKey',

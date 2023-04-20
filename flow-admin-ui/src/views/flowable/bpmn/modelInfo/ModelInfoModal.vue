@@ -124,7 +124,7 @@
           name: data.modelName,
           categoryCode: categoryCode,
         };
-        saveFlowInfo(flowInfo).then(resFlow=>{
+        return saveFlowInfo(flowInfo).then(resFlow=>{
           const {data: {success: flowResSuccess, msg: flowResMsg, data: flowDataData}} = resFlow;
           if(flowResSuccess){
             saveFormInfo(saveData).then(resForm => {
@@ -134,12 +134,15 @@
                 flowBaseInfo.value = flowDataData;
                 formBaseInfo.value = {id: formDataData.id, modelKey: formDataData.code, modelName: formDataData.name, formJson: formDataData.formJson}
                 setFieldsValue({id: flowDataData.id});
+                return Promise.resolve(formResMsg);
               }else{
                 createMessage.error({content: formResMsg, style: {marginTop: '10vh'}});
+                return Promise.reject(formResMsg);
               }
             })
           } else {
             createMessage.error({content: flowResMsg, style: {marginTop: '10vh'}});
+            return Promise.reject(flowResMsg);
           }
         });
       };

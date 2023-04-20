@@ -1,40 +1,29 @@
 <template>
-  <PageWrapper title="流程中心" class="!mt-4 process-list-container">
-
-    <template #extra>
-      <launch-button />
-    </template>
-
-    <template #footer>
-      <process-header current="launched"/>
-    </template>
-
-    <div class="mt-2  desc-wrap process">
-      <BasicTable @register="registerLaunchedTable" >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'formName'">
-            <router-link :to="`/process/view/${record.processDefinitionKey}?taskId=${record.taskId||''}&procInstId=${record.processInstanceId}&businessKey=${record.businessKey}`"> {{record.formName}} </router-link>
-          </template>
-
-          <template v-if="column.key === 'currentAssignees'">
-            <Popover v-if="record.currentAssignees && record.currentAssignees.length > 0" v-for="item in record.currentAssignees"  :title="item.type==='user'?'人员信息':'角色信息'">
-              <template v-if="item.type === 'user'" #content>
-                <div>姓名：{{item.name}}</div>
-                <div>工号：{{item.code}}</div>
-                <div>手机：{{item.mobile}}</div>
-              </template>
-              <template v-else #content>
-                <div>名称：{{item.name}}</div>
-                <div>标识：{{item.code}}</div>
-              </template>
-              <Tag color="warning">{{item.name}}</Tag>
-            </Popover>
-          </template>
-
+  <div class="desc-wrap process">
+    <BasicTable @register="registerLaunchedTable" >
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'formName'">
+          <router-link :to="`/process/view/${record.processDefinitionKey}?taskId=${record.taskId||''}&procInstId=${record.processInstanceId}&businessKey=${record.businessKey}`"> {{record.formName}} </router-link>
         </template>
-      </BasicTable>
-    </div>
-  </PageWrapper>
+
+        <template v-if="column.key === 'currentAssignees'">
+          <Popover v-if="record.currentAssignees && record.currentAssignees.length > 0" v-for="item in record.currentAssignees"  :title="item.type==='user'?'人员信息':'角色信息'">
+            <template v-if="item.type === 'user'" #content>
+              <div>姓名：{{item.name}}</div>
+              <div>工号：{{item.code}}</div>
+              <div>手机：{{item.mobile}}</div>
+            </template>
+            <template v-else #content>
+              <div>名称：{{item.name}}</div>
+              <div>标识：{{item.code}}</div>
+            </template>
+            <Tag color="warning">{{item.name}}</Tag>
+          </Popover>
+        </template>
+
+      </template>
+    </BasicTable>
+  </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';

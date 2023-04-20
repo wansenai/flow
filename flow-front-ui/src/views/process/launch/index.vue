@@ -1,22 +1,16 @@
 <template>
-  <PageWrapper title="流程中心" contentClass="flex" class="!mt-4 process-list-container" >
-
-    <template #footer>
-      <process-header current="launch"/>
-    </template>
-
+  <div class="desc-wrap process flex w-full">
     <BasicTree
       title="流程分类"
       :treeData="treeData"
       treeWrapperClassName="h-[calc(100%-35px)] overflow-auto"
       @select="handleSelect"
-      class="w-1/4 xl:w-1/5 mt-2"
+      class="w-1/4 xl:w-1/5"
       ref="categoryTreeRef"
     />
 
-    <div class="w-3/4 xl:w-4/5 !mt-2" :class="`${prefixCls}__content`">
+    <div class="w-3/4 xl:w-4/5" style="margin-top:0; padding-top: 10px;" :class="`${prefixCls}__content`">
       <BasicForm
-        class="!mt-2"
         :class="`${prefixCls}__header-form`"
         :labelWidth="100"
         :schemas="searchFormSchema"
@@ -41,7 +35,7 @@
       </a-list>
     </div>
 
-  </PageWrapper>
+  </div>
 </template>
 <script lang="ts">
   import { defineComponent, ref, unref, onMounted, nextTick } from 'vue';
