@@ -25,8 +25,12 @@ public class HighLightedNodeVo implements Serializable {
 
     //高亮线id集合
     private List<String> highLightedFlows;
-    //高亮节点id集合
+    //当前节点高亮节点id集合
     private List<String> activeActivityIds;
+    /**
+     * 已经完成的历史节点集合
+     */
+    private List<String> hisActiveActivityIds;
     //model的xml文件
     private String modelXml;
     //model的名称
