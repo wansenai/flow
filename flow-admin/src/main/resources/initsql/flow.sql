@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : 本地mysql
  Source Server Type    : MySQL
- Source Server Version : 50736
+ Source Server Version : 50717
  Source Host           : localhost:3306
- Source Schema         : flow_init
+ Source Schema         : flow
 
  Target Server Type    : MySQL
- Target Server Version : 50736
+ Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 17/04/2023 14:53:44
+ Date: 20/04/2023 22:00:59
 */
 
 SET NAMES utf8mb4;
@@ -1875,10 +1875,10 @@ CREATE TABLE `tbl_base_app`  (
 -- ----------------------------
 -- Records of tbl_base_app
 -- ----------------------------
-INSERT INTO `tbl_base_app` VALUES ('1376919254872035330', '门户', NULL, NULL, 1, 'portal', 'K9909Jszc%YcleRr50c9aRO88q5QdxK#~0XeJz8FU89092MA5ytwyE%bFTL0MUwF', 'http://localhost:8000', '/index', 0x616E742D64657369676E3A61707073746F72652D6F75746C696E6564, NULL, '2023-04-16 17:54:59', NULL, NULL, NULL, 1, 1);
-INSERT INTO `tbl_base_app` VALUES ('1376919486070460417', '流程中心', NULL, NULL, 1, 'flow', 'Fu9E9N9m19b52@H9A6YWa0t8T2&$1Y~lt0d2nO9du1SP9m71X7bk@0551hVGG!K7', 'http://localhost:8989', '/index.html', 0x616E742D64657369676E3A636C75737465722D6F75746C696E6564, NULL, '2023-04-16 17:55:13', NULL, NULL, NULL, 1, 1);
-INSERT INTO `tbl_base_app` VALUES ('1376919513455071234', 'MDM', NULL, NULL, 1, 'mdm', 'AP8bUR08129X08Z1J2130WVc4b9RA1B5Thw7*ZQBa%&E11CZcHyRkyc8dST7w8~7', 'http://localhost:8889', '/index.html', 0x616E742D64657369676E3A64617461626173652D6F75746C696E6564, NULL, '2023-04-16 19:09:47', NULL, NULL, NULL, 1, 11);
-INSERT INTO `tbl_base_app` VALUES ('1376919546057396226', '权限系统', NULL, NULL, 1, 'privilege', 'a5q27p0E12ZjJm8Vg9J*1gs21f9lt0kP7L09v49s~Kk7ufcG4oOr#959lbfhj78c', 'http://localhost:9988', '/index.html', 0x616E742D64657369676E3A7361666574792D63657274696669636174652D6F75746C696E6564, NULL, '2023-04-16 17:57:11', NULL, NULL, NULL, 1, 33);
+INSERT INTO `tbl_base_app` VALUES ('1376919254872035330', '门户', NULL, NULL, 1, 'portal', 'K9909Jszc%YcleRr50c9aRO88q5QdxK#~0XeJz8FU89092MA5ytwyE%bFTL0MUwF', 'http://localhost:8000', '/index', 0x616E742D64657369676E3A61707073746F72652D6F75746C696E6564, NULL, '2023-04-16 17:54:59', NULL, NULL, NULL, 1, 1, 1);
+INSERT INTO `tbl_base_app` VALUES ('1376919486070460417', '流程中心', NULL, NULL, 1, 'flow', 'Fu9E9N9m19b52@H9A6YWa0t8T2&$1Y~lt0d2nO9du1SP9m71X7bk@0551hVGG!K7', 'http://localhost:8989', '/index.html', 0x616E742D64657369676E3A636C75737465722D6F75746C696E6564, NULL, '2023-04-16 17:55:13', NULL, NULL, NULL, 1, 1, 1);
+INSERT INTO `tbl_base_app` VALUES ('1376919513455071234', 'MDM', NULL, NULL, 1, 'mdm', 'AP8bUR08129X08Z1J2130WVc4b9RA1B5Thw7*ZQBa%&E11CZcHyRkyc8dST7w8~7', 'http://localhost:8889', '/index.html', 0x616E742D64657369676E3A64617461626173652D6F75746C696E6564, NULL, '2023-04-16 19:09:47', NULL, NULL, NULL, 1, 1, 1);
+INSERT INTO `tbl_base_app` VALUES ('1376919546057396226', '权限系统', NULL, NULL, 1, 'privilege', 'a5q27p0E12ZjJm8Vg9J*1gs21f9lt0kP7L09v49s~Kk7ufcG4oOr#959lbfhj78c', 'http://localhost:9988', '/index.html', 0x616E742D64657369676E3A7361666574792D63657274696669636174652D6F75746C696E6564, NULL, '2023-04-20 22:00:51', NULL, NULL, NULL, 1, 1, 1);
 
 -- ----------------------------
 -- Table structure for tbl_base_area
