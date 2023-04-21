@@ -23,8 +23,8 @@ public class SchedulerConfig {
     /**
      * 每天凌晨三天清理数据
      */
-    @Scheduled(cron = "0 0 3 * * ?")
-    public void initSql() {
-        initSqlService.initSql();
-    }
+//    @Scheduled(cron = "0 0 3 * * ?")
+//    public void initSql() {
+//        initSqlService.initSql();
+//    }
 }
