@@ -38,6 +38,10 @@ public class HighLightedNodeVo implements Serializable {
      * 已经完成的历史节点集合
      */
     private List<String> hisActiveActivityIds;
+    /**
+     * 未执行的节点id列表
+     */
+    private List<String> nullActiveActivityIds;
     //model的xml文件
     private String modelXml;
     //model的名称
