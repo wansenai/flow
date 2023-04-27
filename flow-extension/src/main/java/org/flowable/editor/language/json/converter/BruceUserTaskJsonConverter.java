@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.model.*;
+import org.springframework.util.CollectionUtils;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +24,7 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
     public static final String NODE_TYPE = "nodeType";
     public static final String NEXT_SEQUENCE_FLOW_LABEL = "nextSequenceFlow";
     public static final String NEXT_USER_LABEL = "nextUser";
+    public static final String FORM_DATA_LABEL = "formData";
 
 
     static void customFillTypes(Map<String, Class<? extends BaseBpmnJsonConverter>> convertersToBpmnMap, Map<Class<? extends BaseElement>, Class<? extends BaseBpmnJsonConverter>> convertersToJsonMap) {
@@ -40,58 +43,37 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
     @Override
     protected void convertElementToJson(ObjectNode propertiesNode, BaseElement baseElement, BpmnJsonConverterContext converterContext) {
         super.convertElementToJson(propertiesNode, baseElement, converterContext);
-        if (baseElement instanceof UserTask){
-            final String[] text = new String[8];
-            baseElement.getExtensionElements().forEach((s, elements) -> elements.forEach(extensionElement -> {
-                if (ASSIGNEE_TYPE.equals(extensionElement.getName())){
-                    text[0] = extensionElement.getElementText();
-                }
-                if (IDM_ASSIGNEE.equals(extensionElement.getName())){
-                    text[1] = extensionElement.getElementText();
-                }
-                if (IDM_CANDIDATE_GROUPS.equals(extensionElement.getName())){
-                    text[2] = extensionElement.getElementText();
-                }
-                if (IDM_CANDIDATE_USERS.equals(extensionElement.getName())){
-                    text[3] = extensionElement.getElementText();
-                }
-                if (IS_EDITDATA.equals(extensionElement.getName())){
-                    text[4] = extensionElement.getElementText();
-                }
-                if (NODE_TYPE.equals(extensionElement.getName())){
-                    text[5] = extensionElement.getElementText();
-                }
-                if (NEXT_SEQUENCE_FLOW_LABEL.equals(extensionElement.getName())) {
-                    text[6] = extensionElement.getElementText();
-                }
-                if (NEXT_USER_LABEL.equals(extensionElement.getName())) {
-                    text[7] = extensionElement.getElementText();
-                }
-            }));
-            if (StringUtils.isNotBlank(text[0])){
-                propertiesNode.put(ASSIGNEE_TYPE, text[0]);
-            }
-            if (StringUtils.isNotBlank(text[1])){
-                propertiesNode.put(IDM_ASSIGNEE, text[1]);
-            }
-            if (StringUtils.isNotBlank(text[2])){
-                propertiesNode.put(IDM_CANDIDATE_GROUPS, text[2]);
-            }
-            if (StringUtils.isNotBlank(text[3])){
-                propertiesNode.put(IDM_CANDIDATE_USERS, text[3]);
-            }
-            if (StringUtils.isNotBlank(text[4])){
-                propertiesNode.put(IS_EDITDATA, text[4]);
-            }
-            if (StringUtils.isNotBlank(text[5])){
-                propertiesNode.put(NODE_TYPE, text[5]);
-            }
-            if (StringUtils.isNotBlank(text[6])) {
-                propertiesNode.put(NEXT_SEQUENCE_FLOW_LABEL, text[6]);
-            }
-
-            if (StringUtils.isNotBlank(text[7])) {
-                propertiesNode.put(NEXT_USER_LABEL, text[7]);
+        if (baseElement instanceof UserTask) {
+            if (!CollectionUtils.isEmpty(baseElement.getExtensionElements())) {
+                baseElement.getExtensionElements().forEach((s, elements) -> elements.forEach(extensionElement -> {
+                    if (ASSIGNEE_TYPE.equals(extensionElement.getName())) {
+                        this.setPropertyValue(extensionElement.getName(), extensionElement.getElementText(), propertiesNode);
+                    }
+                    if (IDM_ASSIGNEE.equals(extensionElement.getName())) {
+                        this.setPropertyValue(extensionElement.getName(), extensionElement.getElementText(), propertiesNode);
+                    }
+                    if (IDM_CANDIDATE_GROUPS.equals(extensionElement.getName())) {
+                        this.setPropertyValue(extensionElement.getName(), extensionElement.getElementText(), propertiesNode);
+                    }
+                    if (IDM_CANDIDATE_USERS.equals(extensionElement.getName())) {
+                        this.setPropertyValue(extensionElement.getName(), extensionElement.getElementText(), propertiesNode);
+                    }
+                    if (IS_EDITDATA.equals(extensionElement.getName())) {
+                        this.setPropertyValue(extensionElement.getName(), extensionElement.getElementText(), propertiesNode);
+                    }
+                    if (NODE_TYPE.equals(extensionElement.getName())) {
+                        this.setPropertyValue(extensionElement.getName(), extensionElement.getElementText(), propertiesNode);
+                    }
+                    if (NEXT_SEQUENCE_FLOW_LABEL.equals(extensionElement.getName())) {
+                        this.setPropertyValue(extensionElement.getName(), extensionElement.getElementText(), propertiesNode);
+                    }
+                    if (NEXT_USER_LABEL.equals(extensionElement.getName())) {
+                        this.setPropertyValue(extensionElement.getName(), extensionElement.getElementText(), propertiesNode);
+                    }
+                    if (FORM_DATA_LABEL.equals(extensionElement.getName())) {
+                        this.setPropertyValue(extensionElement.getName(), extensionElement.getElementText(), propertiesNode);
+                    }
+                }));
             }
         }
     }
@@ -104,7 +86,7 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
     }
 
     private void addExtansionPropertiesElement(FlowElement flowElement, JsonNode elementNode) {
-        if (flowElement instanceof UserTask){
+        if (flowElement instanceof UserTask) {
             UserTask userTask = (UserTask) flowElement;
             ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, ASSIGNEE_TYPE);
             ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, IDM_ASSIGNEE);
@@ -114,6 +96,7 @@ public class BruceUserTaskJsonConverter extends UserTaskJsonConverter {
             ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, NODE_TYPE);
             ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, NEXT_SEQUENCE_FLOW_LABEL);
             ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, NEXT_USER_LABEL);
+            ExtansionPropertiesUtil.addExtansionPropertiesElement(elementNode, userTask, FORM_DATA_LABEL);
         }
     }
 
