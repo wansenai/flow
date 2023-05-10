@@ -10,8 +10,9 @@
 - [码云](https://gitee.com/lwj/flow)
 
 - [GitHub](https://github.com/ecnice/flow)
-
-### 流程后台
+### 流程后台-表单设计
+![](docs/imgs/add-custom-form.gif)
+### 流程后台-流程设计
 ![avatar](https://img-blog.csdnimg.cn/20210531103412212.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXdlbmp1bjA1MTAx,size_16,color_FFFFFF,t_70#pic_center)
 ![avatar](https://img-blog.csdnimg.cn/20210531103412208.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXdlbmp1bjA1MTAx,size_16,color_FFFFFF,t_70#pic_center)
 ![avatar](https://img-blog.csdnimg.cn/20210531103412202.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXdlbmp1bjA1MTAx,size_16,color_FFFFFF,t_70#pic_center)
