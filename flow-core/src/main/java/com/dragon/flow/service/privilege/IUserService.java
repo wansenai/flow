@@ -23,6 +23,8 @@ public interface IUserService extends IService<User> {
      */
     User getUserByUsername(String username);
 
+    ReturnVo<User> getUserByCode(String code) ;
+
     /**
      * 分页查询列表
      *

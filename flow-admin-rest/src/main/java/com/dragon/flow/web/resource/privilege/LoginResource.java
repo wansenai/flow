@@ -76,22 +76,13 @@ public class LoginResource extends BaseResource {
      * @return
      */
     @PostMapping(value = "/login", produces = "application/json")
-    public ReturnVo<String> login(HttpServletResponse response, HttpServletRequest request, @RequestBody User loginUser) {
+    public ReturnVo<String> login(@RequestBody User loginUser) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "登录成功");
         if (StringUtils.isNotBlank(loginUser.getUsername()) && StringUtils.isNotBlank(loginUser.getPassword())) {
             ReturnVo<User> loginRetuenVo = userService.login(loginUser.getUsername(), loginUser.getPassword());
             if (loginRetuenVo.isSuccess()) {
                 User user = loginRetuenVo.getData();
-                StpUtil.login(user.getId());
-                SaSession session = StpUtil.getSessionByLoginId(user.getId());
-                session.set(LOGIN_USER, user);
-                List<Role> roles = roleService.getRolesByPersonalId(user.getId());
-                session.set(FlowConstant.LOGIN_ROLES, roles);
-                Set<ACL> acls = aclService.getAclsByUserId(user.getId());
-                session.set(FlowConstant.LOGIN_USER_ACLS, acls);
-                SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
-                String tokenValue = tokenInfo.getTokenValue();
-                returnVo.setData(tokenValue);
+                returnVo = this.setSession(user, returnVo);
             } else {
                 returnVo = new ReturnVo<>(ReturnCode.FAIL, loginRetuenVo.getMsg());
             }
@@ -99,8 +90,40 @@ public class LoginResource extends BaseResource {
         return returnVo;
     }
 
+    @PostMapping(value = "/ssologin/{code}", produces = "application/json")
+    public ReturnVo<String> ssologin(@PathVariable String code) {
+        ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "登录成功");
+        if (StringUtils.isNotBlank(code)) {
+            ReturnVo<User> loginRetuenVo = userService.getUserByCode(code);
+            if (loginRetuenVo.isSuccess()) {
+                User user = loginRetuenVo.getData();
+                returnVo = this.setSession(user, returnVo);
+            } else {
+                returnVo = new ReturnVo<>(ReturnCode.FAIL, loginRetuenVo.getMsg());
+            }
+        }
+        return returnVo;
+    }
+
+    private ReturnVo<String> setSession(User user, ReturnVo<String> returnVo) {
+        if (user != null) {
+            StpUtil.login(user.getId());
+            SaSession session = StpUtil.getSessionByLoginId(user.getId());
+            session.set(LOGIN_USER, user);
+            List<Role> roles = roleService.getRolesByPersonalId(user.getId());
+            session.set(FlowConstant.LOGIN_ROLES, roles);
+            Set<ACL> acls = aclService.getAclsByUserId(user.getId());
+            session.set(FlowConstant.LOGIN_USER_ACLS, acls);
+            SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+            String tokenValue = tokenInfo.getTokenValue();
+            returnVo.setData(tokenValue);
+        }
+        return returnVo;
+    }
+
     /**
      * 获取系统配置
+     *
      * @return
      */
     @GetMapping(value = "/getSystemSettings", produces = "application/json")

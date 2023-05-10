@@ -17,6 +17,8 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
+import java.util.Properties;
+
 /**
  * @Description: flowable配置
  * @Author: Bruce.liu
@@ -38,6 +40,8 @@ public class FlowBpmnConfig implements EngineConfigurationConfigurer<SpringProce
         configuration.setProcessDefinitionInfoCache(customProcessDefinitionInfoCache);
         //设置自定义的uuid生成策略
         configuration.setIdGenerator(uuidGenerator());
+//        Properties defaultDatabaseTypeMappings = configuration.getDefaultDatabaseTypeMappings();
+//        defaultDatabaseTypeMappings.setProperty("DM DBMS","dm");
     }
 
     @Process

@@ -48,6 +48,21 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements I
     private IGroupService groupService;
 
     @Override
+    public ReturnVo<User> getUserByCode(String code) {
+        ReturnVo<User> returnVo = new ReturnVo<>(ReturnCode.FAIL, "获取用户失败!");
+        if (StringUtils.isNotBlank(code)){
+            LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            userLambdaQueryWrapper.eq(User::getUserNo, code);
+            List<User> list = this.list(userLambdaQueryWrapper);
+            if (CollectionUtils.isNotEmpty(list)){
+                returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "获取用户成功");
+                returnVo.setData(list.get(0));
+            }
+        }
+        return returnVo;
+    }
+
+    @Override
     public User getUserByUsername(String username) {
         if (StringUtils.isNotBlank(username)){
             LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
