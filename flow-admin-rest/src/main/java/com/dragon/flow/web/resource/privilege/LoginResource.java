@@ -90,8 +90,8 @@ public class LoginResource extends BaseResource {
         return returnVo;
     }
 
-    @PostMapping(value = "/ssologin/{code}", produces = "application/json")
-    public ReturnVo<String> ssologin(@PathVariable String code) {
+    @PostMapping(value = "/ssologin", produces = "application/json")
+    public ReturnVo<String> ssologin(@RequestParam("code") String code) {
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "登录成功");
         if (StringUtils.isNotBlank(code)) {
             ReturnVo<User> loginRetuenVo = userService.getUserByCode(code);
