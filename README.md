@@ -94,6 +94,11 @@ QQ扫码入群（群号：633168411）：
 如果您认为该项目对您有所帮助，则可以帮助作者购买一杯咖啡，以表示支持！  
 ![avatar](https://img-blog.csdnimg.cn/20210531115858101.jpg#pic_center)
 
+## 推荐
+大家在使用本项目时，推荐结合贺波老师的书[《深入Activiti流程引擎：核心原理与高阶实战》](https://item.m.jd.com/product/13928958.html?gx=RnAomTM2bmCImZxDqYAkVCoIHuIYVqc)，这本书对系统学习和深入掌握Activiti/Flowable的用法非常有帮助。
+![image](https://github.com/ecnice/flow/assets/16094881/c5545988-3ef3-425e-91c1-a95ea61f3717)
+
+
 ## 协议
 
 - 遵循 MIT 协议
