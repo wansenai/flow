@@ -1,4 +1,3 @@
-
 *.sh
 node_modules
 *.md
@@ -9,7 +8,8 @@ node_modules
 dist
 /public
 /docs
-.husky
 .local
 /bin
-Dockerfile
+/docker
+
+/internal/**/dist

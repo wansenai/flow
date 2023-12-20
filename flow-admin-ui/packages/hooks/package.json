@@ -1,0 +1,29 @@
+{
+  "name": "@vben/hooks",
+  "version": "1.0.0",
+  "license": "MIT",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "//build": "pnpm unbuild",
+    "//stub": "pnpm unbuild --stub",
+    "clean": "pnpm rimraf node_modules dist",
+    "lint": "pnpm eslint ."
+  },
+  "dependencies": {
+    "@vueuse/core": "^9.13.0",
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@vben/types": "workspace:*"
+  }
+}

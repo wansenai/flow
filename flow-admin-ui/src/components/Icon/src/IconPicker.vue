@@ -69,7 +69,7 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { ScrollContainer } from '/@/components/Container';
   import { Input, Popover, Pagination, Empty } from 'ant-design-vue';
-  import Icon from './Icon.vue';
+  import Icon from '../Icon.vue';
   import SvgIcon from './SvgIcon.vue';
 
   import iconsData from '../data/icons.data';
@@ -124,7 +124,16 @@
   const { prefixCls } = useDesign('icon-picker');
 
   const debounceHandleSearchChange = useDebounceFn(handleSearchChange, 100);
-  const { clipboardRef, isSuccessRef } = useCopyToClipboard(props.value);
+
+  let clipboardRef;
+  let isSuccessRef;
+
+  if (props.copy) {
+    const clipboard = useCopyToClipboard(props.value);
+    clipboardRef = clipboard?.clipboardRef;
+    isSuccessRef = clipboard?.isSuccessRef;
+  }
+
   const { createMessage } = useMessage();
 
   const { getPaginationList, getTotal, setCurrentPage } = usePagination(
@@ -158,7 +167,7 @@
     }
   }
 
-  function handleSearchChange(e: ChangeEvent) {
+  function handleSearchChange(e: Event) {
     const value = e.target.value;
     if (!value) {
       setCurrentPage(1);

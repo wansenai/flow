@@ -1,5 +1,5 @@
 import {BasicColumn, FormSchema} from '/@/components/Table';
-import {Icon} from "/@/components/Icon";
+import Icon from "/@/components/Icon/Icon.vue";
 import {Tag, Checkbox} from "ant-design-vue";
 import {h} from "vue";
 
