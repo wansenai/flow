@@ -1,0 +1,51 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install pnpm
+        run: npm install -g pnpm 
+
+      - name: Install flow-admin-ui dependencies
+        run: |
+          cd flow-admin-ui
+          pnpm install
+
+      - name: Build flow-admin-ui
+        run: |
+          cd flow-admin-ui
+          pnpm build
+
+      - name: Install flow-front-ui dependencies
+        run: |
+          cd flow-front-ui
+          pnpm install
+
+      - name: Build flow-front-ui
+        run: |
+          cd flow-front-ui
+          pnpm build
