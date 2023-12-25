@@ -1,14 +1,21 @@
+<div align="center"> <a href="https://github.com/wansenai/flow"> <img alt="Flow Logo" width="64" height="64" src="flow-admin-ui/public/favicon.ico"> </a> <br> <br>
+
+[![license](https://img.shields.io/github/license/wansenai/flow)](LICENSE)
+
+<h1>Flow (企业级流程中心)</h1>
+</div>
+
+**中文** | [English](./README.md)
+
+## 简介
+Flow 是一个免费开源的企业级流程应用，结合了`Flowable`,`Bpm.js`,`Java`,`Vue3`,`TypeScript`等主流技术开发，开箱即用的流程引擎一体化解决方案。
+
 ## 预览
 - [企业数智化 - 流程中心](http://47.106.196.177:8100/idm/#/login?_blank)
 - [企业数智化 - 门户](http://47.106.196.177:8200/idm/#/login)
-
-
 - [操作演示 - 流程中心](https://www.bilibili.com/video/BV1qU4y1L7pB/)
 - [操作演示 - 门户](https://www.bilibili.com/video/BV1mh411Y7UT/)
-
-
-- [码云](https://gitee.com/lwj/flow)
-
+- [Gitee](https://gitee.com/lwj/flow)
 - [GitHub](https://github.com/ecnice/flow)
 ### 流程后台-表单设计
 ![](docs/imgs/add-custom-form.gif)
@@ -85,14 +92,10 @@ http://localhost:8990
 https://gblfy.blog.csdn.net/article/details/117636550
 镜像的密码是flow
 
-## 联系作者
+## 社区
 欢迎bug反馈，需求建议，技术交流等   
 QQ扫码入群（群号：633168411）：   
-![avatar](https://img-blog.csdnimg.cn/20210601112843454.png#pic_center)  
-
-## 捐赠
-如果您认为该项目对您有所帮助，则可以帮助作者购买一杯咖啡，以表示支持！  
-![avatar](https://img-blog.csdnimg.cn/20210531115858101.jpg#pic_center)
+![avatar](https://img-blog.csdnimg.cn/20210601112843454.png#pic_center)
 
 ## 推荐
 大家在使用本项目时，推荐结合贺波老师的书[《深入Activiti流程引擎：核心原理与高阶实战》](https://item.m.jd.com/product/13928958.html?gx=RnAomTM2bmCImZxDqYAkVCoIHuIYVqc)，这本书对系统学习和深入掌握Activiti/Flowable的用法非常有帮助。
@@ -101,6 +104,6 @@ QQ扫码入群（群号：633168411）：
 
 ## 协议
 
-- 遵循 MIT 协议
+- 遵循 MIT 和 Apache-2.0 协议
 - 请自由地享受和参与开源
 
