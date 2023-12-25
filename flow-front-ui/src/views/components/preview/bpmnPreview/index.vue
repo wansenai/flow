@@ -85,7 +85,7 @@ export default defineComponent({
     FramePage, Space, Affix,
     ExpandOutlined, CompressOutlined,
     PlusCircleOutlined, MinusCircleOutlined, OneToOneOutlined,
-    PlusOutlined, MinusOutlined, RetweetOutlined, PlusOutlined, MinusOutlined, RetweetOutlined,
+    PlusOutlined, MinusOutlined, RetweetOutlined,
   },
   setup(_, {emit}) {
     const triggerEl  = ref<ElRef>();

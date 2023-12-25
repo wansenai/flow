@@ -48,7 +48,7 @@
   import { defineComponent } from 'vue';
 
   import { Card, Carousel, Row, Col  } from 'ant-design-vue';
-  import { Icon } from '/@/components/Icon';
+  import Icon from '/@/components/Icon/Icon.vue';
   import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
 
   import { groupItems } from './data';

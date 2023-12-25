@@ -23,7 +23,7 @@
   import { defineComponent } from 'vue';
 
   import { Card, List, Row, Col } from 'ant-design-vue';
-  import { Icon } from '/@/components/Icon';
+  import Icon from '/@/components/Icon/Icon.vue';
 
   export default defineComponent({
     props:{

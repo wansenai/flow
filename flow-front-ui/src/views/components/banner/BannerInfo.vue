@@ -32,7 +32,7 @@
   import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
 
   import { Card, Carousel  } from 'ant-design-vue';
-  import { Icon } from '/@/components/Icon';
+  import Icon from '/@/components/Icon/Icon.vue';
 
   export default defineComponent({
     props:{

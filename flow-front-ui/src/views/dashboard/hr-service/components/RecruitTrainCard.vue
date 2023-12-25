@@ -28,7 +28,7 @@
   import { Card, List } from 'ant-design-vue';
   import { dynamicInfoItems, recruitTableSchema, trainTableSchema } from './data';
   import headerImg from '/@/assets/images/header.jpg';
-  import { Icon } from '/@/components/Icon';
+  import Icon from '/@/components/Icon/Icon.vue';
   import { BasicTable, useTable } from '/@/components/Table';
 
   const tabList = [

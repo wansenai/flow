@@ -51,10 +51,15 @@
         }
       )!;
 
+      // 修复警告不使用eval函数，因为它存在安全风险 2023-12-25
       function changeUrlArg(url, arg, val){
-        let pattern = arg+'=([^&]*)';
+        let pattern = new RegExp(arg+'=([^&]*)');
         let replaceText = arg+'='+val;
-        return url.match(pattern) ? url.replace(eval('/('+ arg+'=)([^&]*)/gi'), replaceText) : (url.match('[\?]') ? url+'&'+replaceText : url+'?'+replaceText);
+        if (pattern.test(url)) {
+          return url.replace(pattern, replaceText);
+        } else {
+          return (url.includes('?') ? url+'&'+replaceText : url+'?'+replaceText);
+        }
       }
 
       function updateTabInfo(obj){
