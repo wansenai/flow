@@ -29,7 +29,7 @@
   import { defineComponent, ref } from 'vue';
 
   import { Card, List, Input } from 'ant-design-vue';
-  import { Icon } from '/@/components/Icon';
+  import Icon from '/@/components/Icon/Icon.vue';
 
   const items = [
     {

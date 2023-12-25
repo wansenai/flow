@@ -28,7 +28,7 @@
   import { Card, List } from 'ant-design-vue';
   import { dynamicInfoItems, todoTableSchema, haveDownTableSchema } from './data';
   import headerImg from '/@/assets/images/header.jpg';
-  import { Icon } from '/@/components/Icon';
+  import Icon from '/@/components/Icon/Icon.vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { getAppingTasksPagerModel, getApplyedTasksPagerModel } from "/@/api/process/process";
 

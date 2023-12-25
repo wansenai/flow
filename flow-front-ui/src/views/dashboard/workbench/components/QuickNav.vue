@@ -24,7 +24,7 @@
   import { defineComponent, ref, onMounted, nextTick } from 'vue';
 
   import { Card, Badge, Row, Col } from 'ant-design-vue';
-  import { Icon } from '/@/components/Icon';
+  import Icon from '/@/components/Icon/Icon.vue';
   import { navItems } from './data';
   import { router } from '/@/router';
   import {getAppingTaskCont} from "/@/api/process/process";

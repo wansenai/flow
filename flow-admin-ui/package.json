@@ -1,18 +1,18 @@
 {
-  "name": "eairp-web",
+  "name": "flow-admin-ui",
   "version": "1.0.1",
-  "homepage": "https://github.com/wansenai/wansen-erp-ui",
+  "homepage": "https://github.com/wansenai/flow",
   "bugs": {
-    "url": "https://github.com/wansenai/wansen-erp-ui/issues"
+    "url": "https://github.com/wansenai/flow/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wansenai/wansen-erp-ui.git"
+    "url": "git+https://github.com/wansenai/flow.git"
   },
   "license": "MIT And Apache-2.0",
   "author": {
     "name": "Wansen AI Team",
-    "email": "hi@wansenai.com",
+    "email": "team@wansenai.com",
     "url": "https://github.com/wansenai"
   },
   "scripts": {
