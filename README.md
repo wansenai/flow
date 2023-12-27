@@ -92,14 +92,21 @@ http://localhost:8990
 https://gblfy.blog.csdn.net/article/details/117636550
 镜像的密码是flow
 
-## 社区
-欢迎bug反馈，需求建议，技术交流等   
-QQ扫码入群（群号：633168411）：   
+## 社区 
+
+### 加入QQ群
+输入群号：633168411 或扫码入QQ群
+
+
 ![avatar](https://img-blog.csdnimg.cn/20210601112843454.png#pic_center)
 
-## 推荐
+### 加入微信群
+
+添加微信号：wansensoft 加入用户群
+
+## 好书推荐
 大家在使用本项目时，推荐结合贺波老师的书[《深入Activiti流程引擎：核心原理与高阶实战》](https://item.m.jd.com/product/13928958.html?gx=RnAomTM2bmCImZxDqYAkVCoIHuIYVqc)，这本书对系统学习和深入掌握Activiti/Flowable的用法非常有帮助。
-![image](https://github.com/ecnice/flow/assets/16094881/c5545988-3ef3-425e-91c1-a95ea61f3717)
+<image src="https://github.com/didi/LogicFlow/assets/8553969/f4492e40-d812-453e-a170-38fb4253338f" alt="《深入Activiti流程引擎：核心原理与高阶实战》" width="300"/>
 
 
 ## 协议
