@@ -97,12 +97,9 @@ https://gblfy.blog.csdn.net/article/details/117636550
 ### 加入QQ群
 输入群号：633168411 或扫码加入QQ群
 
-
-![qq group](https://img-blog.csdnimg.cn/20210601112843454.png#pic_center)
-
 ### 加入微信群
 
-扫码加入微信群，若提示二维码过期请添加微信号：wansensoft 备注Flow开源，谢谢！
+扫码加入微信群，若提示二维码过期请添加微信号：wansenai 备注Flow开源，谢谢！
 
 <image src="https://wansen.cloud/group1/default/20231227/18/46/4/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20231227184637.jpg?download=0" alt="微信群" width="300"/>
 
