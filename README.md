@@ -7,6 +7,9 @@
 
 **中文** | [English](./README.md)
 
+**作者**
+ [刘文军](https://github.com/ecnice)
+
 ## 简介
 Flow 是一个免费开源的企业级流程应用，结合了`Flowable`,`Bpm.js`,`Java`,`Vue3`,`TypeScript`等主流技术开发，开箱即用的流程引擎一体化解决方案。
 
