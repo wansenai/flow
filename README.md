@@ -99,7 +99,7 @@ https://gblfy.blog.csdn.net/article/details/117636550
 
 ### 加入微信群
 
-扫码加入微信群，若提示二维码过期请添加微信号：wansenai 备注Flow开源，谢谢！
+扫码加入微信群，若提示二维码过期请添加微信号：liuwenjun05101 备注Flow开源，谢谢！
 
 <image src="https://wansen.cloud/group1/default/20231227/18/46/4/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20231227184637.jpg?download=0" alt="微信群" width="300"/>
 
